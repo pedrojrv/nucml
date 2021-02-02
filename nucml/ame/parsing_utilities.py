@@ -1,5 +1,3 @@
-# FINISHED 01/03/2020
-
 import logging
 import os
 import sys
@@ -9,6 +7,8 @@ import requests
 import warnings
 
 sys.path.append("..")
+sys.path.append("../..")
+
 pd.options.mode.chained_assignment = None  # default='warn'
 
 from nucml.general_utilities import check_if_files_exist 
@@ -20,7 +20,7 @@ def get_ame_originals(originals_directory):
     """Requests and stores the three AME original files for further processing from the IAEA website.
 
     Args:
-        originals_directory (str): path-like string where the text files will be stored.
+        originals_directory (str): Path-like string where the text files will be stored.
 
     Returns:
         None
@@ -53,8 +53,8 @@ def read_mass16(originals_directory, saving_directory):
 
 
     Args:
-        originals_directory (str): path to the Atomic Mass Evaluation directory where the mass16_toparse.txt file is located.
-        saving_directory (str): path to save resulting formatted csv file.
+        originals_directory (str): Path to the Atomic Mass Evaluation directory where the mass16_toparse.txt file is located.
+        saving_directory (str): Path to save resulting formatted csv file.
 
     Returns:
         None
@@ -116,8 +116,8 @@ def read_rct1(originals_directory, saving_directory):
     a1,i3,1x,a3,i3,1x,6(f10.2,f8.2)
 
     Args:
-        originals_directory (str): path to the Atomic Mass Evaluation directory where the rct1-16.txt file is located.
-        saving_directory (str): path to save resulting formatted csv file.
+        originals_directory (str): Path to the Atomic Mass Evaluation directory where the rct1-16.txt file is located.
+        saving_directory (str): Path to save resulting formatted csv file.
 
     Returns:
         None
@@ -169,8 +169,8 @@ def read_rct2(originals_directory, saving_directory):
     a1,i3,1x,a3,i3,1x,6(f10.2,f8.2)
 
     Args:
-        originals_directory (str): path to the Atomic Mass Evaluation directory where the rct2-16.txt file is located.
-        saving_directory (str): path to save resulting formatted csv file.
+        originals_directory (str): Path to the Atomic Mass Evaluation directory where the rct2-16.txt file is located.
+        saving_directory (str): Path to save resulting formatted csv file.
 
     Returns:
         None
@@ -327,18 +327,18 @@ def create_natural_element_data(originals_directory, saving_directory, fillna=Tr
     adds a flag to indicate rows which correspond to isotopic or natural data.
 
     Args:
-        originals_directory (str): path to the Atomic Mass Evaluation directory where the 
+        originals_directory (str): Path to the Atomic Mass Evaluation directory where the 
             periodic_table csv file is located.
-        saving_directory (str): path to directory where the resulting formatted 
+        saving_directory (str): Path to directory where the resulting formatted 
             csv file will be saved including the AME_all_merged.csv file.
-        fillna (bool): if True, missing values are filled. For the remaining NaN values not filled by the
+        fillna (bool): If True, missing values are filled. For the remaining NaN values not filled by the
             used `mode`, a value of 0 will be inserted unless specified otherwise.
         mode (str): The supported modes are:
             elemental: missing values are filled using linear interpolation element-wise.
-        fill_value (int, float): value to fill remaining missing values with after imputation is finished 
+        fill_value (float): Value to fill remaining missing values with after imputation is finished 
             with selected `mode`. Defaults to 0.
     Returns:
-        None.
+        None
     """
     directory = saving_directory
     logging.info("FEAT ENG: Initializing. Checking documents...")
@@ -428,13 +428,13 @@ def get_all(originals_directory, saving_directory, fillna=True, fill_value=0, cr
     CSV file is saved with imputed NaN values.
 
     Args:
-        originals_directory (str): path to the Atomic Mass Evaluation directory where the 
+        originals_directory (str): Path to the Atomic Mass Evaluation directory where the 
             periodic_table csv file is located.
-        saving_directory (str): path to directory where the resulting formatted 
+        saving_directory (str): Path to directory where the resulting formatted 
             csv file will be saved.
-        fillna (bool): if True it fills the missing values. For NaN values not filled by the
+        fillna (bool): If True, it fills the missing values. For NaN values not filled by the
             used "mode", then the filling method is just the mean of the entire dataset.
-        fill_value (int, float): value to fill remaining missing values with after imputation is finished 
+        fill_value (int, float): Value to fill remaining missing values with after imputation is finished 
             with selected `mode`. Defaults to 0.
         create_imputed (bool): If True, missing values will be imputed.
         add_qvalues (bool): If true it will add the following reaction Q-values:

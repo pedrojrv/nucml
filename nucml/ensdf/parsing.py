@@ -1,25 +1,22 @@
 import os
-import shutil
 import logging
-
-import numpy as np
 import pandas as pd
-from natsort import natsorted
 import sys
 
 sys.path.append("..")
+sys.path.append("../..")
 
 from nucml import general_utilities # pylint: disable=import-error
-import nucml.datasets as nuc_data # pylint: disable=import-error
+import nucml.datasets as nuc_data   # pylint: disable=import-error
 
 def get_ripl_dat_paths(dat_directory):
     """Searches directory for RIPL .dat files and returns a list of relative paths for each one.
 
     Args:
-        dat_directory (str): path to the RIPL directory containing all dat files.
+        dat_directory (str): Path to the RIPL directory containing all dat files.
 
     Returns:
-        list: contains relative path to each .dat file found.
+        list: Contains relative path to each .dat file found.
     """
     logging.info("RIPL: Searching {} directory for .dat files...".format(dat_directory))
     names = general_utilities.get_files_w_extension(dat_directory, "*.dat")
@@ -27,11 +24,11 @@ def get_ripl_dat_paths(dat_directory):
     return names
 
 def get_headers(dat_list, saving_directory):
-    """Retrieves the avaliable raw header for all .dat files.
+    """Retrieves the avaliable raw headers for all .dat files.
 
     Args:
-        dat_list (list): iterable containing the paths to all .dat files to be processed.
-        saving_directory (str): path to directory for saving the header file.
+        dat_list (list): List containing the paths to all .dat files to be processed. Usually generated using the get_ripl_dat_paths() function.
+        saving_directory (str): Path-like string to directory for saving the header file.
 
     Returns:
         None
@@ -60,16 +57,18 @@ def get_headers(dat_list, saving_directory):
 
 
 def generate_elemental_ensdf(dat_list, header_directory, saving_directory):
-    """Generates a file for each element rather than for each proton number. 
-    Three directories are created: one for raw element with header, another one 
-    without header and a third one which is a formatted version of the second one.
+    """Generates a new RIPL/ENSDF file for each element. The original files are organized by proton number. 
+    This function is useful to organize by element instead. Three directories are created: one for raw elemental files 
+    with headers, another one without headers, and a third one which is a formatted version of the second one.
 
-    Notice that running this script will delete all existing header files and create them again.
+    Note: This script will delete all existing header files and create them again if run by a second time using the same directories.
 
     Args:
-        dat_list (list): list containing paths to the ENSDF .dat files.
-        header_directory (str): path to where the all_ensdf_headers_formatted.csv file is located.
-        saving_directory (str): path where the new directories and ENSDF files will be stored.
+        dat_list (list): List containing the paths to all .dat files to be processed. Usually generated using the 
+            get_ripl_dat_paths() function.
+        header_directory (str): Path-like string where the all_ensdf_headers_formatted.csv file is located. This file is 
+            generated using the get_headers() function.
+        saving_directory (str): Path-like string where the new directories and ENSDF files will be stored.
 
     Returns:
         None
@@ -121,16 +120,18 @@ def generate_elemental_ensdf(dat_list, header_directory, saving_directory):
 
 
 def get_stable_states(dat_list, header_directory, saving_directory=None):
-    """Generates a CSV containing only information for the stable state for each isotope.
+    """Generates a CSV file containing only stable state information for each isotope.
 
     Args:
-        dat_list (list): list containing the path to each .dat file
-        header_directory (str): path where the all_ensdf_headers_formatted.csv file is located.
-        saving_directory (str): path where to save the resulting CSV file. If None, files will be 
+        dat_list (list): List containing the paths to all .dat files to be processed. Usually generated using the 
+            get_ripl_dat_paths() function.
+        header_directory (str): Path-like string where the all_ensdf_headers_formatted.csv file is located. This file is 
+            generated using the get_headers() function.
+        saving_directory (str): Path-like string where the resulting CSV file will be saved. If None, files will be 
             stored in the same directory as the header_directory.
 
     Returns:
-        None: None
+        None
     """
     if saving_directory == None:
         saving_directory = header_directory
@@ -163,13 +164,15 @@ def get_stable_states(dat_list, header_directory, saving_directory=None):
 
 
 def generate_ensdf_csv(header_directory, elemental_directory, saving_directory=None):
-    """Generates a single csv file containing the information from all isotopes.
+    """Generates a single CSV file containing information from all isotopes.
 
     Args:
-        header_directory (str): path to where the all_ensdf_headers_formatted.csv file is located.
-        elemental_directory (str): path to directory where the Elemental_ENSDF_no_Header_F directory is located.
-        saving_directory (str): path where the new ENSDF .csv file will be stored. If None, 
-            it will be saved in the header directory.
+        header_directory (str): Path-like string where the all_ensdf_headers_formatted.csv file is located. This file is 
+            generated using the get_headers() function.
+        elemental_directory (str): Path-like string to directory where the Elemental_ENSDF_no_Header_F directory is located.
+            This directory is first created using the generate_elemental_ensdf() function.
+        saving_directory (str): Path-like string where the new ENSDF CSV file will be stored. If None, 
+            it will be saved in the header_directory.
 
     Returns:
         None
@@ -195,15 +198,15 @@ def generate_ensdf_csv(header_directory, elemental_directory, saving_directory=N
     return None
 
 def get_level_parameters(level_params_directory, saving_directory=None):
-    """Converts the levels-param.data file from RIPL into a CSV file.
+    """Converts the levels-param.data file from RIPL into a usable CSV file.
 
     Args:
-        level_params_directory (str): path where the directory where levels-param.data file is located.
-        saving_directory (str): path to directory where the resulting CSV will be stored. If None, 
-            it will be stored in the same directory as the levels-param.data file is located.
+        level_params_directory (str): Path-like string pointing towards the directory where the levels-param.data file is located.
+        saving_directory (str): Path-like string pointing towards the directory where the resulting CSV will be stored. If None, 
+            it will be stored in the level_params_directory.
 
     Returns:
-        None: None
+        None
     """
     if saving_directory == None:
         saving_directory = level_params_directory
@@ -234,20 +237,20 @@ def get_level_parameters(level_params_directory, saving_directory=None):
 
 
 def generate_cutoff_ensdf(ensdf_directory, elemental_directory, ripl_directory=None, saving_directory=None):
-    """This function uses the RIPL level parameters cut-off information to generate a new ENSDF .csv file.
-    It removes all nuclear level information above the given parameters for each isotope. It uses
-    the CSV file created using the .get_level_parameters() function from the parsing utilities. 
+    """Uses the RIPL level parameters cut-off information to generate a new ENSDF CSV file.
+    It removes all nuclear level information above the given parameters for each isotope by using
+    the CSV file created using the get_level_parameters() function. 
 
     Args:
-        ensdf_directory (str): path to the directory where the ensdf.csv file is stored
-        elemental_directory (str): path to the Elemental_ENSDF_no_Header_F directory.
-        ripl_directory (str, optional): path to the directory where the ripl_cut_off_energies.csv file is 
+        ensdf_directory (str): Path-like string indicating the directory where the ensdf.csv file is stored.
+        elemental_directory (str): Path-like string indicating the the Elemental_ENSDF_no_Header_F directory.
+        ripl_directory (str, optional): Path-like string indicating the directory where the ripl_cut_off_energies.csv file is 
             stored. If None, it is assumed that the file is located in the ensdf_directory. Defaults to None.
-        saving_directory (str, optional): the resulting file will be saved in this directory. If None,
+        saving_directory (str, optional): The resulting file will be saved in this directory. If None,
             the saving_directory will be set to the ensdf_directory. Defaults to None.
 
     Returns:
-        None: 
+        None
     """    
     if saving_directory == None:
         saving_directory = ensdf_directory

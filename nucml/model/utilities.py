@@ -5,7 +5,12 @@ from joblib import load
 import tensorflow as tf
 import xgboost as xgb
 from sklearn.metrics import mean_absolute_error, mean_squared_error, explained_variance_score, median_absolute_error, r2_score
+import sys
 
+sys.path.append("..")
+sys.path.append("../..")
+
+import nucml.ace.data_utilities as ace_utils
 
 def regression_error_metrics(v1, v2):
     """Calculates the MAE, MSE, EVS, MAEM, and R2 between two vectors. 
@@ -194,4 +199,40 @@ def cleanup_model_dir(results_df, model_dir, keep_best=True, keep_first=False):
         if i not in not_to_delete:
             if os.path.isdir(os.path.join(model_dir,i)):
                 shutil.rmtree(os.path.join(model_dir,i))
+    return None
+
+
+# # testing = remove_unused_models("../ML_EXFOR_neutrons/2_DT/DT_B1/dt_results.csv", "acedata_ml/U233/DT_B1/")
+def remove_unused_models(model_results_path, acedate_directory):
+    """Finds best models in terms of train, validation and testing sets and deletes all others. It
+    also keeps the best models in terms of multiplication factor.
+
+    WARNING: Once deleted, other models will not be accessible. 
+
+    Args:
+        model_results_path (str): Filepath to model training results CSV file generated using the model training scripts.
+        acedate_directory (str): Path to the relevant directory were all models for a given algorithm are stored. 
+
+    Returns:
+        None
+    """    
+    model_results_df = pd.read_csv(model_results_path)
+    model_results_df["Model"] = model_results_df.model_path.apply(lambda x: os.path.basename(os.path.dirname(x)))
+    model_results_df["main_directory"] = model_results_df.model_path.apply(lambda x: os.path.dirname(x) + "\\")
+    model_results_df = model_results_df[["Model", "train_mae", "val_mae", "test_mae", "main_directory"]]
+    
+    benchmark_results = ace_utils.gather_benchmark_results(acedate_directory)
+    model_results_df = model_results_df.merge(benchmark_results, on="Model")
+    
+    # KEEP BEST TRAIN VAL TEST
+    # KEEP TOP 3 SORTED DEVIATION ANA
+    to_keep = []
+    to_keep.extend(list(model_results_df.iloc[model_results_df.sort_values(by="Deviation_Ana").head().index].Model.values))
+    to_keep.extend(list(model_results_df.iloc[get_best_models_df(model_results_df).index].Model.values))
+    model_results_df["filtering"] = model_results_df.Model.apply(lambda name: True if name not in to_keep else False)
+    to_remove = model_results_df[model_results_df.filtering == True]
+    
+    for i in to_remove.main_directory.values:
+        shutil.rmtree(i)
+    
     return None

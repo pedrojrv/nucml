@@ -1,6 +1,5 @@
 import os
 import sys
-import warnings
 import logging
 
 import matplotlib.pyplot as plt
@@ -9,27 +8,23 @@ import pandas as pd
 import seaborn as sns
 import tensorflow as tf
 import xgboost as xgb
-from sklearn import preprocessing
-from sklearn.metrics import (explained_variance_score, mean_absolute_error,
-                             mean_squared_error, median_absolute_error,
-                             r2_score)
-from sklearn.model_selection import train_test_split
 
 # This allows us to import the nucml utilities
 sys.path.append("..")
 sys.path.append("../..")
 
 
-import nucml.ace.data_utilities as ace_utils        # pylint: disable=import-error
+import nucml.ace.data_utilities as ace_utils              # pylint: disable=import-error
 import nucml.evaluation.data_utilities as endf_utils      # pylint: disable=import-error
-import nucml.datasets as nuc_data                   # pylint: disable=import-error
-import nucml.model.model_utilities as model_utils   # pylint: disable=import-error
-import nucml.plot.utilities as plot_utils  # pylint: disable=import-error
-import nucml.general_utilities as gen_utils         # pylint: disable=import-error
-import nucml.exfor.plot as exfor_plot_utils  # pylint: disable=import-error
+import nucml.datasets as nuc_data                         # pylint: disable=import-error
+import nucml.model.utilities as model_utils               # pylint: disable=import-error
+import nucml.plot.utilities as plot_utils                 # pylint: disable=import-error
+import nucml.general_utilities as gen_utils               # pylint: disable=import-error
+import nucml.exfor.plot as exfor_plot_utils               # pylint: disable=import-error
+import nucml.config as config                             # pylint: disable=import-error
 
-
-ame_dir_path = os.path.abspath("../AME/")
+ame_dir_path = config.ame_dir_path
+elements_dict = nuc_data.elements_dict
 
 empty_df = pd.DataFrame()
 
@@ -39,13 +34,13 @@ def load_samples(df, Z, A, MT, nat_iso="I", one_hot=False, scale=False, scaler=N
 
     Args:
         df (DataFrame): DataFrame containing all avaliable datapoints from where to extract the information.
-        Z (int): number of protons.
-        A (int): atomic mass number
-        MT (int): reaction channel (endf-coded).
+        Z (int): Number of protons.
+        A (int): Atomic mass number.
+        MT (int): Reaction channel (ENDF-coded).
         nat_iso (str, optional): "I" means isotopic while "N" means natural experimental campaigns. Defaults to "I".
         one_hot (bool, optional): If True, the script assumes that the reaction channel is one-hot encoded. Defaults to False.
         scale (bool, optional): If True, the scaler object passed will be use to normalize the extracted information. Defaults to False.
-        scaler (object, optional): fitted scaler object. Defaults to None.
+        scaler (object, optional): Fitted scaler object. Defaults to None.
         to_scale (list, optional): List of feature names that are to be scaled. Defaults to [].
 
     Returns:
@@ -69,13 +64,13 @@ def load_isotope(df, Z, A, nat_iso="I", one_hot=False, scale=False, scaler=None,
     """Loads all datapoints avaliable for a particular isotope.
 
     Args:
-        df (DataFrame): all avaliable experimental datapoints.
-        Z (int): number of protons
-        A (int): atomic mass number
+        df (DataFrame): All avaliable experimental datapoints.
+        Z (int): Number of protons.
+        A (int): Atomic mass number.
         nat_iso (str, optional): "I" means isotopic while "N" means natural experimental campaigns. Defaults to "I".
         one_hot (bool, optional): If True, the script assumes that the reaction channel is one-hot encoded. Defaults to False.
         scale (bool, optional): If True, the scaler object passed will be use to normalize the extracted information. Defaults to False.
-        scaler (object, optional): fitted scaler object. Defaults to None.
+        scaler (object, optional): Fitted scaler object. Defaults to None.
         to_scale (list, optional): List of feature names that are to be scaled. Defaults to [].
 
     Returns:
@@ -98,12 +93,12 @@ def load_element(df, Z, nat_iso="I", one_hot=False, scale=False, scaler=None, to
     """Loads all datapoints avaliable for a particular element.
 
     Args:
-        df (DataFrame): all avaliable experimental datapoints.
-        Z (int): number of protons
+        df (DataFrame): All avaliable experimental datapoints.
+        Z (int): Number of protons.
         nat_iso (str, optional): "I" means isotopic while "N" means natural experimental campaigns. Defaults to "I".
         one_hot (bool, optional): If True, the script assumes that the reaction channel is one-hot encoded. Defaults to False.
         scale (bool, optional): If True, the scaler object passed will be use to normalize the extracted information. Defaults to False.
-        scaler (object, optional): fitted scaler object. Defaults to None.
+        scaler (object, optional): Fitted scaler object. Defaults to None.
         to_scale (list, optional): List of feature names that are to be scaled. Defaults to [].
 
     Returns:
@@ -122,19 +117,19 @@ def load_element(df, Z, nat_iso="I", one_hot=False, scale=False, scaler=None, to
 
 def load_newdata(datapath, df, Z, A, MT, nat_iso="I", one_hot=False, log=False, scale=False, scaler=None, to_scale=[]):
     """Loads new measurments and appends the appropiate EXFOR isotopic data. 
-    Assumes new data only have two columsn: Energy and Data.
+    Assumes new data only have two columns: Energy and Data.
 
     Args:
         datapath (str): Path-like string of the new data file.
-        df (DataFrame): all avaliable experimental datapoints.
-        Z (int): number of protons
-        A (int): atomic mass number
-        MT (int): reaction channel (endf-coded).
+        df (DataFrame): All avaliable experimental datapoints.
+        Z (int): Number of protons.
+        A (int): Atomic mass number.
+        MT (int): Reaction channel (endf-coded).
         nat_iso (str, optional): "I" means isotopic while "N" means natural experimental campaigns. Defaults to "I".
         one_hot (bool, optional): If True, the script assumes that the reaction channel is one-hot encoded. Defaults to False.
         log (bool, optional): If True, the log of both the Energy and Data features will be taken.
         scale (bool, optional): If True, the scaler object passed will be use to normalize the extracted information. Defaults to False.
-        scaler (object, optional): fitted scaler object. Defaults to None.
+        scaler (object, optional): Fitted scaler object. Defaults to None.
         to_scale (list, optional): List of feature names that are to be scaled. Defaults to [].
 
     Returns:
@@ -162,16 +157,16 @@ def append_energy(e_array, df, Z, A, MT, nat_iso="I", one_hot=False, log=False, 
     """The given energy array is appended to the passed DataFrame and feature values are coppied to these new rows.
 
     Args:
-        e_array (np.array): numpy array with the additional energy values to append.
-        df (DataFrame): all avaliable experimental datapoints.
-        Z (int): number of protons
-        A (int): atomic mass number
-        MT (int): reaction channel (endf-coded).
+        e_array (np.array): Numpy array with the additional energy values to append.
+        df (DataFrame): All avaliable experimental datapoints.
+        Z (int): Number of protons.
+        A (int): Atomic mass number.
+        MT (int): Reaction channel (endf-coded).
         nat_iso (str, optional): "I" means isotopic while "N" means natural experimental campaigns. Defaults to "I".
         one_hot (bool, optional): If True, the script assumes that the reaction channel is one-hot encoded. Defaults to False.
         log (bool, optional): If True, the log of both the Energy and Data features will be taken.
         scale (bool, optional): If True, the scaler object passed will be use to normalize the extracted information. Defaults to False.
-        scaler (object, optional): fitted scaler object. Defaults to None.
+        scaler (object, optional): Fitted scaler object. Defaults to None.
         to_scale (list, optional): List of feature names that are to be scaled. Defaults to [].
         ignore_MT (bool, optional): If True, the reaction channel is ignored and data for the total reaction is taken. Defaults to False.
 
@@ -206,9 +201,9 @@ def expanding_dataset_energy(data, E_min, E_max, log, N, e_array=None):
     """Expands a given DataFrames energy points by a given number of energy points between E_min and E_max.
 
     Args:
-        data (DataFrame): dataframe for which the Energy will be expanded.
-        E_min (int): starting point for energy expansion.
-        E_max (float): ending point for energy expansion.
+        data (DataFrame): DataFrame for which the Energy will be expanded.
+        E_min (int): Starting point for energy expansion.
+        E_max (float): Ending point for energy expansion.
         log (bool): If True, it assumes the Energy in the passed data is already in log form.
         N (int): Number of datapoints between E_min and E_max to create.
         e_array (np.array, optional): If e_array is provided, this gets appended overriding any other parameters. Defaults to None.
@@ -234,14 +229,14 @@ def make_predictions_w_energy(e_array, df, Z, A, MT, model, model_type, scaler, 
     """Given an energy array and isotopic information, Predictions using a model are performed at the given energy points in the e_array for a given isotope. 
 
     Args:
-        e_array (np.array): numpy array representing energy points at which inferences will be made.
-        df (DataFrame): all avaliable experimental datapoints.
-        Z (int): number of protons
-        A (int): atomic mass number
-        MT (int): reaction channel (endf-coded).
-        model (object): trained model object
-        model_type (str): type of model. Options include None meaning scikit-learn models, "tf", for tensorflow, and "xgb" for gradient boosting machines.
-        scaler (object): fitted scaler object.
+        e_array (np.array): Numpy array representing energy points at which inferences will be made.
+        df (DataFrame): All avaliable experimental datapoints.
+        Z (int): Number of protons.
+        A (int): Atomic mass number.
+        MT (int): Reaction channel (endf-coded).
+        model (object): Trained model object.
+        model_type (str): Type of model. Options include None meaning scikit-learn models, "tf", for tensorflow, and "xgb" for gradient boosting machines.
+        scaler (object): Fitted scaler object.
         to_scale (list): List of feature names that are to be scaled.
         one_hot (bool, optional): If True, the script assumes that the reaction channel is one-hot encoded. Defaults to False.
         log (bool, optional): If True, the log of both the Energy and Data features will be taken.
@@ -264,19 +259,19 @@ def make_predictions_from_df(df, Z, A, MT, model, model_type, scaler, to_scale, 
     """Returns predictions for all avaliable datapoints for a particular isotope-reaction channel pair.
 
     Args:
-        df (DataFrame): all avaliable experimental datapoints.
-        Z (int): number of protons
-        A (int): atomic mass number
-        MT (int): reaction channel (endf-coded).
-        model (object): trained model object
-        model_type (str): type of model. Options include None meaning scikit-learn models, "tf", for tensorflow, and "xgb" for gradient boosting machines.
-        scaler (object): fitted scaler object
-        to_scale (list): List of feature names that are to be scaled
+        df (DataFrame): All avaliable experimental datapoints.
+        Z (int): Number of protons.
+        A (int): Atomic mass number.
+        MT (int): Reaction channel (endf-coded).
+        model (object): Trained model object.
+        model_type (str): Type of model. Options include None meaning scikit-learn models, "tf", for tensorflow, and "xgb" for gradient boosting machines.
+        scaler (object): Fitted scaler object.
+        to_scale (list): List of feature names that are to be scaled.
         log (bool, optional): If True, the log of both the Energy and Data features will be taken.
         show (bool, optional): If True, a plot of the predictions will be rendered. Defaults to False.
 
     Returns:
-        [type]: [description]
+        np.array
     """    
     kwargs = {"nat_iso": "I", "one_hot": True, "scale": True, "scaler": scaler, "to_scale": to_scale}
     exfor = load_samples(df, Z, A, MT, **kwargs)
@@ -296,17 +291,17 @@ def predicting_nuclear_xs_v2(df, Z, A, MT, model, to_scale, scaler, e_array="ace
     values at the original exfor datapoint energies, the .ACE energy grid is used for further comparison.
 
     Args:
-        df (DataFrame): all avaliable experimental datapoints.
-        Z (int): number of protons
-        A (int): atomic mass number
-        MT (int): reaction channel (endf-coded).
-        model (object): trained model object
+        df (DataFrame): All avaliable experimental datapoints.
+        Z (int): Number of protons.
+        A (int): Atomic mass number.
+        MT (int): Reaction channel (endf-coded).
+        model (object): Trained model object.
         to_scale (list): List of feature names that are to be scaled. 
-        scaler (object): fitted scaler object.
+        scaler (object): Fitted scaler object.
         e_array (str, optional): If "ace", the energy grid from the appropiate ACE file is appended. An
             alternative is to provide a specific energy array. Defaults to "ace".
         log (bool, optional): If True, it assumes the Energy is already in a log form. Defaults to False.
-        model_type (str): type of model. Options include None meaning scikit-learn models, "tf", for tensorflow, and "xgb" for gradient boosting machines.
+        model_type (str): Type of model. Options include None meaning scikit-learn models, "tf", for tensorflow, and "xgb" for gradient boosting machines.
         html (bool, optional): If True, the plot will be rendered in an interactive browser tab. Defaults to False.
         new_data (DataFrame, optional): New data for which to make predictions, get errors, and plot. Assumes it has all needed information. Defaults to empty_df.
         save (bool, optional): If True, the plot will be saved. Defaults to False.
@@ -396,16 +391,14 @@ def predicting_nuclear_xs_v2(df, Z, A, MT, model, to_scale, scaler, e_array="ace
 
 def plot_exfor_w_references(df, Z, A, MT, nat_iso="I", new_data=empty_df, endf=empty_df, error=False, get_endf=True, reverse_log=False, legend_size=21,
     save=False, interpolate=False, legend=False, alpha=0.7, one_hot=False, log_plot=False, path='', ref=False, new_data_label="Additional Data"):
-    """    Plots Cross Section for a particular Isotope with or without references. 
-    If Ref is true then EXFOR will be ploted per experimental campaign (one color for each)
-    Legend will show up the
+    """Plots Cross Section for a particular Isotope with or without references. 
 
     Args:
-        df (DataFrame): all avaliable experimental datapoints.
-        Z (int): number of protons
-        A (int): atomic mass number
-        MT (int): reaction channel (endf-coded).
-        nat_iso (str, optional): [description]. Defaults to "I".
+        df (DataFrame): All avaliable experimental datapoints.
+        Z (int): Number of protons.
+        A (int): Atomic mass number.
+        MT (int): Reaction channel (endf-coded).
+        nat_iso (str, optional): "I" means isotopic while "N" means natural experimental campaigns. Defaults to "I".
         new_data (DataFrame, optional): New data for which to make predictions, get errors, and plot. Assumes it has all needed information. Defaults to empty_df.
         endf (DataFrame, optional): DataFrame containing the appropiate ENDF data to plot against. Defaults to empty_df.
         error (bool, optional): If True, error between the EXFOR and ENDF datapoints are calculated. Defaults to False.
@@ -421,8 +414,9 @@ def plot_exfor_w_references(df, Z, A, MT, nat_iso="I", new_data=empty_df, endf=e
         path (str, optional): Path-like string on which to save the rendered plots. Defaults to "".
         ref (bool, optional): If True, EXFOR will be ploted per experimental campaign (one color for each). Defaults to False.
         new_data_label (str, optional): If new data is provided, this sets the label in the legend. Defaults to "Additional Data".
+
     Returns:
-        dict: all information requested including original data and errors are contained in a python dictionary.
+        dict: All information requested including original data and errors are contained in a python dictionary.
     """
     if reverse_log:
         df["Energy"] = 10**df["Energy"].values
@@ -478,8 +472,8 @@ def get_error_endf_exfor(endf, exfor_sample):
     """Calculates error between an ENDF and EXFOR sample. 
 
     Args:
-        endf (DataFrame): endf data.
-        exfor_sample (DataFrame): exfor data.
+        endf (DataFrame): ENDF DataFrame sample for the relevant isotope and reaction channel.
+        exfor_sample (DataFrame): EXFOR DataFrame sample for the relevant isotope and reaction channel.
 
     Returns:
         DataFrame, DataFrame: first dataframe contains original values while the second one 
@@ -507,8 +501,8 @@ def get_error_endf_new(endf, new_data):
     """Calculates the error between a given dataframe of experimental datapoints to ENDF.
 
     Args:
-        endf (DataFrame): dataframe containing the ENDF datapoints.
-        new_data (DataFrame): dataframe containing the new experimental data points.
+        endf (DataFrame): DataFrame containing the ENDF datapoints.
+        new_data (DataFrame): DataFrame containing the new experimental data points.
 
     Returns:
         DataFrame, DataFrame: first dataframe contains original values while the second one 
@@ -535,15 +529,15 @@ def get_error_endf_new(endf, new_data):
     return exfor_endf_new_data, error_endf_exfor_new_df
 
 def get_mt_errors_exfor_ml(df, Z, A, scaler, to_scale, model):
-    """Calculates the error between EXFOR and ML predictions for a given isotope
+    """Calculates the error between EXFOR and ML predictions for a given isotope.
 
     Args:
-        df (DataFrame): all avaliable experimental datapoints.
-        Z (int): number of protons
-        A (int): atomic mass number
-        scaler (object): fitted scaler object.
+        df (DataFrame): All avaliable experimental datapoints.
+        Z (int): Number of protons.
+        A (int): Atomic mass number.
+        scaler (object): Fitted scaler object.
         to_scale (list): List of feature names that are to be scaled. 
-        model (object): machine learning object.
+        model (object): Machine learning object.
 
     Returns:
         DataFrame
@@ -567,10 +561,10 @@ def get_mt_error_exfor_endf(df, Z, A, scaler, to_scale):
     """Calculates the error between EXFOR and ENDF for a given isotope. 
 
     Args:
-        df (DataFrame): all avaliable experimental datapoints.
-        Z (int): number of protons
-        A (int): atomic mass number
-        scaler (object): fitted scaler object.
+        df (DataFrame): All avaliable experimental datapoints.
+        Z (int): Number of protons.
+        A (int): Atomic mass number.
+        scaler (object): Fitted scaler object.
         to_scale (list): List of feature names that are to be scaled. 
 
     Returns:
@@ -601,15 +595,15 @@ def get_csv_for_ace(df, Z, A, model, scaler, to_scale, model_type=None, saving_d
     by which to save the CSV file in the process. 
 
     Args:
-        df (DataFrame): all avaliable experimental datapoints.
-        Z (int): number of protons
-        A (int): atomic mass number
-        model (object): trained model object
-        scaler (object): fitted scaler object.
+        df (DataFrame): All avaliable experimental datapoints.
+        Z (int): Number of protons.
+        A (int): Atomic mass number.
+        model (object): Trained model object.
+        scaler (object): Fitted scaler object.
         to_scale (list): List of feature names that are to be scaled. 
-        model_type (str): type of model. Options include None meaning scikit-learn models, "tf", for tensorflow, and "xgb" for gradient boosting machines.
+        model_type (str): Type of model. Options include None meaning scikit-learn models, "tf", for tensorflow, and "xgb" for gradient boosting machines.
         saving_dir (str, optional): Path-like string on where to save the CSV file. If given, the CSV file will be saved. Defaults to None.
-        saving_filename (str, optional): name for the CSV file to be saved. Defaults to None.
+        saving_filename (str, optional): Name for the CSV file to be saved. Defaults to None.
 
     Returns:
         DataFrame
@@ -673,6 +667,3 @@ def add_compound_nucleus_info(df, drop_q=False):
     df = df.drop(columns=["Compound_Mass_Number_y"])
     df = df.rename(columns={'Compound_Mass_Number_x': 'Compound_Mass_Number'})
     return df
-
-
-elements_dict = gen_utils.load_obj(os.path.join(os.path.dirname(__file__), 'objects/Element_AAA.pkl'))

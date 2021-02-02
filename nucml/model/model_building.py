@@ -7,7 +7,20 @@ from wandb.keras import WandbCallback
 
 
 
-def get_callbacks(name, logs_dir_name="logs", lr_method="plateau", reset=False, patience_epochs=10, save_freq=7531*5, append_wandb=False):
+def get_callbacks(name, logs_dir_name="logs", lr_method="plateau", patience_epochs=10, save_freq=7531*5, append_wandb=False):
+    """Gets a callback list for TensorFlow training.
+
+    Args:
+        name (str): Name of the model.
+        logs_dir_name (str, optional): Name of the directory where the callback logs will be stored. Defaults to "logs".
+        lr_method (str, optional): Learning rate method to implement. Defaults to "plateau".
+        patience_epochs (int, optional): Number of epochs to wait before stopping training due to lack of validation progress. Defaults to 10.
+        save_freq (int, optional): Determines how many steps are needed to create a checkpoint. Defaults to 7531*5.
+        append_wandb (bool, optional): If True, the WANDB callback will be added. Defaults to False.
+
+    Returns:
+        list: List containing all TensorFlow callbacks.
+    """    
     logdir = logs_dir_name
     chkpoint_dir = os.path.abspath(os.path.join(logs_dir_name, "checkpoints"))
     csv_logger_dir = os.path.join(logs_dir_name, "training_metrics.csv")
@@ -55,6 +68,29 @@ def get_callbacks(name, logs_dir_name="logs", lr_method="plateau", reset=False, 
 def compile_and_fit(model, name, x_train, y_train, x_test, y_test, BATCH_SIZE=120, 
                     max_epochs=5, DECAY_EPOCHS=10, lr_method="plateau", initial_epoch=0,
                     logs_dir_name="logs", append_wandb=False, verbose=0, comet=False, comet_exp=None):
+    """Compiles and fits a TensorFlow model.
+
+    Args:
+        model (object): TensorFlow model object.
+        name (str): Name by which the TensorFlow model will be saved.
+        x_train (np.array): The X-train numpy array set.
+        y_train (np.array): The y-train numpy array.
+        x_test (np.array): The X-test numpy array set.
+        y_test (np.array): The y-test numpy array.
+        BATCH_SIZE (int, optional): Batch size for the tensorflow dataset. Defaults to 120.
+        max_epochs (int, optional): Max number of epochs to train for. Defaults to 5.
+        DECAY_EPOCHS (int, optional): Number of epochs before slightly decreasing the learning rate. Defaults to 10.
+        lr_method (str, optional): Type of learning rate adjustment method. Defaults to "plateau".
+        initial_epoch (int, optional): Initial epoch of the provided model. Defaults to 0.
+        logs_dir_name (str, optional): Name of the directory where the logs will be stored. Defaults to "logs".
+        append_wandb (bool, optional): If True, the WANDB callback will be appended. Defaults to False.
+        verbose (int, optional): See the TensorFlow verbosity for more information. Defaults to 0.
+        comet (bool, optional): If True, the training will be under a Comet experiment. Defaults to False.
+        comet_exp (object, optional): The Comet experiment by which the training will happen. Defaults to None.
+
+    Returns:
+        object: Training history object.
+    """    
     STEPS_PER_EPOCH = len(x_train) // BATCH_SIZE
     
     if lr_method == "plateau" or lr_method == "normal":
@@ -92,6 +128,24 @@ def compile_and_fit(model, name, x_train, y_train, x_test, y_test, BATCH_SIZE=12
 
 def compile_and_fit_lw(model, name, x_train, y_train, x_test, y_test, BATCH_SIZE=120, 
                     max_epochs=5, DECAY_EPOCHS=10, lr_method="plateau", initial_epoch=0):
+    """Compile and fits a TensorFlow model.
+
+    Args:
+        model (object): TensorFlow model to fit.
+        name (str): Name by which the model will be saved.
+        x_train (np.array): The X-train numpy array set.
+        y_train (np.array): The y-train numpy array.
+        x_test (np.array): The X-test numpy array set.
+        y_test (np.array): The y-test numpy array.
+        BATCH_SIZE (int, optional): Batch size for the tensorflow dataset. Defaults to 120.
+        max_epochs (int, optional): Max number of epochs to train for. Defaults to 5.
+        DECAY_EPOCHS (int, optional): Number of epochs before slightly decreasing the learning rate. Defaults to 10.
+        lr_method (str, optional): Type of learning rate adjustment method. Defaults to "plateau".
+        initial_epoch (int, optional): Initial epoch of the provided model. Defaults to 0.
+
+    Returns:
+        object: Training history object.
+    """     
     STEPS_PER_EPOCH = len(x_train) // BATCH_SIZE
     
     if lr_method == "plateau" or lr_method == "normal":

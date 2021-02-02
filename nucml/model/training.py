@@ -4,7 +4,7 @@ import time
 import numpy as np
 import pandas as pd
 import xgboost as xgb
-from joblib import dump, load
+from joblib import dump
 from sklearn import tree
 from sklearn.neighbors import KNeighborsRegressor
 import sys
@@ -12,7 +12,7 @@ import sys
 sys.path.append("..")
 sys.path.append("../..")
 
-import nucml.model.model_utilities as model_utils  # pylint: disable=import-error
+import nucml.model.utilities as model_utils  # pylint: disable=import-error
 
 
 def train_knn(x_train, y_train, x_test, y_test, k_list, save_models=False, save_dir="."):

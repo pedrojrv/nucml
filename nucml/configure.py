@@ -12,6 +12,7 @@ def configure(user_path, ace_path):
     Args:
         user_path (str): Path-like string pointing to the project directory.
         ace_path (str): Path-like string pointing to the .ace files. 
+
     Returns:
         None
     """    
@@ -30,6 +31,4 @@ def configure(user_path, ace_path):
         f.write("bench_template_path = r'{}' \n".format(bench_templ_path))
         f.write("ace_path = r'{}' \n".format(os.path.abspath(ace_path)))
 
-
     return None
-

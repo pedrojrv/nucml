@@ -1,25 +1,32 @@
 import pandas as pd 
 import numpy as np 
-import tensorflow as tf 
-import xgboost as xgb 
-import matplotlib.pyplot as plt 
-from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error, median_absolute_error
-
-import nucml.model.model_utilities as model_utils   # pylint: disable=import-error
-import nucml.ensdf.plotting_utilities as ensdf_plot    # pylint: disable=import-error
-import nucml.general_utilities as gen_utils # pylint: disable=import-error
-
 import logging
-
 from sklearn import linear_model
-
 import os
+from joblib import dump
+import sys
 
-from joblib import dump, load
+sys.path.append("..")
+sys.path.append("../..")
+
+import nucml.model.utilities as model_utils   # pylint: disable=import-error
+import nucml.ensdf.plot as ensdf_plot         # pylint: disable=import-error
+import nucml.general_utilities as gen_utils   # pylint: disable=import-error
+
 
 def load_ensdf_samples(df, Z, A, scale=False, scaler=None, to_scale=[]):
-    """
-    Loads ENSDF data for a particular Isotope
+    """Loads ENSDF data for a particular isotope (Z, A).
+
+    Args:
+        df (DataFrame): DataFrame containing all necessary information for Z, A. 
+        Z (int): Number of protons.
+        A (int): Mass Number.
+        scale (bool, optional): If True, the data will be tranform using the provided scaler. Defaults to False.
+        scaler (object, optional): Scikit-Learn trained transformer. Defaults to None.
+        to_scale (list, optional): List of features to be scaled. Defaults to [].
+
+    Returns:
+        DataFrame: Extracted isotope sample.
     """
     logging.info("Extracting samples from dataframe.")
     sample = df[(df["Protons"] == Z) & (df["Mass_Number"] == A)].sort_values(by='Level_Number', ascending=True)
@@ -31,8 +38,17 @@ def load_ensdf_samples(df, Z, A, scale=False, scaler=None, to_scale=[]):
 
 
 def load_ensdf_element(df, Z, scale=False, scaler=None, to_scale=[]):
-    """
-    Loads ENSDF data for a particular element (includes all isotopes)
+    """Loads ENSDF data for a given element (Z).
+
+    Args:
+        df (DataFrame): DataFrame containing all necessary information for Z, A. 
+        Z (int): Number of protons.
+        scale (bool, optional): If True, the data will be tranform using the provided scaler. Defaults to False.
+        scaler (object, optional): Scikit-Learn trained transformer. Defaults to None.
+        to_scale (list, optional): List of features to be scaled. Defaults to [].
+
+    Returns:
+        DataFrame: Extracted element sample.
     """
     logging.info("Extracting samples from dataframe.")
     sample = df[(df["Protons"] == Z)]
@@ -44,10 +60,20 @@ def load_ensdf_element(df, Z, scale=False, scaler=None, to_scale=[]):
 
 
 def append_ensdf_levels(tot_num_levels, df, Z, A, log=False, scale=False, scaler=None, to_scale=[]):
-    """
-    Loads New Measurments and appends ENSDF isotopic data to it. 
-    Assumes new data only has an Energy and Data column
-    It does not depend on df/
+    """Expands the energy levels up to "tot_num_levels" for the given ENSDF isotopic sample.
+
+    Args:
+        tot_num_levels (int): Total number of levels to include (i.e 50 will include levels 1-50).
+        df (DataFrame): DataFrame containing an already extracted isotopic sample. 
+        Z (int): Number of protons.
+        A (int): Mass Number.
+        log (bool, optional): If True, the logarithm will be applied to the Level Number.
+        scale (bool, optional): If True, the data will be tranform using the provided scaler. Defaults to False.
+        scaler (object, optional): Scikit-Learn trained transformer. Defaults to None.
+        to_scale (list, optional): List of features to be scaled. Defaults to [].
+
+    Returns:
+        DataFrame: Extracted element sample.
     """
     new_data = pd.DataFrame({"Level_Number":np.arange(1,tot_num_levels + 1)})
     isotope_exfor = load_ensdf_samples(df, Z, A)
@@ -62,10 +88,19 @@ def append_ensdf_levels(tot_num_levels, df, Z, A, log=False, scale=False, scaler
     return new_data
 
 def append_ensdf_levels_nodata(tot_num_levels, df, log=False, scale=False, scaler=None, to_scale=[]):
-    """
-    Loads New Measurments and appends ENSDF isotopic data to it. 
-    Assumes new data only has an Energy and Data column
-    It does not depend on df/
+    """Expands the energy levels up to "tot_num_levels" for the given ENSDF isotopic sample if no 
+    Level Energy data is avaliable.
+
+    Args:
+        tot_num_levels (int): Total number of levels to include (i.e 50 will include levels 1-50).
+        df (DataFrame): DataFrame containing an already extracted isotopic sample. 
+        log (bool, optional): If True, the logarithm will be applied to the Level Number.
+        scale (bool, optional): If True, the data will be tranform using the provided scaler. Defaults to False.
+        scaler (object, optional): Scikit-Learn trained transformer. Defaults to None.
+        to_scale (list, optional): List of features to be scaled. Defaults to [].
+
+    Returns:
+        DataFrame: Extracted element sample.
     """
     new_data = pd.DataFrame({"Level_Number":np.arange(1,tot_num_levels + 1)})
     isotope_exfor = df.copy()
@@ -82,10 +117,22 @@ def append_ensdf_levels_nodata(tot_num_levels, df, log=False, scale=False, scale
     return new_data
 
 def append_ensdf_levels_range(tot_num_levels, df, Z, A, steps=1, log=False, scale=False, scaler=None, to_scale=[]):
-    """
-    Loads New Measurments and appends ENSDF isotopic data to it. 
-    Assumes new data only has an Energy and Data column
-    It does not depend on df/
+    """Expands the energy levels up to "tot_num_levels" for the given ENSDF isotopic sample using
+    a range with n steps rather than linear. 
+
+    Args:
+        tot_num_levels (int): Total number of levels to include (i.e 50 will include levels 1-50).
+        df (DataFrame): DataFrame containing an already extracted isotopic sample. 
+        Z (int): Number of protons.
+        A (int): Mass Number.
+        steps (int): Number of intermediate steps between 1 and tot_num_levels to create. 
+        log (bool, optional): If True, the logarithm will be applied to the Level Number.
+        scale (bool, optional): If True, the data will be tranform using the provided scaler. Defaults to False.
+        scaler (object, optional): Scikit-Learn trained transformer. Defaults to None.
+        to_scale (list, optional): List of features to be scaled. Defaults to [].
+
+    Returns:
+        DataFrame: Extracted element sample.
     """
     new_data = pd.DataFrame({"Level_Number":np.arange(1,tot_num_levels + 1, steps)})
     isotope_exfor = load_ensdf_samples(df, Z, A)
@@ -100,6 +147,26 @@ def append_ensdf_levels_range(tot_num_levels, df, Z, A, steps=1, log=False, scal
     return new_data
 
 def generate_level_density_csv(df, Z, A, nodata=False, upper_energy_mev=20, get_upper=False, tot_num_levels=0, it_limit=500, plot=False, save=False, saving_dir=""):
+    """Fits a linear model to the isotopic sample provided, and saves a CSV file with the linear model values for each 
+    energy level avaliable. If get_upper is True, then a new level number will be appended until the linear model predicts
+    a value above the upper_energy_mev value. 
+
+    Args:
+        df (DataFrame): DataFrame containing the needed data for isotope Z, A. 
+        Z (int): Number of protons.
+        A (int): Mass number.
+        nodata (bool, optional): If True, it assumes there is no avaliable data for the queried isotope. Defaults to False.
+        upper_energy_mev (int, optional): If get_upper is True, the algorithm will iterate until this energy is reached. Defaults to 20 MeV.
+        get_upper (bool, optional): If True, more levels will be added until the level energy in the level density reaches the 20 MeV mark. Defaults to False.
+        tot_num_levels (int, optional): If any value other than 0 is given, it will append the remaining energy levels until reaching tot_num_levels. Defaults to 0.
+        it_limit (int, optional): Sets the iteration limits for the linear model to reach the upper_energy_mev value. Defaults to 500.
+        plot (bool, optional): If True, a plot of the linear model along the experimental levels will be rendered. Defaults to False.
+        save (bool, optional): If True, the resulting DataFrame using the linear model will be saved. Defaults to False.
+        saving_dir (str, optional): Path-like string pointing towars the directory where the DataFrame will be saved. Defaults to "".
+
+    Returns:
+        DataFrame: New DataFrame with Level Number and Level Energy as predicted by the linear model. 
+    """
     if nodata:
         original = df.copy()
     else:
@@ -149,7 +216,7 @@ def generate_level_density_csv(df, Z, A, nodata=False, upper_energy_mev=20, get_
                     logging.info("Iteration limit reached. Target energy not reached.")
                     break
     if plot:
-        ensdf_plot.plot_level_density_ml(original, pred, log_sqrt=False, log=True)
+        ensdf_plot.level_density_ml(original, pred, log_sqrt=False, log=True)
     if save:
         pred["A"] = A
         pred["Z"] = Z
@@ -157,27 +224,57 @@ def generate_level_density_csv(df, Z, A, nodata=False, upper_energy_mev=20, get_
         pred["Level_Number"] = 10**pred.Level_Number.values
         pred["Level_Energy"] = 10**pred.Level_Energy.values
         pred["Level_Number"] = pred.Level_Number.astype(int)
-        gen_utils.create_directories(saving_dir)
+        gen_utils.initialize_directories(saving_dir)
         pred.to_csv(os.path.join(saving_dir, "{}_Level_Density.csv".format(element)), index=False)
         dump(reg, os.path.join(saving_dir, '{}_NLD_linear_model.joblib'.format(element))) 
     return pred
 
-def get_level_density(energy_mev, pred_df):
+def get_level_density(energy_mev, df):
+    """Given an energy density DataFrame, the level density at a wanted energy is returned.
+
+    Args:
+        energy_mev (float): Energy point at which the level density is to be returned.
+        df (DataFrame): Level Density DataFrame to interpolate at energy_mev. 
+
+    Returns:
+        float: Level density at "energy_mev".
+    """    
     to_append = pd.DataFrame({"Level_Number":[np.nan], "Level_Energy": [np.log10(energy_mev)], "N":[np.nan]})
-    to_interpolate = pred_df.append(to_append, ignore_index=True)
+    to_interpolate = df.append(to_append, ignore_index=True)
     to_interpolate = to_interpolate.sort_values(by="Level_Energy")
     new_index = len(to_interpolate) - 1
     to_interpolate = to_interpolate.interpolate()
     level_density = to_interpolate.loc[new_index]["N"]
     return level_density
 
-def make_predictions_w_levels(df, Z, A, num_levels, clf, clf_type, scaler, to_scale, inv_transform=False, log_sqrt=False, log=False, plot=False, save=False, save_dir=""):
+def make_predictions_w_levels(df, Z, A, num_levels, model, model_type, scaler, to_scale, inv_transform=False, log_sqrt=False, log=False, plot=False, save=False, save_dir=""):
+    """Returns a set of ML predictions up to num_levels. 
+
+    Args:
+        df (DataFrame): DataFrame containing all needed information for Z, A.
+        Z (INT): Number of protons.
+        A (int): Mass Number.
+        num_levels (int): Upper level number for which to predict the level energy.
+        model (object): Trained machine learning model.
+        model_type (str): Type of ML model. Options include "tf", "xgb", or "scikit".
+        scaler (object): Trained scikit-learn normalizer/transformer.
+        to_scale (list): List of features that are to be subject to transformation by the scaler.
+        inv_transform (bool, optional): If True, the returned DataFrame will be in its original ranges. Defaults to False.
+        log_sqrt (bool, optional): If True, it assumes the models where trained on Level Energy data with SQRT applied. Defaults to False.
+        log (bool, optional): If True, it assumes the models where trained on Level Energy data with LOG applied. Defaults to False.
+        plot (bool, optional): If True, the ML predictions will be plotted along the true known values. Defaults to False.
+        save (bool, optional): If True, the rendered figure will be saved. Defaults to False.
+        save_dir (str, optional): Path-like string indicating directory where the figure will be saved. Defaults to "".
+
+    Returns:
+        DataFrame: New DataFrame with ML predictions.
+    """    
     ensdf = load_ensdf_samples(df, Z, A)
     data_kwargs = {"Z":Z, "A":A, "log":log, "scale":True, "scaler":scaler, "to_scale":to_scale}
     to_infer = append_ensdf_levels(num_levels, df, **data_kwargs)
-    to_infer["Level_Energy"] = model_utils.make_predictions(to_infer.values, clf, clf_type)
+    to_infer["Level_Energy"] = model_utils.make_predictions(to_infer.values, model, model_type)
     if plot:
-        ensdf_plot.plot_level_density_ml(ensdf, to_infer, log_sqrt=log_sqrt, log=log, save=save, save_dir=save_dir)
+        ensdf_plot.level_density_ml(ensdf, to_infer, log_sqrt=log_sqrt, log=log, save=save, save_dir=save_dir)
     if inv_transform:
         if log:
             to_infer["Level_Number"] = 10**to_infer.Level_Number.values
@@ -185,12 +282,31 @@ def make_predictions_w_levels(df, Z, A, num_levels, clf, clf_type, scaler, to_sc
         to_infer[to_scale] = scaler.inverse_transform(to_infer[to_scale])
     return to_infer
 
-def make_predictions_w_levels_nodata(df, num_levels, clf, clf_type, scaler, to_scale, inv_transform=False, log_sqrt=False, log=False, plot=False, save=False, save_dir=""):
+def make_predictions_w_levels_nodata(df, num_levels, model, model_type, scaler, to_scale, inv_transform=False, log_sqrt=False, log=False, plot=False, save=False, save_dir=""):
+    """Returns a set of ML predictions up to num_levels for isotopes with no known nuclear structure data.
+
+    Args:
+        df (DataFrame): DataFrame containing all needed information for a given Z, A. Just one row is sufficient.
+        num_levels (int): Upper level number for which to predict the level energy.
+        model (object): Trained machine learning model.
+        model_type (str): Type of ML model. Options include "tf", "xgb", or "scikit".
+        scaler (object): Trained scikit-learn normalizer/transformer.
+        to_scale (list): List of features that are to be subject to transformation by the scaler.
+        inv_transform (bool, optional): If True, the returned DataFrame will be in its original ranges. Defaults to False.
+        log_sqrt (bool, optional): If True, it assumes the models where trained on Level Energy data with SQRT applied. Defaults to False.
+        log (bool, optional): If True, it assumes the models where trained on Level Energy data with LOG applied. Defaults to False.
+        plot (bool, optional): If True, the ML predictions will be plotted along the true known values. Defaults to False.
+        save (bool, optional): If True, the rendered figure will be saved. Defaults to False.
+        save_dir (str, optional): Path-like string indicating directory where the figure will be saved. Defaults to "".
+
+    Returns:
+        DataFrame: New DataFrame with ML predictions.
+    """    
     data_kwargs = {"log":log, "scale":True, "scaler":scaler, "to_scale":to_scale}
     to_infer = append_ensdf_levels_nodata(num_levels, df, **data_kwargs)
-    to_infer["Level_Energy"] = model_utils.make_predictions(to_infer.values, clf, clf_type)
+    to_infer["Level_Energy"] = model_utils.make_predictions(to_infer.values, model, model_type)
     if plot:
-        ensdf_plot.plot_level_density_ml(to_infer.copy(), to_infer.copy(), log_sqrt=log_sqrt, log=log, save=save, save_dir=save_dir)
+        ensdf_plot.level_density_ml(to_infer.copy(), to_infer.copy(), log_sqrt=log_sqrt, log=log, save=save, save_dir=save_dir)
     if inv_transform:
         if log:
             to_infer["Level_Number"] = 10**to_infer.Level_Number.values
@@ -198,30 +314,59 @@ def make_predictions_w_levels_nodata(df, num_levels, clf, clf_type, scaler, to_s
         to_infer[to_scale] = scaler.inverse_transform(to_infer[to_scale])
     return to_infer
 
-def make_predictions_from_df(df, Z, A, clf, clf_type, scaler, to_scale, log_sqrt=False, log=False, plot=False, save=False, save_dir=""):
+def make_predictions_from_df(df, Z, A, model, model_type, scaler, to_scale, log_sqrt=False, log=False, plot=False, save=False, save_dir=""):
+    """Returns a set of ML predictions at all known levels within the passed DataFrame. 
+
+    Args:
+        df (DataFrame): DataFrame containing all needed information for Z, A.
+        Z (INT): Number of protons.
+        A (int): Mass Number.
+        model (object): Trained machine learning model.
+        model_type (str): Type of ML model. Options include "tf", "xgb", or "scikit".
+        scaler (object): Trained scikit-learn normalizer/transformer.
+        to_scale (list): List of features that are to be subject to transformation by the scaler.
+        log_sqrt (bool, optional): If True, it assumes the models where trained on Level Energy data with SQRT applied. Defaults to False.
+        log (bool, optional): If True, it assumes the models where trained on Level Energy data with LOG applied. Defaults to False.
+        plot (bool, optional): If True, the ML predictions will be plotted along the true known values. Defaults to False.
+        save (bool, optional): If True, the rendered figure will be saved. Defaults to False.
+        save_dir (str, optional): Path-like string indicating directory where the figure will be saved. Defaults to "".
+
+    Returns:
+        DataFrame: New DataFrame with ML predictions.
+    """    
     kwargs = {"scale": True, "scaler": scaler, "to_scale": to_scale}
     ensdf = load_ensdf_samples(df, Z, A)
     to_infer = load_ensdf_samples(df, Z, A, **kwargs)
     to_infer["Level_Energy"] = model_utils.make_predictions(
-        to_infer.drop(columns=["Level_Energy"]).values, clf, clf_type)
+        to_infer.drop(columns=["Level_Energy"]).values, model, model_type)
     if plot:
-        ensdf_plot.plot_level_density_ml(ensdf, to_infer, log_sqrt=log_sqrt, log=log, save=save, save_dir=save_dir)
+        ensdf_plot.level_density_ml(ensdf, to_infer, log_sqrt=log_sqrt, log=log, save=save, save_dir=save_dir)
     return ensdf, to_infer
 
 
-def predicting_nuclear_xs_v2(df, Z, A, clf, scaler, to_scale, num_levels=100, log_sqrt=False, clf_type=None,
+def predicting_nuclear_xs_v2(df, Z, A, model, scaler, to_scale, num_levels=100, log_sqrt=False, model_type=None,
     save=False, plot=False, save_dir="", inv_trans=False):
-    '''
-    endf=empty_df, 
-    Used to plot predictions of the clf model for specific isotope (Z, A) and runs.
-    MT is the reaction type (e.g 1 is total cross section)
-    E_min and E_max are the energy region in which to make additional inferences.
+    """Plots and returns a set of ML predictions at all known levels and up to num_levels in cases where the known levels are fewer. 
 
-    pred_expanded: expanded or non expanded to infer data
-    pred_original: original ENSDF data points.
-    pred_exfor_new: new data predictions (if avaliable)
+    Args:
+        df (DataFrame): DataFrame containing all needed information for Z, A.
+        Z (INT): Number of protons.
+        A (int): Mass Number.
+        model (object): Trained machine learning model.
+        scaler (object): Trained scikit-learn normalizer/transformer.
+        to_scale (list): List of features that are to be subject to transformation by the scaler.
+        num_levels (int): Upper level number for which to predict the level energy. Defaults to 100.
+        log_sqrt (bool, optional): If True, it assumes the models where trained on Level Energy data with SQRT applied. Defaults to False.
+        model_type (str): Type of ML model. Options include "tf", "xgb", or "scikit"/None. Defaults to None.
+        save (bool, optional): If True, the rendered figure will be saved. Defaults to False.
+        plot (bool, optional): If True, the ML predictions will be plotted along the true known values. Defaults to False.
+        save_dir (str, optional): Path-like string indicating directory where the figure will be saved. Defaults to "".
+        inv_transform (bool, optional): If True, the returned DataFrame will be in its original ranges. Defaults to False.
+        
+    Returns:
+        DataFrame: New DataFrame with ML predictions.
+    """   
 
-    '''
     expand_levels = True if num_levels != 0 else False
 
     to_plot = load_ensdf_samples(df, Z, A, scale=True, scaler=scaler, to_scale=to_scale) 
@@ -233,8 +378,8 @@ def predicting_nuclear_xs_v2(df, Z, A, clf, scaler, to_scale, num_levels=100, lo
         to_infer = to_plot.drop(columns=["Level_Energy"])  
     
     # Making Predictions
-    pred_expanded = model_utils.make_predictions(to_infer.values, clf, clf_type)
-    pred_original = model_utils.make_predictions(to_plot.drop(columns=["Level_Energy"]).values, clf, clf_type)
+    pred_expanded = model_utils.make_predictions(to_infer.values, model, model_type)
+    pred_original = model_utils.make_predictions(to_plot.drop(columns=["Level_Energy"]).values, model, model_type)
 
     if inv_trans:
         # De-Transforming Scaled Data
@@ -249,100 +394,5 @@ def predicting_nuclear_xs_v2(df, Z, A, clf, scaler, to_scale, num_levels=100, lo
     all_dict.update({"error_metrics":error_df})
     if plot:
         to_infer["Level_Energy"] = pred_expanded
-        ensdf_plot.plot_level_density_ml(to_plot, to_infer, log_sqrt=log_sqrt, save=save, save_dir=save_dir)
+        ensdf_plot.level_density_ml(to_plot, to_infer, log_sqrt=log_sqrt, save=save, save_dir=save_dir)
     return all_dict
-
-    
-
-# def load_ensdf_ml(log=True, log_sqrt=False, cutoff=False, append_ame=False, basic=-1, num=False, frac=0.3, scaling_type="pt", scaler_dir=None):
-#     """Loads the Evalauted Nuclear Structure Data File generated using NucML. This allows the user to load
-#     the raw file or preprocessed the dataset for ML applications. See options below.
-
-#     The basic feature allows you to load only some basic features if needed. The AME dataset contains
-#     many features including q-reactions and separation energies. Some of these may not be needed. The
-#     basic argument allows to quickly remove extra features. 
-#         basic = 0: "Level_Number", "Level_Energy", "Protons", "Neutrons", "Mass_Number", "Spin", "Parity", "Atomic_Mass_Micro"
-#         basic = 1: "Level_Number", "Level_Energy", "Protons", "Neutrons", "Mass_Number", "Spin", "Parity", 
-#             "Atomic_Mass_Micro", 'Mass_Excess', 'Binding_Energy', 'B_Decay_Energy', 'S(2n)', 'S(n)', 'S(p)'
-#         Any other number will default to loading the entire set of features.
-
-#     Args:
-#         cutoff (bool, optional): If True, the RIPL cutoff ENSDF file is loaded. Defaults to False.
-#         log (bool, optional): If True, the log10 is applied to the Level Number feature. It also applies 
-#             the square root to the Level Energy feature. Defaults to False.
-#         append_ame (bool, optional): if True, it appends the AME database. Defaults to False.
-#         basic (int, optional): This allows to retrieve only basic features. 
-#             Only meaningful when append_ame is True. Defaults to -1.
-#         num (bool, optional): [description]. Defaults to False.
-#         frac (float, optional): [description]. Defaults to 0.3.
-#         scaling_type (str, optional): [description]. Defaults to "pt".
-#         scaler_dir ([type], optional): [description]. Defaults to None.
-
-#     Returns:
-#         DataFrame: if num=True, the function returns 6 variables. 
-#     """    
-#     if cutoff:
-#         datapath = "../../ENSDF/CSV_Files/ensdf_cutoff.csv"
-#     else:
-#         datapath = "../../ENSDF/CSV_Files/ensdf.csv"
-
-#     logging.info("Reading data from {}".format(datapath))
-#     df = pd.read_csv(datapath)
-#     df["Level_Number"] = df["Level_Number"].astype(int)
-
-
-#     if log_sqrt and not log:
-#         df["Level_Energy"] = np.sqrt(df["Level_Energy"])
-#         df["Level_Number"] = np.log10(df["Level_Number"])
-#     if log and not log_sqrt:
-#         df = df[(df["Level_Energy"] != 0)]
-#         df["Level_Energy"] = np.log10(df["Level_Energy"])
-#         df["Level_Number"] = np.log10(df["Level_Number"])
-#     if append_ame:
-#         ame = load_ame(imputed_nan=True)
-#         df = pd.merge(df, ame, on='Element_w_A')
-
-#     if basic == 0:
-#         basic_cols = ["Level_Number", "Energy", "Z", "N", "A", "Spin", "Parity", "Atomic_Mass_Micro"]
-#         df = df[basic_cols]
-#     elif basic == 1:
-#         basic_cols = ["Level_Number", "Energy", "Z", "N", "A", "Spin", "Parity", "Atomic_Mass_Micro",
-#                     'Mass_Excess', 'Binding_Energy', 'B_Decay_Energy', 'S(n)', 'S(p)']
-#         df = df[basic_cols] 
-
-#     if num:
-#         logging.info("Dropping unnecessary features and one-hot encoding categorical columns...")
-#         if basic == 0 or basic == 1:
-#             cat_cols = ["Parity"]
-#         else:
-#             columns_drop = ["Target_Element_w_A", "EL", "O", "Decay_Info", "ENSDF_Spin"]
-#             cat_cols = ["Parity", "Flag"]
-#             df = df.drop(columns=columns_drop)
-#         # We need to keep track of columns to normalize excluding categorical data.
-#         norm_columns = len(df.columns) - len(cat_cols) - 1
-#         df = pd.concat([df, pd.get_dummies(df[cat_cols])], axis=1).drop(columns=cat_cols)
-#         df = df.fillna(value=0)
-#         logging.info("Splitting dataset into training and testing...")
-#         x_train, x_test, y_train, y_test = train_test_split(df.drop(["Level_Energy"], axis=1), df["Level_Energy"], test_size=frac)
-#         logging.info("Normalizing dataset...")
-#         to_scale = list(x_train.columns)[:norm_columns]
-#         if log_sqrt or log:
-#             to_scale.remove("Level_Number")
-#         if scaler_dir is not None:
-#             logging.info("Using previously saved scaler.")
-#             scaler = load(open(scaler_dir, 'rb'))
-#         else:
-#             logging.info("Fitting new scaler.")
-#             if scaling_type == "pt":
-#                 scaler = preprocessing.PowerTransformer().fit(x_train[to_scale])
-#             elif scaling_type == "std":
-#                 scaler = preprocessing.StandardScaler().fit(x_train[to_scale])
-#             elif scaling_type == "minmax":
-#                 scaler = preprocessing.MinMaxScaler().fit(x_train[to_scale])
-#         x_train[to_scale] = scaler.transform(x_train[to_scale])
-#         x_test[to_scale] = scaler.transform(x_test[to_scale])
-#         logging.info("Finished. Resulting dataset has shape {}, Training and Testing dataset shapes are {} and {} respesctively.".format(df.shape, x_train.shape, x_test.shape))
-#         return df, x_train, x_test, y_train, y_test, to_scale, scaler
-#     else:
-#         logging.info("Finished. Resulting dataset has shape {}".format(df.shape))
-#         return df

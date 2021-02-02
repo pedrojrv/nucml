@@ -6,10 +6,12 @@ import glob
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
+
+
 import nucml.config as config
 import nucml.general_utilities as gen_utils 
 import nucml.processing as nuc_proc 
-import nucml.exfor.parsing_utilities as exfor_parsing
+import nucml.exfor.parsing as exfor_parsing
 
 logging.basicConfig(level=logging.INFO)
 
@@ -17,8 +19,10 @@ ame_dir_path = config.ame_dir_path
 evaluations_path = config.evaluations_path
 ensdf_path = config.ensdf_path
 exfor_path = config.exfor_path
-dtype_exfor = gen_utils.load_obj(os.path.join(os.path.dirname(__file__), 'objects/EXFOR_AME_dtypes.pkl'))
 
+dtype_exfor = gen_utils.load_obj(os.path.join(os.path.dirname(__file__), 'objects/EXFOR_AME_dtypes.pkl'))
+exfor_elements = gen_utils.load_obj(os.path.join(os.path.dirname(__file__), 'objects/exfor_elements_list.pkl'))
+elements_dict = gen_utils.load_obj(os.path.join(os.path.dirname(__file__), 'objects/Element_AAA.pkl'))
 
 def generate_exfor_dataset(user_path, modes=["neutrons", "protons", "alphas", "deuterons", "gammas", "helions"]):
     """Generates all needed EXFOR datasets for neutron-, proton-, alpha-, deuterons-, gammas-, and 

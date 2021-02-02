@@ -10,7 +10,7 @@ sys.path.append("../..")
 import nucml.datasets as nuc_data                   
 import nucml.general_utilities as gen_utils        
 
-elements_dict = gen_utils.load_obj(os.path.join(os.path.dirname(__file__), 'objects/Element_AAA.pkl'))
+elements_dict = nuc_data.elements_dict
 
 
 def load_new(datapath, mev_to_ev=False):
