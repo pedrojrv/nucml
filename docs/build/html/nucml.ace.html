@@ -1,0 +1,977 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>nucml.ace package &mdash; NucML 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="about.html" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="nucml.ame package" href="nucml.ame.html" />
+    <link rel="prev" title="nucml package" href="nucml.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NucML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="about.html">What is NucML?</a></li>
+</ul>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic-walkthrough.html">Basic Walkthrough</a></li>
+</ul>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html">Loading Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#exploring-data">Exploring Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#processing-data">Processing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#modeling-data">Modeling Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#validating-data">Validating Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="nucml.html">nucml package</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="nucml.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">nucml.ace package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-nucml.ace.data_utilities">nucml.ace.data_utilities module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-nucml.ace.plot">nucml.ace.plot module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-nucml.ace.plotting_utilities">nucml.ace.plotting_utilities module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-nucml.ace">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.ame.html">nucml.ame package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.ensdf.html">nucml.ensdf package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.evaluation.html">nucml.evaluation package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.exfor.html">nucml.exfor package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.model.html">nucml.model package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.objects.html">nucml.objects package</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.plot.html">nucml.plot package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="nucml.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nucml.html#module-nucml.configure">nucml.configure module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nucml.html#module-nucml.datasets">nucml.datasets module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nucml.html#module-nucml.general_utilities">nucml.general_utilities module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nucml.html#module-nucml.processing">nucml.processing module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nucml.html#module-nucml">Module contents</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="feedback-support.html">Contact</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NucML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="nucml.html">nucml package</a> &raquo;</li>
+        
+      <li>nucml.ace package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/nucml.ace.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="nucml-ace-package">
+<h1>nucml.ace package<a class="headerlink" href="#nucml-ace-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-nucml.ace.data_utilities">
+<span id="nucml-ace-data-utilities-module"></span><h2>nucml.ace.data_utilities module<a class="headerlink" href="#module-nucml.ace.data_utilities" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.convert_dos_to_unix">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">convert_dos_to_unix</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">file_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#convert_dos_to_unix"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.convert_dos_to_unix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a given file from DOS to UNIX.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – Path to file to convert.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.copy_ace_w_name">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">copy_ace_w_name</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ZAAA</span></em>, <em class="sig-param"><span class="n">saving_dir</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#copy_ace_w_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.copy_ace_w_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copies an ACE file from the configured ace directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ZAAA</strong> (<em>str</em>) – Isotope ace file to copy (i.e. 92233).</p></li>
+<li><p><strong>saving_dir</strong> (<em>str</em>) – Path indicating the directory where the ACE file will be copy to.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.copy_benchmark_files">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">copy_benchmark_files</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">benchmark_name</span></em>, <em class="sig-param"><span class="n">saving_dir</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#copy_benchmark_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.copy_benchmark_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copies all files for a given benchmark from the benchmark repository to a given directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>benchmark_name</strong> (<em>str</em>) – Benchmark name. Check repository for valid names.</p></li>
+<li><p><strong>saving_dir</strong> (<em>str</em>) – Path-like string where the new benchmark files will be saved to.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.create_mt2_mt3_mt101">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">create_mt2_mt3_mt101</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rx_grid</span></em>, <em class="sig-param"><span class="n">mt_array</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#create_mt2_mt3_mt101"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.create_mt2_mt3_mt101" title="Permalink to this definition">¶</a></dt>
+<dd><p>Helps with the creation of MT3 and MT101 which requires them to be the summation of other MT reactions.</p>
+<p>TODO: CHOOSE WHICH ONE TO ADJUST BASED ON EXPERIMENTAL DATAPOINTS (MT3 OR MT102)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>rx_grid</strong> (<em>DataFrame</em>) – DataFrame containing the grid by which to adjust the MT. This is usually the energy grid.</p></li>
+<li><p><strong>mt_array</strong> (<em>np.array</em>) – Array containing the MT values avaliable.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Resulting dataframe containing the adjusted MT values.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.create_new_ace">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">create_new_ace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xss</span></em>, <em class="sig-param"><span class="n">ZZAAA</span></em>, <em class="sig-param"><span class="n">saving_dir</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#create_new_ace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.create_new_ace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a new .ACE file ready to be used in transport codes. Everything is encoded in the XSS array.
+The header is to be kept the same since different energy arrays are not supported.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xss</strong> (<em>np.array</em>) – Modified XSS array.</p></li>
+<li><p><strong>ZZAAA</strong> (<em>int</em>) – ZZAAA formatted isotope for which to create modified .ACE file.</p></li>
+<li><p><strong>saving_dir</strong> (<em>str</em>) – Path-like string on where to save the created .ACE file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.create_new_ace_w_df">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">create_new_ace_w_df</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ZZAAA</span></em>, <em class="sig-param"><span class="n">path_to_ml_csv</span></em>, <em class="sig-param"><span class="n">saving_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ignore_basename</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#create_new_ace_w_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.create_new_ace_w_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates new ACE file from a given processed ML generated CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ZZAAA</strong> (<em>str</em>) – [description]</p></li>
+<li><p><strong>path_to_ml_csv</strong> (<em>str</em>) – Path-like string pointing towards the ML and ACE processed CSV.</p></li>
+<li><p><strong>saving_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Path where the newly generated ACE file will be saved. Defaults to None.</p></li>
+<li><p><strong>ignore_basename</strong> (<em>bool</em><em>, </em><em>optional</em>) – TODO. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.enforce_unitarity">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">enforce_unitarity</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ml_ace_df</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#enforce_unitarity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.enforce_unitarity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates MT2 XS and adjusts MT1 accordingly.</p>
+<p>Calculates MT2 by substracting MT3 from MT1. If MT2 is negative:
+- Replace negatives with NaN
+- Interpolates from closests values
+- Adds back amount to MT1 to conserve XS.</p>
+<p>TODO: INTRODUCE THIS FUNCTION TO THE get_final_ml_ace_df()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>ml_ace_df</strong> (<em>DataFram</em>) – DataFrame containing the original MT1, MT2, and MT3.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>returns an adjusted dataframe.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.fill_ml_xs">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">fill_ml_xs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">MT</span></em>, <em class="sig-param"><span class="n">ml_xs</span></em>, <em class="sig-param"><span class="n">ace_xs</span></em>, <em class="sig-param"><span class="n">use_peaks</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#fill_ml_xs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.fill_ml_xs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function used by the get_hybrid_ml_xs() function to fill in the head and tail of a set of cross section values
+using the hybrid approach.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>MT</strong> (<em>int</em>) – ENDF MT reaction code for the reaction channel to adjust.</p></li>
+<li><p><strong>ml_xs</strong> (<em>DataFrame</em>) – The DataFrame containing the cross section values for the MT reaction to adjust.</p></li>
+<li><p><strong>ace_xs</strong> (<em>np.array</em>) – Array containing the ENDF cross sections that will be used to fill in the ml_xs DataFrame.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Adjusted ml_xs DataFrame.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.gather_benchmark_results">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">gather_benchmark_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">searching_directory</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#gather_benchmark_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.gather_benchmark_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gathers all benchmark results from the resulting .mat files in the searching_directory and all subdirectories.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>searching_directory</strong> (<em>str</em>) – Path to directory to search for .mat files.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Contains results for all found .mat files.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.generate_bench_ml_xs">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">generate_bench_ml_xs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">models_df</span></em>, <em class="sig-param"><span class="n">bench_name</span></em>, <em class="sig-param"><span class="n">to_scale</span></em>, <em class="sig-param"><span class="n">raw_saving_dir</span></em>, <em class="sig-param"><span class="n">reset</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">template_dir</span><span class="o">=</span><span class="default_value">'C:/Users/Pedro/Desktop/ML_Nuclear_Data/Benchmarks/templates'</span></em>, <em class="sig-param"><span class="n">comp_threshold</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">reduce_ace_size</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#generate_bench_ml_xs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.generate_bench_ml_xs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.generate_serpent_bash">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">generate_serpent_bash</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">searching_directory</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#generate_serpent_bash"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.generate_serpent_bash" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gathers the path to all “input” benchmark files and returns a single bash script to run all
+Serpent simulations and convert the resulting matlab file into .mat files for later reading.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>searching_directory</strong> (<em>str</em>) – Top level directory that will be searched for “input” files.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.generate_sss_xsdata">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">generate_sss_xsdata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">saving_dir</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#generate_sss_xsdata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.generate_sss_xsdata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Copies the .xsdata file to a given directory and configures it to match the paths.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>saving_dir</strong> (<em>str</em>) – Path-like directory where the .xsdata file will be copied to.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.get_basic_mts">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">get_basic_mts</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xss</span></em>, <em class="sig-param"><span class="n">pointer_dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#get_basic_mts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.get_basic_mts" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dcitionary containing the cross section values for MT1, MT 101, MT2, and MT3. These are not part of the MT array.
+The Cross Section values start inmediatly after the energy points. The corresponding energy grid is the entire energy grid.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xss</strong> (<em>np.array</em>) – The XSS array obtained through the get_nxs_jxs_xss() function.</p></li>
+<li><p><strong>pointers_dict</strong> (<em>dict</em>) – Pointers dictionary obtained through the get_pointers() function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dicitonary containing the cross section values for the basic reaction types.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.get_energies">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">get_energies</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">isotope</span></em>, <em class="sig-param"><span class="n">temp</span><span class="o">=</span><span class="default_value">'03c'</span></em>, <em class="sig-param"><span class="n">ev</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#get_energies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.get_energies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the energy array from a given isotope ENDF .ACE file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>isotope</strong> (<em>str</em>) – ZZAAA formatted isotope.</p></li>
+<li><p><strong>temp</strong> (<em>str</em><em>, </em><em>optional</em>) – Extension of ACE file to retrieve energies from. Defaults to “03c”.</p></li>
+<li><p><strong>ev</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, energies are converted to eV from MeV. Defaults to False.</p></li>
+<li><p><strong>log</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the log is taken before returning the array. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Energy grid numpy array.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.get_energy_array">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">get_energy_array</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xss</span></em>, <em class="sig-param"><span class="n">pointers_dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#get_energy_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.get_energy_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the energy grid given the XSS array and the pointers dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xss</strong> (<em>np.array</em>) – The XSS array obtained through the get_nxs_jxs_xss() function.</p></li>
+<li><p><strong>pointers_dict</strong> (<em>dict</em>) – Pointers dictionary obtained through the get_pointers() function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Numpy array containing the energy grid values.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.get_final_ml_ace_df">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">get_final_ml_ace_df</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">energies</span></em>, <em class="sig-param"><span class="n">mt_array</span></em>, <em class="sig-param"><span class="n">mt_xs_pointers_array</span></em>, <em class="sig-param"><span class="n">pointers</span></em>, <em class="sig-param"><span class="n">jxs_df</span></em>, <em class="sig-param"><span class="n">xss</span></em>, <em class="sig-param"><span class="n">ml_df</span></em>, <em class="sig-param"><span class="n">ml_list</span><span class="o">=</span><span class="default_value">['MT_1', 'MT_2', 'MT_3', 'MT_18', 'MT_101', 'MT_102']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#get_final_ml_ace_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.get_final_ml_ace_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a set of ML generated XS (adjusted), this function allows to fill in other reaction channels not included
+by the ML predictions. This is useful since for some calculations some MT reactions are not required but are still present
+in the ACE files. This allows to preserve the ACE file values and structure.</p>
+<p>For MT3 the ML generated cross sections are adjusted so that conservation rules are not broken. Same for MT101.
+All values will be at the energy grid specified by the energies array.</p>
+<p>Note: MT2 is not calculated here.</p>
+<p>TODO: DEAL WITH MT3 BETTER IN CASE IT IS GENERATED BY ML, WHAT ELSE TO ADJUST</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>energies</strong> (<em>np.array</em>) – Array containing the energy values at which the ML generated values are created.</p></li>
+<li><p><strong>mt_array</strong> (<em>np.array</em>) – Array containing all mt reactions avaliable in ACE.</p></li>
+<li><p><strong>mt_xs_pointers_array</strong> (<em>np.array</em>) – Pointers for every reaction in the MT array in the XSS array.</p></li>
+<li><p><strong>xs_table_pointer</strong> (<em>int</em>) – Index of xxs at which the XS values start.</p></li>
+<li><p><strong>jxs_df</strong> (<em>DataFrame</em>) – The DataFrame containing the JXS table.</p></li>
+<li><p><strong>xss</strong> (<em>np.array</em>) – Array containing all info for a specific ace file.</p></li>
+<li><p><strong>ml_df</strong> (<em>DataFrame</em>) – DataFrame containing the ML generated cross sections.</p></li>
+<li><p><strong>ml_list</strong> (<em>list</em>) – List containing the ML generated column names that should not be modified at any point.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataFrame containing the resulting cross sections from both ML and ACE.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.get_hybrid_ml_xs">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">get_hybrid_ml_xs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ml_df</span></em>, <em class="sig-param"><span class="n">basic_mt_dict</span></em>, <em class="sig-param"><span class="n">mt_array</span></em>, <em class="sig-param"><span class="n">mt_xs_pointers_array</span></em>, <em class="sig-param"><span class="n">pointers</span></em>, <em class="sig-param"><span class="n">jxs_df</span></em>, <em class="sig-param"><span class="n">xss</span></em>, <em class="sig-param"><span class="n">use_peaks</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#get_hybrid_ml_xs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.get_hybrid_ml_xs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Substitutes the ACE MT values in a machine learning generate dataframe containing a set of
+reaction channels. For MT1, MT2, and MT3 we fix the 1/v and tail region of each cross section.
+ML models like KNN and DT are coarse and sometimes unable to accuratly keep predicting a given
+trend. For this we:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ml_df</strong> (<em>DataFrame</em>) – Contains the ML generated predictions under each columned named “MT_MT”.</p></li>
+<li><p><strong>basic_mt_dict</strong> (<em>DICT</em>) – A dicitonary containing MT1, MT2, MT3, and MT101 ({“mt1”:values, “mt2”:…}).</p></li>
+<li><p><strong>mt_array</strong> (<em>np.array</em>) – Contains the mt reactions avaliable in the .ace file.</p></li>
+<li><p><strong>mt_xs_pointers_array</strong> (<em>np.array</em>) – Contains the mt XS pointers in the xss array.</p></li>
+<li><p><strong>xs_table_pointer</strong> (<em>int</em>) – Index at which XS’s start in the xss array.</p></li>
+<li><p><strong>jxs_df</strong> (<em>DataFrame</em>) – The DataFrame obtained using the get_nxs_jxs_xss() function.</p></li>
+<li><p><strong>xss</strong> (<em>np.array</em>) – Array containing all information in the .ace file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Merged DataFrame containing all ML and ACE reaction values.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.get_jxs_dictionary">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">get_jxs_dictionary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">jxs_df</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#get_jxs_dictionary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.get_jxs_dictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the extracted JXS DataFrame, this function will return a key:value dictionary
+of the values in the JXS in accordance to the ACE formatting documentation. JXS values
+are mostly indexes in the XSS array to indicate the beggining of a data type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>jxs_df</strong> (<em>DataFrame</em>) – The JXS DataFrame extracted using the get_nxs_jxs_xss() function.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary containing the JXS results.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.get_mt_array">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">get_mt_array</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xss</span></em>, <em class="sig-param"><span class="n">pointer_dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#get_mt_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.get_mt_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the avaliable MT reactions as a numpy array given the XSS and pointers dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xss</strong> (<em>np.array</em>) – The XSS array obtained through the get_nxs_jxs_xss() function.</p></li>
+<li><p><strong>pointers_dict</strong> (<em>dict</em>) – Pointers dictionary obtained through the get_pointers() function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Numpy array containing the avaliable MT values.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.get_mt_array_w_pointers">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">get_mt_array_w_pointers</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mt_array</span></em>, <em class="sig-param"><span class="n">mt_xs_pointers_array</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#get_mt_array_w_pointers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.get_mt_array_w_pointers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a dictionary with the avaliable MT reactions as keys and the cross section pointers as values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mt_array</strong> (<em>np.array</em>) – Array containing the MT reactions. Usually obtained by the get_mt_array() function.</p></li>
+<li><p><strong>mt_xs_pointers_array</strong> (<em>np.array</em>) – Array containing the XS pointers obtained through the get_mt_xs_pointers_array() function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary containing the mt_array:xs_pointer key:value pairs.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.get_mt_xs_pointers_array">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">get_mt_xs_pointers_array</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xss</span></em>, <em class="sig-param"><span class="n">pointer_dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#get_mt_xs_pointers_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.get_mt_xs_pointers_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the XS pointers for each MT reaction in the MT array in the form of an equal length array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xss</strong> (<em>np.array</em>) – The XSS array obtained through the get_nxs_jxs_xss() function.</p></li>
+<li><p><strong>pointers_dict</strong> (<em>dict</em>) – Pointers dictionary obtained through the get_pointers() function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Numpy array containing the XS pointers grid values.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.get_nxs_dictionary">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">get_nxs_dictionary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nxs_df</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#get_nxs_dictionary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.get_nxs_dictionary" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the extracted NSX DataFrame, this function will transform it into a dictionary.
+The keys are XSS_length, ZZAAA, Num_Energies, “NTR”, “NR”, “NTRP”, “NPCR”, “S”, “Z”, and “A”.
+For a definition, check out the ACE formatting documentation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>nxs_df</strong> (<em>DataFrame</em>) – The NSX DataFrame extracted using the get_nxs_jxs_xss() function.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary containing the NSX results.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.get_nxs_jxs_xss">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">get_nxs_jxs_xss</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">isotope</span></em>, <em class="sig-param"><span class="n">temp</span><span class="o">=</span><span class="default_value">'03c'</span></em>, <em class="sig-param"><span class="n">custom_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#get_nxs_jxs_xss"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.get_nxs_jxs_xss" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the NSX, JXS, and XSS tables for a given isotope at a given temperature
+The JSX DataFrame indicates the indices to the XSS where different pieces of data begin.
+The XSS table contains the actual data needed by many functions of the ACE utilities.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>isotope</strong> (<em>str</em>) – Isotope in ZZAAA format.</p></li>
+<li><p><strong>temp</strong> (<em>str</em><em>, </em><em>optional</em>) – Temperature in ace format (i.e. 03c means 300C). Defaults to “03c”.</p></li>
+<li><p><strong>custom_path</strong> (<em>str</em><em>, </em><em>optional</em>) – File-path to a new ACE file not stored in the configured ACE directory. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>tuple containing:</dt><dd><p>nxs (DataFrame)
+jxs (DataFrame)
+xss (np.array)</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(tuple)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.get_pointers">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">get_pointers</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">nxs</span></em>, <em class="sig-param"><span class="n">jxs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#get_pointers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.get_pointers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets general information from NXS and JXS needed to start manipulating cross sections.
+This includes several pointers for Energy, MT Array, LSIG, SIG, and Fission.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nxs</strong> (<em>dict</em>) – Dictionary obtained using the get_nxs_dictionary().</p></li>
+<li><p><strong>jxs</strong> (<em>dict</em>) – Dictionary obtained using the get_jxs_dictionary().</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Contains several pointers to different data types in the xss array.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.get_to_skip_lines">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">get_to_skip_lines</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">isotope</span></em>, <em class="sig-param"><span class="n">temp</span><span class="o">=</span><span class="default_value">'03c'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#get_to_skip_lines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.get_to_skip_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>This utility returns the path to the corresponding ACE file for a given isotope, returns the number of lines to skip
+to get to the data block belonging to the given energy, and the number of lines corresponding to that block.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>isotope</strong> (<em>str</em>) – Element in ZZAAA format (i.e. 92233, 6012).</p></li>
+<li><p><strong>temp</strong> (<em>str</em><em>, </em><em>optional</em>) – Temperature in ACE format (i.e. 03c means 300C). Defaults to “03c”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>tuple containing:</dt><dd><p>path (str): Path to the queried isotope in the ACE directory.
+to_skip (int): Number of lines to skip in the original file until the wanted temperature begins.
+lines (int): Number of total lines covering the queried isotope at a given temperature.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(tuple)</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>FileNotFoundError</strong> – If a given isotope file does not exists, an error will be raised.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.get_xs_for_mt">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">get_xs_for_mt</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">MT</span></em>, <em class="sig-param"><span class="n">mt_array</span></em>, <em class="sig-param"><span class="n">mt_xs_pointers_array</span></em>, <em class="sig-param"><span class="n">jxs_df</span></em>, <em class="sig-param"><span class="n">xss</span></em>, <em class="sig-param"><span class="n">pointers</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#get_xs_for_mt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.get_xs_for_mt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns cross section values, the corresponding energy points, and the indexes corresponding
+the starting and end point in the xss array for a given reaction channel as a dictionary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>MT</strong> (<em>int</em>) – MT number for the reaction to extract.</p></li>
+<li><p><strong>mt_array</strong> (<em>np.array</em>) – Array containing the MT reactions. Usually obtained by the get_mt_array() function.</p></li>
+<li><p><strong>mt_xs_pointers_array</strong> (<em>np.array</em>) – Array containing the XS pointers obtained through the get_mt_xs_pointers_array() function.</p></li>
+<li><p><strong>jxs_df</strong> (<em>DataFrame</em>) – DataFrame containing the JXS values.</p></li>
+<li><p><strong>xss</strong> (<em>np.array</em>) – The XSS array obtained through the get_nxs_jxs_xss() function.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em><em>, </em><em>optional</em>) – To or not to print statements througout the process. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Contains cross section values and metadata for a given reaction channel.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.modify_xss_w_df">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">modify_xss_w_df</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xss</span></em>, <em class="sig-param"><span class="n">ml_ace_df</span></em>, <em class="sig-param"><span class="n">mt_array</span></em>, <em class="sig-param"><span class="n">mt_xs_pointers_array</span></em>, <em class="sig-param"><span class="n">jxs_df</span></em>, <em class="sig-param"><span class="n">pointers</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#modify_xss_w_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.modify_xss_w_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a modified XSS array. It substitutes the MT reactions in ml_list in the original ACE xss array.
+The resulting xss can then be used to create a new .ace file for use in monte carlo or deterministic codes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ml_list</strong> (<em>list</em>) – List of mt reactions to substitute in the original ACE xss.</p></li>
+<li><p><strong>xss</strong> (<em>np.array</em>) – Original xss .ace array.</p></li>
+<li><p><strong>ml_ace_df</strong> (<em>DataFrame</em>) – DataFrame containing all modified and unmodified MT values.</p></li>
+<li><p><strong>nes</strong> (<em>int</em>) – Number of energy points in the original .ace file.</p></li>
+<li><p><strong>mt_array</strong> (<em>np.array</em>) – Array containing the avaliable mt values in the .ace file.</p></li>
+<li><p><strong>mt_xs_pointers_array</strong> (<em>np.array</em>) – Indexes where the XS starts in the xss array for each MT value.</p></li>
+<li><p><strong>xs_table_pointer</strong> (<em>int</em>) – Index at which the XS values begin.</p></li>
+<li><p><strong>jxs_df</strong> (<em>DataFrame</em>) – JXS DataFrame from the .ACE file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Modified xss array.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.parsing_datatypes">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">parsing_datatypes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#parsing_datatypes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.parsing_datatypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function to correctly format numbers before writing them to new .ACE files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x</strong> (<em>float</em>) – Number to format.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Formatted value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.data_utilities.reduce_ace_filesize">
+<code class="sig-prename descclassname">nucml.ace.data_utilities.</code><code class="sig-name descname">reduce_ace_filesize</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">directory</span></em>, <em class="sig-param"><span class="n">keep</span><span class="o">=</span><span class="default_value">'03c'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/data_utilities.html#reduce_ace_filesize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.data_utilities.reduce_ace_filesize" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utility function to reduce the size of ACE files. Useful to remove all other information
+other than the section of interest (i.e. .03c).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>directory</strong> (<em>str</em>) – Path to directory where all ACE files will be searched and processed.</p></li>
+<li><p><strong>keep</strong> (<em>str</em><em>, </em><em>optional</em>) – Temperature to keep. Must not include the dot. Defaults to “03c”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nucml.ace.plot">
+<span id="nucml-ace-plot-module"></span><h2>nucml.ace.plot module<a class="headerlink" href="#module-nucml.ace.plot" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="nucml.ace.plot.dt_dual_keff_plot">
+<code class="sig-prename descclassname">nucml.ace.plot.</code><code class="sig-name descname">dt_dual_keff_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dt_df</span></em>, <em class="sig-param"><span class="n">train_mae</span></em>, <em class="sig-param"><span class="n">val_mae</span></em>, <em class="sig-param"><span class="n">hyperparameter</span></em>, <em class="sig-param"><span class="n">keff_metric</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">saving_dir</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/plot.html#dt_dual_keff_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.plot.dt_dual_keff_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a two figure plot containing both the performance metric (i.e. MAE) and the
+criticality calculation (i.e K-eff) vs two model hyperparameters. These decision tree
+hyperparameteres are usually the Max Depth and the Minimum Numbers for Split.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dt_df</strong> (<em>DataFrame</em>) – DataFrame containing all trained models performance in criticality benchmarks.</p></li>
+<li><p><strong>train_mae</strong> (<em>str</em>) – Feature name for the performance metric to plot.</p></li>
+<li><p><strong>val_mae</strong> (<em>str</em>) – Feature name for the validation performance metric..</p></li>
+<li><p><strong>hyperparameter</strong> (<em>str</em>) – Feature name for the hyperparameter to plot.</p></li>
+<li><p><strong>keff_metric</strong> (<em>str</em>) – Feature name for the multiplication factor to plot.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the figure will be saved. Defaults to False.</p></li>
+<li><p><strong>saving_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Directory where the figure will be saved. Defaults to “”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.plot.dt_keff_plot">
+<code class="sig-prename descclassname">nucml.ace.plot.</code><code class="sig-name descname">dt_keff_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dt_df</span></em>, <em class="sig-param"><span class="n">mae</span></em>, <em class="sig-param"><span class="n">hyperparameter</span></em>, <em class="sig-param"><span class="n">keff_metric</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">saving_dir</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/plot.html#dt_keff_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.plot.dt_keff_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a figure containing both the performance metric (i.e. MAE) and the
+criticality calculation (i.e K-eff) vs a single model hyperparameters. The decision tree
+hyperparameteres are usually the Max Depth and the Minimum Numbers for Split.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dt_df</strong> (<em>DataFrame</em>) – DataFrame containing all trained models performance in criticality benchmarks.</p></li>
+<li><p><strong>mae</strong> (<em>str</em>) – Feature name for the performance metric to plot (i.e. Train MAE, Val MAE).</p></li>
+<li><p><strong>hyperparameter</strong> (<em>str</em>) – Feature name for the main hyperparameter to plot.</p></li>
+<li><p><strong>keff_metric</strong> (<em>str</em>) – Feature name for the multiplication factor metric.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the figure will be saved. Defaults to False.</p></li>
+<li><p><strong>saving_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Directory where the figure will be saved. Defaults to “”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.plot.knn_dual_plot">
+<code class="sig-prename descclassname">nucml.ace.plot.</code><code class="sig-name descname">knn_dual_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">knn_df</span></em>, <em class="sig-param"><span class="n">hyperparameter</span></em>, <em class="sig-param"><span class="n">train_mae</span></em>, <em class="sig-param"><span class="n">val_mae</span></em>, <em class="sig-param"><span class="n">keff_metric</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">saving_dir</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/plot.html#knn_dual_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.plot.knn_dual_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a two figure plot containing both performance metrics (i.e. Train MAE and Val MAE), the
+criticality calculation (i.e K-eff) and a model hyperparameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>knn_df</strong> (<em>DataFrame</em>) – DataFrame containing all trained models performance in criticality benchmarks.</p></li>
+<li><p><strong>hyperparameter</strong> (<em>str</em>) – Feature name for the hyperparameter to plot.</p></li>
+<li><p><strong>train_mae</strong> (<em>str</em>) – Feature name for the performance metric to plot.</p></li>
+<li><p><strong>val_mae</strong> (<em>str</em>) – Feature name for the validation performance metric.</p></li>
+<li><p><strong>keff_metric</strong> (<em>str</em>) – Feature name for the multiplication factor to plot.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the figure will be saved. Defaults to False.</p></li>
+<li><p><strong>saving_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Directory where the figure will be saved. Defaults to “”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.plot.knn_keff_plot">
+<code class="sig-prename descclassname">nucml.ace.plot.</code><code class="sig-name descname">knn_keff_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">knn_df</span></em>, <em class="sig-param"><span class="n">hyperparameter</span></em>, <em class="sig-param"><span class="n">mae</span></em>, <em class="sig-param"><span class="n">keff_metric</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">saving_dir</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/plot.html#knn_keff_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.plot.knn_keff_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a figure containing a single performance metric of choice (i.e. MAE) and the
+criticality calculation results (i.e K-eff) vs a single model hyperparameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>knn_df</strong> (<em>DataFrame</em>) – DataFrame containing all trained models performance in criticality benchmarks.</p></li>
+<li><p><strong>hyperparameter</strong> (<em>str</em>) – Feature name for the main hyperparameter to plot.</p></li>
+<li><p><strong>mae</strong> (<em>str</em>) – Feature name for the performance metric to plot (i.e. Train MAE, Val MAE).</p></li>
+<li><p><strong>keff_metric</strong> (<em>str</em>) – Feature name for the multiplication factor metric.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the figure will be saved. Defaults to False.</p></li>
+<li><p><strong>saving_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Directory where the figure will be saved. Defaults to “”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nucml.ace.plotting_utilities">
+<span id="nucml-ace-plotting-utilities-module"></span><h2>nucml.ace.plotting_utilities module<a class="headerlink" href="#module-nucml.ace.plotting_utilities" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="nucml.ace.plotting_utilities.dt_dual_keff_plot">
+<code class="sig-prename descclassname">nucml.ace.plotting_utilities.</code><code class="sig-name descname">dt_dual_keff_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dt_df</span></em>, <em class="sig-param"><span class="n">train_mae</span></em>, <em class="sig-param"><span class="n">main_metric2</span></em>, <em class="sig-param"><span class="n">metric1</span></em>, <em class="sig-param"><span class="n">metric2</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">saving_dir</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/plotting_utilities.html#dt_dual_keff_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.plotting_utilities.dt_dual_keff_plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.plotting_utilities.dt_keff_plot">
+<code class="sig-prename descclassname">nucml.ace.plotting_utilities.</code><code class="sig-name descname">dt_keff_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dt_df</span></em>, <em class="sig-param"><span class="n">val_mae</span></em>, <em class="sig-param"><span class="n">hyperparameter</span></em>, <em class="sig-param"><span class="n">keff_metric</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">saving_dir</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/plotting_utilities.html#dt_keff_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.plotting_utilities.dt_keff_plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.plotting_utilities.knn_dual_plot">
+<code class="sig-prename descclassname">nucml.ace.plotting_utilities.</code><code class="sig-name descname">knn_dual_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dt_df</span></em>, <em class="sig-param"><span class="n">main_metric</span></em>, <em class="sig-param"><span class="n">metric0</span></em>, <em class="sig-param"><span class="n">metric1</span></em>, <em class="sig-param"><span class="n">keff_metric</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">saving_dir</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/plotting_utilities.html#knn_dual_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.plotting_utilities.knn_dual_plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ace.plotting_utilities.knn_keff_plot">
+<code class="sig-prename descclassname">nucml.ace.plotting_utilities.</code><code class="sig-name descname">knn_keff_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">knn_df</span></em>, <em class="sig-param"><span class="n">k</span></em>, <em class="sig-param"><span class="n">val_mae</span></em>, <em class="sig-param"><span class="n">keff_metric</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">saving_dir</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ace/plotting_utilities.html#knn_keff_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ace.plotting_utilities.knn_keff_plot" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-nucml.ace">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-nucml.ace" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="nucml.ame.html" class="btn btn-neutral float-right" title="nucml.ame package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="nucml.html" class="btn btn-neutral float-left" title="nucml package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Pedro Jr. Vicente-Valdez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

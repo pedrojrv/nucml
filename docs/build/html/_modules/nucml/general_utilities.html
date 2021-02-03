@@ -1,0 +1,374 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>nucml.general_utilities &mdash; NucML 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../about.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> NucML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../about.html">What is NucML?</a></li>
+</ul>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../getting-started.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic-walkthrough.html">Basic Walkthrough</a></li>
+</ul>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../working-with-nucml.html">Loading Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../working-with-nucml.html#exploring-data">Exploring Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../working-with-nucml.html#processing-data">Processing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../working-with-nucml.html#modeling-data">Modeling Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../working-with-nucml.html#validating-data">Validating Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../nucml.html">nucml package</a></li>
+</ul>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../feedback-support.html">Contact</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">NucML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>nucml.general_utilities</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for nucml.general_utilities</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">natsort</span> <span class="kn">import</span> <span class="n">natsorted</span>
+
+
+<div class="viewcode-block" id="get_files_w_extension"><a class="viewcode-back" href="../../nucml.html#nucml.general_utilities.get_files_w_extension">[docs]</a><span class="k">def</span> <span class="nf">get_files_w_extension</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">extension</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gets a list of relative paths to files that match the given extension in the given directory.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        directory (str): Path-like string to the directory where the search will be conducted.</span>
+<span class="sd">        extension (str): The extension for which to search files in the directory and all subdirectories (i.e. &quot;.csv&quot;).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Contains relative path to each encountered file containing the given extension.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">extension</span> <span class="o">=</span> <span class="s2">&quot;*&quot;</span> <span class="o">+</span> <span class="n">extension</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;GEN_UTILS: Searching for </span><span class="si">{}</span><span class="s2"> files...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">extension</span><span class="p">))</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">extension</span><span class="p">))</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">natsorted</span><span class="p">(</span><span class="n">files</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">files</span></div>
+
+<div class="viewcode-block" id="initialize_directories"><a class="viewcode-back" href="../../nucml.html#nucml.general_utilities.initialize_directories">[docs]</a><span class="k">def</span> <span class="nf">initialize_directories</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Creates and/or resets the given directory path.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        directory (str): Path-like string to directory to create and/or reset.</span>
+<span class="sd">        reset (bool, optional): If True, the directory will be deleted and created again.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;GEN UTILS: Directory already exists.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">reset</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;GEN UTILS: Re-initializing...&quot;</span><span class="p">)</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;GEN UTILS: Directory restarted.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;GEN UTILS: Directory does not exists. Creating...&quot;</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">directory</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;GEN UTILS: Directory created.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="check_if_files_exist"><a class="viewcode-back" href="../../nucml.html#nucml.general_utilities.check_if_files_exist">[docs]</a><span class="k">def</span> <span class="nf">check_if_files_exist</span><span class="p">(</span><span class="n">files_list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Checks if all files in a list of filepaths exists.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        files_list (list): List of relative or absolute path-like strings to check for existence.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: True if all exists, False if more than one does not exist.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files_list</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="func"><a class="viewcode-back" href="../../nucml.html#nucml.general_utilities.func">[docs]</a><span class="k">def</span> <span class="nf">func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Line equation function. Used to interpolate AME features.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        x (int or float): Input parameter.</span>
+<span class="sd">        c (int or float): Intercept parameter.</span>
+<span class="sd">        d (int or float): Weight parameter.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Linear equation result.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">return</span> <span class="n">c</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">d</span></div>
+
+<div class="viewcode-block" id="save_obj"><a class="viewcode-back" href="../../nucml.html#nucml.general_utilities.save_obj">[docs]</a><span class="k">def</span> <span class="nf">save_obj</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">saving_dir</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Saves a python object with pickle in the `saving_dir` directory using `name`. Useful to quickly store objects</span>
+<span class="sd">    such as lists or numpy arrays. Do not include the extension in the name. The function automatically adds</span>
+<span class="sd">    the `.pkl` extension to all saved files.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        obj (object): Object to save. Can be a list, np.array, pd.DataFrame, etc.</span>
+<span class="sd">        saving_dir (str): Path-like string where the object will be saved.</span>
+<span class="sd">        name (str): Name of the object without extension.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_dir</span><span class="p">,</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;.pkl&#39;</span><span class="p">),</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">pickle</span><span class="o">.</span><span class="n">HIGHEST_PROTOCOL</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="load_obj"><a class="viewcode-back" href="../../nucml.html#nucml.general_utilities.load_obj">[docs]</a><span class="k">def</span> <span class="nf">load_obj</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Loads a saved pickle python object. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        file_path (str): Path-like string to the object to be loaded.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        object</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="parse_mt"><a class="viewcode-back" href="../../nucml.html#nucml.general_utilities.parse_mt">[docs]</a><span class="k">def</span> <span class="nf">parse_mt</span><span class="p">(</span><span class="n">mt_number</span><span class="p">,</span> <span class="n">mt_for</span><span class="o">=</span><span class="s2">&quot;ENDF&quot;</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Universal ENDF reaction code parser. This internal function is used to parse and format the reaction</span>
+<span class="sd">    integer code for internal functions used by NucML.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        mt_number (int): Reaction channel code as defined by ENDF/EXFOR.</span>
+<span class="sd">        mt_for (str, optional): What loader object is requesting the parsing. Options include &quot;EXFOR&quot; and &quot;ENDF&quot;. Defaults to &quot;ENDF&quot;.</span>
+<span class="sd">        one_hot (bool, optional): If mt_for=&quot;EXFOR&quot;, then this argument specifies if the MT code should be formated for one-hot encoded dataframe.</span>
+<span class="sd">            is for a one-hot encoded dataframe. Defaults to False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str or int: The formatted reaction channel code.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">mt_number</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">mt_number</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">mt_for</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;ENDF&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mt_number</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">mt_number</span> <span class="o">=</span> <span class="n">mt_number</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;MT&quot;</span> <span class="o">+</span> <span class="n">mt_number</span>
+    <span class="k">elif</span> <span class="n">mt_for</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;EXFOR&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">one_hot</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;MT_&quot;</span> <span class="o">+</span> <span class="n">mt_number</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">mt_number</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">mt_for</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;ACE&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mt_number</span></div>
+    
+<div class="viewcode-block" id="parse_isotope"><a class="viewcode-back" href="../../nucml.html#nucml.general_utilities.parse_isotope">[docs]</a><span class="k">def</span> <span class="nf">parse_isotope</span><span class="p">(</span><span class="n">isotope</span><span class="p">,</span> <span class="n">parse_for</span><span class="o">=</span><span class="s2">&quot;ENDF&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This is an internal function that transforms element tags (i.e. U235) into formats appropiate for other internal functions.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        isotope (str): Isotope to format (i.e. U235, 35cl). </span>
+<span class="sd">        parse_for (str, optional): What loader object is requesting the parsing. Options include &quot;EXFOR&quot; and &quot;ENDF&quot;. Defaults to &quot;ENDF&quot;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: Formatted isotope identifier.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">element</span><span class="p">,</span> <span class="n">mass</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[A-Za-z]+|\d+&#39;</span><span class="p">,</span> <span class="n">isotope</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">isdigit</span><span class="p">():</span>
+        <span class="n">mass</span><span class="p">,</span> <span class="n">element</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;[A-Za-z]+|\d+&#39;</span><span class="p">,</span> <span class="n">isotope</span><span class="p">)</span>
+    <span class="n">element</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">capitalize</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">parse_for</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;ENDF&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mass</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">mass</span> <span class="o">=</span> <span class="n">mass</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">element</span> <span class="o">+</span> <span class="n">mass</span>
+    <span class="k">elif</span> <span class="n">parse_for</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;ENSDF&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">mass</span> <span class="o">+</span> <span class="n">element</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Pedro Jr. Vicente-Valdez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

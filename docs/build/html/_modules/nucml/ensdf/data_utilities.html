@@ -1,0 +1,620 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>nucml.ensdf.data_utilities &mdash; NucML 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> NucML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">What is NucML?</a></li>
+</ul>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basic-walkthrough.html">Basic Walkthrough</a></li>
+</ul>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../working-with-nucml.html">Loading Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../working-with-nucml.html#exploring-data">Exploring Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../working-with-nucml.html#processing-data">Processing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../working-with-nucml.html#modeling-data">Modeling Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../working-with-nucml.html#validating-data">Validating Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nucml.html">nucml package</a></li>
+</ul>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../feedback-support.html">Contact</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">NucML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>nucml.ensdf.data_utilities</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for nucml.ensdf.data_utilities</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> 
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span> 
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">linear_model</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">dump</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../..&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">nucml.model.utilities</span> <span class="k">as</span> <span class="nn">model_utils</span>   <span class="c1"># pylint: disable=import-error</span>
+<span class="kn">import</span> <span class="nn">nucml.ensdf.plot</span> <span class="k">as</span> <span class="nn">ensdf_plot</span>         <span class="c1"># pylint: disable=import-error</span>
+<span class="kn">import</span> <span class="nn">nucml.general_utilities</span> <span class="k">as</span> <span class="nn">gen_utils</span>   <span class="c1"># pylint: disable=import-error</span>
+
+
+<div class="viewcode-block" id="load_ensdf_samples"><a class="viewcode-back" href="../../../nucml.ensdf.html#nucml.ensdf.data_utilities.load_ensdf_samples">[docs]</a><span class="k">def</span> <span class="nf">load_ensdf_samples</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_scale</span><span class="o">=</span><span class="p">[]):</span>
+    <span class="sd">&quot;&quot;&quot;Loads ENSDF data for a particular isotope (Z, A).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (DataFrame): DataFrame containing all necessary information for Z, A. </span>
+<span class="sd">        Z (int): Number of protons.</span>
+<span class="sd">        A (int): Mass Number.</span>
+<span class="sd">        scale (bool, optional): If True, the data will be tranform using the provided scaler. Defaults to False.</span>
+<span class="sd">        scaler (object, optional): Scikit-Learn trained transformer. Defaults to None.</span>
+<span class="sd">        to_scale (list, optional): List of features to be scaled. Defaults to [].</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame: Extracted isotope sample.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Extracting samples from dataframe.&quot;</span><span class="p">)</span>
+    <span class="n">sample</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Protons&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">Z</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Mass_Number&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">A</span><span class="p">)]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Level_Number&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">scale</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Scaling dataset...&quot;</span><span class="p">)</span>
+        <span class="n">sample</span><span class="p">[</span><span class="n">to_scale</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">sample</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;ENSDF extracted DataFrame has shape: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">sample</span></div>
+
+
+<div class="viewcode-block" id="load_ensdf_element"><a class="viewcode-back" href="../../../nucml.ensdf.html#nucml.ensdf.data_utilities.load_ensdf_element">[docs]</a><span class="k">def</span> <span class="nf">load_ensdf_element</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_scale</span><span class="o">=</span><span class="p">[]):</span>
+    <span class="sd">&quot;&quot;&quot;Loads ENSDF data for a given element (Z).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (DataFrame): DataFrame containing all necessary information for Z, A. </span>
+<span class="sd">        Z (int): Number of protons.</span>
+<span class="sd">        scale (bool, optional): If True, the data will be tranform using the provided scaler. Defaults to False.</span>
+<span class="sd">        scaler (object, optional): Scikit-Learn trained transformer. Defaults to None.</span>
+<span class="sd">        to_scale (list, optional): List of features to be scaled. Defaults to [].</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame: Extracted element sample.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Extracting samples from dataframe.&quot;</span><span class="p">)</span>
+    <span class="n">sample</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Protons&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">Z</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">scale</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Scaling dataset...&quot;</span><span class="p">)</span>
+        <span class="n">sample</span><span class="p">[</span><span class="n">to_scale</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">sample</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;ENSDF extracted DataFrame has shape: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">sample</span></div>
+
+
+<div class="viewcode-block" id="append_ensdf_levels"><a class="viewcode-back" href="../../../nucml.ensdf.html#nucml.ensdf.data_utilities.append_ensdf_levels">[docs]</a><span class="k">def</span> <span class="nf">append_ensdf_levels</span><span class="p">(</span><span class="n">tot_num_levels</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_scale</span><span class="o">=</span><span class="p">[]):</span>
+    <span class="sd">&quot;&quot;&quot;Expands the energy levels up to &quot;tot_num_levels&quot; for the given ENSDF isotopic sample.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        tot_num_levels (int): Total number of levels to include (i.e 50 will include levels 1-50).</span>
+<span class="sd">        df (DataFrame): DataFrame containing an already extracted isotopic sample. </span>
+<span class="sd">        Z (int): Number of protons.</span>
+<span class="sd">        A (int): Mass Number.</span>
+<span class="sd">        log (bool, optional): If True, the logarithm will be applied to the Level Number.</span>
+<span class="sd">        scale (bool, optional): If True, the data will be tranform using the provided scaler. Defaults to False.</span>
+<span class="sd">        scaler (object, optional): Scikit-Learn trained transformer. Defaults to None.</span>
+<span class="sd">        to_scale (list, optional): List of features to be scaled. Defaults to [].</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame: Extracted element sample.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">new_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">tot_num_levels</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)})</span>
+    <span class="n">isotope_exfor</span> <span class="o">=</span> <span class="n">load_ensdf_samples</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">isotope_exfor</span><span class="o">.</span><span class="n">columns</span><span class="p">)[</span><span class="mi">2</span><span class="p">:]:</span>
+        <span class="n">new_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">isotope_exfor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># changed to 0 from 1</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Expanded Dataset has shape: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new_data</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">scale</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Scaling dataset...&quot;</span><span class="p">)</span>
+        <span class="n">new_data</span><span class="p">[</span><span class="n">to_scale</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">new_data</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">log</span><span class="p">:</span>
+        <span class="n">new_data</span><span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">new_data</span><span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">new_data</span></div>
+
+<div class="viewcode-block" id="append_ensdf_levels_nodata"><a class="viewcode-back" href="../../../nucml.ensdf.html#nucml.ensdf.data_utilities.append_ensdf_levels_nodata">[docs]</a><span class="k">def</span> <span class="nf">append_ensdf_levels_nodata</span><span class="p">(</span><span class="n">tot_num_levels</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_scale</span><span class="o">=</span><span class="p">[]):</span>
+    <span class="sd">&quot;&quot;&quot;Expands the energy levels up to &quot;tot_num_levels&quot; for the given ENSDF isotopic sample if no </span>
+<span class="sd">    Level Energy data is avaliable.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        tot_num_levels (int): Total number of levels to include (i.e 50 will include levels 1-50).</span>
+<span class="sd">        df (DataFrame): DataFrame containing an already extracted isotopic sample. </span>
+<span class="sd">        log (bool, optional): If True, the logarithm will be applied to the Level Number.</span>
+<span class="sd">        scale (bool, optional): If True, the data will be tranform using the provided scaler. Defaults to False.</span>
+<span class="sd">        scaler (object, optional): Scikit-Learn trained transformer. Defaults to None.</span>
+<span class="sd">        to_scale (list, optional): List of features to be scaled. Defaults to [].</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame: Extracted element sample.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">new_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">tot_num_levels</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)})</span>
+    <span class="n">isotope_exfor</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">if</span> <span class="s2">&quot;Level_Energy&quot;</span> <span class="ow">in</span> <span class="n">isotope_exfor</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">isotope_exfor</span> <span class="o">=</span>  <span class="n">isotope_exfor</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">isotope_exfor</span><span class="o">.</span><span class="n">columns</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">new_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">isotope_exfor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># changed to 0 from 1</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Expanded Dataset has shape: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new_data</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">scale</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Scaling dataset...&quot;</span><span class="p">)</span>
+        <span class="n">new_data</span><span class="p">[</span><span class="n">to_scale</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">new_data</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">log</span><span class="p">:</span>
+        <span class="n">new_data</span><span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">new_data</span><span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">new_data</span></div>
+
+<div class="viewcode-block" id="append_ensdf_levels_range"><a class="viewcode-back" href="../../../nucml.ensdf.html#nucml.ensdf.data_utilities.append_ensdf_levels_range">[docs]</a><span class="k">def</span> <span class="nf">append_ensdf_levels_range</span><span class="p">(</span><span class="n">tot_num_levels</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">steps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_scale</span><span class="o">=</span><span class="p">[]):</span>
+    <span class="sd">&quot;&quot;&quot;Expands the energy levels up to &quot;tot_num_levels&quot; for the given ENSDF isotopic sample using</span>
+<span class="sd">    a range with n steps rather than linear. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        tot_num_levels (int): Total number of levels to include (i.e 50 will include levels 1-50).</span>
+<span class="sd">        df (DataFrame): DataFrame containing an already extracted isotopic sample. </span>
+<span class="sd">        Z (int): Number of protons.</span>
+<span class="sd">        A (int): Mass Number.</span>
+<span class="sd">        steps (int): Number of intermediate steps between 1 and tot_num_levels to create. </span>
+<span class="sd">        log (bool, optional): If True, the logarithm will be applied to the Level Number.</span>
+<span class="sd">        scale (bool, optional): If True, the data will be tranform using the provided scaler. Defaults to False.</span>
+<span class="sd">        scaler (object, optional): Scikit-Learn trained transformer. Defaults to None.</span>
+<span class="sd">        to_scale (list, optional): List of features to be scaled. Defaults to [].</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame: Extracted element sample.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">new_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">:</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">tot_num_levels</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">steps</span><span class="p">)})</span>
+    <span class="n">isotope_exfor</span> <span class="o">=</span> <span class="n">load_ensdf_samples</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">isotope_exfor</span><span class="o">.</span><span class="n">columns</span><span class="p">)[</span><span class="mi">2</span><span class="p">:]:</span>
+        <span class="n">new_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">isotope_exfor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Expanded Dataset has shape: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new_data</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">scale</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Scaling dataset...&quot;</span><span class="p">)</span>
+        <span class="n">new_data</span><span class="p">[</span><span class="n">to_scale</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">new_data</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">log</span><span class="p">:</span>
+        <span class="n">new_data</span><span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">new_data</span><span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">new_data</span></div>
+
+<div class="viewcode-block" id="generate_level_density_csv"><a class="viewcode-back" href="../../../nucml.ensdf.html#nucml.ensdf.data_utilities.generate_level_density_csv">[docs]</a><span class="k">def</span> <span class="nf">generate_level_density_csv</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">nodata</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">upper_energy_mev</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">get_upper</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">tot_num_levels</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">it_limit</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">saving_dir</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Fits a linear model to the isotopic sample provided, and saves a CSV file with the linear model values for each </span>
+<span class="sd">    energy level avaliable. If get_upper is True, then a new level number will be appended until the linear model predicts</span>
+<span class="sd">    a value above the upper_energy_mev value. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (DataFrame): DataFrame containing the needed data for isotope Z, A. </span>
+<span class="sd">        Z (int): Number of protons.</span>
+<span class="sd">        A (int): Mass number.</span>
+<span class="sd">        nodata (bool, optional): If True, it assumes there is no avaliable data for the queried isotope. Defaults to False.</span>
+<span class="sd">        upper_energy_mev (int, optional): If get_upper is True, the algorithm will iterate until this energy is reached. Defaults to 20 MeV.</span>
+<span class="sd">        get_upper (bool, optional): If True, more levels will be added until the level energy in the level density reaches the 20 MeV mark. Defaults to False.</span>
+<span class="sd">        tot_num_levels (int, optional): If any value other than 0 is given, it will append the remaining energy levels until reaching tot_num_levels. Defaults to 0.</span>
+<span class="sd">        it_limit (int, optional): Sets the iteration limits for the linear model to reach the upper_energy_mev value. Defaults to 500.</span>
+<span class="sd">        plot (bool, optional): If True, a plot of the linear model along the experimental levels will be rendered. Defaults to False.</span>
+<span class="sd">        save (bool, optional): If True, the resulting DataFrame using the linear model will be saved. Defaults to False.</span>
+<span class="sd">        saving_dir (str, optional): Path-like string pointing towars the directory where the DataFrame will be saved. Defaults to &quot;&quot;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame: New DataFrame with Level Number and Level Energy as predicted by the linear model. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">nodata</span><span class="p">:</span>
+        <span class="n">original</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">original</span> <span class="o">=</span> <span class="n">load_ensdf_samples</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+    
+    <span class="n">element</span> <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="n">Target_Element_w_A</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Generating level density for </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">element</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">tot_num_levels</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">nodata</span><span class="p">:</span>
+            <span class="n">simple</span> <span class="o">=</span> <span class="n">append_ensdf_levels_nodata</span><span class="p">(</span><span class="n">tot_num_levels</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">simple</span> <span class="o">=</span> <span class="n">append_ensdf_levels</span><span class="p">(</span><span class="n">tot_num_levels</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">simple</span> <span class="o">=</span> <span class="n">original</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    
+
+    <span class="n">original</span> <span class="o">=</span> <span class="n">original</span><span class="p">[[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">,</span> <span class="s2">&quot;Level_Energy&quot;</span><span class="p">]]</span>
+    <span class="n">simple</span> <span class="o">=</span> <span class="n">simple</span><span class="p">[[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">]]</span>
+    
+    <span class="n">reg</span> <span class="o">=</span> <span class="n">linear_model</span><span class="o">.</span><span class="n">LinearRegression</span><span class="p">()</span>
+    <span class="n">reg</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">original</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">original</span><span class="o">.</span><span class="n">Level_Energy</span><span class="p">)</span>
+    
+    <span class="n">pred</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+    <span class="n">pred</span><span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">simple</span><span class="o">.</span><span class="n">Level_Number</span>
+    <span class="n">pred</span><span class="p">[</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">get_upper</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Initalizing starting variables for NLD extrapolation...&quot;</span><span class="p">)</span>
+        <span class="n">last_energy</span> <span class="o">=</span> <span class="n">pred</span><span class="o">.</span><span class="n">Level_Energy</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">number_levels</span> <span class="o">=</span> <span class="n">tot_num_levels</span>
+        <span class="n">upper_limit</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">upper_energy_mev</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+        
+        <span class="k">while</span> <span class="n">last_energy</span> <span class="o">&lt;</span> <span class="n">upper_limit</span><span class="p">:</span>
+                <span class="n">number_levels</span> <span class="o">=</span> <span class="n">number_levels</span> <span class="o">+</span> <span class="mi">100</span>
+                <span class="k">if</span> <span class="n">nodata</span><span class="p">:</span>
+                    <span class="n">simple</span> <span class="o">=</span> <span class="n">append_ensdf_levels_nodata</span><span class="p">(</span><span class="n">number_levels</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">simple</span> <span class="o">=</span> <span class="n">append_ensdf_levels</span><span class="p">(</span><span class="n">number_levels</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">pred</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+                <span class="n">pred</span><span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">simple</span><span class="o">.</span><span class="n">Level_Number</span>
+                <span class="n">pred</span><span class="p">[</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span>
+                <span class="n">last_energy</span> <span class="o">=</span> <span class="n">pred</span><span class="o">.</span><span class="n">Level_Energy</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="n">it_limit</span><span class="p">:</span>
+                    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Iteration limit reached. Target energy not reached.&quot;</span><span class="p">)</span>
+                    <span class="k">break</span>
+    <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
+        <span class="n">ensdf_plot</span><span class="o">.</span><span class="n">level_density_ml</span><span class="p">(</span><span class="n">original</span><span class="p">,</span> <span class="n">pred</span><span class="p">,</span> <span class="n">log_sqrt</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
+        <span class="n">pred</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">A</span>
+        <span class="n">pred</span><span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Z</span>
+        <span class="n">pred</span><span class="p">[</span><span class="s2">&quot;Target_Element_w_A&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">element</span>
+        <span class="n">pred</span><span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="n">pred</span><span class="o">.</span><span class="n">Level_Number</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">pred</span><span class="p">[</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="n">pred</span><span class="o">.</span><span class="n">Level_Energy</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">pred</span><span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred</span><span class="o">.</span><span class="n">Level_Number</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">gen_utils</span><span class="o">.</span><span class="n">initialize_directories</span><span class="p">(</span><span class="n">saving_dir</span><span class="p">)</span>
+        <span class="n">pred</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_dir</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_Level_Density.csv&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">element</span><span class="p">)),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">dump</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_dir</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">_NLD_linear_model.joblib&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">element</span><span class="p">)))</span> 
+    <span class="k">return</span> <span class="n">pred</span></div>
+
+<div class="viewcode-block" id="get_level_density"><a class="viewcode-back" href="../../../nucml.ensdf.html#nucml.ensdf.data_utilities.get_level_density">[docs]</a><span class="k">def</span> <span class="nf">get_level_density</span><span class="p">(</span><span class="n">energy_mev</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given an energy density DataFrame, the level density at a wanted energy is returned.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        energy_mev (float): Energy point at which the level density is to be returned.</span>
+<span class="sd">        df (DataFrame): Level Density DataFrame to interpolate at energy_mev. </span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Level density at &quot;energy_mev&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">to_append</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">:[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">],</span> <span class="s2">&quot;Level_Energy&quot;</span><span class="p">:</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">energy_mev</span><span class="p">)],</span> <span class="s2">&quot;N&quot;</span><span class="p">:[</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">]})</span>
+    <span class="n">to_interpolate</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">to_append</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">to_interpolate</span> <span class="o">=</span> <span class="n">to_interpolate</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">)</span>
+    <span class="n">new_index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">to_interpolate</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">to_interpolate</span> <span class="o">=</span> <span class="n">to_interpolate</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span>
+    <span class="n">level_density</span> <span class="o">=</span> <span class="n">to_interpolate</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">new_index</span><span class="p">][</span><span class="s2">&quot;N&quot;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">level_density</span></div>
+
+<div class="viewcode-block" id="make_predictions_w_levels"><a class="viewcode-back" href="../../../nucml.ensdf.html#nucml.ensdf.data_utilities.make_predictions_w_levels">[docs]</a><span class="k">def</span> <span class="nf">make_predictions_w_levels</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">num_levels</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">to_scale</span><span class="p">,</span> <span class="n">inv_transform</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">log_sqrt</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a set of ML predictions up to num_levels. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (DataFrame): DataFrame containing all needed information for Z, A.</span>
+<span class="sd">        Z (INT): Number of protons.</span>
+<span class="sd">        A (int): Mass Number.</span>
+<span class="sd">        num_levels (int): Upper level number for which to predict the level energy.</span>
+<span class="sd">        model (object): Trained machine learning model.</span>
+<span class="sd">        model_type (str): Type of ML model. Options include &quot;tf&quot;, &quot;xgb&quot;, or &quot;scikit&quot;.</span>
+<span class="sd">        scaler (object): Trained scikit-learn normalizer/transformer.</span>
+<span class="sd">        to_scale (list): List of features that are to be subject to transformation by the scaler.</span>
+<span class="sd">        inv_transform (bool, optional): If True, the returned DataFrame will be in its original ranges. Defaults to False.</span>
+<span class="sd">        log_sqrt (bool, optional): If True, it assumes the models where trained on Level Energy data with SQRT applied. Defaults to False.</span>
+<span class="sd">        log (bool, optional): If True, it assumes the models where trained on Level Energy data with LOG applied. Defaults to False.</span>
+<span class="sd">        plot (bool, optional): If True, the ML predictions will be plotted along the true known values. Defaults to False.</span>
+<span class="sd">        save (bool, optional): If True, the rendered figure will be saved. Defaults to False.</span>
+<span class="sd">        save_dir (str, optional): Path-like string indicating directory where the figure will be saved. Defaults to &quot;&quot;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame: New DataFrame with ML predictions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">ensdf</span> <span class="o">=</span> <span class="n">load_ensdf_samples</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+    <span class="n">data_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Z&quot;</span><span class="p">:</span><span class="n">Z</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">:</span><span class="n">A</span><span class="p">,</span> <span class="s2">&quot;log&quot;</span><span class="p">:</span><span class="n">log</span><span class="p">,</span> <span class="s2">&quot;scale&quot;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;scaler&quot;</span><span class="p">:</span><span class="n">scaler</span><span class="p">,</span> <span class="s2">&quot;to_scale&quot;</span><span class="p">:</span><span class="n">to_scale</span><span class="p">}</span>
+    <span class="n">to_infer</span> <span class="o">=</span> <span class="n">append_ensdf_levels</span><span class="p">(</span><span class="n">num_levels</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="o">**</span><span class="n">data_kwargs</span><span class="p">)</span>
+    <span class="n">to_infer</span><span class="p">[</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">make_predictions</span><span class="p">(</span><span class="n">to_infer</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_type</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
+        <span class="n">ensdf_plot</span><span class="o">.</span><span class="n">level_density_ml</span><span class="p">(</span><span class="n">ensdf</span><span class="p">,</span> <span class="n">to_infer</span><span class="p">,</span> <span class="n">log_sqrt</span><span class="o">=</span><span class="n">log_sqrt</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="n">log</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="n">save</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="n">save_dir</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">inv_transform</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">log</span><span class="p">:</span>
+            <span class="n">to_infer</span><span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="n">to_infer</span><span class="o">.</span><span class="n">Level_Number</span><span class="o">.</span><span class="n">values</span>
+            <span class="n">to_infer</span><span class="p">[</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="n">to_infer</span><span class="o">.</span><span class="n">Level_Energy</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">to_infer</span><span class="p">[</span><span class="n">to_scale</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">to_infer</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">to_infer</span></div>
+
+<div class="viewcode-block" id="make_predictions_w_levels_nodata"><a class="viewcode-back" href="../../../nucml.ensdf.html#nucml.ensdf.data_utilities.make_predictions_w_levels_nodata">[docs]</a><span class="k">def</span> <span class="nf">make_predictions_w_levels_nodata</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">num_levels</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">to_scale</span><span class="p">,</span> <span class="n">inv_transform</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">log_sqrt</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a set of ML predictions up to num_levels for isotopes with no known nuclear structure data.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (DataFrame): DataFrame containing all needed information for a given Z, A. Just one row is sufficient.</span>
+<span class="sd">        num_levels (int): Upper level number for which to predict the level energy.</span>
+<span class="sd">        model (object): Trained machine learning model.</span>
+<span class="sd">        model_type (str): Type of ML model. Options include &quot;tf&quot;, &quot;xgb&quot;, or &quot;scikit&quot;.</span>
+<span class="sd">        scaler (object): Trained scikit-learn normalizer/transformer.</span>
+<span class="sd">        to_scale (list): List of features that are to be subject to transformation by the scaler.</span>
+<span class="sd">        inv_transform (bool, optional): If True, the returned DataFrame will be in its original ranges. Defaults to False.</span>
+<span class="sd">        log_sqrt (bool, optional): If True, it assumes the models where trained on Level Energy data with SQRT applied. Defaults to False.</span>
+<span class="sd">        log (bool, optional): If True, it assumes the models where trained on Level Energy data with LOG applied. Defaults to False.</span>
+<span class="sd">        plot (bool, optional): If True, the ML predictions will be plotted along the true known values. Defaults to False.</span>
+<span class="sd">        save (bool, optional): If True, the rendered figure will be saved. Defaults to False.</span>
+<span class="sd">        save_dir (str, optional): Path-like string indicating directory where the figure will be saved. Defaults to &quot;&quot;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame: New DataFrame with ML predictions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">data_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;log&quot;</span><span class="p">:</span><span class="n">log</span><span class="p">,</span> <span class="s2">&quot;scale&quot;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;scaler&quot;</span><span class="p">:</span><span class="n">scaler</span><span class="p">,</span> <span class="s2">&quot;to_scale&quot;</span><span class="p">:</span><span class="n">to_scale</span><span class="p">}</span>
+    <span class="n">to_infer</span> <span class="o">=</span> <span class="n">append_ensdf_levels_nodata</span><span class="p">(</span><span class="n">num_levels</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="o">**</span><span class="n">data_kwargs</span><span class="p">)</span>
+    <span class="n">to_infer</span><span class="p">[</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">make_predictions</span><span class="p">(</span><span class="n">to_infer</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_type</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
+        <span class="n">ensdf_plot</span><span class="o">.</span><span class="n">level_density_ml</span><span class="p">(</span><span class="n">to_infer</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">to_infer</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">log_sqrt</span><span class="o">=</span><span class="n">log_sqrt</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="n">log</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="n">save</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="n">save_dir</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">inv_transform</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">log</span><span class="p">:</span>
+            <span class="n">to_infer</span><span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="n">to_infer</span><span class="o">.</span><span class="n">Level_Number</span><span class="o">.</span><span class="n">values</span>
+            <span class="n">to_infer</span><span class="p">[</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="n">to_infer</span><span class="o">.</span><span class="n">Level_Energy</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">to_infer</span><span class="p">[</span><span class="n">to_scale</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">to_infer</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">to_infer</span></div>
+
+<div class="viewcode-block" id="make_predictions_from_df"><a class="viewcode-back" href="../../../nucml.ensdf.html#nucml.ensdf.data_utilities.make_predictions_from_df">[docs]</a><span class="k">def</span> <span class="nf">make_predictions_from_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">to_scale</span><span class="p">,</span> <span class="n">log_sqrt</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a set of ML predictions at all known levels within the passed DataFrame. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (DataFrame): DataFrame containing all needed information for Z, A.</span>
+<span class="sd">        Z (INT): Number of protons.</span>
+<span class="sd">        A (int): Mass Number.</span>
+<span class="sd">        model (object): Trained machine learning model.</span>
+<span class="sd">        model_type (str): Type of ML model. Options include &quot;tf&quot;, &quot;xgb&quot;, or &quot;scikit&quot;.</span>
+<span class="sd">        scaler (object): Trained scikit-learn normalizer/transformer.</span>
+<span class="sd">        to_scale (list): List of features that are to be subject to transformation by the scaler.</span>
+<span class="sd">        log_sqrt (bool, optional): If True, it assumes the models where trained on Level Energy data with SQRT applied. Defaults to False.</span>
+<span class="sd">        log (bool, optional): If True, it assumes the models where trained on Level Energy data with LOG applied. Defaults to False.</span>
+<span class="sd">        plot (bool, optional): If True, the ML predictions will be plotted along the true known values. Defaults to False.</span>
+<span class="sd">        save (bool, optional): If True, the rendered figure will be saved. Defaults to False.</span>
+<span class="sd">        save_dir (str, optional): Path-like string indicating directory where the figure will be saved. Defaults to &quot;&quot;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame: New DataFrame with ML predictions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;scaler&quot;</span><span class="p">:</span> <span class="n">scaler</span><span class="p">,</span> <span class="s2">&quot;to_scale&quot;</span><span class="p">:</span> <span class="n">to_scale</span><span class="p">}</span>
+    <span class="n">ensdf</span> <span class="o">=</span> <span class="n">load_ensdf_samples</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+    <span class="n">to_infer</span> <span class="o">=</span> <span class="n">load_ensdf_samples</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">to_infer</span><span class="p">[</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">make_predictions</span><span class="p">(</span>
+        <span class="n">to_infer</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_type</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
+        <span class="n">ensdf_plot</span><span class="o">.</span><span class="n">level_density_ml</span><span class="p">(</span><span class="n">ensdf</span><span class="p">,</span> <span class="n">to_infer</span><span class="p">,</span> <span class="n">log_sqrt</span><span class="o">=</span><span class="n">log_sqrt</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="n">log</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="n">save</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="n">save_dir</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ensdf</span><span class="p">,</span> <span class="n">to_infer</span></div>
+
+
+<div class="viewcode-block" id="predicting_nuclear_xs_v2"><a class="viewcode-back" href="../../../nucml.ensdf.html#nucml.ensdf.data_utilities.predicting_nuclear_xs_v2">[docs]</a><span class="k">def</span> <span class="nf">predicting_nuclear_xs_v2</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">to_scale</span><span class="p">,</span> <span class="n">num_levels</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">log_sqrt</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">model_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">inv_trans</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plots and returns a set of ML predictions at all known levels and up to num_levels in cases where the known levels are fewer. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (DataFrame): DataFrame containing all needed information for Z, A.</span>
+<span class="sd">        Z (INT): Number of protons.</span>
+<span class="sd">        A (int): Mass Number.</span>
+<span class="sd">        model (object): Trained machine learning model.</span>
+<span class="sd">        scaler (object): Trained scikit-learn normalizer/transformer.</span>
+<span class="sd">        to_scale (list): List of features that are to be subject to transformation by the scaler.</span>
+<span class="sd">        num_levels (int): Upper level number for which to predict the level energy. Defaults to 100.</span>
+<span class="sd">        log_sqrt (bool, optional): If True, it assumes the models where trained on Level Energy data with SQRT applied. Defaults to False.</span>
+<span class="sd">        model_type (str): Type of ML model. Options include &quot;tf&quot;, &quot;xgb&quot;, or &quot;scikit&quot;/None. Defaults to None.</span>
+<span class="sd">        save (bool, optional): If True, the rendered figure will be saved. Defaults to False.</span>
+<span class="sd">        plot (bool, optional): If True, the ML predictions will be plotted along the true known values. Defaults to False.</span>
+<span class="sd">        save_dir (str, optional): Path-like string indicating directory where the figure will be saved. Defaults to &quot;&quot;.</span>
+<span class="sd">        inv_transform (bool, optional): If True, the returned DataFrame will be in its original ranges. Defaults to False.</span>
+<span class="sd">        </span>
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame: New DataFrame with ML predictions.</span>
+<span class="sd">    &quot;&quot;&quot;</span>   
+
+    <span class="n">expand_levels</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">num_levels</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">False</span>
+
+    <span class="n">to_plot</span> <span class="o">=</span> <span class="n">load_ensdf_samples</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="n">scaler</span><span class="p">,</span> <span class="n">to_scale</span><span class="o">=</span><span class="n">to_scale</span><span class="p">)</span> 
+
+    <span class="k">if</span> <span class="n">expand_levels</span><span class="p">:</span> 
+        <span class="n">data_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Z&quot;</span><span class="p">:</span><span class="n">Z</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">:</span><span class="n">A</span><span class="p">,</span> <span class="s2">&quot;log&quot;</span><span class="p">:</span><span class="n">log_sqrt</span><span class="p">,</span> <span class="s2">&quot;scale&quot;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;scaler&quot;</span><span class="p">:</span><span class="n">scaler</span><span class="p">,</span> <span class="s2">&quot;to_scale&quot;</span><span class="p">:</span><span class="n">to_scale</span><span class="p">}</span>
+        <span class="n">to_infer</span> <span class="o">=</span> <span class="n">append_ensdf_levels</span><span class="p">(</span><span class="n">num_levels</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="o">**</span><span class="n">data_kwargs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">to_infer</span> <span class="o">=</span> <span class="n">to_plot</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">])</span>  
+    
+    <span class="c1"># Making Predictions</span>
+    <span class="n">pred_expanded</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">make_predictions</span><span class="p">(</span><span class="n">to_infer</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_type</span><span class="p">)</span>
+    <span class="n">pred_original</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">make_predictions</span><span class="p">(</span><span class="n">to_plot</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_type</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">inv_trans</span><span class="p">:</span>
+        <span class="c1"># De-Transforming Scaled Data</span>
+        <span class="n">to_infer</span><span class="p">[</span><span class="n">to_scale</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">to_infer</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+        <span class="n">to_plot</span><span class="p">[</span><span class="n">to_scale</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">to_plot</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+
+    <span class="n">all_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;expanded&quot;</span><span class="p">:{</span><span class="s2">&quot;df&quot;</span><span class="p">:</span><span class="n">to_infer</span><span class="p">,</span> <span class="s2">&quot;predictions&quot;</span><span class="p">:</span><span class="n">pred_expanded</span><span class="p">},</span> 
+                <span class="s2">&quot;original&quot;</span><span class="p">:{</span><span class="s2">&quot;df&quot;</span><span class="p">:</span><span class="n">to_plot</span><span class="p">,</span> <span class="s2">&quot;predictions&quot;</span><span class="p">:</span><span class="n">pred_original</span><span class="p">}}</span>
+
+    <span class="n">ml_error_metrics</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">regression_error_metrics</span><span class="p">(</span><span class="n">to_plot</span><span class="p">[</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">],</span> <span class="n">pred_original</span><span class="p">)</span>
+    <span class="n">error_df</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">create_error_df</span><span class="p">(</span><span class="s2">&quot;ENSDF VS ML&quot;</span><span class="p">,</span> <span class="n">ml_error_metrics</span><span class="p">)</span>
+    <span class="n">all_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;error_metrics&quot;</span><span class="p">:</span><span class="n">error_df</span><span class="p">})</span>
+    <span class="k">if</span> <span class="n">plot</span><span class="p">:</span>
+        <span class="n">to_infer</span><span class="p">[</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pred_expanded</span>
+        <span class="n">ensdf_plot</span><span class="o">.</span><span class="n">level_density_ml</span><span class="p">(</span><span class="n">to_plot</span><span class="p">,</span> <span class="n">to_infer</span><span class="p">,</span> <span class="n">log_sqrt</span><span class="o">=</span><span class="n">log_sqrt</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="n">save</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="n">save_dir</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">all_dict</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Pedro Jr. Vicente-Valdez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

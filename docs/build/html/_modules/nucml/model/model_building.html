@@ -1,0 +1,505 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>nucml.model.model_building &mdash; NucML 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="author" title="About these documents" href="../../../about.html" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> NucML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../about.html">What is NucML?</a></li>
+</ul>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../getting-started.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basic-walkthrough.html">Basic Walkthrough</a></li>
+</ul>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../working-with-nucml.html">Loading Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../working-with-nucml.html#exploring-data">Exploring Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../working-with-nucml.html#processing-data">Processing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../working-with-nucml.html#modeling-data">Modeling Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../working-with-nucml.html#validating-data">Validating Data</a></li>
+</ul>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../nucml.html">nucml package</a></li>
+</ul>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../feedback-support.html">Contact</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">NucML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>nucml.model.model_building</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for nucml.model.model_building</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">tensorflow_docs</span> <span class="k">as</span> <span class="nn">tfdocs</span>
+<span class="kn">import</span> <span class="nn">tensorflow_docs.modeling</span>
+<span class="kn">import</span> <span class="nn">wandb</span>
+<span class="kn">from</span> <span class="nn">wandb.keras</span> <span class="kn">import</span> <span class="n">WandbCallback</span>
+
+
+
+<div class="viewcode-block" id="get_callbacks"><a class="viewcode-back" href="../../../nucml.model.html#nucml.model.model_building.get_callbacks">[docs]</a><span class="k">def</span> <span class="nf">get_callbacks</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">logs_dir_name</span><span class="o">=</span><span class="s2">&quot;logs&quot;</span><span class="p">,</span> <span class="n">lr_method</span><span class="o">=</span><span class="s2">&quot;plateau&quot;</span><span class="p">,</span> <span class="n">patience_epochs</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">save_freq</span><span class="o">=</span><span class="mi">7531</span><span class="o">*</span><span class="mi">5</span><span class="p">,</span> <span class="n">append_wandb</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gets a callback list for TensorFlow training.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        name (str): Name of the model.</span>
+<span class="sd">        logs_dir_name (str, optional): Name of the directory where the callback logs will be stored. Defaults to &quot;logs&quot;.</span>
+<span class="sd">        lr_method (str, optional): Learning rate method to implement. Defaults to &quot;plateau&quot;.</span>
+<span class="sd">        patience_epochs (int, optional): Number of epochs to wait before stopping training due to lack of validation progress. Defaults to 10.</span>
+<span class="sd">        save_freq (int, optional): Determines how many steps are needed to create a checkpoint. Defaults to 7531*5.</span>
+<span class="sd">        append_wandb (bool, optional): If True, the WANDB callback will be added. Defaults to False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: List containing all TensorFlow callbacks.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">logdir</span> <span class="o">=</span> <span class="n">logs_dir_name</span>
+    <span class="n">chkpoint_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">logs_dir_name</span><span class="p">,</span> <span class="s2">&quot;checkpoints&quot;</span><span class="p">))</span>
+    <span class="n">csv_logger_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">logs_dir_name</span><span class="p">,</span> <span class="s2">&quot;training_metrics.csv&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">chkpoint_dir</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">chkpoint_dir</span><span class="p">)</span>
+
+    <span class="n">chkpoint_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">logs_dir_name</span><span class="p">,</span> <span class="s2">&quot;checkpoints/best_model.hdf5&quot;</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">lr_method</span> <span class="o">==</span> <span class="s2">&quot;plateau&quot;</span><span class="p">:</span>
+        <span class="n">all_callbacks</span> <span class="o">=</span>  <span class="p">[</span>
+            <span class="n">tfdocs</span><span class="o">.</span><span class="n">modeling</span><span class="o">.</span><span class="n">EpochDots</span><span class="p">(),</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">CSVLogger</span><span class="p">(</span><span class="n">csv_logger_dir</span><span class="p">),</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">EarlyStopping</span><span class="p">(</span><span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span> <span class="n">patience</span><span class="o">=</span><span class="n">patience_epochs</span><span class="p">,</span> <span class="n">restore_best_weights</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="c1"># val_loss</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">ModelCheckpoint</span><span class="p">(</span><span class="n">chkpoint_dir</span><span class="p">,</span> <span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                               <span class="n">save_best_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_weights_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                               <span class="n">save_frequency</span><span class="o">=</span><span class="n">save_freq</span><span class="p">),</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">ReduceLROnPlateau</span><span class="p">(</span>
+                <span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span> <span class="n">factor</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">patience</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span>
+                <span class="n">min_delta</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">,</span> <span class="n">cooldown</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">min_lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">),</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">TensorBoard</span><span class="p">(</span><span class="n">log_dir</span><span class="o">=</span><span class="n">logdir</span><span class="p">,</span> <span class="n">histogram_freq</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">profile_batch</span><span class="o">=</span><span class="mi">0</span><span class="p">)]</span>
+    <span class="k">elif</span> <span class="n">lr_method</span> <span class="o">==</span> <span class="s2">&quot;normal&quot;</span><span class="p">:</span>
+        <span class="n">all_callbacks</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">tfdocs</span><span class="o">.</span><span class="n">modeling</span><span class="o">.</span><span class="n">EpochDots</span><span class="p">(),</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">CSVLogger</span><span class="p">(</span><span class="n">csv_logger_dir</span><span class="p">),</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">EarlyStopping</span><span class="p">(</span><span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span> <span class="n">patience</span><span class="o">=</span><span class="n">patience_epochs</span><span class="p">,</span> <span class="n">restore_best_weights</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="c1"># val_loss</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">ModelCheckpoint</span><span class="p">(</span><span class="n">chkpoint_dir</span><span class="p">,</span> <span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                               <span class="n">save_best_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_weights_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                               <span class="n">save_frequency</span><span class="o">=</span><span class="n">save_freq</span><span class="p">),</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">TensorBoard</span><span class="p">(</span><span class="n">log_dir</span><span class="o">=</span><span class="n">logdir</span><span class="p">,</span> <span class="n">histogram_freq</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">profile_batch</span><span class="o">=</span><span class="mi">0</span><span class="p">)]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">all_callbacks</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">tfdocs</span><span class="o">.</span><span class="n">modeling</span><span class="o">.</span><span class="n">EpochDots</span><span class="p">(),</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">CSVLogger</span><span class="p">(</span><span class="n">csv_logger_dir</span><span class="p">),</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">EarlyStopping</span><span class="p">(</span><span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span> <span class="n">patience</span><span class="o">=</span><span class="n">patience_epochs</span><span class="p">,</span> <span class="n">restore_best_weights</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="c1"># val_loss</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">ModelCheckpoint</span><span class="p">(</span><span class="n">chkpoint_dir</span><span class="p">,</span> <span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;loss&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                                               <span class="n">save_best_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_weights_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                               <span class="n">save_frequency</span><span class="o">=</span><span class="n">save_freq</span><span class="p">),</span>
+            <span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">callbacks</span><span class="o">.</span><span class="n">TensorBoard</span><span class="p">(</span><span class="n">log_dir</span><span class="o">=</span><span class="n">logdir</span><span class="p">,</span> <span class="n">histogram_freq</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">profile_batch</span><span class="o">=</span><span class="mi">0</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">append_wandb</span><span class="p">:</span>
+        <span class="n">all_callbacks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">WandbCallback</span><span class="p">())</span>
+    <span class="k">return</span> <span class="n">all_callbacks</span></div>
+
+
+<div class="viewcode-block" id="compile_and_fit"><a class="viewcode-back" href="../../../nucml.model.html#nucml.model.model_building.compile_and_fit">[docs]</a><span class="k">def</span> <span class="nf">compile_and_fit</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">BATCH_SIZE</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> 
+                    <span class="n">max_epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">DECAY_EPOCHS</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">lr_method</span><span class="o">=</span><span class="s2">&quot;plateau&quot;</span><span class="p">,</span> <span class="n">initial_epoch</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">logs_dir_name</span><span class="o">=</span><span class="s2">&quot;logs&quot;</span><span class="p">,</span> <span class="n">append_wandb</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">comet</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">comet_exp</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compiles and fits a TensorFlow model.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        model (object): TensorFlow model object.</span>
+<span class="sd">        name (str): Name by which the TensorFlow model will be saved.</span>
+<span class="sd">        x_train (np.array): The X-train numpy array set.</span>
+<span class="sd">        y_train (np.array): The y-train numpy array.</span>
+<span class="sd">        x_test (np.array): The X-test numpy array set.</span>
+<span class="sd">        y_test (np.array): The y-test numpy array.</span>
+<span class="sd">        BATCH_SIZE (int, optional): Batch size for the tensorflow dataset. Defaults to 120.</span>
+<span class="sd">        max_epochs (int, optional): Max number of epochs to train for. Defaults to 5.</span>
+<span class="sd">        DECAY_EPOCHS (int, optional): Number of epochs before slightly decreasing the learning rate. Defaults to 10.</span>
+<span class="sd">        lr_method (str, optional): Type of learning rate adjustment method. Defaults to &quot;plateau&quot;.</span>
+<span class="sd">        initial_epoch (int, optional): Initial epoch of the provided model. Defaults to 0.</span>
+<span class="sd">        logs_dir_name (str, optional): Name of the directory where the logs will be stored. Defaults to &quot;logs&quot;.</span>
+<span class="sd">        append_wandb (bool, optional): If True, the WANDB callback will be appended. Defaults to False.</span>
+<span class="sd">        verbose (int, optional): See the TensorFlow verbosity for more information. Defaults to 0.</span>
+<span class="sd">        comet (bool, optional): If True, the training will be under a Comet experiment. Defaults to False.</span>
+<span class="sd">        comet_exp (object, optional): The Comet experiment by which the training will happen. Defaults to None.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        object: Training history object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">STEPS_PER_EPOCH</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span> <span class="o">//</span> <span class="n">BATCH_SIZE</span>
+    
+    <span class="k">if</span> <span class="n">lr_method</span> <span class="o">==</span> <span class="s2">&quot;plateau&quot;</span> <span class="ow">or</span> <span class="n">lr_method</span> <span class="o">==</span> <span class="s2">&quot;normal&quot;</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="mf">0.005</span><span class="p">),</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mse&#39;</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mae&#39;</span><span class="p">,</span> <span class="s1">&#39;mse&#39;</span><span class="p">])</span>        
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+            <span class="n">optimizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">schedules</span><span class="o">.</span><span class="n">InverseTimeDecay</span><span class="p">(</span>
+                <span class="mf">0.005</span><span class="p">,</span> <span class="n">decay_steps</span><span class="o">=</span><span class="n">STEPS_PER_EPOCH</span><span class="o">*</span><span class="n">DECAY_EPOCHS</span><span class="p">,</span> <span class="n">decay_rate</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)),</span> 
+            <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mse&#39;</span><span class="p">,</span> 
+            <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mae&#39;</span><span class="p">,</span> <span class="s1">&#39;mse&#39;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">comet</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">comet_exp</span><span class="o">.</span><span class="n">train</span><span class="p">():</span>
+            <span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+                <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span>
+                <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span>
+                <span class="n">steps_per_epoch</span> <span class="o">=</span> <span class="n">STEPS_PER_EPOCH</span><span class="p">,</span>
+                <span class="n">epochs</span><span class="o">=</span><span class="n">max_epochs</span><span class="p">,</span>
+                <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">),</span>
+                <span class="n">callbacks</span><span class="o">=</span><span class="n">get_callbacks</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">logs_dir_name</span><span class="o">=</span><span class="n">logs_dir_name</span><span class="p">,</span> <span class="n">lr_method</span><span class="o">=</span><span class="n">lr_method</span><span class="p">,</span> <span class="n">append_wandb</span><span class="o">=</span><span class="n">append_wandb</span><span class="p">),</span>
+                <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> 
+                <span class="n">initial_epoch</span><span class="o">=</span><span class="n">initial_epoch</span><span class="p">)</span>   
+        <span class="k">return</span> <span class="n">history</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+            <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span>
+            <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span>
+            <span class="n">steps_per_epoch</span> <span class="o">=</span> <span class="n">STEPS_PER_EPOCH</span><span class="p">,</span>
+            <span class="n">epochs</span><span class="o">=</span><span class="n">max_epochs</span><span class="p">,</span>
+            <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">),</span>
+            <span class="n">callbacks</span><span class="o">=</span><span class="n">get_callbacks</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">logs_dir_name</span><span class="o">=</span><span class="n">logs_dir_name</span><span class="p">,</span> <span class="n">lr_method</span><span class="o">=</span><span class="n">lr_method</span><span class="p">,</span> <span class="n">append_wandb</span><span class="o">=</span><span class="n">append_wandb</span><span class="p">),</span>
+            <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span> 
+            <span class="n">initial_epoch</span><span class="o">=</span><span class="n">initial_epoch</span><span class="p">)</span>   
+        <span class="k">return</span> <span class="n">history</span></div>
+
+
+<div class="viewcode-block" id="compile_and_fit_lw"><a class="viewcode-back" href="../../../nucml.model.html#nucml.model.model_building.compile_and_fit_lw">[docs]</a><span class="k">def</span> <span class="nf">compile_and_fit_lw</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">BATCH_SIZE</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> 
+                    <span class="n">max_epochs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">DECAY_EPOCHS</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">lr_method</span><span class="o">=</span><span class="s2">&quot;plateau&quot;</span><span class="p">,</span> <span class="n">initial_epoch</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compile and fits a TensorFlow model.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        model (object): TensorFlow model to fit.</span>
+<span class="sd">        name (str): Name by which the model will be saved.</span>
+<span class="sd">        x_train (np.array): The X-train numpy array set.</span>
+<span class="sd">        y_train (np.array): The y-train numpy array.</span>
+<span class="sd">        x_test (np.array): The X-test numpy array set.</span>
+<span class="sd">        y_test (np.array): The y-test numpy array.</span>
+<span class="sd">        BATCH_SIZE (int, optional): Batch size for the tensorflow dataset. Defaults to 120.</span>
+<span class="sd">        max_epochs (int, optional): Max number of epochs to train for. Defaults to 5.</span>
+<span class="sd">        DECAY_EPOCHS (int, optional): Number of epochs before slightly decreasing the learning rate. Defaults to 10.</span>
+<span class="sd">        lr_method (str, optional): Type of learning rate adjustment method. Defaults to &quot;plateau&quot;.</span>
+<span class="sd">        initial_epoch (int, optional): Initial epoch of the provided model. Defaults to 0.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        object: Training history object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>     
+    <span class="n">STEPS_PER_EPOCH</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_train</span><span class="p">)</span> <span class="o">//</span> <span class="n">BATCH_SIZE</span>
+    
+    <span class="k">if</span> <span class="n">lr_method</span> <span class="o">==</span> <span class="s2">&quot;plateau&quot;</span> <span class="ow">or</span> <span class="n">lr_method</span> <span class="o">==</span> <span class="s2">&quot;normal&quot;</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="mf">0.001</span><span class="p">),</span> <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mse&#39;</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mae&#39;</span><span class="p">,</span> <span class="s1">&#39;mse&#39;</span><span class="p">])</span>        
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+            <span class="n">optimizer</span><span class="o">=</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">keras</span><span class="o">.</span><span class="n">optimizers</span><span class="o">.</span><span class="n">schedules</span><span class="o">.</span><span class="n">InverseTimeDecay</span><span class="p">(</span>
+                <span class="mf">0.001</span><span class="p">,</span> <span class="n">decay_steps</span><span class="o">=</span><span class="n">STEPS_PER_EPOCH</span><span class="o">*</span><span class="n">DECAY_EPOCHS</span><span class="p">,</span> <span class="n">decay_rate</span><span class="o">=</span><span class="mi">1</span><span class="p">)),</span> 
+            <span class="n">loss</span><span class="o">=</span><span class="s1">&#39;mse&#39;</span><span class="p">,</span> 
+            <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;mae&#39;</span><span class="p">,</span> <span class="s1">&#39;mse&#39;</span><span class="p">])</span>
+    <span class="c1"># model.summary()</span>
+    
+    <span class="n">model</span><span class="o">.</span><span class="n">load_weights</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot;./model_checkpoints/&quot;</span><span class="p">))</span>
+    <span class="n">history</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+        <span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="n">BATCH_SIZE</span><span class="p">,</span>
+        <span class="n">steps_per_epoch</span> <span class="o">=</span> <span class="n">STEPS_PER_EPOCH</span><span class="p">,</span>
+        <span class="n">epochs</span><span class="o">=</span><span class="n">max_epochs</span><span class="p">,</span>
+        <span class="n">validation_data</span><span class="o">=</span><span class="p">(</span><span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">),</span>
+        <span class="n">callbacks</span><span class="o">=</span><span class="n">get_callbacks</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">lr_method</span><span class="o">=</span><span class="n">lr_method</span><span class="p">),</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> 
+        <span class="n">initial_epoch</span><span class="o">=</span><span class="n">initial_epoch</span><span class="p">)</span>   
+    <span class="k">return</span> <span class="n">history</span></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<span class="c1"># def tf_dataset_gen(x, y, xt, yt, BUFFER_SIZE, BATCH_SIZE, N_TRAIN, gpu=False, multiplier=2, cache=False):</span>
+<span class="c1">#     if gpu == True:</span>
+<span class="c1">#         BATCH_SIZE = BATCH_SIZE * multiplier</span>
+<span class="c1">#         print(&quot;GPU: ON&quot;)</span>
+<span class="c1">#     train_dataset = tf.data.Dataset.from_tensor_slices((x.values, y.values)).shuffle(BUFFER_SIZE).repeat().batch(BATCH_SIZE)</span>
+<span class="c1">#     test_dataset = tf.data.Dataset.from_tensor_slices((xt.values, yt.values)).batch(BATCH_SIZE)</span>
+<span class="c1">#     if cache == True: # Ensures loader doesnt re-read data at each epoch.</span>
+<span class="c1">#         train_dataset = train_dataset.cache()</span>
+<span class="c1">#         test_dataset = test_dataset.cache()</span>
+<span class="c1">#     STEPS_PER_EPOCH = N_TRAIN//BATCH_SIZE</span>
+<span class="c1">#     print(&quot;BATCH SIZE: &quot;, BATCH_SIZE)</span>
+<span class="c1">#     print(&quot;STEPS PER EPOCH: &quot;, STEPS_PER_EPOCH)</span>
+<span class="c1">#     return train_dataset, test_dataset, STEPS_PER_EPOCH, BATCH_SIZE</span>
+
+
+<span class="c1"># def get_optimizer(lr_schedule):</span>
+<span class="c1">#     return tf.keras.optimizers.Adam(lr_schedule)</span>
+
+
+<span class="c1"># def compile_and_fit(model, name, train_dataset, test_dataset, STEPS_PER_EPOCH, BATCH_SIZE=None, </span>
+<span class="c1">#                     optimizer=None, max_epochs=10000, DECAY_EPOCHS=1000):</span>
+<span class="c1">#     lr_schedule = tf.keras.optimizers.schedules.InverseTimeDecay(</span>
+<span class="c1">#         0.001, decay_steps=STEPS_PER_EPOCH*DECAY_EPOCHS,</span>
+<span class="c1">#         decay_rate=1, staircase=False)</span>
+    
+<span class="c1">#     if optimizer is None:</span>
+<span class="c1">#         optimizer = get_optimizer(lr_schedule)</span>
+<span class="c1">#     model.compile(optimizer=optimizer,</span>
+<span class="c1">#                   loss=&#39;mse&#39;,</span>
+<span class="c1">#                   metrics=[&#39;mae&#39;, &#39;mse&#39;])</span>
+<span class="c1">#     model.summary()</span>
+<span class="c1">#     history = model.fit(</span>
+<span class="c1">#         train_dataset,</span>
+<span class="c1">#         steps_per_epoch = STEPS_PER_EPOCH,</span>
+<span class="c1">#         epochs=max_epochs,</span>
+<span class="c1">#         validation_data=test_dataset,</span>
+<span class="c1">#         callbacks=get_callbacks(name),</span>
+<span class="c1">#         verbose=0)        </span>
+<span class="c1">#     return history</span>
+
+
+<span class="c1"># def train_ensdf_network(strategy):</span>
+<span class="c1"># 	with strategy.scope():</span>
+<span class="c1"># 	    tiny_model = tf.keras.Sequential([</span>
+<span class="c1"># 	        layers.Dense(16, activation=&#39;elu&#39;, input_shape=(FEATURES,)),</span>
+<span class="c1"># 	        layers.Dense(1)])</span>
+<span class="c1"># 	    history = compile_and_fit(tiny_model, &#39;sizes/Tiny_CPU&#39;, train_dataset, </span>
+<span class="c1"># 	                                                 test_dataset, STEPS_PER_EPOCH_CPU, max_epochs=5000)</span>
+<span class="c1"># 	    return history</span>
+
+
+
+<span class="c1"># N_VALIDATION = len(x_test)</span>
+<span class="c1"># N_TRAIN = len(x_train)</span>
+<span class="c1"># FEATURES = len(x_train.columns)</span>
+<span class="c1"># BUFFER_SIZE = N_TRAIN</span>
+<span class="c1"># BATCH_SIZE_PER_REPLICA = 64</span>
+<span class="c1"># BATCH_SIZE = BATCH_SIZE_PER_REPLICA * strategy.num_replicas_in_sync</span>
+
+
+<span class="c1"># train_dataset, test_dataset, STEPS_PER_EPOCH_CPU, BATCH_SIZE_CPU = tf_dataset_gen(</span>
+<span class="c1">#     x_train, y_train, x_test, y_test, BUFFER_SIZE, BATCH_SIZE)</span>
+
+
+
+<span class="c1"># # def compile_and_fit(model, name, train_dataset, test_dataset, STEPS_PER_EPOCH, BATCH_SIZE=None, </span>
+<span class="c1"># #                     optimizer=None, max_epochs=10000, DECAY_EPOCHS=1000):</span>
+<span class="c1"># def compile_and_fit(model, name, x_train, y_train, x_test, y_test, STEPS_PER_EPOCH, BATCH_SIZE=None, </span>
+<span class="c1">#                     optimizer=None, max_epochs=10000, DECAY_EPOCHS=1000):</span>
+<span class="c1">#     lr_schedule = tf.keras.optimizers.schedules.InverseTimeDecay(</span>
+<span class="c1">#         0.001, decay_steps=STEPS_PER_EPOCH*DECAY_EPOCHS,</span>
+<span class="c1">#         decay_rate=1, staircase=False)</span>
+    
+<span class="c1">#     if optimizer is None:</span>
+<span class="c1">#         optimizer = get_optimizer(lr_schedule)</span>
+<span class="c1">#     model.compile(optimizer=optimizer,</span>
+<span class="c1">#                   loss=&#39;mse&#39;,</span>
+<span class="c1">#                   metrics=[&#39;mae&#39;, &#39;mse&#39;])</span>
+<span class="c1">#     model.summary()</span>
+<span class="c1"># #     history = model.fit(</span>
+<span class="c1"># #         train_dataset,</span>
+<span class="c1"># #         steps_per_epoch = STEPS_PER_EPOCH,</span>
+<span class="c1"># #         epochs=max_epochs,</span>
+<span class="c1"># #         validation_data=test_dataset,</span>
+<span class="c1"># #         callbacks=get_callbacks(name),</span>
+<span class="c1"># #         verbose=1)   </span>
+<span class="c1">#     history = model.fit(</span>
+<span class="c1">#         x_train, y_train,</span>
+<span class="c1">#         batch_size=BATCH_SIZE,</span>
+<span class="c1">#         steps_per_epoch = STEPS_PER_EPOCH,</span>
+<span class="c1">#         epochs=max_epochs,</span>
+<span class="c1">#         validation_data=(x_test, y_test),</span>
+<span class="c1">#         callbacks=get_callbacks(name),</span>
+<span class="c1">#         verbose=1)   </span>
+<span class="c1">#     return history</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Pedro Jr. Vicente-Valdez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
