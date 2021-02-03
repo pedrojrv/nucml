@@ -1,19 +1,5 @@
-# NucML
-
-Pedro Vicente-Valdez\
-Nuclear Engineering PhD Candidate - UC Berkeley \
-pedro.vicentevz@berkeley.edu
-
-
-NucML is the first and only end-to-end python-based supervised machine learning pipeline for enhanced bias-free nuclear data generation and evaluation to support the advancement of next-generation nuclear systems. It offers capabilities that allows researchers to navigate through each step of the ML-based nuclear data cross section evaluation pipeline. Some of the supported activities include include dataset parsing and compilation of reaction data, exploratory data analysis, data manipulation and feature engineering, model training and evaluation, and validation via criticality benchmarks. Some of the inherit benefits of this approach are the reduced human-bias in the generation and solution and the fast iteration times. Resulting data from these models can aid the current NDE and help decisions in uncertain scenarios.
-
-<!-- # TODO: UNCOMMENT PERIODIC TABLE ONCE GITHUB PUBLIC in AME PARSING UTILITIES
-# TODO: ADD LINK TO DOWNLOAD EVALUATED DATA
-# TODO: FIX GET FOR EXFOR ENDF DATA UTILITIES IF NEEDED 
-# TODO: ADD ABILITY TO ADD JUST SINGLE C4 FILES -->
-
-# Installation
-
+Installation Guide
+==================
 
 You can simply install NucML using `pip`:
 
@@ -42,5 +28,3 @@ python generate_exfor.py
 This will take a couple of minutes. Running this script will create the CSV_Files directory and all the content including all CSV files. Additionally, a `tmp` directory will be created containing files to create the CSV files. Feel free to delete it after the process has finish. The cloned repository does not only contain the raw data files but a lot of turials on how to use all NucML capabilities. For more information in the structure please visit the repos README.md The best way to get starte is through those jupyter notebooks. 
 
 NOTE: This will create a database based on the latest pulled version of the EXFOR database. For information on what database look at the clone repository information. 
-
-
