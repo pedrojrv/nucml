@@ -6,12 +6,40 @@
 Welcome to NucML's documentation!
 =================================
 
-.. toctree::
-   :maxdepth: 3
-   :caption: Contents:
+NucML is a python toolbox to aid the ML-enhanced Nuclear Data Evaluation pipeline.
 
-   installation
-   nucml
+.. toctree::
+    :maxdepth: 1
+    :caption: OVERVIEW
+
+    about
+
+.. toctree::
+    :maxdepth: 2
+    :caption: GET STARTED
+
+    getting-started
+    basic-walkthrough
+
+.. toctree::
+    :maxdepth: 3
+    :caption: NAVIGATING THE NDE
+
+    working-with-nucml
+
+.. toctree::
+    :maxdepth: 3
+    :caption: DOCUMENTATION
+
+    nucml
+
+.. toctree::
+    :maxdepth: 1
+    :caption: FAQ AND CONTACT
+
+    faq
+    feedback-support
+
 
 
 Indices and tables
@@ -20,3 +48,5 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+
