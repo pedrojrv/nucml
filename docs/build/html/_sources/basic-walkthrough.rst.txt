@@ -171,8 +171,7 @@ Under the hood, the ace utilities performs several things:
 
 ..	note::
 
-	The benchmark name is based on the Benchmark Catalog. If a benchmark of choice is not incldued you can include
-    your own by following the instructions in the Benchmarks documentation. 
+	The benchmark name is based on the Benchmark Catalog. If a benchmark of choice is not incldued you can include your own by following the instructions in the Benchmarks documentation. 
 
 
 Next, we can generate a `bash` script that will allow us to run all benchmark input files (in this case is just one) and transform 

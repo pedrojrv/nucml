@@ -4,6 +4,10 @@
 
     All examples provided here are based on the ML_Nuclear_Data repository tutorials. 
 
+NucML is built on Python and provides various methods and tools to navigate through the ML-NDE pipeline. In this section, we go through a brief overview 
+of each stage and describe the applicable capabilities and the underlying philosophy. In general, we intend to limit our discussion to particle-induced 
+reaction cross-section evaluations. 
+
 Loading Data
 ============
 
@@ -19,13 +23,6 @@ Exploring Data
 
     eda-datasets
 
-Processing Data
-===============
-
-.. toctree::
-    :maxdepth: 2
-
-    processing-datasets
 
 Modeling Data
 =============
@@ -33,6 +30,14 @@ Modeling Data
     :maxdepth: 2
 
     modeling-datasets
+
+Processing Data
+===============
+
+.. toctree::
+    :maxdepth: 2
+
+    processing-datasets
 
 Validating Data
 ===============

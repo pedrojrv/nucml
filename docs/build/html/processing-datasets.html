@@ -39,8 +39,8 @@
     <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Modeling Datasets" href="modeling-datasets.html" />
-    <link rel="prev" title="Exploratory Data Analysis" href="eda-datasets.html" /> 
+    <link rel="next" title="Validating ML Models" href="validating-models.html" />
+    <link rel="prev" title="Modeling Datasets" href="modeling-datasets.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -98,11 +98,11 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html">Loading Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#exploring-data">Exploring Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#modeling-data">Modeling Data</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="working-with-nucml.html#processing-data">Processing Data</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Processing Datasets</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#modeling-data">Modeling Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#validating-data">Validating Data</a></li>
 </ul>
 <p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
@@ -184,7 +184,17 @@
             
   <div class="section" id="processing-datasets">
 <span id="processing-datasets-label"></span><h1>Processing Datasets<a class="headerlink" href="#processing-datasets" title="Permalink to this headline">¶</a></h1>
-<p>Documentation in progress. Please look at the ML_Nuclear_Data repository for hands-on tutorials on transforming and make ML-ready datasets using NucML.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Documentation in progress. Please look at the ML_Nuclear_Data repository for hands-on tutorials on processing ML genereated cross sections using NucML.</p>
+</div>
+<p>In the processing stage, evaluated data is transformed into formats (i.e. ACE files) readable by user codes like SERPENT and MCNP. Having a great model
+is only half the process. Tools are needed to efficiently create entire evaluated libraries consisting of cross-sections for all needed isotopes and
+reaction channels. Currently, NucML offers the capabilities to create isotopic $.ace$ files by simply supplying a user-trained model. The python package
+will take care of querying the model for predictions using the same energy grid as the original .ACE files for compatibility. Additionally, some stability
+options are included. Since these algorithms are not expected to be perfect, textit{NucML Ace} is built under the assumption that the best solution is a
+hybrid solution. In other words, traditional tools must work together with ML models to create a good evaluation. By default, textit{NucML Ace} will
+stabilize the 1/v region using evaluated library values.</p>
 </div>
 
 
@@ -193,8 +203,8 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="modeling-datasets.html" class="btn btn-neutral float-right" title="Modeling Datasets" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="eda-datasets.html" class="btn btn-neutral float-left" title="Exploratory Data Analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="validating-models.html" class="btn btn-neutral float-right" title="Validating ML Models" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="modeling-datasets.html" class="btn btn-neutral float-left" title="Modeling Datasets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

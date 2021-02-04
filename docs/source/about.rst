@@ -11,7 +11,6 @@ and validation via criticality benchmarks. All these activites are supported by 
 NucML package.
 
 .. image:: ../images/nucml_submodules.JPG
-  :width: 400
   :alt: NucML Submodules
 
 

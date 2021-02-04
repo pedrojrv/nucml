@@ -15,5 +15,5 @@ You can run the configuration file as many times as you need at the beggining of
 .. code::
 
   # configure nucml paths
-	python -c "import nucml.configure as config; config.configure('your/working/directory/here', 'path/to/ACE/')"
+  python -c "import nucml.configure as config; config.configure('your/working/directory/here', 'path/to/ACE/')"
 

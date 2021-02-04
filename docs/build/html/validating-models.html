@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>Validating Datasets &mdash; NucML 1.0.0 documentation</title>
+  <title>Validating ML Models &mdash; NucML 1.0.0 documentation</title>
   
 
   
@@ -40,7 +40,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="nucml package" href="nucml.html" />
-    <link rel="prev" title="Modeling Datasets" href="modeling-datasets.html" /> 
+    <link rel="prev" title="Processing Datasets" href="processing-datasets.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -98,10 +98,10 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html">Loading Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#exploring-data">Exploring Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#processing-data">Processing Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#modeling-data">Modeling Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#processing-data">Processing Data</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="working-with-nucml.html#validating-data">Validating Data</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Validating Datasets</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Validating ML Models</a></li>
 </ul>
 </li>
 </ul>
@@ -163,7 +163,7 @@
         
           <li><a href="working-with-nucml.html">Loading Data</a> &raquo;</li>
         
-      <li>Validating Datasets</li>
+      <li>Validating ML Models</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -182,10 +182,28 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="validating-datasets">
-<span id="validating-datasets-label"></span><h1>Validating Datasets<a class="headerlink" href="#validating-datasets" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="validating-ml-models">
+<span id="validating-datasets-label"></span><h1>Validating ML Models<a class="headerlink" href="#validating-ml-models" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>Documentation in progress. Please look at the ML_Nuclear_Data repository for hands-on tutorials on validating ML-models using
 criticality benchmarks with SERPENT2 using NucML.</p>
+</div>
+<p>Validation is perhaps the most important step in the entire pipeline. The evaluated data must perform at least better in applicable benchmarks than the previously
+released version of the library. In ML solutions, generalization is the end-goal. Algorithms usually optimize and try to minimize a loss function but EXFOR is far
+from perfect. A model that generalizes well to other EXFOR datapoints is not necessarily the best model. Therefore, we cannot rely on performance metrics derived
+from EXFOR data (even if splitted or cross-validated) to select the best performing model. Instead, a series of trained models need to be tested and validated
+using all available benchmarks. The model with the best average performance can be regarded as the best model. This is quite different from both established NDE
+and traditional ML but so is the nature of the challenge.</p>
+<img alt="NucML Submodules" src="_images/nucml_benchmark.png" />
+<p>The benchmarking utilities provided are built on top of this methodology. Once a series of models are trained there are various steps needed to set up the validation
+phase. These include (1) querying the model for relevant cross-section data for a given benchmark, (2) processing the results and converting them into appropriate
+user-code formats, (3) building metadata files used by the same codes, (4) modify the benchmark inputs accordingly, (5) run the calculation, and (6) analyze the output.
+This process has to be performed for each trained model and for each benchmark. By making use of a benchmark template repository, NucML can seamlessly run all steps
+of the validation phase for all trained models and all available benchmarks. Once all necessary files are created, a single
+bash script is provided containing all necessary instructions to run all benchmark cases for all models. The results can be collected quickly from the output of all
+calculations using built-in functionalities. Currently, only SERPENT2 is supported. Additional capabilities include a fast and easy comparison between ML- and
+ENDF-based benchmark calculations for fast reporting.</p>
 </div>
 
 
@@ -195,7 +213,7 @@ criticality benchmarks with SERPENT2 using NucML.</p>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="nucml.html" class="btn btn-neutral float-right" title="nucml package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="modeling-datasets.html" class="btn btn-neutral float-left" title="Modeling Datasets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="processing-datasets.html" class="btn btn-neutral float-left" title="Processing Datasets" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
