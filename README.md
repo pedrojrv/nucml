@@ -15,3 +15,18 @@ NucML is the first and only end-to-end python-based supervised machine learning 
 # Installation and Setup
 
 Please refer to the Installation guide in the official documentation here.
+
+
+- transfer learning fine tuning
+- fraud detection - autoencoders - anomaly detection - 
+- high level questions about how to solve a problem
+- leetcode, hackerrank not like this
+- here is some of the code, how would you optimize this model
+- what are the steps to put in production
+- coderpad - technical ones pair programming
+
+- openai - extremely technical - transformer - data engineering, machine learning engineer
+
+- ml engineering, descirbe architecture, for ai edu there were a lot of questions on bias consideration on model development. hour long lecture on transformers, 
+
+- knowing one architectuer well (open ended talk to me, tell me about a dataset and what model you would use). know the underlying architectur.
