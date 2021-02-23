@@ -1,4 +1,4 @@
-.. _validating-datasets-label:
+.. _validating-ml-models-label:
 
 Validating ML Models
 ====================

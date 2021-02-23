@@ -1,5 +1,8 @@
 .. _basic-walkthrough-label:
 
+.. Note::
+
+    Documentation in progress. 
 
 Basic Walkthrough
 =================
@@ -7,7 +10,7 @@ Basic Walkthrough
 The cloned repository does not only contain the information necessary to start generating the datasets but also a variety of 
 tutorial notebooks that demonstrate the capabilities of NucML. Be sure to check them out. For more information in the contents please 
 refer to the repository README file in GitHub. If you haven't installed NucmL yet, please follow the instructions in 
-the :ref:`Installation Guide<getting-started-label>`.
+the :ref:`Installation Guide<installation-guide-label>`.
 
 In this section we summarize the main pipeline steps for a complete nuclear data neutron-induce cross section evaluation including 
 loading the data, modeling, and validating using criticality benchmarks. 
@@ -219,4 +222,4 @@ The resulting `DataFrame` contains the model name, benchmark name, the multiplic
 
 Congratulations, you have performed an end-to-end ML-enhanced nuclear data evaluation using the U-233 Jezebel Benchmark. These are just some of
 the general submodules that NucML offers to help you navigate through the evaluation pipeline. Try going through the 
-:ref:`Working with NucML<working-with-nucml-label>` section for more information and tutorials. 
+:ref:`Navigating the NDE<navigating-the-nde-label>` section for more information and tutorials. 

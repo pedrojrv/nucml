@@ -32,14 +32,14 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-    <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="What is NucML?" href="about.html" /> 
+    <link rel="next" title="What is NucML?" href="what-is-nucml.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -86,20 +86,20 @@
             
               <p class="caption"><span class="caption-text">OVERVIEW</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="about.html">What is NucML?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="what-is-nucml.html">What is NucML?</a></li>
 </ul>
 <p class="caption"><span class="caption-text">GET STARTED</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
 <p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html">Loading Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#exploring-data">Exploring Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#modeling-data">Modeling Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#processing-data">Processing Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#validating-data">Validating Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html">Loading Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#modeling-data">Modeling Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
 <p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
@@ -108,7 +108,7 @@
 <p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
-<li class="toctree-l1"><a class="reference internal" href="feedback-support.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
 </ul>
 
             
@@ -176,55 +176,74 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="welcome-to-nucml-s-documentation">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Documentation in progress.</p>
+</div>
+<div class="section" id="welcome-to-nucml-s-documentation">
 <h1>Welcome to NucML’s documentation!<a class="headerlink" href="#welcome-to-nucml-s-documentation" title="Permalink to this headline">¶</a></h1>
 <p>NucML is a python toolbox to aid the ML-enhanced Nuclear Data Evaluation pipeline.</p>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">OVERVIEW</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="about.html">What is NucML?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="what-is-nucml.html">What is NucML?</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">GET STARTED</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Installation Guide</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="getting-started.html#install-nucml-and-dependencies">1. Install NucML and Dependencies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getting-started.html#configure-nucml-and-generate-the-exfor-datasets">2. Configure NucML and Generate the EXFOR Datasets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="getting-started.html#other-dependencies">3. Other Dependencies</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="basic-walkthrough.html">Basic Walkthrough</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="basic-walkthrough.html#load-the-neutrons-exfor-data">1. Load the Neutrons EXFOR Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="basic-walkthrough.html#building-the-ml-models">2. Building the ML Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="basic-walkthrough.html#generating-benchmark-files">4. Generating Benchmark Files</a></li>
-<li class="toctree-l2"><a class="reference internal" href="basic-walkthrough.html#validating-the-ml-models">5. Validating the ML Models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="basic-walkthrough.html#next-steps">6. Next Steps</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
 </div>
 <div class="toctree-wrapper compound">
 <p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html">Loading Data</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="loading-datasets.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html">Loading Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/1_Loading_AME.html">Atomic Mass Evaluation (2016)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loading-datasets-exfor.html">Experimental Nuclear Reaction Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loading-datasets-xundl.html">Reference Input Parameter Library</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loading-datasets-endf.html">Evaluated Nuclear Data Libraries</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#exploring-data">Exploring Data</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="eda-datasets.html">Exploratory Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="exploratory-data-analysis.html">Exploratory Data Analysis</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#modeling-data">Modeling Data</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#modeling-data">Modeling Data</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="modeling-datasets.html">Modeling Datasets</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#processing-data">Processing Data</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="processing-datasets.html">Processing Datasets</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#validating-data">Validating Data</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="validating-models.html">Validating ML Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="validating-ml-models.html">Validating ML Models</a></li>
 </ul>
 </li>
 </ul>
@@ -245,6 +264,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="nucml.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nucml.html#module-nucml.config">nucml.config module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nucml.html#module-nucml.configure">nucml.configure module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nucml.html#module-nucml.datasets">nucml.datasets module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nucml.html#module-nucml.general_utilities">nucml.general_utilities module</a></li>
@@ -258,7 +278,7 @@
 <p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
-<li class="toctree-l1"><a class="reference internal" href="feedback-support.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
 </ul>
 </div>
 </div>
@@ -277,7 +297,7 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="about.html" class="btn btn-neutral float-right" title="What is NucML?" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="what-is-nucml.html" class="btn btn-neutral float-right" title="What is NucML?" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

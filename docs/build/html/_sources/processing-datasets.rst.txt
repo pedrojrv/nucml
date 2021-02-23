@@ -16,3 +16,7 @@ will take care of querying the model for predictions using the same energy grid 
 options are included. Since these algorithms are not expected to be perfect, \textit{NucML Ace} is built under the assumption that the best solution is a 
 hybrid solution. In other words, traditional tools must work together with ML models to create a good evaluation. By default, \textit{NucML Ace} will 
 stabilize the 1/v region using evaluated library values.
+
+
+
+https://github.com/pedrojrv/ML_Nuclear_Data/blob/master/Benchmarks/0_Generating_MLXS_Benchmark.ipynb

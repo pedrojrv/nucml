@@ -26,7 +26,7 @@ setuptools.setup(
     },
     license="GNU General Public License v3 or later (GPLv3+)",
     include_package_data=True,
-    install_requires=["natsort", "xgboost", "pandas", "plotly", "matplotlib", "scikit-learn", "seaborn", "imageio", "wandb", "tensorflow"], 
+    install_requires=["natsort", "pandas", "plotly", "matplotlib", "scikit-learn", "seaborn", "imageio", "wandb", "google-cloud-bigquery"], 
     python_requires='>=3.6',
 )
 

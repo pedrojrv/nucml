@@ -32,15 +32,15 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-    <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Loading Data" href="working-with-nucml.html" />
-    <link rel="prev" title="Installation Guide" href="getting-started.html" /> 
+    <link rel="next" title="Loading Data" href="navigating-the-nde.html" />
+    <link rel="prev" title="Installation Guide" href="installation-guide.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -87,11 +87,11 @@
             
               <p class="caption"><span class="caption-text">OVERVIEW</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="about.html">What is NucML?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="what-is-nucml.html">What is NucML?</a></li>
 </ul>
 <p class="caption"><span class="caption-text">GET STARTED</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Basic Walkthrough</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#load-the-neutrons-exfor-data">1. Load the Neutrons EXFOR Data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#building-the-ml-models">2. Building the ML Models</a></li>
@@ -103,11 +103,11 @@
 </ul>
 <p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html">Loading Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#exploring-data">Exploring Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#modeling-data">Modeling Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#processing-data">Processing Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#validating-data">Validating Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html">Loading Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#modeling-data">Modeling Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
 <p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
@@ -116,7 +116,7 @@
 <p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
-<li class="toctree-l1"><a class="reference internal" href="feedback-support.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
 </ul>
 
             
@@ -184,12 +184,40 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="basic-walkthrough">
-<span id="basic-walkthrough-label"></span><h1>Basic Walkthrough<a class="headerlink" href="#basic-walkthrough" title="Permalink to this headline">¶</a></h1>
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="admonition note" id="basic-walkthrough-label">
+<p class="admonition-title">Note</p>
+<p>Documentation in progress.</p>
+</div>
+<div class="section" id="basic-walkthrough">
+<h1>Basic Walkthrough<a class="headerlink" href="#basic-walkthrough" title="Permalink to this headline">¶</a></h1>
 <p>The cloned repository does not only contain the information necessary to start generating the datasets but also a variety of
 tutorial notebooks that demonstrate the capabilities of NucML. Be sure to check them out. For more information in the contents please
 refer to the repository README file in GitHub. If you haven’t installed NucmL yet, please follow the instructions in
-the <a class="reference internal" href="getting-started.html#getting-started-label"><span class="std std-ref">Installation Guide</span></a>.</p>
+the <a class="reference internal" href="installation-guide.html#installation-guide-label"><span class="std std-ref">Installation Guide</span></a>.</p>
 <p>In this section we summarize the main pipeline steps for a complete nuclear data neutron-induce cross section evaluation including
 loading the data, modeling, and validating using criticality benchmarks.</p>
 <div class="section" id="load-the-neutrons-exfor-data">
@@ -359,7 +387,7 @@ the resulting <cite>.m</cite> file into a <cite>.mat</cite> file.</p>
 <h2>6. Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
 <p>Congratulations, you have performed an end-to-end ML-enhanced nuclear data evaluation using the U-233 Jezebel Benchmark. These are just some of
 the general submodules that NucML offers to help you navigate through the evaluation pipeline. Try going through the
-<a class="reference internal" href="working-with-nucml.html#working-with-nucml-label"><span class="std std-ref">Working with NucML</span></a> section for more information and tutorials.</p>
+<a class="reference internal" href="navigating-the-nde.html#navigating-the-nde-label"><span class="std std-ref">Navigating the NDE</span></a> section for more information and tutorials.</p>
 </div>
 </div>
 
@@ -369,8 +397,8 @@ the general submodules that NucML offers to help you navigate through the evalua
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="working-with-nucml.html" class="btn btn-neutral float-right" title="Loading Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="getting-started.html" class="btn btn-neutral float-left" title="Installation Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="navigating-the-nde.html" class="btn btn-neutral float-right" title="Loading Data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="installation-guide.html" class="btn btn-neutral float-left" title="Installation Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

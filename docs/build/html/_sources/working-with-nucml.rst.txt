@@ -1,23 +1,33 @@
 .. _working-with-nucml-label:
 
+
 .. Note::
 
-    All examples provided here are based on the ML_Nuclear_Data repository tutorials. 
+    Documentation in progress. 
 
-NucML is built on Python and provides various methods and tools to navigate through the ML-NDE pipeline. In this section, we go through a brief overview 
-of each stage and describe the applicable capabilities and the underlying philosophy. In general, we intend to limit our discussion to particle-induced 
-reaction cross-section evaluations. 
 
 Loading Data
 ============
 
+Identifying, parsing, and formatting all nuclear data sources can be a tedious time-consuming job. NucML contains a variety of utilities 
+that make it easy to download and load the latest versions of the EXFOR, RIPL, ENDF, and AME libraries easily. To convert these into ML-friendly datasets, 
+parsing utilities are available to read library-native formats, restructure the information, and store the resulting data structure into single 
+easy-to-use files.
+
 .. toctree::
     :maxdepth: 2
 
-    loading-datasets
+    loading-datasets-ame
+    loading-datasets-exfor
+    loading-datasets-xundl
+    loading-datasets-endf
 
-Exploring Data
-==============
+Exploratory Data Analysis
+=========================
+
+Thoroughly exploring and analyzing your data before modeling is very important. Both EXFOR and XUNDL/RIPL are very unconventional datasets compared 
+to traditional structured data. Care must be taken to understand the strengths but also limitations.
+
 .. toctree::
     :maxdepth: 2
 
@@ -26,13 +36,22 @@ Exploring Data
 
 Modeling Data
 =============
+
+In the evaluation phase of the traditional NDE pipeline, relevant data is used to guide physics-based model calculations which result in best estimates, 
+dependent on data availability, of mean values including uncertainties and covariances. These values can then form part of one or more regional libraries (i.e., ENDF). 
+As previously mentioned, the ML-NDE pipeline instead makes use of trained ML models to create reaction cross-section data and therefore to generate ML-based libraries. 
+The following section provides a set of example python scripts to train your own models.
+
 .. toctree::
     :maxdepth: 2
 
     modeling-datasets
 
-Processing Data
-===============
+Processing Data for Monte Carlo
+===============================
+
+This section explains the philosophy behind the processing utilities and provides tutorial notebooks on how to use them. While it is possible to use 
+raw predictions in benchmark calculations we have found that a hybrid aproach usually outperforms both pure ENDF- or ML-based solutions. 
 
 .. toctree::
     :maxdepth: 2
@@ -41,6 +60,10 @@ Processing Data
 
 Validating Data
 ===============
+
+After processing your data, the final step is to validate the models using benchmark calculations. It is recommended that a model is 
+tested using not one but multiple benchmarks. 
+
 .. toctree::
     :maxdepth: 2
 

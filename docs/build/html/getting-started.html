@@ -93,7 +93,7 @@
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#install-nucml-and-dependencies">1. Install NucML and Dependencies</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#install-dependencies">Install Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#installing-dependencies">Installing Dependencies</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#configure-nucml-and-generate-the-exfor-datasets">2. Configure NucML and Generate the EXFOR Datasets</a></li>
@@ -105,9 +105,9 @@
 <p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html">Loading Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#exploring-data">Exploring Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#modeling-data">Modeling Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#processing-data">Processing Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#validating-data">Validating Data</a></li>
 </ul>
 <p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
@@ -185,20 +185,22 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="installation-guide">
-<span id="getting-started-label"></span><h1>Installation Guide<a class="headerlink" href="#installation-guide" title="Permalink to this headline">¶</a></h1>
-<p>NucML is a python toolbox and can be installed using pip along with all the needed dependencies.</p>
-<div class="section" id="install-nucml-and-dependencies">
-<h2>1. Install NucML and Dependencies<a class="headerlink" href="#install-nucml-and-dependencies" title="Permalink to this headline">¶</a></h2>
+  <div class="admonition note" id="getting-started-label">
+<p class="admonition-title">Note</p>
+<p>Documentation in progress.</p>
+</div>
+<div class="section" id="installation-guide">
+<h1>Installation Guide<a class="headerlink" href="#installation-guide" title="Permalink to this headline">¶</a></h1>
 <p>NucML uses <a class="reference external" href="https://numpy.org/doc/stable/contents.html">Numpy Arrays</a> and <a class="reference external" href="https://pandas.pydata.org">Pandas DataFrame’s</a>
 as the main data objects. Each step of the evaluation pipeline requires different utilities including parsing utilities, data processing tools,
 and Machine Learning packages including TensorFlow, XGBoost, and Scikit-learn.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>We recommend you install into a <a class="reference external" href="https://docs.conda.io/en/latest/">conda environment</a>.</p>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
+<div class="section" id="install-nucml-and-dependencies">
+<h2>1. Install NucML and Dependencies<a class="headerlink" href="#install-nucml-and-dependencies" title="Permalink to this headline">¶</a></h2>
+<p>NucML is a python toolbox and can be installed using <code class="code docutils literal notranslate"><span class="pre">pip</span></code> along with all the needed dependencies. It is recommended that you create
+a <code class="code docutils literal notranslate"><span class="pre">conda</span></code> environment and then install <code class="code docutils literal notranslate"><span class="pre">nucml</span></code>. You can download <code class="code docutils literal notranslate"><span class="pre">conda</span></code> <a class="reference external" href="https://docs.conda.io/en/latest/">here</a>.
+Once downloaded you can write the following commands on your anaconda shell:</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
 <p>Since TensorFlow only supports Python versions up to 3.8, NucML must be install in an enviornment with Python Version =&lt; 3.8.</p>
 </div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># create and activate conda environment</span>
@@ -208,83 +210,69 @@ conda activate ml_nuclear_env
 <span class="c1"># Make sure the python version is not higher than 3.8</span>
 python -V
 
-<span class="c1"># install nucml</span>
+<span class="c1"># install nucml and tensorflow docs</span>
 pip install nucml
+pip install git+https://github.com/tensorflow/docs
 </pre></div>
 </div>
-<div class="section" id="install-dependencies">
-<h3>Install Dependencies<a class="headerlink" href="#install-dependencies" title="Permalink to this headline">¶</a></h3>
-<p>NucML needs the following high dependencies and their dependencies intalled in order to work:</p>
-<ul class="simple">
-<li><p>natsort</p></li>
-<li><p>wandb</p></li>
-<li><p>pandas</p></li>
-<li><p>plotly</p></li>
-<li><p>matplotlib</p></li>
-<li><p>scikit-learn</p></li>
-<li><p>seaborn</p></li>
-<li><p>imageio</p></li>
-<li><p>xgboost</p></li>
-<li><p>tensorflow</p></li>
-</ul>
-<p>However, you can choose to install the package without these packages.</p>
+<div class="section" id="installing-dependencies">
+<h3>Installing Dependencies<a class="headerlink" href="#installing-dependencies" title="Permalink to this headline">¶</a></h3>
+<p>Before moving foward, you need to install both <code class="code docutils literal notranslate"><span class="pre">XGBoost</span></code> and <code class="code docutils literal notranslate"><span class="pre">TensorFlow</span></code>. These are not provided by default
+as a dependency in NucML. We leave these two packages out in case the user already has or plans to install both <cite>XGBoost</cite> and
+<cite>TensorFlow</cite> with GPU support. Please follow the instructions in the packages documentation for installation instructions.
+If you do not care about GPU support and just want to get started with <code class="code docutils literal notranslate"><span class="pre">NucML</span></code>, feel free to install both packages using:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># install nucml</span>
-pip install nucml --no-deps
+pip install tensorflow xgboost
 </pre></div>
 </div>
-<p>This is desirable when you first want to build, for example, TensorFlow with GPU support. XGBoost is automatically built with GPU support with pip.</p>
 </div>
 </div>
 <div class="section" id="configure-nucml-and-generate-the-exfor-datasets">
 <h2>2. Configure NucML and Generate the EXFOR Datasets<a class="headerlink" href="#configure-nucml-and-generate-the-exfor-datasets" title="Permalink to this headline">¶</a></h2>
-<p>Before exploring any functionalities all EXFOR datasets need to be generated. NucML is built to be versatile in terms of working directories,
-however, a suggested structure is provided here. The working directory is where all metadata files from all various Datasources including
-ACE, ENDF, EXFOR, and ENSDF files are located. The ML_Nuclear_Data repository contains some pre-generated datasets and everything needed to
+<p>Before exploring any functionalities, all EXFOR datasets need to be generated. NucML is built around a defined working directory. This
+has been uploaded to GitHub as a repository for you to download. It contains all metadata files from all various datasources including
+ACE, ENDF, EXFOR, and ENSDF. The <code class="code docutils literal notranslate"><span class="pre">ML_Nuclear_Data</span></code> repository also contains some pre-generated datasets and everything needed to
 produce the heavier EXFOR-based datasets.</p>
-<p>First, clone the repository by either downloading it directly from GitHub or using the command line.</p>
+<p>First, clone the repository by either downloading and unzipping it directly from <a class="reference external" href="https://github.com/pedrojrv/ML_Nuclear_Data">GitHub</a>  or by
+using the command line.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># navigate to the directory of your choice - change it to your own</span>
 <span class="nb">cd</span> /Users/pedrovicentevaldez/Desktop/
 
-    <span class="c1"># clone the ml nuclear data repository</span>
-    git clone https://github.com/pedrojrv/ML_Nuclear_Data.git
+<span class="c1"># clone the ml nuclear data repository</span>
+git clone https://github.com/pedrojrv/ML_Nuclear_Data.git
 </pre></div>
 </div>
-<p>In the rest of the setup we assume you cloned the repository in your Desktop.</p>
+<p>In the rest of the setup it is assumeed you cloned the repository to your Desktop.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If downloaded directly from GitHub, make sure to unzip the file.</p>
+<p>Feel free to rename the <code class="code docutils literal notranslate"><span class="pre">ML_Nuclear_Data</span></code> directory now rather than later as it can cause some issues.</p>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Feel free to rename the ML_Nuclear_Data directory. If you do so, just change the rest of the instructions to fit your directory name.</p>
-</div>
-<p>NucML makes use of a configuration file to get the paths to the generated data based on the working directory structure. Since we are using
-the ML_Nuclear_Data repository the configuration is easy.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># navigate to the cloned repo</span>
+<p>NucML makes use of a configuration file to get the paths to the generated data based on the working directory structure. Having
+downloaded the repository, it is time to tell <code class="code docutils literal notranslate"><span class="pre">NucML</span></code> where is it located. Write the following commands in your terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># activate your conda environment where nucml is installed</span>
+conda activate ml_nuclear_env
+
+<span class="c1"># navigate to the cloned repo</span>
 <span class="nb">cd</span> /Users/pedrovicentevaldez/Desktop/ML_Nuclear_Data
 
-    <span class="c1"># configure nucml paths</span>
-    python -c <span class="s2">&quot;import nucml.configure as config; config.configure(&#39;.&#39;, &#39;ACE/&#39;)&quot;</span>
+<span class="c1"># configure nucml paths</span>
+python -c <span class="s2">&quot;import nucml.configure as config; config.configure(&#39;.&#39;, &#39;ACE/&#39;)&quot;</span>
 </pre></div>
 </div>
-<p>Now we are ready to generate the EXFOR datasets. A python script is provided in the ML_Nuclear_Data repo to help you get started quickly.</p>
+<p>Now, we are ready to generate the EXFOR datasets. A utility python script is provided to help you get started quickly.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This will generate EXFOR datasets for all avaliable projectiles and will therefore take a couple of minutes.</p>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>NOTE: This will create a database based on the latest version of the EXFOR files avaliable in the ML_Nuclear_Data repository.</p>
-</div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># navigate to the cloned repo - if already there ignore</span>
 <span class="nb">cd</span> /Users/pedrovicentevaldez/Desktop/ML_Nuclear_Data
 
-    <span class="c1"># generate the exfor datasets</span>
-    python generate_exfor.py
+<span class="c1"># generate the exfor datasets</span>
+python generate_exfor.py
 </pre></div>
 </div>
-<p>Running this script will create the CSV_Files directory within the EXFOR folder. Additionally, a tmp directory will also created containing
-helper files used in the creation of the final datasets. Feel free to delete this directory after the process has finish.</p>
+<p>Running this script will create a <code class="code docutils literal notranslate"><span class="pre">CSV_Files</span></code> directory within the <code class="code docutils literal notranslate"><span class="pre">EXFOR</span></code> folder. Additionally, a tmp directory will also created containing
+temporary files used in the creation of the final datasets. Feel free to delete the <code class="code docutils literal notranslate"><span class="pre">tmp</span></code> directory after the process has finish to save space.</p>
 </div>
 <div class="section" id="other-dependencies">
 <h2>3. Other Dependencies<a class="headerlink" href="#other-dependencies" title="Permalink to this headline">¶</a></h2>

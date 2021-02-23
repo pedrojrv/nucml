@@ -32,15 +32,15 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
     
-    <link rel="author" title="About these documents" href="about.html" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="nucml.ace package" href="nucml.ace.html" />
-    <link rel="prev" title="Validating ML Models" href="validating-models.html" /> 
+    <link rel="prev" title="Validating ML Models" href="validating-ml-models.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -87,20 +87,20 @@
             
               <p class="caption"><span class="caption-text">OVERVIEW</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="about.html">What is NucML?</a></li>
+<li class="toctree-l1"><a class="reference internal" href="what-is-nucml.html">What is NucML?</a></li>
 </ul>
 <p class="caption"><span class="caption-text">GET STARTED</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
 <p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html">Loading Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#exploring-data">Exploring Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#modeling-data">Modeling Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#processing-data">Processing Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="working-with-nucml.html#validating-data">Validating Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html">Loading Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#modeling-data">Modeling Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
 <p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
 <ul class="current">
@@ -117,6 +117,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-nucml.config">nucml.config module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-nucml.configure">nucml.configure module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-nucml.datasets">nucml.datasets module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-nucml.general_utilities">nucml.general_utilities module</a></li>
@@ -128,7 +129,7 @@
 <p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
-<li class="toctree-l1"><a class="reference internal" href="feedback-support.html">Contact</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
 </ul>
 
             
@@ -196,7 +197,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="nucml-package">
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="nucml-package">
 <h1>nucml package<a class="headerlink" href="#nucml-package" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="subpackages">
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
@@ -265,6 +290,9 @@
 </div>
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-nucml.config">
+<span id="nucml-config-module"></span><h2>nucml.config module<a class="headerlink" href="#module-nucml.config" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="module-nucml.configure">
 <span id="nucml-configure-module"></span><h2>nucml.configure module<a class="headerlink" href="#module-nucml.configure" title="Permalink to this headline">¶</a></h2>
@@ -696,7 +724,7 @@ transform the provided dataframe. Defaults to None.</p></li>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
         <a href="nucml.ace.html" class="btn btn-neutral float-right" title="nucml.ace package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="validating-models.html" class="btn btn-neutral float-left" title="Validating ML Models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="validating-ml-models.html" class="btn btn-neutral float-left" title="Validating ML Models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

@@ -3,6 +3,10 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+.. Note::
+
+    Documentation in progress. 
+
 Welcome to NucML's documentation!
 =================================
 
@@ -12,20 +16,20 @@ NucML is a python toolbox to aid the ML-enhanced Nuclear Data Evaluation pipelin
     :maxdepth: 1
     :caption: OVERVIEW
 
-    about
+    what-is-nucml
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
     :caption: GET STARTED
 
-    getting-started
+    installation-guide
     basic-walkthrough
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 2
     :caption: NAVIGATING THE NDE
 
-    working-with-nucml
+    navigating-the-nde
 
 .. toctree::
     :maxdepth: 3
@@ -38,7 +42,7 @@ NucML is a python toolbox to aid the ML-enhanced Nuclear Data Evaluation pipelin
     :caption: FAQ AND CONTACT
 
     faq
-    feedback-support
+    contact
 
 
 

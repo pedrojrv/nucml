@@ -19,6 +19,14 @@ Subpackages
 Submodules
 ----------
 
+nucml.config module
+-------------------
+
+.. automodule:: nucml.config
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 nucml.configure module
 ----------------------
 
