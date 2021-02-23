@@ -39,7 +39,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Atomic Mass Evaluation (2016)" href="notebooks/1_Loading_AME.html" />
+    <link rel="next" title="Atomic Mass Evaluation (2016)" href="notebooks/1_Loading_AME_Datasets.html" />
     <link rel="prev" title="Basic Walkthrough" href="basic-walkthrough.html" /> 
 </head>
 
@@ -97,10 +97,10 @@
 <p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Loading Data</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/1_Loading_AME.html">Atomic Mass Evaluation (2016)</a></li>
-<li class="toctree-l2"><a class="reference internal" href="loading-datasets-exfor.html">Experimental Nuclear Reaction Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="loading-datasets-xundl.html">Reference Input Parameter Library</a></li>
-<li class="toctree-l2"><a class="reference internal" href="loading-datasets-endf.html">Evaluated Nuclear Data Libraries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/1_Loading_AME_Datasets.html">Atomic Mass Evaluation (2016)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/2_Loading_EXFOR_Datasets.html">Experimental Nuclear Reaction Data (EXFOR)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/1_Loading_ENSDF_RIPL_Datasets.html">Reference Input Parameter Library (RIPL)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/0_Loading_and_Plotting_Evaluations.html">Evaluated Libraries</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="#exploratory-data-analysis">Exploratory Data Analysis</a><ul>
@@ -231,14 +231,32 @@ parsing utilities are available to read library-native formats, restructure the 
 easy-to-use files.</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="notebooks/1_Loading_AME.html">Atomic Mass Evaluation (2016)</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/1_Loading_AME.html#Loading-the-Original-AME-Tables">Loading the Original AME Tables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="notebooks/1_Loading_AME.html#Loading-the-Processed-AME-Tables">Loading the Processed AME Tables</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/1_Loading_AME_Datasets.html">Atomic Mass Evaluation (2016)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/1_Loading_AME_Datasets.html#Original-AME-Tables">Original AME Tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/1_Loading_AME_Datasets.html#Processed-AME-Tables">Processed AME Tables</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="loading-datasets-exfor.html">Experimental Nuclear Reaction Data</a></li>
-<li class="toctree-l1"><a class="reference internal" href="loading-datasets-xundl.html">Reference Input Parameter Library</a></li>
-<li class="toctree-l1"><a class="reference internal" href="loading-datasets-endf.html">Evaluated Nuclear Data Libraries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/2_Loading_EXFOR_Datasets.html">Experimental Nuclear Reaction Data (EXFOR)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/2_Loading_EXFOR_Datasets.html#Original-EXFOR-Tables">Original EXFOR Tables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/2_Loading_EXFOR_Datasets.html#EXFOR-XS-(MF3)-Data-Only">EXFOR XS (MF3) Data Only</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/2_Loading_EXFOR_Datasets.html#ML-ready-EXFOR-datasets">ML-ready EXFOR datasets</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/1_Loading_ENSDF_RIPL_Datasets.html">Reference Input Parameter Library (RIPL)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/1_Loading_ENSDF_RIPL_Datasets.html#RIPL/XUNDL-Headers">RIPL/XUNDL Headers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/1_Loading_ENSDF_RIPL_Datasets.html#Elemental-RIPL-Information">Elemental RIPL Information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/1_Loading_ENSDF_RIPL_Datasets.html#Elemental-RIPL-Gammas">Elemental RIPL Gammas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/1_Loading_ENSDF_RIPL_Datasets.html#Ground-State-Data">Ground State Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/1_Loading_ENSDF_RIPL_Datasets.html#RIPL-Cut-Off-Parameters">RIPL Cut-Off Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/1_Loading_ENSDF_RIPL_Datasets.html#All-RIPL/XUNDL-Data">All RIPL/XUNDL Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/1_Loading_ENSDF_RIPL_Datasets.html#ML-ready-RIPL-Dataset">ML-ready RIPL Dataset</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks/0_Loading_and_Plotting_Evaluations.html">Evaluated Libraries</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/0_Loading_and_Plotting_Evaluations.html#Loading-and-Plotting-Evaluated-Data">Loading and Plotting Evaluated Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="notebooks/0_Loading_and_Plotting_Evaluations.html#More-Examples">More Examples</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
@@ -291,7 +309,7 @@ tested using not one but multiple benchmarks.</p>
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="notebooks/1_Loading_AME.html" class="btn btn-neutral float-right" title="Atomic Mass Evaluation (2016)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="notebooks/1_Loading_AME_Datasets.html" class="btn btn-neutral float-right" title="Atomic Mass Evaluation (2016)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="basic-walkthrough.html" class="btn btn-neutral float-left" title="Basic Walkthrough" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 

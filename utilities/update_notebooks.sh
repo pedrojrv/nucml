@@ -1,0 +1,4 @@
+cp /mnt/c/Users/Pedro/Desktop/ML_Nuclear_Data/AME/Notebooks/1_Loading_AME_Datasets.ipynb /mnt/c/Users/Pedro/Desktop/nucml/docs/source/notebooks/1_Loading_AME_Datasets.ipynb 
+cp /mnt/c/Users/Pedro/Desktop/ML_Nuclear_Data/ENSDF/Notebooks/1_Loading_ENSDF_RIPL_Datasets.ipynb /mnt/c/Users/Pedro/Desktop/nucml/docs/source/notebooks/1_Loading_ENSDF_RIPL_Datasets.ipynb 
+cp /mnt/c/Users/Pedro/Desktop/ML_Nuclear_Data/EXFOR/Notebooks/2_Loading_EXFOR_Datasets.ipynb /mnt/c/Users/Pedro/Desktop/nucml/docs/source/notebooks/2_Loading_EXFOR_Datasets.ipynb 
+cp /mnt/c/Users/Pedro/Desktop/ML_Nuclear_Data/Evaluated_Data/Notebooks/0_Loading_and_Plotting_Evaluations.ipynb /mnt/c/Users/Pedro/Desktop/nucml/docs/source/notebooks/0_Loading_and_Plotting_Evaluations.ipynb 

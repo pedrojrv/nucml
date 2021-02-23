@@ -17,10 +17,10 @@ easy-to-use files.
 .. toctree::
     :maxdepth: 2
 
-    notebooks/1_Loading_AME
-    loading-datasets-exfor
-    loading-datasets-xundl
-    loading-datasets-endf
+    notebooks/1_Loading_AME_Datasets
+    notebooks/2_Loading_EXFOR_Datasets
+    notebooks/1_Loading_ENSDF_RIPL_Datasets
+    notebooks/0_Loading_and_Plotting_Evaluations
 
 Exploratory Data Analysis
 =========================
