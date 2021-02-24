@@ -1,8 +1,5 @@
 .. _installation-guide-label:
 
-.. Note::
-
-    Documentation in progress. 
 
 Installation Guide
 ==================

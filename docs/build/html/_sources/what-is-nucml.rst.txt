@@ -1,8 +1,5 @@
 .. _what-is-nucml-label:
 
-.. Note::
-
-    Documentation in progress. 
 
 What is NucML?
 ==============

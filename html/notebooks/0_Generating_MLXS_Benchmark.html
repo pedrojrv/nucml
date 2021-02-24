@@ -1,0 +1,1413 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Generating ML XS, ACE Files, Benchmark Inputs and Serpent Scripts &mdash; NucML 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Analyzing Benchmark Results for Validation" href="1_Gathering_Benchmark_Results_B0.html" />
+    <link rel="prev" title="Reference Input Data Library (RIPL)" href="2_EDA_RIPL.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> NucML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../what-is-nucml.html">What is NucML?</a></li>
+</ul>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic-walkthrough.html">Basic Walkthrough</a></li>
+</ul>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html">Loading Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#modeling-data">Modeling Data</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Generating ML XS, ACE Files, Benchmark Inputs and Serpent Scripts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#B0-Dataset">B0 Dataset</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Decision-Tree">Decision Tree</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#K-Nearest-Neighbors">K-Nearest-Neighbors</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
+</ul>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">nucml</a></li>
+</ul>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NucML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../navigating-the-nde.html">Loading Data</a> &raquo;</li>
+        
+      <li>Generating ML XS, ACE Files, Benchmark Inputs and Serpent Scripts</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/notebooks/0_Generating_MLXS_Benchmark.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="Generating-ML-XS,-ACE-Files,-Benchmark-Inputs-and-Serpent-Scripts">
+<h1>Generating ML XS, ACE Files, Benchmark Inputs and Serpent Scripts<a class="headerlink" href="#Generating-ML-XS,-ACE-Files,-Benchmark-Inputs-and-Serpent-Scripts" title="Permalink to this headline">¶</a></h1>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_rows&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">chained_assignment</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># default=&#39;warn&#39;</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="c1"># This allows us to import the nucml utilities</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">)</span>
+
+
+<span class="kn">import</span> <span class="nn">nucml.datasets</span> <span class="k">as</span> <span class="nn">nuc_data</span>
+<span class="kn">import</span> <span class="nn">nucml.ace.data_utilities</span> <span class="k">as</span> <span class="nn">ace_utils</span>
+<span class="kn">import</span> <span class="nn">nucml.model.model_utilities</span> <span class="k">as</span> <span class="nn">model_utils</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">figure_dir</span> <span class="o">=</span> <span class="s2">&quot;Figures/&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">CRITICAL</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">importlib</span>
+<span class="n">importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">nuc_data</span><span class="p">)</span>
+<span class="n">importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">ace_utils</span><span class="p">)</span>
+<span class="n">importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">model_utils</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Finish re-loading scripts.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Finish re-loading scripts.
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">nucml.exfor.data_utilities</span> <span class="k">as</span> <span class="nn">exfor_utils</span>
+<span class="kn">import</span> <span class="nn">nucml.general_utilities</span> <span class="k">as</span> <span class="nn">gen_utils</span>
+<span class="n">importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">gen_utils</span><span class="p">)</span>
+<span class="n">importlib</span><span class="o">.</span><span class="n">reload</span><span class="p">(</span><span class="n">exfor_utils</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;module &#39;nucml.exfor.data_utilities&#39; from &#39;..\\nucml\\exfor\\data_utilities.py&#39;&gt;
+</pre></div></div>
+</div>
+<div class="section" id="B0-Dataset">
+<h2>B0 Dataset<a class="headerlink" href="#B0-Dataset" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># LOADING DATASET</span>
+<span class="n">df_b0</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">to_scale_b0</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">nuc_data</span><span class="o">.</span><span class="n">load_exfor</span><span class="p">(</span><span class="n">pedro</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">basic</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="Decision-Tree">
+<h3>Decision Tree<a class="headerlink" href="#Decision-Tree" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">dt_ml_ace_dir</span> <span class="o">=</span> <span class="s2">&quot;ml/DT_B0/&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">dt_results_filepath</span> <span class="o">=</span> <span class="s2">&quot;../ML_EXFOR_neutrons/2_DT/dt_resultsB0.csv&quot;</span>
+<span class="n">dt_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">dt_results_filepath</span><span class="p">)</span>
+
+<span class="c1"># filter down to just three for testing purposes:</span>
+<span class="c1"># dt_results = model_utils.get_best_models_df(dt_results)</span>
+
+<span class="n">dt_results</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>max_depth</th>
+      <th>mss</th>
+      <th>mslmt_strategy</th>
+      <th>normalizer</th>
+      <th>train_mae</th>
+      <th>train_mse</th>
+      <th>train_evs</th>
+      <th>train_mae_m</th>
+      <th>train_r2</th>
+      <th>val_mae</th>
+      <th>val_mse</th>
+      <th>val_evs</th>
+      <th>val_mae_m</th>
+      <th>val_r2</th>
+      <th>test_mae</th>
+      <th>test_mse</th>
+      <th>test_evs</th>
+      <th>test_mae_m</th>
+      <th>test_r2</th>
+      <th>model_path</th>
+      <th>training_time</th>
+      <th>scaler_path</th>
+      <th>mt_strategy</th>
+      <th>msl</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>60.0</td>
+      <td>2.0</td>
+      <td>NaN</td>
+      <td>standard</td>
+      <td>0.027211</td>
+      <td>0.011618</td>
+      <td>0.984903</td>
+      <td>0.000000</td>
+      <td>0.984903</td>
+      <td>0.135306</td>
+      <td>0.080526</td>
+      <td>0.895973</td>
+      <td>0.047820</td>
+      <td>0.895972</td>
+      <td>0.135396</td>
+      <td>0.080862</td>
+      <td>0.896182</td>
+      <td>0.048207</td>
+      <td>0.896180</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT60_MSS2_MSL1_standa...</td>
+      <td>40.941242</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT60_MSS2_MSL1_standa...</td>
+      <td>one_hot</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>60.0</td>
+      <td>2.0</td>
+      <td>NaN</td>
+      <td>minmax</td>
+      <td>0.027155</td>
+      <td>0.011534</td>
+      <td>0.985037</td>
+      <td>0.000000</td>
+      <td>0.985037</td>
+      <td>0.134961</td>
+      <td>0.080235</td>
+      <td>0.895495</td>
+      <td>0.047592</td>
+      <td>0.895495</td>
+      <td>0.134845</td>
+      <td>0.079622</td>
+      <td>0.895642</td>
+      <td>0.047901</td>
+      <td>0.895642</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT60_MSS2_MSL1_minmax...</td>
+      <td>40.684193</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT60_MSS2_MSL1_minmax...</td>
+      <td>one_hot</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>60.0</td>
+      <td>2.0</td>
+      <td>NaN</td>
+      <td>poweryeo</td>
+      <td>0.027354</td>
+      <td>0.011648</td>
+      <td>0.984866</td>
+      <td>0.000000</td>
+      <td>0.984866</td>
+      <td>0.135905</td>
+      <td>0.081821</td>
+      <td>0.894902</td>
+      <td>0.047914</td>
+      <td>0.894900</td>
+      <td>0.135116</td>
+      <td>0.078647</td>
+      <td>0.898338</td>
+      <td>0.047676</td>
+      <td>0.898338</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT60_MSS2_MSL1_powery...</td>
+      <td>40.442141</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT60_MSS2_MSL1_powery...</td>
+      <td>one_hot</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>6</td>
+      <td>60.0</td>
+      <td>5.0</td>
+      <td>NaN</td>
+      <td>standard</td>
+      <td>0.053042</td>
+      <td>0.017270</td>
+      <td>0.977393</td>
+      <td>0.014152</td>
+      <td>0.977393</td>
+      <td>0.130440</td>
+      <td>0.073895</td>
+      <td>0.903764</td>
+      <td>0.046579</td>
+      <td>0.903764</td>
+      <td>0.130618</td>
+      <td>0.074529</td>
+      <td>0.903550</td>
+      <td>0.047156</td>
+      <td>0.903549</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT60_MSS5_MSL1_standa...</td>
+      <td>38.848780</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT60_MSS5_MSL1_standa...</td>
+      <td>one_hot</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>1</td>
+      <td>60.0</td>
+      <td>2.0</td>
+      <td>NaN</td>
+      <td>maxabs</td>
+      <td>0.027453</td>
+      <td>0.011846</td>
+      <td>0.984610</td>
+      <td>0.000000</td>
+      <td>0.984610</td>
+      <td>0.135428</td>
+      <td>0.080812</td>
+      <td>0.895474</td>
+      <td>0.047947</td>
+      <td>0.895474</td>
+      <td>0.134958</td>
+      <td>0.079383</td>
+      <td>0.896998</td>
+      <td>0.047891</td>
+      <td>0.896997</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT60_MSS2_MSL1_maxabs...</td>
+      <td>40.286345</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT60_MSS2_MSL1_maxabs...</td>
+      <td>one_hot</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>984</th>
+      <td>671</td>
+      <td>390.0</td>
+      <td>10.0</td>
+      <td>NaN</td>
+      <td>robust</td>
+      <td>0.069925</td>
+      <td>0.023541</td>
+      <td>0.968938</td>
+      <td>0.024069</td>
+      <td>0.968938</td>
+      <td>0.126390</td>
+      <td>0.069229</td>
+      <td>0.908834</td>
+      <td>0.046186</td>
+      <td>0.908833</td>
+      <td>0.125120</td>
+      <td>0.067550</td>
+      <td>0.911028</td>
+      <td>0.045919</td>
+      <td>0.911028</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT390_MSS10_MSL1_robu...</td>
+      <td>35.361983</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT390_MSS10_MSL1_robu...</td>
+      <td>one_hot</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>985</th>
+      <td>676</td>
+      <td>389.0</td>
+      <td>15.0</td>
+      <td>NaN</td>
+      <td>robust</td>
+      <td>0.079465</td>
+      <td>0.028139</td>
+      <td>0.962645</td>
+      <td>0.029166</td>
+      <td>0.962645</td>
+      <td>0.124226</td>
+      <td>0.065841</td>
+      <td>0.912615</td>
+      <td>0.046362</td>
+      <td>0.912614</td>
+      <td>0.122745</td>
+      <td>0.063695</td>
+      <td>0.915480</td>
+      <td>0.045979</td>
+      <td>0.915479</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT389_MSS15_MSL1_robu...</td>
+      <td>36.209193</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT389_MSS15_MSL1_robu...</td>
+      <td>one_hot</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>986</th>
+      <td>681</td>
+      <td>400.0</td>
+      <td>2.0</td>
+      <td>NaN</td>
+      <td>robust</td>
+      <td>0.025735</td>
+      <td>0.010784</td>
+      <td>0.986006</td>
+      <td>0.000000</td>
+      <td>0.986006</td>
+      <td>0.136552</td>
+      <td>0.082771</td>
+      <td>0.893108</td>
+      <td>0.047504</td>
+      <td>0.893105</td>
+      <td>0.135758</td>
+      <td>0.081491</td>
+      <td>0.894834</td>
+      <td>0.047654</td>
+      <td>0.894834</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT400_MSS2_MSL1_robus...</td>
+      <td>37.492463</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT400_MSS2_MSL1_robus...</td>
+      <td>one_hot</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>987</th>
+      <td>686</td>
+      <td>399.0</td>
+      <td>5.0</td>
+      <td>NaN</td>
+      <td>robust</td>
+      <td>0.051778</td>
+      <td>0.016512</td>
+      <td>0.978414</td>
+      <td>0.013962</td>
+      <td>0.978414</td>
+      <td>0.131845</td>
+      <td>0.076188</td>
+      <td>0.900740</td>
+      <td>0.046700</td>
+      <td>0.900738</td>
+      <td>0.130875</td>
+      <td>0.074694</td>
+      <td>0.902724</td>
+      <td>0.046742</td>
+      <td>0.902723</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT399_MSS5_MSL1_robus...</td>
+      <td>37.210233</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT399_MSS5_MSL1_robus...</td>
+      <td>one_hot</td>
+      <td>1.0</td>
+    </tr>
+    <tr>
+      <th>988</th>
+      <td>691</td>
+      <td>394.0</td>
+      <td>10.0</td>
+      <td>NaN</td>
+      <td>robust</td>
+      <td>0.069924</td>
+      <td>0.023541</td>
+      <td>0.968939</td>
+      <td>0.024069</td>
+      <td>0.968939</td>
+      <td>0.126391</td>
+      <td>0.069207</td>
+      <td>0.908866</td>
+      <td>0.046187</td>
+      <td>0.908865</td>
+      <td>0.125138</td>
+      <td>0.067610</td>
+      <td>0.910927</td>
+      <td>0.045921</td>
+      <td>0.910927</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT394_MSS10_MSL1_robu...</td>
+      <td>35.860094</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT394_MSS10_MSL1_robu...</td>
+      <td>one_hot</td>
+      <td>1.0</td>
+    </tr>
+  </tbody>
+</table>
+<p>989 rows × 25 columns</p>
+</div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">dt_results</span> <span class="o">=</span> <span class="n">dt_results</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;mslmt_strategy&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b0</span><span class="p">,</span> <span class="n">dt_results</span><span class="p">,</span> <span class="s2">&quot;U233-MET-FAST-001&quot;</span><span class="p">,</span> <span class="n">to_scale_b0</span><span class="p">,</span> <span class="n">dt_ml_ace_dir</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="s2">&quot;ml/DT_B0/&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="K-Nearest-Neighbors">
+<h3>K-Nearest-Neighbors<a class="headerlink" href="#K-Nearest-Neighbors" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">knn_ml_ace_dir</span> <span class="o">=</span> <span class="s2">&quot;ml/KNN_B0/&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">knn_results_filepath</span> <span class="o">=</span> <span class="s2">&quot;../ML_EXFOR_neutrons/1_KNN/knn_results_B0.csv&quot;</span>
+<span class="n">knn_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">knn_results_filepath</span><span class="p">)</span>
+<span class="c1"># knn_results = model_utils.get_best_models_df(knn_results)</span>
+<span class="n">knn_results</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>distance_metric</th>
+      <th>mt_strategy</th>
+      <th>normalizer</th>
+      <th>train_mae</th>
+      <th>train_mse</th>
+      <th>train_evs</th>
+      <th>train_mae_m</th>
+      <th>train_r2</th>
+      <th>val_mae</th>
+      <th>val_mse</th>
+      <th>val_evs</th>
+      <th>val_mae_m</th>
+      <th>val_r2</th>
+      <th>test_mae</th>
+      <th>test_mse</th>
+      <th>test_evs</th>
+      <th>test_mae_m</th>
+      <th>test_r2</th>
+      <th>model_path</th>
+      <th>training_time</th>
+      <th>scaler_path</th>
+      <th>run_name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>euclidean</td>
+      <td>one_hot</td>
+      <td>standard</td>
+      <td>0.029223</td>
+      <td>0.021718</td>
+      <td>0.972236</td>
+      <td>0.0</td>
+      <td>0.972236</td>
+      <td>0.140906</td>
+      <td>0.093277</td>
+      <td>0.881658</td>
+      <td>0.047765</td>
+      <td>0.881658</td>
+      <td>0.140439</td>
+      <td>0.090714</td>
+      <td>0.882881</td>
+      <td>0.047626</td>
+      <td>0.882880</td>
+      <td>E:\ML_Models_EXFOR\KNN_B0\k1_distance_euclidea...</td>
+      <td>3204.087972</td>
+      <td>E:\ML_Models_EXFOR\KNN_B0\k1_distance_euclidea...</td>
+      <td>k1_distance_euclidean_standard_one_hot_B0_v1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>manhattan</td>
+      <td>one_hot</td>
+      <td>standard</td>
+      <td>0.029223</td>
+      <td>0.021718</td>
+      <td>0.972236</td>
+      <td>0.0</td>
+      <td>0.972236</td>
+      <td>0.140310</td>
+      <td>0.091703</td>
+      <td>0.883702</td>
+      <td>0.047683</td>
+      <td>0.883701</td>
+      <td>0.139807</td>
+      <td>0.089210</td>
+      <td>0.884837</td>
+      <td>0.047548</td>
+      <td>0.884835</td>
+      <td>E:\ML_Models_EXFOR\KNN_B0\k1_distance_manhatta...</td>
+      <td>3683.483599</td>
+      <td>E:\ML_Models_EXFOR\KNN_B0\k1_distance_manhatta...</td>
+      <td>k1_distance_manhattan_standard_one_hot_B0_v1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>13</td>
+      <td>euclidean</td>
+      <td>one_hot</td>
+      <td>standard</td>
+      <td>0.025784</td>
+      <td>0.010824</td>
+      <td>0.985956</td>
+      <td>0.0</td>
+      <td>0.985956</td>
+      <td>0.119711</td>
+      <td>0.064617</td>
+      <td>0.914199</td>
+      <td>0.042430</td>
+      <td>0.914196</td>
+      <td>0.119358</td>
+      <td>0.063235</td>
+      <td>0.915548</td>
+      <td>0.042613</td>
+      <td>0.915548</td>
+      <td>E:\ML_Models_EXFOR\KNN_B0\k13_distance_euclide...</td>
+      <td>3842.479054</td>
+      <td>E:\ML_Models_EXFOR\KNN_B0\k13_distance_euclide...</td>
+      <td>k13_distance_euclidean_standard_one_hot_B0_v1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>9</td>
+      <td>euclidean</td>
+      <td>one_hot</td>
+      <td>standard</td>
+      <td>0.025882</td>
+      <td>0.010964</td>
+      <td>0.985770</td>
+      <td>0.0</td>
+      <td>0.985770</td>
+      <td>0.118556</td>
+      <td>0.063928</td>
+      <td>0.915178</td>
+      <td>0.041515</td>
+      <td>0.915178</td>
+      <td>0.118580</td>
+      <td>0.062984</td>
+      <td>0.916367</td>
+      <td>0.041561</td>
+      <td>0.916367</td>
+      <td>E:\ML_Models_EXFOR\KNN_B0\k9_distance_euclidea...</td>
+      <td>5248.473446</td>
+      <td>E:\ML_Models_EXFOR\KNN_B0\k9_distance_euclidea...</td>
+      <td>k9_distance_euclidean_standard_one_hot_B0_v1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>euclidean</td>
+      <td>one_hot</td>
+      <td>standard</td>
+      <td>0.026087</td>
+      <td>0.011288</td>
+      <td>0.985375</td>
+      <td>0.0</td>
+      <td>0.985375</td>
+      <td>0.120315</td>
+      <td>0.065748</td>
+      <td>0.913349</td>
+      <td>0.041443</td>
+      <td>0.913349</td>
+      <td>0.119268</td>
+      <td>0.064523</td>
+      <td>0.913552</td>
+      <td>0.041247</td>
+      <td>0.913552</td>
+      <td>E:\ML_Models_EXFOR\KNN_B0\k5_distance_euclidea...</td>
+      <td>4999.680279</td>
+      <td>E:\ML_Models_EXFOR\KNN_B0\k5_distance_euclidea...</td>
+      <td>k5_distance_euclidean_standard_one_hot_B0_v1</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>75</th>
+      <td>12</td>
+      <td>euclidean</td>
+      <td>one_hot</td>
+      <td>robust</td>
+      <td>0.025880</td>
+      <td>0.010948</td>
+      <td>0.985804</td>
+      <td>0.0</td>
+      <td>0.985804</td>
+      <td>0.120741</td>
+      <td>0.065212</td>
+      <td>0.911357</td>
+      <td>0.042698</td>
+      <td>0.911355</td>
+      <td>0.121507</td>
+      <td>0.067982</td>
+      <td>0.909173</td>
+      <td>0.042693</td>
+      <td>0.909173</td>
+      <td>E:\ML_Models_EXFOR\KNN_B0\k12_distance_euclide...</td>
+      <td>6956.197334</td>
+      <td>E:\ML_Models_EXFOR\KNN_B0\k12_distance_euclide...</td>
+      <td>k12_distance_euclidean_robust_one_hot_B0_v1</td>
+    </tr>
+    <tr>
+      <th>76</th>
+      <td>8</td>
+      <td>manhattan</td>
+      <td>one_hot</td>
+      <td>robust</td>
+      <td>0.025963</td>
+      <td>0.011088</td>
+      <td>0.985625</td>
+      <td>0.0</td>
+      <td>0.985625</td>
+      <td>0.118417</td>
+      <td>0.063481</td>
+      <td>0.915453</td>
+      <td>0.041552</td>
+      <td>0.915453</td>
+      <td>0.118021</td>
+      <td>0.062797</td>
+      <td>0.916661</td>
+      <td>0.041616</td>
+      <td>0.916661</td>
+      <td>E:\ML_Models_EXFOR\KNN_B0\k8_distance_manhatta...</td>
+      <td>5606.621590</td>
+      <td>E:\ML_Models_EXFOR\KNN_B0\k8_distance_manhatta...</td>
+      <td>k8_distance_manhattan_robust_one_hot_B0_v1</td>
+    </tr>
+    <tr>
+      <th>77</th>
+      <td>4</td>
+      <td>manhattan</td>
+      <td>one_hot</td>
+      <td>robust</td>
+      <td>0.026250</td>
+      <td>0.011546</td>
+      <td>0.985051</td>
+      <td>0.0</td>
+      <td>0.985051</td>
+      <td>0.121491</td>
+      <td>0.067227</td>
+      <td>0.911323</td>
+      <td>0.041574</td>
+      <td>0.911322</td>
+      <td>0.120564</td>
+      <td>0.067829</td>
+      <td>0.910530</td>
+      <td>0.041199</td>
+      <td>0.910530</td>
+      <td>E:\ML_Models_EXFOR\KNN_B0\k4_distance_manhatta...</td>
+      <td>6074.617433</td>
+      <td>E:\ML_Models_EXFOR\KNN_B0\k4_distance_manhatta...</td>
+      <td>k4_distance_manhattan_robust_one_hot_B0_v1</td>
+    </tr>
+    <tr>
+      <th>78</th>
+      <td>20</td>
+      <td>manhattan</td>
+      <td>one_hot</td>
+      <td>robust</td>
+      <td>0.025800</td>
+      <td>0.010808</td>
+      <td>0.985973</td>
+      <td>0.0</td>
+      <td>0.985973</td>
+      <td>0.121384</td>
+      <td>0.065494</td>
+      <td>0.911571</td>
+      <td>0.043817</td>
+      <td>0.911571</td>
+      <td>0.120190</td>
+      <td>0.063742</td>
+      <td>0.915290</td>
+      <td>0.043563</td>
+      <td>0.915287</td>
+      <td>E:\ML_Models_EXFOR\KNN_B0\k20_distance_manhatt...</td>
+      <td>5845.332301</td>
+      <td>E:\ML_Models_EXFOR\KNN_B0\k20_distance_manhatt...</td>
+      <td>k20_distance_manhattan_robust_one_hot_B0_v1</td>
+    </tr>
+    <tr>
+      <th>79</th>
+      <td>12</td>
+      <td>manhattan</td>
+      <td>one_hot</td>
+      <td>robust</td>
+      <td>0.025880</td>
+      <td>0.010948</td>
+      <td>0.985804</td>
+      <td>0.0</td>
+      <td>0.985804</td>
+      <td>0.118508</td>
+      <td>0.062172</td>
+      <td>0.915666</td>
+      <td>0.042175</td>
+      <td>0.915665</td>
+      <td>0.119360</td>
+      <td>0.065161</td>
+      <td>0.913195</td>
+      <td>0.042154</td>
+      <td>0.913195</td>
+      <td>E:\ML_Models_EXFOR\KNN_B0\k12_distance_manhatt...</td>
+      <td>5585.601369</td>
+      <td>E:\ML_Models_EXFOR\KNN_B0\k12_distance_manhatt...</td>
+      <td>k12_distance_manhattan_robust_one_hot_B0_v1</td>
+    </tr>
+  </tbody>
+</table>
+<p>80 rows × 23 columns</p>
+</div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b0</span><span class="p">,</span> <span class="n">knn_results</span><span class="p">,</span> <span class="s2">&quot;U233-MET-FAST-001&quot;</span><span class="p">,</span> <span class="n">to_scale_b0</span><span class="p">,</span> <span class="n">knn_ml_ace_dir</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="s2">&quot;ml/KNN_B0/&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="1_Gathering_Benchmark_Results_B0.html" class="btn btn-neutral float-right" title="Analyzing Benchmark Results for Validation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="2_EDA_RIPL.html" class="btn btn-neutral float-left" title="Reference Input Data Library (RIPL)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Pedro Jr. Vicente-Valdez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
