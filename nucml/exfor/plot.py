@@ -60,7 +60,7 @@ def ml_results(results_dict, order_dict={}, save_dir='', save=False, render_brow
         if "exfor_ml_new" in results_dict.keys():    
             exfor_ml_new_trace = go.Scattergl(x=results_dict["exfor_ml_new"]["df"].Energy, 
                                             y=results_dict["exfor_ml_new"]["df"].Data,
-                                mode='markers', name='ML New')
+                                mode='markers', name='EXFOR New')
 
         fig.update_layout(
             xaxis_title="Energy (eV)",
@@ -91,7 +91,7 @@ def ml_results(results_dict, order_dict={}, save_dir='', save=False, render_brow
             fig.write_html(os.path.splitext(save_dir)[0] + '.html')
         return fig
     elif plot_type == "sns":  
-        plt.figure(figsize=(14,10))
+        plt.figure(figsize=(18,8))
         if len(order_dict) == 0:
             order_dict=  {"endf":1, "exfor_ml_original":4, "exfor_ml":3, "exfor_new":2}
         
@@ -124,7 +124,7 @@ def ml_results(results_dict, order_dict={}, save_dir='', save=False, render_brow
         plt.legend()
 
         if save:
-            plt.savefig(save_dir, bbox_inches='tight', dpi=600)
+            plt.savefig(save_dir, bbox_inches='tight', dpi=300)
         if not show:
             plt.close()
 

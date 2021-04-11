@@ -260,48 +260,42 @@ def load_ensdf(cutoff=False, append_ame=False):
     return df
 
 
-def load_ensdf_ml(log_sqrt=False, log=False, append_ame=False, basic=-1, num=False, frac=0.3, scaling_type="std", scaler_dir=None):
-    
-    path = '../../ENSDF/CSV_Files/Level_Density' # use your path
-    all_files = glob.glob(path + "/*.csv")
+def load_ensdf_ml(cutoff=False, log_sqrt=False, log=False, append_ame=False, basic=-1, num=False, frac=0.3, scaling_type="standard", scaler_dir=None, normalize=True):
+    if cutoff:
+        datapath = os.path.join(ensdf_path, "CSV_Files/ensdf_cutoff.csv")
+    else:
+        datapath = os.path.join(ensdf_path, "CSV_Files/ensdf.csv")   
+    df = pd.read_csv(datapath)
+    df["Level_Number"] = df["Level_Number"].astype(int)
+    df[["Element_w_A"]] = df[["Element_w_A"]].astype('category')
+    if log_sqrt:
+        df["Energy"] = np.sqrt(df["Energy"])
+        df["Level_Number"] = np.log10(df["Level_Number"])
+    if log:
+        logging.info("Dropping Ground State...")
+        df = df[(df["Energy"] != 0)]
+        df["Energy"] = np.log10(df["Energy"])
+        df["Level_Number"] = np.log10(df["Level_Number"])
+    if append_ame:
+        ame = load_ame(imputed_nan=True, natural=False)
+        df = pd.merge(df, ame, on='Element_w_A')
+    if basic == 0:
+        basic_cols = ["Level_Number", "Energy", "Z", "N", "A", "Atomic_Mass_Micro"]
+        df = df[basic_cols]
+    elif basic == 1:
+        basic_cols = ["Level_Number", "Energy", "Z", "N", "A", "Atomic_Mass_Micro",
+                    'Mass_Excess', 'Binding_Energy', 'B_Decay_Energy', 'S(2n)', 'S(n)', 'S(p)']
+        df = df[basic_cols] 
+    if num:
+        logging.info("Dropping unnecessary features and one-hot encoding categorical columns...")
 
-    if len(all_files) != 0:
+        # We need to keep track of columns to normalize excluding categorical data.
+        df = df.fillna(value=0)
+        logging.info("Splitting dataset into training and testing...")
+        x_train, x_test, y_train, y_test = train_test_split(df.drop(["Energy"], axis=1), df["Energy"], test_size=frac)
 
-        li = []
 
-        for filename in all_files:
-            df = pd.read_csv(filename, index_col=None, header=0)
-            li.append(df)
-
-        df = pd.concat(li, axis=0, ignore_index=True)
-
-        df["Level_Number"] = df["Level_Number"].astype(int)
-        df[["Target_Element_w_A"]] = df[["Target_Element_w_A"]].astype('category')
-        if log_sqrt:
-            df["Level_Energy"] = np.sqrt(df["Level_Energy"])
-            df["Level_Number"] = np.log10(df["Level_Number"])
-        if log:
-            logging.info("Dropping Ground State...")
-            df = df[(df["Level_Energy"] != 0)]
-            df["Level_Energy"] = np.log10(df["Level_Energy"])
-            df["Level_Number"] = np.log10(df["Level_Number"])
-        if append_ame:
-            ame = load_ame(imputed_nan=True)
-            df = pd.merge(df, ame, on='Target_Element_w_A')
-        if basic == 0:
-            basic_cols = ["Level_Number", "Level_Energy", "Protons", "Neutrons", "Mass_Number", "Atomic_Mass_Micro"]
-            df = df[basic_cols]
-        elif basic == 1:
-            basic_cols = ["Level_Number", "Level_Energy", "Protons", "Neutrons", "Mass_Number", "Atomic_Mass_Micro",
-                        'Mass_Excess', 'Binding_Energy', 'B_Decay_Energy', 'S(2n)', 'S(n)', 'S(p)']
-            df = df[basic_cols] 
-        if num:
-            logging.info("Dropping unnecessary features and one-hot encoding categorical columns...")
-
-            # We need to keep track of columns to normalize excluding categorical data.
-            df = df.fillna(value=0)
-            logging.info("Splitting dataset into training and testing...")
-            x_train, x_test, y_train, y_test = train_test_split(df.drop(["Level_Energy"], axis=1), df["Level_Energy"], test_size=frac)
+        if normalize:
             logging.info("Normalizing dataset...")
             to_scale = list(x_train.columns)
             if log_sqrt or log:
@@ -309,13 +303,13 @@ def load_ensdf_ml(log_sqrt=False, log=False, append_ame=False, basic=-1, num=Fal
             scaler = nuc_proc.normalize_features(x_train, to_scale, scaling_type=scaling_type, scaler_dir=scaler_dir)
             x_train[to_scale] = scaler.transform(x_train[to_scale])
             x_test[to_scale] = scaler.transform(x_test[to_scale])
-            logging.info("Finished. Resulting dataset has shape {}, Training and Testing dataset shapes are {} and {} respesctively.".format(df.shape, x_train.shape, x_test.shape))
-            return df, x_train, x_test, y_train, y_test, to_scale, scaler
-        else:
-            logging.info("Finished. Resulting dataset has shape {}".format(df.shape))
-            return df
+
+        logging.info("Finished. Resulting dataset has shape {}, Training and Testing dataset shapes are {} and {} respesctively.".format(df.shape, x_train.shape, x_test.shape))
+        return df, x_train, x_test, y_train, y_test, to_scale, scaler
     else:
-        return logging.error("CSV file does not exists. Check path.")
+        logging.info("Finished. Resulting dataset has shape {}".format(df.shape))
+        return df
+
 
 
 ###############################################################################
@@ -325,7 +319,7 @@ supported_modes = ["neutrons", "protons", "alphas", "deuterons", "gammas", "heli
 supported_mt_coding = ["one_hot", "particle_coded"]
 def load_exfor(log=False, low_en=False, basic=-1, num=False, frac=0.1, mode="neutrons", scaling_type="standard", 
     scaler_dir=None, filters=False, max_en=2.0E7, mt_coding="one_hot", scale_energy=False, projectile_coding="one_hot"
-    , normalize=True, pedro=False):
+    , normalize=True, pedro=False, pedro_v2=False):
     """Loads the EXFOR dataset in its varius forms. This function helps load ML-ready EXFOR datasets
     for different particle induce reactions or all of them.
 
@@ -355,6 +349,8 @@ def load_exfor(log=False, low_en=False, basic=-1, num=False, frac=0.1, mode="neu
     """
     if pedro:
         log = low_en = num = filters = normalize = True
+    if pedro_v2:
+        log = low_en = num = filters = True
     if mode not in supported_modes:
         return logging.error("Specified MODE not supported. Supporte modes include: {}".format(' '.join([str(v) for v in supported_modes])))
     if mt_coding not in supported_mt_coding:
@@ -364,7 +360,7 @@ def load_exfor(log=False, low_en=False, basic=-1, num=False, frac=0.1, mode="neu
     logging.info(" LOW ENERGY: {}".format(low_en))
     logging.info(" LOG: {}".format(log))
     logging.info(" BASIC: {}".format(basic))
-    logging.info(" SCALER: {}".format(scaling_type.upper()))
+    # logging.info(" SCALER: {}".format(scaling_type.upper()))
 
     if mode == "all":
         neutrons_datapath = os.path.join(exfor_path, 'EXFOR_' + "neutrons" + '\\EXFOR_' + "neutrons" + '_MF3_AME_no_RawNaN.csv')

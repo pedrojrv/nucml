@@ -13,3 +13,9 @@ NucML is the first and only end-to-end python-based supervised machine learning 
 # Installation and Setup
 
 Please refer to the Installation guide in the official documentation <a src="https://pedrojrv.github.io/nucml/getting-started.html">here</a>.
+
+
+<!-- cd C:\Users\Pedro\Desktop\nucml\sphinx
+sphinx-apidoc -f -o source ../nucml/
+sphinx-build source ../html/
+make html -->

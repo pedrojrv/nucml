@@ -128,7 +128,13 @@ def parse_mt(mt_number, mt_for="ENDF", one_hot=False):
         else:
             return int(mt_number)
     elif mt_for.upper() == "ACE":
-        return mt_number
+        if one_hot:
+            return "MT_" + mt_number
+        else:
+            return int(mt_number)
+
+
+        # return mt_number
     
 def parse_isotope(isotope, parse_for="ENDF"):
     """This is an internal function that transforms element tags (i.e. U235) into formats appropiate for other internal functions.

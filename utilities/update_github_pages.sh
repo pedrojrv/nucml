@@ -1,1 +1,0 @@
-cp -a /mnt/c/Users/Pedro/Desktop/nucml/docs/build/html/. /mnt/c/Users/Pedro/Desktop/pedrojrv.github.io/nucml/

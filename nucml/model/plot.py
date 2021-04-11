@@ -4,6 +4,8 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import sys
 from matplotlib.ticker import MaxNLocator
+from matplotlib import cm
+import pandas as pd
 
 # This allows us to import the nucml utilities
 sys.path.append("..")
@@ -78,7 +80,7 @@ def train_test(df, x_feature, train_metric, test_metric, save=False, save_dir=''
         fig.write_html(os.path.join(save_dir, "model_performance_metric.html"))
     return fig
 
-def knn_training(results_df, x_feature="id", train_metric="train_mae", val_metric="val_mae", test_metric="test_mae", save=False, save_dir='', show=True):
+def knn_training(results_df, x_feature="id", train_metric="train_mae", val_metric="val_mae", test_metric="test_mae", save=False, save_path='', show=True):
     """Plots both the train, val, and test loss as a function of a given parameter (i.e. number of neighbors).
 
     Args:
@@ -95,7 +97,7 @@ def knn_training(results_df, x_feature="id", train_metric="train_mae", val_metri
     Returns:
         object: Plotly figure object.
     """
-    fig, ax1 = plt.subplots(figsize=(14,10))
+    fig, ax1 = plt.subplots(figsize=(18,8))
 
     color = 'tab:orange'
     lns1 = ax1.plot(results_df[x_feature], results_df[train_metric], color=color, marker="o", label="Train MAE")
@@ -122,7 +124,7 @@ def knn_training(results_df, x_feature="id", train_metric="train_mae", val_metri
     fig.tight_layout()  # otherwise the right y-label is slightly clipped
     
     if save == True:
-        plt.savefig(os.path.join(save_dir, "knn_training.png"), bbox_inches="tight", dpi=600)
+        plt.savefig(save_path, bbox_inches="tight", dpi=300)
     if show == False:
         plt.close()
     return None
@@ -178,3 +180,28 @@ def dt_training(results_df, param_1="max_depth", param_2="msl", train_metric="tr
     if show == False:
         plt.close()
     return None
+
+
+# def plot_dt_3d_hyperparams(df):
+#     fig = plt.figure()
+#     ax = fig.gca(projection='3d')
+#     fig.set_size_inches(20, 10.5, forward=True)
+#     surf = ax.plot_trisurf(df.max_depth, df.mss, df.train_mae, linewidth=0.2, antialiased=True, cmap=cm.viridis)
+#     ax.view_init(20, -30)
+#     ax.set_ylabel("MSS", labelpad=15)
+#     ax.set_xlabel("Max Depth", labelpad=10)
+#     ax.set_zlabel("Train MAE", labelpad=15)
+
+#     fig.colorbar(surf, shrink=0.5, aspect=5)
+#     plt.savefig("figures/dt_3d_hyperparams.png", bbox_inches='tight', dpi=300)
+
+def xgb_training_w_path(path_to_csv, save=False, saving_path="xgb_training.png"):
+    training_progress = pd.read_csv(path_to_csv)
+    plt.figure(figsize=(18,8))
+    plt.plot(training_progress.mae_train, label="Train MAE", marker="x", markersize="20")
+    plt.plot(training_progress.mae_test, label="Validation MAE", marker="o", markersize="5")
+    plt.xlabel('Number of Trees (Rounds)')
+    plt.ylabel('MAE')
+    plt.legend()
+    if save:
+        plt.savefig(saving_path, bbox_inches='tight', dpi=300)

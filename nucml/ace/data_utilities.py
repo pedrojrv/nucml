@@ -20,6 +20,7 @@ import nucml.config as config
 empty_df = pd.DataFrame()
 ace_dir = config.ace_path
 template_path = config.bench_template_path
+matlab_path = config.matlab_path
 
 
 def get_to_skip_lines(isotope, temp="03c"):
@@ -64,7 +65,7 @@ def get_to_skip_lines(isotope, temp="03c"):
         raise FileNotFoundError("{} does not exists.".format(path))
 
 
-def get_nxs_jxs_xss(isotope, temp="03c", custom_path=None):
+def get_nxs_jxs_xss(isotope, temp="03c", custom_path=None, reduced=False):
     """Retrieves the NSX, JXS, and XSS tables for a given isotope at a given temperature
     The JSX DataFrame indicates the indices to the XSS where different pieces of data begin.
     The XSS table contains the actual data needed by many functions of the ACE utilities.
@@ -82,6 +83,13 @@ def get_nxs_jxs_xss(isotope, temp="03c", custom_path=None):
     """    
     path, to_skip, lines = get_to_skip_lines(isotope, temp=temp)
     if (path != None) and (custom_path != None):
+        if reduced:
+            print(to_skip)
+            print(lines)
+            lines = to_skip - lines
+            to_skip = 0
+            print(lines)
+            
         nxs = pd.read_csv(custom_path, delim_whitespace=True, skiprows=to_skip+6, nrows=2, header=None)
         jxs = pd.read_csv(custom_path, delim_whitespace=True, skiprows=to_skip+8, nrows=4, header=None)
         xss = pd.read_csv(custom_path, delim_whitespace=True, skiprows=to_skip+12, nrows=lines, header=None).values.flatten()
@@ -371,9 +379,10 @@ def get_hybrid_ml_xs(ml_df, basic_mt_dict, mt_array, mt_xs_pointers_array, point
                 ml_df = fill_ml_xs(i, ml_df, mt_info["xs"], use_peaks=use_peaks)
             else:
                 MT = i.split("_")[1]
-                mt_info = get_xs_for_mt(int(MT), mt_array, mt_xs_pointers_array, jxs_df, xss, pointers)
-                new_xs = np.concatenate((np.zeros(mt_info["energy_start"]), mt_info["xs"]), axis=0)
-                ml_df[i] = new_xs
+                if int(MT) in mt_array:
+                    mt_info = get_xs_for_mt(int(MT), mt_array, mt_xs_pointers_array, jxs_df, xss, pointers)
+                    new_xs = np.concatenate((np.zeros(mt_info["energy_start"]), mt_info["xs"]), axis=0)
+                    ml_df[i] = new_xs
     return ml_df
 
 def create_mt2_mt3_mt101(rx_grid, mt_array):
@@ -696,15 +705,18 @@ def convert_dos_to_unix(file_path):
 ################################################################################################
 
 def generate_bench_ml_xs(df, models_df, bench_name, to_scale, raw_saving_dir, reset=False, template_dir=template_path, comp_threshold=0.10, reduce_ace_size=True):
-
+    to_scale_copy = to_scale.copy()
     results_df = models_df.copy()
     bench_composition = pd.read_csv(os.path.join(template_dir, os.path.join(bench_name, "composition.csv")))
     bench_composition_nonml = bench_composition[bench_composition.Fraction < comp_threshold]
     bench_composition_ml = bench_composition[bench_composition.Fraction > comp_threshold]
 
     results_df["run_name"] = results_df.model_path.apply(lambda x: os.path.basename(os.path.dirname(x)))
+
+    scale_energy_col = True if "scale_energy" in results_df.columns else False
     # 3. We iterate over the rows to create data for each run
     for _, row in results_df.iterrows():
+        to_scale = to_scale_copy.copy()
         run_name = row.run_name
         
         # 3a. We create a directory for each model but before we check if it has already been created in the inventory
@@ -721,7 +733,14 @@ def generate_bench_ml_xs(df, models_df, bench_name, to_scale, raw_saving_dir, re
             gen_utils.initialize_directories(ml_xs_saving_dir, reset=False)
             gen_utils.initialize_directories(acelib_saving_dir, reset=False)
 
-        model, scaler = model_utils.load_model_and_scaler({"model_path":row.model_path, "scaler_path":row.scaler_path}, df=False)
+        if row.normalizer == "none":
+            model = model_utils.load_model_and_scaler({"model_path":row.model_path, "scaler_path":row.scaler_path}, df=False, model_only=True)
+        else:
+            model, scaler = model_utils.load_model_and_scaler({"model_path":row.model_path, "scaler_path":row.scaler_path}, df=False)
+
+        if scale_energy_col:
+            if row.scale_energy == True:
+                to_scale = ["Energy"] + to_scale
 
         for _, comp_row in bench_composition_ml.iterrows():
             Z = int(comp_row.Z)
@@ -729,8 +748,12 @@ def generate_bench_ml_xs(df, models_df, bench_name, to_scale, raw_saving_dir, re
             filename = "{}{}_ml.csv".format(Z, A)
             path_to_ml_csv = os.path.join(ml_xs_saving_dir, filename)
             if not os.path.isfile(path_to_ml_csv):
-                _ = exfor_utils.get_csv_for_ace(
-                    df, Z, A, model, scaler, to_scale, saving_dir=ml_xs_saving_dir, saving_filename=filename)
+                if row.normalizer == "none":
+                    _ = exfor_utils.get_csv_for_ace(
+                        df, Z, A, model, None, to_scale, saving_dir=ml_xs_saving_dir, saving_filename=filename, scale=False)  
+                else:
+                    _ = exfor_utils.get_csv_for_ace(
+                        df, Z, A, model, scaler, to_scale, saving_dir=ml_xs_saving_dir, saving_filename=filename)
 
             create_new_ace_w_df(str(Z) + str(A).zfill(3), path_to_ml_csv, saving_dir=acelib_saving_dir, ignore_basename=True)
 
@@ -878,7 +901,7 @@ def copy_benchmark_files(benchmark_name, saving_dir):
     return None
 
 
-def generate_serpent_bash(searching_directory):
+def generate_serpent_bash(searching_directory, script_name, benchmark="all", omp=10):
     """Gathers the path to all "input" benchmark files and returns a single bash script to run all 
     Serpent simulations and convert the resulting matlab file into .mat files for later reading.
 
@@ -894,18 +917,23 @@ def generate_serpent_bash(searching_directory):
     for root, _, files in os.walk(searching_directory):
         for file in files:
             if file.endswith("input"):
-                all_serpent_files.append(os.path.abspath(os.path.join(root, file)))
-                    
+                if benchmark == "all":
+                    all_serpent_files.append(os.path.abspath(os.path.join(root, file)))
+                else:
+                    if benchmark in root:
+                        all_serpent_files.append(os.path.abspath(os.path.join(root, file)))
+
     for i in all_serpent_files:
         new = i.replace("C:\\", "/mnt/c/").replace("\\", "/")
         if "template" in new:
             continue
         else:
             all_serpent_files_linux.append("cd {}".format(os.path.dirname(new)) + "/")
-            all_serpent_files_linux.append("sss2 -omp 10 " + os.path.basename(new))
-            all_serpent_files_linux.append("/mnt/c/Program\ Files/MATLAB/R2019a/bin/matlab.exe -nodisplay -nosplash -nodesktop -r \"run('converter.m');exit;\" ")  # pylint: disable=anomalous-backslash-in-string  
+            all_serpent_files_linux.append("sss2 -omp {} ".format(omp) + os.path.basename(new))
+            all_serpent_files_linux.append(matlab_path + " -nodisplay -nosplash -nodesktop -r \"run('converter.m');exit;\" ".replace("\\", ""))  # pylint: disable=anomalous-backslash-in-string 
+             
         
-    script_path = os.path.join(searching_directory, 'serpent_script.sh')
+    script_path = os.path.join(searching_directory, '{}.sh'.format(script_name))
 
     with open(script_path, 'w') as f:
         for item in all_serpent_files_linux:

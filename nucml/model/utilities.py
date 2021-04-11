@@ -109,7 +109,10 @@ def make_predictions(data, model, model_type):
     Returns:
         object: object containing the model predictions. Type will be dependent on model type.
     """
-    if model_type == "tf":
+    if str(type(model)) == "<class 'xgboost.core.Booster'>":
+        xg_dataset = xgb.DMatrix(data)
+        pred_vector = model.predict(xg_dataset)
+    elif model_type == "tf":
         tf_dataset = tf.data.Dataset.from_tensor_slices((data)).batch(len(data))
         pred_vector = model.predict(tf_dataset)
     elif model_type == "xgb":
@@ -153,7 +156,7 @@ def get_best_models_df(results_df, keep_first=False):
     best_models = best_train.append(best_test)
     return best_models
 
-def load_model_and_scaler(model_scaler_info, df=True):
+def load_model_and_scaler(model_scaler_info, df=True, model_only=False):
     """Loads both the model and scaler given a dataframe with path's specified.
 
     Args:
@@ -161,6 +164,7 @@ def load_model_and_scaler(model_scaler_info, df=True):
             is passed. Else, it must contain the "model_path" and "scaler_path" as keys in a dictionary.
         df (bool, optional): If True, the model_scaler_info variable must be a DataFrame. If False, it must be
             a python dictionary.
+        model_only (bool, optional): If True, the scaler will not be loaded. Only the model will be loaded.
 
     Returns:
         object, object: returns the loaded model and scaler.
@@ -172,9 +176,11 @@ def load_model_and_scaler(model_scaler_info, df=True):
         path_to_model = model_scaler_info["model_path"]
         path_to_scaler = model_scaler_info["scaler_path"]
     model = load(path_to_model) 
-    scaler = load(path_to_scaler)
-    return model, scaler
-
+    if not model_only:
+        scaler = load(path_to_scaler)
+        return model, scaler
+    else:
+        return model 
 
 
 def cleanup_model_dir(results_df, model_dir, keep_best=True, keep_first=False):
@@ -236,3 +242,17 @@ def remove_unused_models(model_results_path, acedate_directory):
         shutil.rmtree(i)
     
     return None
+
+
+def filter_by_parameters(results_df, param_dict):
+    for i in param_dict:
+        results_df = results_df[results_df[i] == param_dict[i]]
+    return results_df
+
+def get_parameters_from_line(results_df, model="knn"):
+    if model.lower() == "knn":
+        distance_metric = results_df.distance_metric.values[0]
+        mt_strategy = results_df.mt_strategy.values[0]
+        normalizer = results_df.normalizer.values[0]
+        param_dict = {"distance_metric":distance_metric, "mt_strategy":mt_strategy, "normalizer":normalizer}
+    return param_dict
