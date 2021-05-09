@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Analyzing Benchmark Results for Validation &mdash; NucML 1.0.0 documentation</title>
@@ -86,16 +85,16 @@
               
             
             
-              <p><span class="caption-text">OVERVIEW</span></p>
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p><span class="caption-text">GET STARTED</span></p>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html">Loading Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
@@ -114,18 +113,18 @@
 </ul>
 </li>
 </ul>
-<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<p class="caption"><span class="caption-text">OTHER TUTORIALS</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
 </ul>
-<p><span class="caption-text">DOCUMENTATION</span></p>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">nucml</a></li>
 </ul>
-<p><span class="caption-text">FAQ AND CONTACT</span></p>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
@@ -468,7 +467,7 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<section id="Analyzing-Benchmark-Results-for-Validation">
+<div class="section" id="Analyzing-Benchmark-Results-for-Validation">
 <h1>Analyzing Benchmark Results for Validation<a class="headerlink" href="#Analyzing-Benchmark-Results-for-Validation" title="Permalink to this headline">¶</a></h1>
 <p>So you ran your models against several criticality benchmarks. Nice! How do we analyze the results easily? NucML contains some utilities to help you get started.</p>
 <div class="nbinput nblast docutils container">
@@ -523,7 +522,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<section id="Gathering-Results-from-Serpent-Runs">
+<div class="section" id="Gathering-Results-from-Serpent-Runs">
 <h2>Gathering Results from Serpent Runs<a class="headerlink" href="#Gathering-Results-from-Serpent-Runs" title="Permalink to this headline">¶</a></h2>
 <p>You can automatically read all benchmark <code class="docutils literal notranslate"><span class="pre">.mat</span></code> files and format the results easily by simply specifying the directory where the benchmark model information is stored (see previous notebook).</p>
 <div class="nbinput nblast docutils container">
@@ -641,8 +640,8 @@ div.rendered_html tbody tr:hover {
 </table>
 </div></div>
 </div>
-</section>
-<section id="Analyzing-Decision-Tree-Results">
+</div>
+<div class="section" id="Analyzing-Decision-Tree-Results">
 <h2>Analyzing Decision Tree Results<a class="headerlink" href="#Analyzing-Decision-Tree-Results" title="Permalink to this headline">¶</a></h2>
 <p>That was easy. However, we do not have the training and validation metrics that we had before. We can simply read the results files and join them. First, let us load the results and keep the most basic columns including hyperparameters and performance metrics.</p>
 <div class="nbinput nblast docutils container">
@@ -1036,8 +1035,8 @@ div.rendered_html tbody tr:hover {
 </div></div>
 </div>
 <p>It seems like the <code class="docutils literal notranslate"><span class="pre">DT136_MSS5_MSL3_none_one_hot_B0_v1</span></code> model has great performance in the benchmark with an error of <code class="docutils literal notranslate"><span class="pre">0.000094%</span></code>.</p>
-</section>
-<section id="Getting-Best-Models-Overall">
+</div>
+<div class="section" id="Getting-Best-Models-Overall">
 <h2>Getting Best Models Overall<a class="headerlink" href="#Getting-Best-Models-Overall" title="Permalink to this headline">¶</a></h2>
 <p>Similar to traditional ML validation techniques, it is only correct that we analyze the result of the ML algorithms on their average performance on a set of criticality benchmark cases, rather than just one. The examples here contain information on three benchmarks. Those will suffice for a proof-of-concept analysis.</p>
 <p>An option is simply grouping the model by performance. Beware, this can lead to some major misconceptions and it is shown here only as an example.</p>
@@ -1198,7 +1197,7 @@ div.rendered_html tbody tr:hover {
 </table>
 </div></div>
 </div>
-<section id="————————————————-PRIVATE-SECTION">
+<div class="section" id="————————————————-PRIVATE-SECTION">
 <h3>———————————————— PRIVATE SECTION<a class="headerlink" href="#————————————————-PRIVATE-SECTION" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
@@ -1350,9 +1349,9 @@ DT170\_MSS10\_MSL3\_none\_one\_hot\_B0\_v1 &amp;    1.00022 &amp;  0.00042 &amp;
 
 </pre></div></div>
 </div>
-</section>
-</section>
-</section>
+</div>
+</div>
+</div>
 
 
            </div>

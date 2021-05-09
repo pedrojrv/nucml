@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Experimental Nuclear Reaction Data (EXFOR) &mdash; NucML 1.0.0 documentation</title>
@@ -86,16 +85,16 @@
               
             
             
-              <p><span class="caption-text">OVERVIEW</span></p>
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p><span class="caption-text">GET STARTED</span></p>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../navigating-the-nde.html">Loading Data</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="1_Loading_AME_Datasets.html">Atomic Mass Evaluation (2016)</a></li>
@@ -114,18 +113,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<p class="caption"><span class="caption-text">OTHER TUTORIALS</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
 </ul>
-<p><span class="caption-text">DOCUMENTATION</span></p>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">nucml</a></li>
 </ul>
-<p><span class="caption-text">FAQ AND CONTACT</span></p>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
@@ -468,7 +467,7 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<section id="Experimental-Nuclear-Reaction-Data-(EXFOR)">
+<div class="section" id="Experimental-Nuclear-Reaction-Data-(EXFOR)">
 <h1>Experimental Nuclear Reaction Data (EXFOR)<a class="headerlink" href="#Experimental-Nuclear-Reaction-Data-(EXFOR)" title="Permalink to this headline">¶</a></h1>
 <p>The Experimental Nuclear Reaction Data (EXFOR) contains reaction data information for a variety of projectiles. <code class="docutils literal notranslate"><span class="pre">NucML</span></code> makes it easy to download and parse the EXFOR <code class="docutils literal notranslate"><span class="pre">C4</span></code> files to create ready to use ML-datasets. Let us start by importing the <code class="docutils literal notranslate"><span class="pre">nucml.datasets</span></code> module.</p>
 <div class="nbinput nblast docutils container">
@@ -493,7 +492,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<section id="Original-EXFOR-Tables">
+<div class="section" id="Original-EXFOR-Tables">
 <h2>Original EXFOR Tables<a class="headerlink" href="#Original-EXFOR-Tables" title="Permalink to this headline">¶</a></h2>
 <p>When setting up, several EXFOR <code class="docutils literal notranslate"><span class="pre">CSV</span></code> files were created for each reaction-inducing particle. These are stored in your local directory and follow a specific structure/convention: <code class="docutils literal notranslate"><span class="pre">EXFOR/CSV_Files/EXFOR_&lt;projectile&gt;/EXFOR_&lt;projectile&gt;_ORIGINAL.csv</span></code>. You can simply read them using <code class="docutils literal notranslate"><span class="pre">pandas</span></code>. Alternatively, you can use <code class="docutils literal notranslate"><span class="pre">NucML</span></code> to handle loading scenarios.</p>
 <div class="nbinput docutils container">
@@ -558,8 +557,8 @@ Index([&#39;Projectile&#39;, &#39;Target_Metastable_State&#39;, &#39;MF&#39;, &#
 </pre></div></div>
 </div>
 <p>Other supported projectiles are <code class="docutils literal notranslate"><span class="pre">protons</span></code>, <code class="docutils literal notranslate"><span class="pre">alphas</span></code>, <code class="docutils literal notranslate"><span class="pre">deuterons</span></code>, <code class="docutils literal notranslate"><span class="pre">gammas</span></code>, and <code class="docutils literal notranslate"><span class="pre">helions</span></code>. Alternatively, you can load all data from all projectiles by specifying <code class="docutils literal notranslate"><span class="pre">mode=&quot;all&quot;</span></code></p>
-</section>
-<section id="Reaction-Data-(MF3)-Only">
+</div>
+<div class="section" id="Reaction-Data-(MF3)-Only">
 <h2>Reaction Data (MF3) Only<a class="headerlink" href="#Reaction-Data-(MF3)-Only" title="Permalink to this headline">¶</a></h2>
 <p>There are a variety of <code class="docutils literal notranslate"><span class="pre">Files</span> <span class="pre">(MT)</span></code> included in <code class="docutils literal notranslate"><span class="pre">EXFOR</span></code>. In our work, we dealt only with reaction cross section vs energy datapoints (<code class="docutils literal notranslate"><span class="pre">MT=3</span></code>). <code class="docutils literal notranslate"><span class="pre">NucML</span></code> therefore offers many functionalities to create ML-ready particle-induced cross section reaction data.</p>
 <p>We can simply load all <code class="docutils literal notranslate"><span class="pre">neutron</span></code> induce cross section reaction EXFOR data points by calling the <code class="docutils literal notranslate"><span class="pre">load_exfor()</span></code> method:</p>
@@ -1268,8 +1267,8 @@ INFO:root:Finished. Resulting dataset has shape (4255409, 104)
 </div></div>
 </div>
 <p>You can similarly load other particle-induce data such as proton-induce cross section reaction data.</p>
-</section>
-<section id="ML-ready-EXFOR-datasets">
+</div>
+<div class="section" id="ML-ready-EXFOR-datasets">
 <h2>ML-ready EXFOR datasets<a class="headerlink" href="#ML-ready-EXFOR-datasets" title="Permalink to this headline">¶</a></h2>
 <p>The returned <code class="docutils literal notranslate"><span class="pre">exfor_neutrons</span></code> DataFrame is only a starting point for the truly ML-ready dataset. The <code class="docutils literal notranslate"><span class="pre">load_exfor()</span></code> method contains more than 10 customizable options that allow you to implement specific normalizers, transformations, numerical thresholds, splitting, and more.</p>
 <p>Let us create an ML-ready dataset example:</p>
@@ -2022,8 +2021,8 @@ INFO:root:Fitting new scaler.
 </div></div>
 </div>
 <p>Look at the full arguments fot the <code class="docutils literal notranslate"><span class="pre">load_exfor()</span></code> documentation for more information and more functionalities.</p>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

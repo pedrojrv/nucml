@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Testing ML-based Outlier Detectors &mdash; NucML 1.0.0 documentation</title>
@@ -86,16 +85,16 @@
               
             
             
-              <p><span class="caption-text">OVERVIEW</span></p>
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p><span class="caption-text">GET STARTED</span></p>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html">Loading Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
@@ -103,7 +102,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<p class="caption"><span class="caption-text">OTHER TUTORIALS</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a><ul class="current">
@@ -120,11 +119,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
 </ul>
-<p><span class="caption-text">DOCUMENTATION</span></p>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">nucml</a></li>
 </ul>
-<p><span class="caption-text">FAQ AND CONTACT</span></p>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
@@ -467,7 +466,7 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<section id="Testing-ML-based-Outlier-Detectors">
+<div class="section" id="Testing-ML-based-Outlier-Detectors">
 <h1>Testing ML-based Outlier Detectors<a class="headerlink" href="#Testing-ML-based-Outlier-Detectors" title="Permalink to this headline">¶</a></h1>
 <p>There are various ways to deal with outliers in general. However, detection and removal of these in an automatic manner is a challenge. Especially since normal statistical techniques will not work due to the behaviour and variance of resonance characteristics of nuclear reaction data. In this small notebook, an example using four different outlier detectors is shown on the resonance region of the U-235(n,g) reaction.</p>
 <div class="nbinput nblast docutils container">
@@ -588,7 +587,7 @@ INFO:root:EXFOR extracted DataFrame has shape: (10872, 104)
 </pre></div>
 </div>
 </div>
-<section id="Isolation-Forest">
+<div class="section" id="Isolation-Forest">
 <h2>Isolation Forest<a class="headerlink" href="#Isolation-Forest" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[114]:
@@ -645,8 +644,8 @@ IsolationForest(contamination=0.003, n_estimators=200)
 </pre></div>
 </div>
 </div>
-</section>
-<section id="One-Class-SVM">
+</div>
+<div class="section" id="One-Class-SVM">
 <h2>One Class SVM<a class="headerlink" href="#One-Class-SVM" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[122]:
@@ -703,8 +702,8 @@ OneClassSVM(gamma=0.1, nu=0.003)
 </pre></div>
 </div>
 </div>
-</section>
-<section id="Local-Outlier-Factor">
+</div>
+<div class="section" id="Local-Outlier-Factor">
 <h2>Local Outlier Factor<a class="headerlink" href="#Local-Outlier-Factor" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[128]:
@@ -729,8 +728,8 @@ OneClassSVM(gamma=0.1, nu=0.003)
 </pre></div>
 </div>
 </div>
-</section>
-<section id="Elliptic-Envelope">
+</div>
+<div class="section" id="Elliptic-Envelope">
 <h2>Elliptic Envelope<a class="headerlink" href="#Elliptic-Envelope" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[131]:
@@ -787,8 +786,8 @@ EllipticEnvelope(contamination=0.003)
 </pre></div>
 </div>
 </div>
-</section>
-<section id="Plotting-Outliers">
+</div>
+<div class="section" id="Plotting-Outliers">
 <h2>Plotting Outliers<a class="headerlink" href="#Plotting-Outliers" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[175]:
@@ -831,8 +830,8 @@ EllipticEnvelope(contamination=0.003)
 <img alt="../_images/notebooks_0_Evaluating_Dataset_Quality_35_0.png" src="../_images/notebooks_0_Evaluating_Dataset_Quality_35_0.png" />
 </div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>ENSDF Nuclear Level Density Interpolation &mdash; NucML 1.0.0 documentation</title>
@@ -86,16 +85,16 @@
               
             
             
-              <p><span class="caption-text">OVERVIEW</span></p>
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p><span class="caption-text">GET STARTED</span></p>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html">Loading Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
@@ -103,7 +102,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<p class="caption"><span class="caption-text">OTHER TUTORIALS</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
@@ -118,11 +117,11 @@
 </ul>
 </li>
 </ul>
-<p><span class="caption-text">DOCUMENTATION</span></p>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">nucml</a></li>
 </ul>
-<p><span class="caption-text">FAQ AND CONTACT</span></p>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
@@ -465,7 +464,7 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<section id="ENSDF-Nuclear-Level-Density-Interpolation">
+<div class="section" id="ENSDF-Nuclear-Level-Density-Interpolation">
 <h1>ENSDF Nuclear Level Density Interpolation<a class="headerlink" href="#ENSDF-Nuclear-Level-Density-Interpolation" title="Permalink to this headline">¶</a></h1>
 <p>In the effort to use ML to predict cross section data, a very important feature that comes to mind are the nuclear levels. These are directly correlated to resonance location. How can we represent available data correctly and incorporate it into our EXFOR datasets? In this example, we go through a very simple approach where we load the cut-off ENSDF dataset and fit linear models to available nuclear level densities. It is not only the predictions that we save but also the models since we need to
 query them at the EXFOR datapoint energies.</p>
@@ -543,7 +542,7 @@ INFO:root:Finished. Resulting dataset has shape (20825, 75)
 </pre></div>
 </div>
 </div>
-<section id="Fitting-a-Simple-Linear-Model">
+<div class="section" id="Fitting-a-Simple-Linear-Model">
 <h2>Fitting a Simple Linear Model<a class="headerlink" href="#Fitting-a-Simple-Linear-Model" title="Permalink to this headline">¶</a></h2>
 <p>Having loaded the data we can fit a simple linear model to isotopic data using the <code class="docutils literal notranslate"><span class="pre">generate_level_density_csv()</span></code> utility.</p>
 <div class="nbinput nblast docutils container">
@@ -767,8 +766,8 @@ INFO:root:Expanded Dataset has shape: (500, 75)
 (3700, 3)
 </pre></div></div>
 </div>
-</section>
-<section id="Saving-Predictions-and-Model">
+</div>
+<div class="section" id="Saving-Predictions-and-Model">
 <h2>Saving Predictions and Model<a class="headerlink" href="#Saving-Predictions-and-Model" title="Permalink to this headline">¶</a></h2>
 <p>We can now iterate through all elements in the <code class="docutils literal notranslate"><span class="pre">ensdf_cutoff_df</span></code> dataframe and use the same function to generate a CSV file and a <code class="docutils literal notranslate"><span class="pre">joblib</span></code> model that we can later used as needed.</p>
 <div class="nbinput nblast docutils container">
@@ -819,8 +818,8 @@ INFO:root:Expanded Dataset has shape: (500, 75)
  &#39;102Ru_linear_model.joblib&#39;]
 </pre></div></div>
 </div>
-</section>
-<section id="Getting-Level-Density-at-a-Given-Energy">
+</div>
+<div class="section" id="Getting-Level-Density-at-a-Given-Energy">
 <h2>Getting Level Density at a Given Energy<a class="headerlink" href="#Getting-Level-Density-at-a-Given-Energy" title="Permalink to this headline">¶</a></h2>
 <p>Having the resultant files and DataFrame means we can query level density at various energies to get the cumulative number of levels.</p>
 <div class="nbinput nblast docutils container">
@@ -851,8 +850,8 @@ INFO:root:Expanded Dataset has shape: (500, 75)
 </pre></div></div>
 </div>
 <p>Perfect!</p>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

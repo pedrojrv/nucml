@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Basic Walkthrough &mdash; NucML 1.0.0 documentation</title>
@@ -86,11 +85,11 @@
               
             
             
-              <p><span class="caption-text">OVERVIEW</span></p>
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p><span class="caption-text">GET STARTED</span></p>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Basic Walkthrough</a><ul>
@@ -102,7 +101,7 @@
 </ul>
 </li>
 </ul>
-<p><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html">Loading Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
@@ -110,18 +109,18 @@
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<p class="caption"><span class="caption-text">OTHER TUTORIALS</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
 <li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
 </ul>
-<p><span class="caption-text">DOCUMENTATION</span></p>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">nucml</a></li>
 </ul>
-<p><span class="caption-text">FAQ AND CONTACT</span></p>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
@@ -220,7 +219,7 @@
 <p class="admonition-title">Note</p>
 <p>Documentation in progress.</p>
 </div>
-<section id="basic-walkthrough">
+<div class="section" id="basic-walkthrough">
 <h1>Basic Walkthrough<a class="headerlink" href="#basic-walkthrough" title="Permalink to this headline">¶</a></h1>
 <p>The cloned repository does not only contain the information necessary to start generating the datasets but also a variety of
 tutorial notebooks that demonstrate the capabilities of NucML. Be sure to check them out. For more information in the contents please
@@ -228,7 +227,7 @@ refer to the repository README file in GitHub. If you haven’t installed NucmL 
 the <a class="reference internal" href="installation-guide.html#installation-guide-label"><span class="std std-ref">Installation Guide</span></a>.</p>
 <p>In this section we summarize the main pipeline steps for a complete nuclear data neutron-induce cross section evaluation including
 loading the data, modeling, and validating using criticality benchmarks.</p>
-<section id="load-the-neutrons-exfor-data">
+<div class="section" id="load-the-neutrons-exfor-data">
 <h2>1. Load the Neutrons EXFOR Data<a class="headerlink" href="#load-the-neutrons-exfor-data" title="Permalink to this headline">¶</a></h2>
 <p>The <cite>nucml.datasets</cite> module offers the capability of loading various datasets from AME, ENSDF, ENDF, and EXFOR easily. In this example
 we load the EXFOR/AME dataset for neutron-induce reactions.</p>
@@ -258,8 +257,8 @@ for more information. In this example <cite>basic=0</cite> means that we only wa
 <li><p>to_scale: A list of the features subject to normalization by the scaler.</p></li>
 <li><p>scaler: A scikit-learn scaler object. This is the transformer used to normalized the data.</p></li>
 </ul>
-</section>
-<section id="building-the-ml-models">
+</div>
+<div class="section" id="building-the-ml-models">
 <h2>2. Building the ML Models<a class="headerlink" href="#building-the-ml-models" title="Permalink to this headline">¶</a></h2>
 <p>Building the model is user dependent. There are a variety of models and an infinite number of hyperparameter combinations. Tuning
 these models are outside the scope of this utility but here a simple Decision Tree model will be trained for demonstration purposes.</p>
@@ -333,8 +332,8 @@ but in reality will include many more models.</p>
 <p>There are some python scripts included in the ML_Nuclear_Data to help you get started training scikit-learn and XGBoost models
 easily. It is a great way to get get started and to experience some of the modeling capabilities of NucML and includes all necessary
 code automate more of these tasks.</p>
-</section>
-<section id="generating-benchmark-files">
+</div>
+<div class="section" id="generating-benchmark-files">
 <h2>4. Generating Benchmark Files<a class="headerlink" href="#generating-benchmark-files" title="Permalink to this headline">¶</a></h2>
 <p>While the benchmark library is small, NucML allows the user to add more benchmark files by following a set of instructions. It
 is best practice to create benchmark files for all avaliable benchmarks. For demonstration we use only the U-233 Jezzebel
@@ -369,8 +368,8 @@ the resulting <cite>.m</cite> file into a <cite>.mat</cite> file.</p>
 </pre></div>
 </div>
 <p>The generated bash script will be saved in the same directory (dt_ml_ace_dir).</p>
-</section>
-<section id="validating-the-ml-models">
+</div>
+<div class="section" id="validating-the-ml-models">
 <h2>5. Validating the ML Models<a class="headerlink" href="#validating-the-ml-models" title="Permalink to this headline">¶</a></h2>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -390,14 +389,14 @@ the resulting <cite>.m</cite> file into a <cite>.mat</cite> file.</p>
 </pre></div>
 </div>
 <p>The resulting <cite>DataFrame</cite> contains the model name, benchmark name, the multiplication factor, and the error.</p>
-</section>
-<section id="next-steps">
+</div>
+<div class="section" id="next-steps">
 <h2>6. Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
 <p>Congratulations, you have performed an end-to-end ML-enhanced nuclear data evaluation using the U-233 Jezebel Benchmark. These are just some of
 the general submodules that NucML offers to help you navigate through the evaluation pipeline. Try going through the
 <a class="reference internal" href="other-tutorials.html#navigating-the-nde-label"><span class="std std-ref">Navigating the NDE</span></a> section for more information and tutorials.</p>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

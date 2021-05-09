@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Hybrid ENDF/ML ACE Library Generation &mdash; NucML 1.0.0 documentation</title>
@@ -86,16 +85,16 @@
               
             
             
-              <p><span class="caption-text">OVERVIEW</span></p>
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p><span class="caption-text">GET STARTED</span></p>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html">Loading Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
@@ -103,7 +102,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<p class="caption"><span class="caption-text">OTHER TUTORIALS</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
@@ -122,11 +121,11 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
 </ul>
-<p><span class="caption-text">DOCUMENTATION</span></p>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">nucml</a></li>
 </ul>
-<p><span class="caption-text">FAQ AND CONTACT</span></p>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
@@ -469,7 +468,7 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<section id="Hybrid-ENDF/ML-ACE-Library-Generation">
+<div class="section" id="Hybrid-ENDF/ML-ACE-Library-Generation">
 <h1>Hybrid ENDF/ML ACE Library Generation<a class="headerlink" href="#Hybrid-ENDF/ML-ACE-Library-Generation" title="Permalink to this headline">¶</a></h1>
 <p>NucML contains many utilities to deal directly with ACE files. In this notebook, you will be shown some of these loading and manipulation capabilities and a full example on how you can use these to fix instabilities in ML-generated cross sections. This tutorial is meant to show you how the benchmark file generation utilities work. If you are using NucML automated tools for benchmark cross section generation then this notebook is meant purely to inform you how cross sections are adjusted.</p>
 <div class="nbinput nblast docutils container">
@@ -510,7 +509,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<section id="Loading-ENDF-and-ML-ACE-Files">
+<div class="section" id="Loading-ENDF-and-ML-ACE-Files">
 <h2>Loading ENDF and ML ACE Files<a class="headerlink" href="#Loading-ENDF-and-ML-ACE-Files" title="Permalink to this headline">¶</a></h2>
 <p>The NSX, JXS, and XSS objects are the main components of an ACE File. We can easily extract them just by specifying the isotope of interest. NucML will look for the defined ACE directory during configuration. For information on the components extracted please visit the following repository: <a class="reference external" href="https://github.com/NuclearData/ACEFormat">https://github.com/NuclearData/ACEFormat</a></p>
 <div class="nbinput nblast docutils container">
@@ -598,8 +597,8 @@ array([1.000e-11, 1.125e-11, 1.250e-11, ..., 2.900e+01, 2.950e+01,
 </pre></div>
 </div>
 </div>
-</section>
-<section id="Comparing-RAW-Predictions-with-ENDF-ACE-Files">
+</div>
+<div class="section" id="Comparing-RAW-Predictions-with-ENDF-ACE-Files">
 <h2>Comparing RAW Predictions with ENDF ACE Files<a class="headerlink" href="#Comparing-RAW-Predictions-with-ENDF-ACE-Files" title="Permalink to this headline">¶</a></h2>
 <p>The <code class="docutils literal notranslate"><span class="pre">mt_array</span></code>, <code class="docutils literal notranslate"><span class="pre">mt_xs_pointers_array</span></code>, <code class="docutils literal notranslate"><span class="pre">jxs</span></code>, <code class="docutils literal notranslate"><span class="pre">xss</span></code>, and <code class="docutils literal notranslate"><span class="pre">pointers</span></code> have all the needed information to extract cross section arrays from the ACE file.</p>
 <div class="nbinput nblast docutils container">
@@ -665,8 +664,8 @@ array([1.000e-11, 1.125e-11, 1.250e-11, ..., 2.900e+01, 2.950e+01,
 <img alt="../_images/notebooks_2_Hybrid_ML_ENDF_XS_Generation_18_1.png" src="../_images/notebooks_2_Hybrid_ML_ENDF_XS_Generation_18_1.png" />
 </div>
 </div>
-</section>
-<section id="Smoothing-1/v-Region">
+</div>
+<div class="section" id="Smoothing-1/v-Region">
 <h2>Smoothing 1/v Region<a class="headerlink" href="#Smoothing-1/v-Region" title="Permalink to this headline">¶</a></h2>
 <p>The first step is to fix the 1/v region. NucML uses scipy’s <code class="docutils literal notranslate"><span class="pre">find_peaks</span></code> functionality to replace all cross section values up to the first peak with ENDF values.</p>
 <div class="nbinput nblast docutils container">
@@ -717,8 +716,8 @@ array([1.000e-11, 1.125e-11, 1.250e-11, ..., 2.900e+01, 2.950e+01,
 <img alt="../_images/notebooks_2_Hybrid_ML_ENDF_XS_Generation_21_1.png" src="../_images/notebooks_2_Hybrid_ML_ENDF_XS_Generation_21_1.png" />
 </div>
 </div>
-</section>
-<section id="Adjusts-MT2-to-Conserve-Unitarity">
+</div>
+<div class="section" id="Adjusts-MT2-to-Conserve-Unitarity">
 <h2>Adjusts MT2 to Conserve Unitarity<a class="headerlink" href="#Adjusts-MT2-to-Conserve-Unitarity" title="Permalink to this headline">¶</a></h2>
 <p>By default, NucML will adjust the MT2 cross section ton conserve unitarity. Let us do this and compare the generated cross sections. We will save the ML generated cross sections and adjustments in the <code class="docutils literal notranslate"><span class="pre">Energy_Grid</span></code> dataframe.</p>
 <div class="nbinput nblast docutils container">
@@ -921,8 +920,8 @@ array([1.000e-11, 1.125e-11, 1.250e-11, ..., 2.900e+01, 2.950e+01,
 <img alt="../_images/notebooks_2_Hybrid_ML_ENDF_XS_Generation_32_1.png" src="../_images/notebooks_2_Hybrid_ML_ENDF_XS_Generation_32_1.png" />
 </div>
 </div>
-</section>
-<section id="Comparing-ENDF/ML-MT2-ACE-Cross-Sections">
+</div>
+<div class="section" id="Comparing-ENDF/ML-MT2-ACE-Cross-Sections">
 <h2>Comparing ENDF/ML MT2 ACE Cross Sections<a class="headerlink" href="#Comparing-ENDF/ML-MT2-ACE-Cross-Sections" title="Permalink to this headline">¶</a></h2>
 <p>As mentioned, the MT2 is adjusted to conserve unitarity. It is important to visualize the difference since we expect the biggest irregularities to appear there in this processing framework (therefore this being a proof-of-concept framework).</p>
 <div class="nbinput docutils container">
@@ -956,8 +955,8 @@ array([1.000e-11, 1.125e-11, 1.250e-11, ..., 2.900e+01, 2.950e+01,
 <img alt="../_images/notebooks_2_Hybrid_ML_ENDF_XS_Generation_34_1.png" src="../_images/notebooks_2_Hybrid_ML_ENDF_XS_Generation_34_1.png" />
 </div>
 </div>
-</section>
-<section id="Modify-Original-ACE-XSS-with-ML-Values">
+</div>
+<div class="section" id="Modify-Original-ACE-XSS-with-ML-Values">
 <h2>Modify Original ACE XSS with ML Values<a class="headerlink" href="#Modify-Original-ACE-XSS-with-ML-Values" title="Permalink to this headline">¶</a></h2>
 <p>Recall that we are saving all ML-generated values and adjustments in the <code class="docutils literal notranslate"><span class="pre">Energy_Grid</span></code> DataFrame. Using the ACE files metadata, we can simply pass in the DataFrame, as long as it contains the same exact energy grid as the original ACE file, and substitute the values.</p>
 <div class="nbinput docutils container">
@@ -1014,8 +1013,8 @@ INFO:root:It is wokring
 </pre></div></div>
 </div>
 <p>Indeed, exactly the same number of cross sections.</p>
-</section>
-<section id="Visualizing-Final-Results">
+</div>
+<div class="section" id="Visualizing-Final-Results">
 <h2>Visualizing Final Results<a class="headerlink" href="#Visualizing-Final-Results" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[72]:
@@ -1087,8 +1086,8 @@ Text(0.04, 0.5, &#39;Cross Section (mb)&#39;)
 <img alt="../_images/notebooks_2_Hybrid_ML_ENDF_XS_Generation_42_1.png" src="../_images/notebooks_2_Hybrid_ML_ENDF_XS_Generation_42_1.png" />
 </div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

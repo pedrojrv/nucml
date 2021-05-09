@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Loading Data &mdash; NucML 1.0.0 documentation</title>
@@ -86,16 +85,16 @@
               
             
             
-              <p><span class="caption-text">OVERVIEW</span></p>
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p><span class="caption-text">GET STARTED</span></p>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Loading Data</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/1_Loading_AME_Datasets.html">Atomic Mass Evaluation (2016)</a></li>
@@ -121,18 +120,18 @@
 </ul>
 </li>
 </ul>
-<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<p class="caption"><span class="caption-text">OTHER TUTORIALS</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
 <li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
 </ul>
-<p><span class="caption-text">DOCUMENTATION</span></p>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">nucml</a></li>
 </ul>
-<p><span class="caption-text">FAQ AND CONTACT</span></p>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
@@ -228,7 +227,7 @@
 }
 </style>
 <p id="navigating-the-nde-label">All tutorials showed here (and more) can be downloaded from the <code class="code docutils literal notranslate"><span class="pre">ML_Nuclear_Data</span></code> repository <a class="reference external" href="https://github.com/pedrojrv/ML_Nuclear_Data">here</a>.</p>
-<section id="loading-data">
+<div class="section" id="loading-data">
 <h1>Loading Data<a class="headerlink" href="#loading-data" title="Permalink to this headline">¶</a></h1>
 <p>Identifying, parsing, and formatting all nuclear data sources can be a tedious time-consuming job. NucML contains a variety of utilities
 that make it easy to download and load the latest versions of the EXFOR, RIPL, ENDF, and AME libraries easily. To convert these into ML-friendly datasets,
@@ -265,8 +264,8 @@ easy-to-use files.</p>
 </li>
 </ul>
 </div>
-</section>
-<section id="exploratory-data-analysis">
+</div>
+<div class="section" id="exploratory-data-analysis">
 <h1>Exploratory Data Analysis<a class="headerlink" href="#exploratory-data-analysis" title="Permalink to this headline">¶</a></h1>
 <p>Thoroughly exploring and analyzing your data before modeling is very important. Both EXFOR and XUNDL/RIPL are very unconventional datasets compared
 to traditional structured data. Care must be taken to understand the strengths but also limitations.</p>
@@ -278,8 +277,8 @@ to traditional structured data. Care must be taken to understand the strengths b
 <li class="toctree-l1"><a class="reference internal" href="notebooks/2_EDA_RIPL.html">Reference Input Data Library (RIPL)</a></li>
 </ul>
 </div>
-</section>
-<section id="modeling-data">
+</div>
+<div class="section" id="modeling-data">
 <h1>Modeling Data<a class="headerlink" href="#modeling-data" title="Permalink to this headline">¶</a></h1>
 <p>In the evaluation phase of the traditional NDE pipeline, relevant data is used to guide physics-based model calculations which result in best estimates,
 dependent on data availability, of mean values including uncertainties and covariances. These values can then form part of one or more regional libraries (i.e., ENDF).
@@ -300,8 +299,8 @@ train, and analyze their models rather than providing a set of optimized algorit
 <li><p><a class="reference external" href="https://github.com/pedrojrv/ML_Nuclear_Data/blob/master/ML_EXFOR_neutrons/3_XGB/xgb.py">XGBoost (Gradient Boosting Machines)</a></p></li>
 <li><p><a class="reference external" href="https://github.com/pedrojrv/ML_Nuclear_Data/tree/master/ML_EXFOR_neutrons/4_NN">Neural Networks</a></p></li>
 </ul>
-</section>
-<section id="processing-data-for-monte-carlo">
+</div>
+<div class="section" id="processing-data-for-monte-carlo">
 <h1>Processing Data for Monte Carlo<a class="headerlink" href="#processing-data-for-monte-carlo" title="Permalink to this headline">¶</a></h1>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -329,8 +328,8 @@ bash shell scripts to aumate your model evaluations.</p>
 <li class="toctree-l1"><a class="reference internal" href="notebooks/0_Generating_MLXS_Benchmark.html">Generating Benchmark Files and Serpent Scripts</a></li>
 </ul>
 </div>
-</section>
-<section id="validating-using-benchmarks">
+</div>
+<div class="section" id="validating-using-benchmarks">
 <h1>Validating using Benchmarks<a class="headerlink" href="#validating-using-benchmarks" title="Permalink to this headline">¶</a></h1>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -347,7 +346,7 @@ and traditional ML but so is the nature of the challenge. Check the following ex
 <li class="toctree-l1"><a class="reference internal" href="notebooks/1_Gathering_Benchmark_Results_DT.html">Analyzing Benchmark Results for Validation</a></li>
 </ul>
 </div>
-</section>
+</div>
 
 
            </div>

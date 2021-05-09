@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Generating Benchmark Files and Serpent Scripts &mdash; NucML 1.0.0 documentation</title>
@@ -86,16 +85,16 @@
               
             
             
-              <p><span class="caption-text">OVERVIEW</span></p>
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p><span class="caption-text">GET STARTED</span></p>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html">Loading Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
@@ -117,18 +116,18 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<p class="caption"><span class="caption-text">OTHER TUTORIALS</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
 </ul>
-<p><span class="caption-text">DOCUMENTATION</span></p>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">nucml</a></li>
 </ul>
-<p><span class="caption-text">FAQ AND CONTACT</span></p>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
@@ -471,7 +470,7 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<section id="Generating-Benchmark-Files-and-Serpent-Scripts">
+<div class="section" id="Generating-Benchmark-Files-and-Serpent-Scripts">
 <h1>Generating Benchmark Files and Serpent Scripts<a class="headerlink" href="#Generating-Benchmark-Files-and-Serpent-Scripts" title="Permalink to this headline">¶</a></h1>
 <p>It is really important to validate trained models using criticality benchmarks. NucML provides a couple of scripts to aid automate this tedious process.</p>
 <div class="nbinput nblast docutils container">
@@ -516,7 +515,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<section id="Loading-Datasets">
+<div class="section" id="Loading-Datasets">
 <h2>Loading Datasets<a class="headerlink" href="#Loading-Datasets" title="Permalink to this headline">¶</a></h2>
 <p>In our work, several models were trained with Datasets 0-4. Since the models will be used to query data at the original ACE’s energy grid, we need to load the original data to expand the energy grid for the isotopes of interest (among other processes).</p>
 <div class="nbinput nblast docutils container">
@@ -533,8 +532,8 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-</section>
-<section id="Loading-Decision-Tree-Results">
+</div>
+<div class="section" id="Loading-Decision-Tree-Results">
 <h2>Loading Decision Tree Results<a class="headerlink" href="#Loading-Decision-Tree-Results" title="Permalink to this headline">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">NucML</span></code> will create a directory per model and create subdirectories for every criticality benchmark case. Therefore, we need to specify the directories where the model directories and subdirectories will be stored.</p>
 <div class="nbinput nblast docutils container">
@@ -719,8 +718,8 @@ Then we split the filename to remove the file extension:  DT60_MSS15_MSL10_none_
 </pre></div></div>
 </div>
 <p>It is the <code class="docutils literal notranslate"><span class="pre">DT60_MSS15_MSL10_none_one_hot_B0_v1</span></code> name that will be use to create a directory.</p>
-</section>
-<section id="Generating-Benchmark-Files">
+</div>
+<div class="section" id="Generating-Benchmark-Files">
 <h2>Generating Benchmark Files<a class="headerlink" href="#Generating-Benchmark-Files" title="Permalink to this headline">¶</a></h2>
 <p>The next step is to select the benchmark of interest. For information on the benchmarks available and instructions on how to including your own, please read the <code class="docutils literal notranslate"><span class="pre">ML_Nuclear_Data/Benchmarks/inputs/README.md</span></code> file. The included benchmarks are formatted in a specific way for <code class="docutils literal notranslate"><span class="pre">NucML</span></code> to read them.</p>
 <p>In this case, we select the <code class="docutils literal notranslate"><span class="pre">U233_MET_FAST_001</span></code> (U-233 Jezebel Criticality Benchmark). When configuring NucML, the path to the benchmark folder is automatically saved, and therefore, only the name needs to be specified.</p>
@@ -833,8 +832,8 @@ Then we split the filename to remove the file extension:  DT60_MSS15_MSL10_none_
  &#39;sss_endfb7u.xsdata&#39;]
 </pre></div></div>
 </div>
-</section>
-<section id="Generating-SERPENT-Bash-Script">
+</div>
+<div class="section" id="Generating-SERPENT-Bash-Script">
 <h2>Generating SERPENT Bash Script<a class="headerlink" href="#Generating-SERPENT-Bash-Script" title="Permalink to this headline">¶</a></h2>
 <p>This is a completely experimental feature. You can pass in the directory for which you want NucML to scan and generate a single bash script to run all cases.</p>
 <div class="nbinput nblast docutils container">
@@ -910,7 +909,7 @@ cd /mnt/c/Users/Pedro/Desktop/ML_Nuclear_Data/Benchmarks/ml/DT_B0/DT100_MSS10_MS
 </div>
 <p>Notice that the full path to the Matlab executable is defined here. You will probably need to change it by either writing a script or simply using “Replace All” in any code editor. Matlab is used to convert the serpent output into a <code class="docutils literal notranslate"><span class="pre">.mat</span></code> file. This helps analytic tools read easily detector information.</p>
 <p>The next step is to simply run the script and you are Done! See the next notebook for information on how to gather and analyze the results.</p>
-<section id="———————————————————-PRIVATE-SECTION">
+<div class="section" id="———————————————————-PRIVATE-SECTION">
 <h3>——————————————————— PRIVATE SECTION<a class="headerlink" href="#———————————————————-PRIVATE-SECTION" title="Permalink to this headline">¶</a></h3>
 <p>Same material for other benchmarks.</p>
 <div class="nbinput nblast docutils container">
@@ -983,9 +982,9 @@ cd /mnt/c/Users/Pedro/Desktop/ML_Nuclear_Data/Benchmarks/ml/DT_B0/DT100_MSS10_MS
 </pre></div>
 </div>
 </div>
-</section>
-</section>
-<section id="K-Nearest-Neighbors">
+</div>
+</div>
+<div class="section" id="K-Nearest-Neighbors">
 <h2>K-Nearest-Neighbors<a class="headerlink" href="#K-Nearest-Neighbors" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[112]:
@@ -1125,8 +1124,8 @@ cd /mnt/c/Users/Pedro/Desktop/ML_Nuclear_Data/Benchmarks/ml/DT_B0/DT100_MSS10_MS
 </pre></div>
 </div>
 </div>
-</section>
-<section id="XGBoost">
+</div>
+<div class="section" id="XGBoost">
 <h2>XGBoost<a class="headerlink" href="#XGBoost" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[121]:
@@ -1273,8 +1272,8 @@ cd /mnt/c/Users/Pedro/Desktop/ML_Nuclear_Data/Benchmarks/ml/DT_B0/DT100_MSS10_MS
 </pre></div>
 </div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

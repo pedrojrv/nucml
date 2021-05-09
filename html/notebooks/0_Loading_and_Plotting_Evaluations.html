@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Evaluated Libraries &mdash; NucML 1.0.0 documentation</title>
@@ -86,16 +85,16 @@
               
             
             
-              <p><span class="caption-text">OVERVIEW</span></p>
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p><span class="caption-text">GET STARTED</span></p>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../navigating-the-nde.html">Loading Data</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="1_Loading_AME_Datasets.html">Atomic Mass Evaluation (2016)</a></li>
@@ -114,18 +113,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<p class="caption"><span class="caption-text">OTHER TUTORIALS</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
 </ul>
-<p><span class="caption-text">DOCUMENTATION</span></p>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">nucml</a></li>
 </ul>
-<p><span class="caption-text">FAQ AND CONTACT</span></p>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
@@ -468,7 +467,7 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<section id="Evaluated-Libraries">
+<div class="section" id="Evaluated-Libraries">
 <h1>Evaluated Libraries<a class="headerlink" href="#Evaluated-Libraries" title="Permalink to this headline">¶</a></h1>
 <p>In this section we briefly show you how to load and plot evaluated data. Let us start by importing some visualizing packages and <code class="docutils literal notranslate"><span class="pre">nucml.datasets</span></code> and setting up a directory where some of the generated figures can be saved.</p>
 <div class="nbinput nblast docutils container">
@@ -505,7 +504,7 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<section id="Loading-Evaluated-Data">
+<div class="section" id="Loading-Evaluated-Data">
 <h2>Loading Evaluated Data<a class="headerlink" href="#Loading-Evaluated-Data" title="Permalink to this headline">¶</a></h2>
 <p>We can simply load ENDF data using the <code class="docutils literal notranslate"><span class="pre">load_evaluation()</span></code> method for any given isotope and reaction channel (<code class="docutils literal notranslate"><span class="pre">MT</span></code>).</p>
 <div class="nbinput nblast docutils container">
@@ -611,8 +610,8 @@ div.rendered_html tbody tr:hover {
 (46678, 2)
 </pre></div></div>
 </div>
-</section>
-<section id="Plotting-Evaluated-Data">
+</div>
+<div class="section" id="Plotting-Evaluated-Data">
 <h2>Plotting Evaluated Data<a class="headerlink" href="#Plotting-Evaluated-Data" title="Permalink to this headline">¶</a></h2>
 <p>Next, <code class="docutils literal notranslate"><span class="pre">NucML</span></code> offers a variety of plotting utilities that will be explored later. In this case let us import the evaluation plotting utilities and use them to create visualizations of our cross sections.</p>
 <div class="nbinput nblast docutils container">
@@ -709,8 +708,8 @@ div.rendered_html tbody tr:hover {
 <img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_19_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_19_0.png" />
 </div>
 </div>
-</section>
-<section id="More-Examples">
+</div>
+<div class="section" id="More-Examples">
 <h2>More Examples<a class="headerlink" href="#More-Examples" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
@@ -817,8 +816,8 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

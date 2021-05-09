@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Incorrect Experimental Campaigns &mdash; NucML 1.0.0 documentation</title>
@@ -86,16 +85,16 @@
               
             
             
-              <p><span class="caption-text">OVERVIEW</span></p>
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p><span class="caption-text">GET STARTED</span></p>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html">Loading Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
@@ -103,7 +102,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<p class="caption"><span class="caption-text">OTHER TUTORIALS</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Incorrect Experimental Campaigns</a><ul>
@@ -118,11 +117,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
 </ul>
-<p><span class="caption-text">DOCUMENTATION</span></p>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">nucml</a></li>
 </ul>
-<p><span class="caption-text">FAQ AND CONTACT</span></p>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
@@ -465,7 +464,7 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<section id="Incorrect-Experimental-Campaigns">
+<div class="section" id="Incorrect-Experimental-Campaigns">
 <h1>Incorrect Experimental Campaigns<a class="headerlink" href="#Incorrect-Experimental-Campaigns" title="Permalink to this headline">¶</a></h1>
 <p>As we know, EXFOR is an experimental database, and incorrectly reported cross sections or wrongly performed experimental campaigns exist. We intend to mark these and provide filtering operations that allow any researcher applying ML methods to neutron (or other projectiles) induce cross sections. These rules can be helpful and save computational resources wasted on fitting models on incorrect data. The outlier fraction is high enough to warrant these investigations rather than training robust
 models.</p>
@@ -547,7 +546,7 @@ INFO:root:Finished. Resulting dataset has shape (4255409, 104)
 </pre></div>
 </div>
 </div>
-<section id="Beryllium-9(N,TOT)-Cross-Section">
+<div class="section" id="Beryllium-9(N,TOT)-Cross-Section">
 <h2>Beryllium-9(N,TOT) Cross Section<a class="headerlink" href="#Beryllium-9(N,TOT)-Cross-Section" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
@@ -587,8 +586,8 @@ INFO:root:EXFOR extracted DataFrame has shape: (36367, 104)
 <img alt="../_images/notebooks_4_Erroneous_Cross_Sections_8_1.png" src="../_images/notebooks_4_Erroneous_Cross_Sections_8_1.png" />
 </div>
 </div>
-</section>
-<section id="Carbon-12(N,TOT)-Cross-Section">
+</div>
+<div class="section" id="Carbon-12(N,TOT)-Cross-Section">
 <h2>Carbon-12(N,TOT) Cross Section<a class="headerlink" href="#Carbon-12(N,TOT)-Cross-Section" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
@@ -628,8 +627,8 @@ INFO:root:EXFOR extracted DataFrame has shape: (23562, 104)
 <img alt="../_images/notebooks_4_Erroneous_Cross_Sections_10_1.png" src="../_images/notebooks_4_Erroneous_Cross_Sections_10_1.png" />
 </div>
 </div>
-</section>
-<section id="Tungsten-184(N,G)-Cross-Section">
+</div>
+<div class="section" id="Tungsten-184(N,G)-Cross-Section">
 <h2>Tungsten-184(N,G) Cross Section<a class="headerlink" href="#Tungsten-184(N,G)-Cross-Section" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
@@ -669,8 +668,8 @@ INFO:root:EXFOR extracted DataFrame has shape: (202, 104)
 <img alt="../_images/notebooks_4_Erroneous_Cross_Sections_12_1.png" src="../_images/notebooks_4_Erroneous_Cross_Sections_12_1.png" />
 </div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

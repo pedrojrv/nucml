@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Experimental Nuclear Reaction Data (EXFOR) &mdash; NucML 1.0.0 documentation</title>
@@ -86,16 +85,16 @@
               
             
             
-              <p><span class="caption-text">OVERVIEW</span></p>
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p><span class="caption-text">GET STARTED</span></p>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html">Loading Data</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a><ul class="current">
@@ -131,18 +130,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<p class="caption"><span class="caption-text">OTHER TUTORIALS</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
 </ul>
-<p><span class="caption-text">DOCUMENTATION</span></p>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">nucml</a></li>
 </ul>
-<p><span class="caption-text">FAQ AND CONTACT</span></p>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
@@ -485,7 +484,7 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<section id="Experimental-Nuclear-Reaction-Data-(EXFOR)">
+<div class="section" id="Experimental-Nuclear-Reaction-Data-(EXFOR)">
 <h1>Experimental Nuclear Reaction Data (EXFOR)<a class="headerlink" href="#Experimental-Nuclear-Reaction-Data-(EXFOR)" title="Permalink to this headline">¶</a></h1>
 <p>In this notebook we explore the EXFOR dataset and showcase some of the plotting and data manipulation capabalities of NucML. Let us start by importing some of the needed modules.</p>
 <div class="nbinput nblast docutils container">
@@ -532,7 +531,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <p><strong>NOTE: WHEN WE TALK ABOUT CROSS SECTIONS WE ARE REFERING TO THE FEATURE NAMED “DATA”, WHICH IS OUR LABEL</strong></p>
-<section id="Loading-the-EXFOR-Database">
+<div class="section" id="Loading-the-EXFOR-Database">
 <h2>Loading the EXFOR Database<a class="headerlink" href="#Loading-the-EXFOR-Database" title="Permalink to this headline">¶</a></h2>
 <p>Let us study the dataset feature by feature. First we load our dataset. <strong>Our focus is on low energy physics so we shall limit our dataset to these energies first (&lt; 20 MeV)</strong>.</p>
 <div class="nbinput docutils container">
@@ -577,8 +576,8 @@ INFO:root:Finished. Resulting dataset has shape (4255409, 104)
 </pre></div>
 </div>
 </div>
-</section>
-<section id="Understanding-the-Challenge">
+</div>
+<div class="section" id="Understanding-the-Challenge">
 <h2>Understanding the Challenge<a class="headerlink" href="#Understanding-the-Challenge" title="Permalink to this headline">¶</a></h2>
 <p>Before we start analyzing the features of the EXFOR database, we must understand the challenge and the complexity of it.</p>
 <p>The goal here is to be able to predict cross-section values for a variety of reaction channels and isotopes. These cross-section values are probabilities although not in the usual 0-1 scale. Throughout the world, experimental measurements are performed to gather data that can then be used in traditional physics-based modeling to create a set of recommended values. Let us look at the Uranium-235(n,gamma) reaction.</p>
@@ -622,8 +621,8 @@ INFO:root:EXFOR extracted DataFrame has shape: (133028, 104)
 </div>
 <p>Here, each color represents a different experimental campaign. Researchers use different methods for their measurements that also carry different data processing methodologies. There is not standardize measurement technique, therefore, introducing uncertainties. In the following sections, we try to analyze the features that may affect the cross section behavior. The EXFOR database contains experimental measurements not only for one isotope like uranium but for 96 more isotopes and 36 total
 reactions. That is a total of 3492 combinations of isotope, reaction types.</p>
-</section>
-<section id="Energy-Distribution">
+</div>
+<div class="section" id="Energy-Distribution">
 <h2>Energy Distribution<a class="headerlink" href="#Energy-Distribution" title="Permalink to this headline">¶</a></h2>
 <p>We know that the reaction probability is a function of energy, isotope, and reaction type. All of these are important and fundamental. Since Energy is perhaps one of the most important features so we shall start by analyzing this feature.</p>
 <div class="nbinput docutils container">
@@ -713,7 +712,7 @@ Text(0.5, 1.0, &#39;Energy Distribution&#39;)
 <li><p>The energy is highly skewed (this will affects model performance).</p></li>
 </ol>
 <p>There are many ways to un-skew the feature including log, square root, and power transformers. We know that our data is positive and cannot be zero so any of these works. Let us observe the impact of the log and Box Cox transformer on the skewness. The square root is not very powerful and will not be tested here (it has been tested before and the skewness change is minimal).</p>
-<section id="Log10-Transformation">
+<div class="section" id="Log10-Transformation">
 <h3>Log10 Transformation<a class="headerlink" href="#Log10-Transformation" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
@@ -759,8 +758,8 @@ Text(0.5, 1.0, &#39;Energy Distribution after Log10&#39;)
 <img alt="../_images/notebooks_3_EDA_EXFOR_18_1.png" src="../_images/notebooks_3_EDA_EXFOR_18_1.png" />
 </div>
 </div>
-</section>
-<section id="Box-Cox-Transform">
+</div>
+<div class="section" id="Box-Cox-Transform">
 <h3>Box Cox Transform<a class="headerlink" href="#Box-Cox-Transform" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
@@ -844,9 +843,9 @@ Text(0.5, 1.0, &#39;Energy Distribution after Box Cox&#39;)
 </div>
 </div>
 <p>Either the log or Box Cox transformation followed by a standardizer or normalizer will benefit model performance by unskewing the data and minimizing the standard deviation. We shall keep this in mind when using any algorithm.</p>
-</section>
-</section>
-<section id="Cross-Section-(Data)-Distribution---Label">
+</div>
+</div>
+<div class="section" id="Cross-Section-(Data)-Distribution---Label">
 <h2>Cross Section (Data) Distribution - Label<a class="headerlink" href="#Cross-Section-(Data)-Distribution---Label" title="Permalink to this headline">¶</a></h2>
 <p>The cross-section is our label making this a regression challenge. Similar to the Energy, we expect this feature to have high standard deviations and be highly skewed. However, we must be careful not to change the nature of the data. These values represent physical reaction probabilities (although not in the usual 0-1 scale).</p>
 <div class="nbinput docutils container">
@@ -936,7 +935,7 @@ Text(0.5, 1.0, &#39;Data (Cross Section) Distribution&#39;)
 </ol>
 <p>We refrain from applying any other transformation other than the log transformation to not change the nature of the data. To optimize model raining (although model dependent), the features must have similar ranges. This helps algorithms like KNN not give more importance to high variance features and helps deep learning models train faster. However, we shall not normalize our labels (cross-section data) since these are absolute probabilities.</p>
 <p>There are many ways to unskew the feature including log, square root, and power transformers. We know that our data is positive and cannot be zero so any of these work. Let us observe the impact of each transformer on the skewness.</p>
-<section id="id1">
+<div class="section" id="id1">
 <h3>Log10 Transformation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[180]:
@@ -1008,9 +1007,9 @@ Text(0.5, 1.0, &#39;Data (Cross Section) Distribution after Log10&#39;)
 <img alt="../_images/notebooks_3_EDA_EXFOR_34_0.png" src="../_images/notebooks_3_EDA_EXFOR_34_0.png" />
 </div>
 </div>
-</section>
-</section>
-<section id="Outliers-in-Energy-and-Data-(Cross-Section)">
+</div>
+</div>
+<div class="section" id="Outliers-in-Energy-and-Data-(Cross-Section)">
 <h2>Outliers in Energy and Data (Cross Section)<a class="headerlink" href="#Outliers-in-Energy-and-Data-(Cross-Section)" title="Permalink to this headline">¶</a></h2>
 <p>It is difficult to detect outliers in this particular dataset. The following image shows the U-235(N,G) reaction channel. This is an example of a single reaction for a single isotope. Typical statistics techniques for outlier detection will categorize resonances (peaks) points as outliers, however, these are not. These are the most important quantum physics phenomena that we need to model and can therefore not be disregarded.</p>
 <div class="nbinput docutils container">
@@ -1208,8 +1207,8 @@ INFO:root:EXFOR extracted DataFrame has shape: (10872, 104)
 </table>
 </div></div>
 </div>
-</section>
-<section id="Reaction-Channel-(MT-Values)---Categorical">
+</div>
+<div class="section" id="Reaction-Channel-(MT-Values)---Categorical">
 <h2>Reaction Channel (MT Values) - Categorical<a class="headerlink" href="#Reaction-Channel-(MT-Values)---Categorical" title="Permalink to this headline">¶</a></h2>
 <p>Before modeling the EXFOR database, we need to understand the possible limitations of any model using this data. There are a variety of reaction channels but not all of them all well researched. Knowing the reaction class balances will allow us to have a certain degree of confidence when deploying a model.</p>
 <div class="nbinput nblast docutils container">
@@ -1521,8 +1520,8 @@ Text(0.5, 28.400000000000034, &#39;Reaction Channel (MT)&#39;)
 <img alt="../_images/notebooks_3_EDA_EXFOR_55_2.png" src="../_images/notebooks_3_EDA_EXFOR_55_2.png" />
 </div>
 </div>
-</section>
-<section id="Proton-and-Neutron-Distribution">
+</div>
+<div class="section" id="Proton-and-Neutron-Distribution">
 <h2>Proton and Neutron Distribution<a class="headerlink" href="#Proton-and-Neutron-Distribution" title="Permalink to this headline">¶</a></h2>
 <p>Previously we mentioned that the most important features are the Energy, Reaction Channel, and the Isotope. <strong>What characterizes the isotope?</strong> The isotope is made of neutrons and protons. Understanding the distributions will help us understand in what regions our models are expected to perform well and for which isotopes the performance might be poor.</p>
 <div class="nbinput docutils container">
@@ -1566,8 +1565,8 @@ C:\Users\Pedro\Anaconda3\envs\tf_nightly\lib\site-packages\seaborn\distributions
 <li><p>Neutrons in the 145 range (~Uranium, Plutonium)</p></li>
 <li><p>Protons in the 92 range (~Uranium)</p></li>
 </ul>
-</section>
-<section id="Experimental-Campaigns-per-Year">
+</div>
+<div class="section" id="Experimental-Campaigns-per-Year">
 <h2>Experimental Campaigns per Year<a class="headerlink" href="#Experimental-Campaigns-per-Year" title="Permalink to this headline">¶</a></h2>
 <p>One of the biggest challenges with this data set is the measurement uncertainties. These are usually reported when creating an entry in EXFOR. However, there are plenty of missing values for uncertainties in terms of both the Energy and the Data. These are suspected to be mostly in old measurements. Let us explore the dataset to find out.</p>
 <div class="nbinput docutils container">
@@ -1825,8 +1824,8 @@ Text(0.5, 1.0, &#39;Missing Values per Year&#39;)
 </div></div>
 </div>
 <p>Interestingly, ORNL-based experimental campaigns failed the most to report uncertainties followed by Columbia University. Should we use the uncertainties feature or should we drop these and focus on the raw data?</p>
-</section>
-<section id="Isotope-Distributions">
+</div>
+<div class="section" id="Isotope-Distributions">
 <h2>Isotope Distributions<a class="headerlink" href="#Isotope-Distributions" title="Permalink to this headline">¶</a></h2>
 <p><strong>What are the highest researched isotopes?</strong> Fe-56, Pu-239, U-235, 238U 233U Al-27 Np-237, 91Zr cover the majority of the measurements here.</p>
 <div class="nbinput nblast docutils container">
@@ -2048,8 +2047,8 @@ Text(0.5, 1.0, &#39;Missing Values per Year&#39;)
 </div></div>
 </div>
 <p><strong>Why do we have so little measurments for many of these isotopes?</strong> Many of these are radioactive and difficult to work with experimentally. A machine learning model might be able to extrapolate knowledge.</p>
-</section>
-<section id="Nucleus-Radius-and-Neutron-to-Nucleus-Radius-Ratio">
+</div>
+<div class="section" id="Nucleus-Radius-and-Neutron-to-Nucleus-Radius-Ratio">
 <h2>Nucleus Radius and Neutron-to-Nucleus Radius Ratio<a class="headerlink" href="#Nucleus-Radius-and-Neutron-to-Nucleus-Radius-Ratio" title="Permalink to this headline">¶</a></h2>
 <p>The cross sections is purely a gemoetrical concept. Quantum effects makes the reaction probabilities not be just a function of the size of the nucleus. However, there are some reactions in which the geometrical cross section is a good approximation. Because of this we created the nucleus radius and the neutron-to-nucleus radius ratio features.</p>
 <div class="nbinput docutils container">
@@ -2076,8 +2075,8 @@ Text(0.5, 1.0, &#39;Missing Values per Year&#39;)
 <img alt="../_images/notebooks_3_EDA_EXFOR_77_0.png" src="../_images/notebooks_3_EDA_EXFOR_77_0.png" />
 </div>
 </div>
-</section>
-<section id="Element-Flag-(Natural-and-Isotopic-Measurments)">
+</div>
+<div class="section" id="Element-Flag-(Natural-and-Isotopic-Measurments)">
 <h2>Element Flag (Natural and Isotopic Measurments)<a class="headerlink" href="#Element-Flag-(Natural-and-Isotopic-Measurments)" title="Permalink to this headline">¶</a></h2>
 <p>How many datapoints were measrued on pure isotopic samples and how many in natural targets?</p>
 <div class="nbinput docutils container">
@@ -2100,8 +2099,8 @@ N    1000272
 Name: Element_Flag, dtype: int64
 </pre></div></div>
 </div>
-</section>
-<section id="EXFOR-Status">
+</div>
+<div class="section" id="EXFOR-Status">
 <h2>EXFOR Status<a class="headerlink" href="#EXFOR-Status" title="Permalink to this headline">¶</a></h2>
 <p>The EXFOR status is a tag placed by the database managers to indicate if it is approved, outdated, renormalized, correlated, and so on. This is a human tag and will therefore note be included for training to avoid bias.</p>
 <div class="nbinput docutils container">
@@ -2172,8 +2171,8 @@ Name: Element_Flag, dtype: int64
 </table>
 </div></div>
 </div>
-</section>
-<section id="Original">
+</div>
+<div class="section" id="Original">
 <h2>Original<a class="headerlink" href="#Original" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
@@ -2210,8 +2209,8 @@ Index([&#39;Projectile&#39;, &#39;Target_Metastable_State&#39;, &#39;MF&#39;, &#
 </pre></div>
 </div>
 </div>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>nucml.model package &mdash; NucML 1.0.0 documentation</title>
@@ -86,16 +85,16 @@
               
             
             
-              <p><span class="caption-text">OVERVIEW</span></p>
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p><span class="caption-text">GET STARTED</span></p>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html">Loading Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
@@ -103,14 +102,14 @@
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<p class="caption"><span class="caption-text">OTHER TUTORIALS</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
 <li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
 </ul>
-<p><span class="caption-text">DOCUMENTATION</span></p>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">nucml</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="nucml.html">nucml package</a><ul class="current">
@@ -146,7 +145,7 @@
 </ul>
 </li>
 </ul>
-<p><span class="caption-text">FAQ AND CONTACT</span></p>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
@@ -245,12 +244,12 @@
     text-align: unset;
 }
 </style>
-<section id="nucml-model-package">
+<div class="section" id="nucml-model-package">
 <h1>nucml.model package<a class="headerlink" href="#nucml-model-package" title="Permalink to this headline">¶</a></h1>
-<section id="submodules">
+<div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</section>
-<section id="module-nucml.model.building_utils">
+</div>
+<div class="section" id="module-nucml.model.building_utils">
 <span id="nucml-model-building-utils-module"></span><h2>nucml.model.building_utils module<a class="headerlink" href="#module-nucml.model.building_utils" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="nucml.model.building_utils.compile_and_fit">
@@ -354,8 +353,8 @@
 <code class="sig-prename descclassname">nucml.model.building_utils.</code><code class="sig-name descname">tf_dataset_gen</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">xt</span></em>, <em class="sig-param"><span class="n">yt</span></em>, <em class="sig-param"><span class="n">BUFFER_SIZE</span></em>, <em class="sig-param"><span class="n">BATCH_SIZE</span></em>, <em class="sig-param"><span class="n">N_TRAIN</span></em>, <em class="sig-param"><span class="n">gpu</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">multiplier</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">cache</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/model/building_utils.html#tf_dataset_gen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.model.building_utils.tf_dataset_gen" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-</section>
-<section id="module-nucml.model.model_building">
+</div>
+<div class="section" id="module-nucml.model.model_building">
 <span id="nucml-model-model-building-module"></span><h2>nucml.model.model_building module<a class="headerlink" href="#module-nucml.model.model_building" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="nucml.model.model_building.compile_and_fit">
@@ -444,8 +443,8 @@
 </dl>
 </dd></dl>
 
-</section>
-<section id="module-nucml.model.plot">
+</div>
+<div class="section" id="module-nucml.model.plot">
 <span id="nucml-model-plot-module"></span><h2>nucml.model.plot module<a class="headerlink" href="#module-nucml.model.plot" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="nucml.model.plot.dt_training">
@@ -552,8 +551,8 @@ or parameters such as k-number, number of estimators, etc.</p></li>
 <code class="sig-prename descclassname">nucml.model.plot.</code><code class="sig-name descname">xgb_training_w_path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path_to_csv</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">saving_path</span><span class="o">=</span><span class="default_value">'xgb_training.png'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/model/plot.html#xgb_training_w_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.model.plot.xgb_training_w_path" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
-</section>
-<section id="module-nucml.model.training">
+</div>
+<div class="section" id="module-nucml.model.training">
 <span id="nucml-model-training-module"></span><h2>nucml.model.training module<a class="headerlink" href="#module-nucml.model.training" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="nucml.model.training.train_dt">
@@ -635,8 +634,8 @@ Values must be lists of parameteres to test.</p></li>
 </dl>
 </dd></dl>
 
-</section>
-<section id="module-nucml.model.utilities">
+</div>
+<div class="section" id="module-nucml.model.utilities">
 <span id="nucml-model-utilities-module"></span><h2>nucml.model.utilities module<a class="headerlink" href="#module-nucml.model.utilities" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="nucml.model.utilities.cleanup_model_dir">
@@ -813,11 +812,11 @@ also keeps the best models in terms of multiplication factor.</p>
 </dl>
 </dd></dl>
 
-</section>
-<section id="module-nucml.model">
+</div>
+<div class="section" id="module-nucml.model">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-nucml.model" title="Permalink to this headline">¶</a></h2>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

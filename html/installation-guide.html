@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Installation Guide &mdash; NucML 1.0.0 documentation</title>
@@ -86,11 +85,11 @@
               
             
             
-              <p><span class="caption-text">OVERVIEW</span></p>
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p><span class="caption-text">GET STARTED</span></p>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#install-nucml-and-dependencies">1. Install NucML and Dependencies</a><ul>
@@ -103,7 +102,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html">Loading Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
@@ -111,18 +110,18 @@
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<p class="caption"><span class="caption-text">OTHER TUTORIALS</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
 <li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
 <li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
 </ul>
-<p><span class="caption-text">DOCUMENTATION</span></p>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">nucml</a></li>
 </ul>
-<p><span class="caption-text">FAQ AND CONTACT</span></p>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
@@ -217,12 +216,12 @@
     text-align: unset;
 }
 </style>
-<section id="installation-guide">
+<div class="section" id="installation-guide">
 <span id="installation-guide-label"></span><h1>Installation Guide<a class="headerlink" href="#installation-guide" title="Permalink to this headline">¶</a></h1>
 <p>NucML uses <a class="reference external" href="https://numpy.org/doc/stable/contents.html">Numpy Arrays</a> and <a class="reference external" href="https://pandas.pydata.org">Pandas DataFrame’s</a>
 as the main data objects. Each step of the evaluation pipeline requires different utilities including parsing utilities, data processing tools,
 and Machine Learning packages including TensorFlow, XGBoost, and Scikit-learn.</p>
-<section id="install-nucml-and-dependencies">
+<div class="section" id="install-nucml-and-dependencies">
 <h2>1. Install NucML and Dependencies<a class="headerlink" href="#install-nucml-and-dependencies" title="Permalink to this headline">¶</a></h2>
 <p>NucML is a python toolbox and can be installed using <code class="code docutils literal notranslate"><span class="pre">pip</span></code> along with all the needed dependencies. It is recommended that you create
 a <code class="code docutils literal notranslate"><span class="pre">conda</span></code> environment and then install <code class="code docutils literal notranslate"><span class="pre">nucml</span></code>. You can download <code class="code docutils literal notranslate"><span class="pre">conda</span></code> <a class="reference external" href="https://docs.conda.io/en/latest/">here</a>.
@@ -243,7 +242,7 @@ pip install nucml
 pip install git+https://github.com/tensorflow/docs
 </pre></div>
 </div>
-<section id="installing-dependencies">
+<div class="section" id="installing-dependencies">
 <h3>Installing Dependencies<a class="headerlink" href="#installing-dependencies" title="Permalink to this headline">¶</a></h3>
 <p>Before moving foward, you need to install both <code class="code docutils literal notranslate"><span class="pre">XGBoost</span></code> and <code class="code docutils literal notranslate"><span class="pre">TensorFlow</span></code>. These are not provided by default
 as a dependency in NucML. We leave these two packages out in case the user already has or plans to install both <cite>XGBoost</cite> and
@@ -253,9 +252,9 @@ If you do not care about GPU support and just want to get started with <code cla
 pip install tensorflow xgboost
 </pre></div>
 </div>
-</section>
-</section>
-<section id="configure-nucml-and-generate-the-exfor-datasets">
+</div>
+</div>
+<div class="section" id="configure-nucml-and-generate-the-exfor-datasets">
 <h2>2. Configure NucML and Generate the EXFOR Datasets<a class="headerlink" href="#configure-nucml-and-generate-the-exfor-datasets" title="Permalink to this headline">¶</a></h2>
 <p>Before exploring any functionalities, all EXFOR datasets need to be generated. NucML is built around a defined working directory. This
 has been uploaded to GitHub as a repository for you to download. It contains all metadata files from all various datasources including
@@ -309,13 +308,13 @@ python generate_exfor.py
 </div>
 <p>Running this script will create a <code class="code docutils literal notranslate"><span class="pre">CSV_Files</span></code> directory within the <code class="code docutils literal notranslate"><span class="pre">EXFOR</span></code> folder. Additionally, a tmp directory will also created containing
 temporary files used in the creation of the final datasets. Feel free to delete the <code class="code docutils literal notranslate"><span class="pre">tmp</span></code> directory after the process has finish to save space.</p>
-</section>
-<section id="other-dependencies">
+</div>
+<div class="section" id="other-dependencies">
 <h2>3. Other Dependencies<a class="headerlink" href="#other-dependencies" title="Permalink to this headline">¶</a></h2>
 <p>SERPENT2 and MATLAB must be installed if you want to validate your models using criticality benchmarks. These are not necessary for
 other tasks such as loading the data and training ML models.</p>
-</section>
-</section>
+</div>
+</div>
 
 
            </div>

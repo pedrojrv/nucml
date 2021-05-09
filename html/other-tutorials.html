@@ -4,8 +4,7 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
-
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Incorrect EXFOR Experimental Campaigns &mdash; NucML 1.0.0 documentation</title>
@@ -86,16 +85,16 @@
               
             
             
-              <p><span class="caption-text">OVERVIEW</span></p>
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p><span class="caption-text">GET STARTED</span></p>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html">Loading Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
@@ -103,7 +102,7 @@
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<p class="caption"><span class="caption-text">OTHER TUTORIALS</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Incorrect EXFOR Experimental Campaigns</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="notebooks/4_Erroneous_Cross_Sections.html">Incorrect Experimental Campaigns</a></li>
@@ -122,11 +121,11 @@
 </ul>
 </li>
 </ul>
-<p><span class="caption-text">DOCUMENTATION</span></p>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">nucml</a></li>
 </ul>
-<p><span class="caption-text">FAQ AND CONTACT</span></p>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
@@ -222,7 +221,7 @@
 }
 </style>
 <p id="navigating-the-nde-label">NucML contains many utilities to deal with everyday tasks. Here we list some that might be of interest to you.</p>
-<section id="incorrect-exfor-experimental-campaigns">
+<div class="section" id="incorrect-exfor-experimental-campaigns">
 <h1>Incorrect EXFOR Experimental Campaigns<a class="headerlink" href="#incorrect-exfor-experimental-campaigns" title="Permalink to this headline">¶</a></h1>
 <p>Before fitting your models, it is important to generally inspect your data. In this particular case, visualizing and assessing
 6 million data points are more or less impossible. This notebook contains a couple of reactions that have been found to have a negative
@@ -232,8 +231,8 @@ impact on model performance. It is recommended that these experimental campaigns
 <li class="toctree-l1"><a class="reference internal" href="notebooks/4_Erroneous_Cross_Sections.html">Incorrect Experimental Campaigns</a></li>
 </ul>
 </div>
-</section>
-<section id="ml-based-exfor-outlier-detection">
+</div>
+<div class="section" id="ml-based-exfor-outlier-detection">
 <h1>ML-based EXFOR Outlier Detection<a class="headerlink" href="#ml-based-exfor-outlier-detection" title="Permalink to this headline">¶</a></h1>
 <p>To perform outlier detection in the EXFOR dataset, it is important that you do not rely on typical statistical techniques computed on the entire dataset (traditional ML).
 These will, in many cases, tag resonance data points as outliers. ML-based outlier detection can be used.</p>
@@ -242,8 +241,8 @@ These will, in many cases, tag resonance data points as outliers. ML-based outli
 <li class="toctree-l1"><a class="reference internal" href="notebooks/0_Evaluating_Dataset_Quality.html">Testing ML-based Outlier Detectors</a></li>
 </ul>
 </div>
-</section>
-<section id="hybrid-ml-endf-ace-file-creation">
+</div>
+<div class="section" id="hybrid-ml-endf-ace-file-creation">
 <h1>Hybrid ML-ENDF ACE File Creation<a class="headerlink" href="#hybrid-ml-endf-ace-file-creation" title="Permalink to this headline">¶</a></h1>
 <p>In the processing and validation stage of the nuclear data evaluation pipeline, a hybrid set of cross sections are generated previous to compilation into ACE files.
 If you want more information on how these corrections are performed and unitarity is enforced, feel free to browse the following information.</p>
@@ -252,8 +251,8 @@ If you want more information on how these corrections are performed and unitarit
 <li class="toctree-l1"><a class="reference internal" href="notebooks/2_Hybrid_ML_ENDF_XS_Generation.html">Hybrid ENDF/ML ACE Library Generation</a></li>
 </ul>
 </div>
-</section>
-<section id="ensdf-nld-linear-interpolation">
+</div>
+<div class="section" id="ensdf-nld-linear-interpolation">
 <h1>ENSDF NLD Linear Interpolation<a class="headerlink" href="#ensdf-nld-linear-interpolation" title="Permalink to this headline">¶</a></h1>
 <p>In an attempt to include nuclear level information for cross section inference, simple linear interpolation techniques and utilities are incorporated into NucML.
 In the following notebook, a set of nuclear level densities for all available isotopes up to 20 MeV is generated.</p>
@@ -262,7 +261,7 @@ In the following notebook, a set of nuclear level densities for all available is
 <li class="toctree-l1"><a class="reference internal" href="notebooks/0_ENSDF_Linear_Interpolation_NLD.html">ENSDF Nuclear Level Density Interpolation</a></li>
 </ul>
 </div>
-</section>
+</div>
 
 
            </div>
