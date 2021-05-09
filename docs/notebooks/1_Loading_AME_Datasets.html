@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Atomic Mass Evaluation (2016) &mdash; NucML 1.0.0 documentation</title>
@@ -85,16 +86,16 @@
               
             
             
-              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
+              <p><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p class="caption"><span class="caption-text">GET STARTED</span></p>
+<p><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../navigating-the-nde.html">Loading Data</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Atomic Mass Evaluation (2016)</a><ul>
@@ -112,11 +113,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
+<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
+</ul>
+<p><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">nucml</a></li>
 </ul>
-<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
+<p><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
@@ -459,7 +467,7 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="Atomic-Mass-Evaluation-(2016)">
+<section id="Atomic-Mass-Evaluation-(2016)">
 <h1>Atomic Mass Evaluation (2016)<a class="headerlink" href="#Atomic-Mass-Evaluation-(2016)" title="Permalink to this headline">¶</a></h1>
 <p>Loading the Atomic Mass Evaluation 2016 (AME2016) is easy with<code class="docutils literal notranslate"><span class="pre">NucML</span></code>. The AME2016 library is originally split into three tables:</p>
 <ul class="simple">
@@ -468,22 +476,22 @@ div.rendered_html tbody tr:hover {
 <li><p>rct2-16</p></li>
 </ul>
 <p>For information on the contents including units and calculation methods please refer to the AME2016 website here.</p>
-<div class="section" id="Original-AME-Tables">
+<section id="Original-AME-Tables">
 <h2>Original AME Tables<a class="headerlink" href="#Original-AME-Tables" title="Permalink to this headline">¶</a></h2>
 <p>To load any of these tables simply start by importing the <code class="docutils literal notranslate"><span class="pre">nucml.datasets</span></code> module:</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># Prototype</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../..&quot;</span><span class="p">)</span>
+<span></span><span class="c1"># # Prototype</span>
+<span class="c1"># import sys</span>
+<span class="c1"># sys.path.append(&quot;../..&quot;)</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1117,8 +1125,8 @@ INFO:root:AME: Reading and loading Atomic Mass Evaluation files from:
 <p>5 rows × 65 columns</p>
 </div></div>
 </div>
-</div>
-<div class="section" id="Processed-AME-Tables">
+</section>
+<section id="Processed-AME-Tables">
 <h2>Processed AME Tables<a class="headerlink" href="#Processed-AME-Tables" title="Permalink to this headline">¶</a></h2>
 <p>In later sections, you will learn that the EXFOR database by itself does not contain many features for an ML model to use. The <code class="docutils literal notranslate"><span class="pre">AME</span></code> database contains a lot of useful information about every isotope that could potentially be useful if joined with <code class="docutils literal notranslate"><span class="pre">EXFOR</span></code>. Before doing this we need to bring the <code class="docutils literal notranslate"><span class="pre">AME</span></code> tables into an acceptable state.</p>
 <p>There are many missing values in the table. When preparing a dataset for ML there are a couple of strategies to deal with this. You can simply drop all rows with missing values but this means a big loss of information. Another option is filling the values with the mean of the features in the dataset. This latter option does not take into account the nature of the database.</p>
@@ -1699,8 +1707,8 @@ INFO:root:AME: Reading and loading Atomic Mass Evaluation files from:
 </div></div>
 </div>
 <p>These tables are offered for you to get started and no guarantees are made. It is your responsibility to check the consistency and if needed create a new version of the table. We welcome collaboration so feel free to contribute by opening up a pull request.</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Experimental Nuclear Reaction Data (EXFOR) &mdash; NucML 1.0.0 documentation</title>
@@ -85,22 +86,22 @@
               
             
             
-              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
+              <p><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p class="caption"><span class="caption-text">GET STARTED</span></p>
+<p><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../navigating-the-nde.html">Loading Data</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="1_Loading_AME_Datasets.html">Atomic Mass Evaluation (2016)</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Experimental Nuclear Reaction Data (EXFOR)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Original-EXFOR-Tables">Original EXFOR Tables</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#EXFOR-XS-(MF3)-Data-Only">EXFOR XS (MF3) Data Only</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Reaction-Data-(MF3)-Only">Reaction Data (MF3) Only</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#ML-ready-EXFOR-datasets">ML-ready EXFOR datasets</a></li>
 </ul>
 </li>
@@ -113,11 +114,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
+<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
+</ul>
+<p><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">nucml</a></li>
 </ul>
-<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
+<p><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
@@ -460,7 +468,7 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="Experimental-Nuclear-Reaction-Data-(EXFOR)">
+<section id="Experimental-Nuclear-Reaction-Data-(EXFOR)">
 <h1>Experimental Nuclear Reaction Data (EXFOR)<a class="headerlink" href="#Experimental-Nuclear-Reaction-Data-(EXFOR)" title="Permalink to this headline">¶</a></h1>
 <p>The Experimental Nuclear Reaction Data (EXFOR) contains reaction data information for a variety of projectiles. <code class="docutils literal notranslate"><span class="pre">NucML</span></code> makes it easy to download and parse the EXFOR <code class="docutils literal notranslate"><span class="pre">C4</span></code> files to create ready to use ML-datasets. Let us start by importing the <code class="docutils literal notranslate"><span class="pre">nucml.datasets</span></code> module.</p>
 <div class="nbinput nblast docutils container">
@@ -468,9 +476,9 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># For prototype</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../..&quot;</span><span class="p">)</span>
+<span></span><span class="c1"># # For prototype</span>
+<span class="c1"># import sys</span>
+<span class="c1"># sys.path.append(&quot;../..&quot;)</span>
 </pre></div>
 </div>
 </div>
@@ -480,52 +488,51 @@ div.rendered_html tbody tr:hover {
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">nucml.datasets</span> <span class="k">as</span> <span class="nn">nuc_data</span>
-</pre></div>
-</div>
-</div>
-<div class="section" id="Original-EXFOR-Tables">
-<h2>Original EXFOR Tables<a class="headerlink" href="#Original-EXFOR-Tables" title="Permalink to this headline">¶</a></h2>
-<p>When setting up <code class="docutils literal notranslate"><span class="pre">NucML</span></code>, several EXFOR <code class="docutils literal notranslate"><span class="pre">CSV</span></code> files were created for each reaction-inducing particle. These are stored in your local directory and follow a specific structure/convention: <code class="docutils literal notranslate"><span class="pre">EXFOR/CSV_Files/EXFOR_&lt;projectile&gt;/EXFOR_&lt;projectile&gt;_ORIGINAL.csv</span></code>. You can simply read them using <code class="docutils literal notranslate"><span class="pre">pandas</span></code>.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<section id="Original-EXFOR-Tables">
+<h2>Original EXFOR Tables<a class="headerlink" href="#Original-EXFOR-Tables" title="Permalink to this headline">¶</a></h2>
+<p>When setting up, several EXFOR <code class="docutils literal notranslate"><span class="pre">CSV</span></code> files were created for each reaction-inducing particle. These are stored in your local directory and follow a specific structure/convention: <code class="docutils literal notranslate"><span class="pre">EXFOR/CSV_Files/EXFOR_&lt;projectile&gt;/EXFOR_&lt;projectile&gt;_ORIGINAL.csv</span></code>. You can simply read them using <code class="docutils literal notranslate"><span class="pre">pandas</span></code>. Alternatively, you can use <code class="docutils literal notranslate"><span class="pre">NucML</span></code> to handle loading scenarios.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># change the path according to your setup</span>
-<span class="n">neutrons</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../CSV_Files/EXFOR_neutrons/EXFOR_neutrons_ORIGINAL.csv&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;There are </span><span class="si">{}</span><span class="s2"> neutron-induce reaction data points.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">neutrons</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span></span><span class="n">neutrons</span> <span class="o">=</span> <span class="n">nuc_data</span><span class="o">.</span><span class="n">load_exfor_raw</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="s2">&quot;neutrons&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-<div class="nboutput docutils container">
+<div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-C:\Users\Pedro\Anaconda3\envs\tf_nightly\lib\site-packages\IPython\core\interactiveshell.py:3155: DtypeWarning: Columns (17,30,31) have mixed types.Specify dtype option on import or set low_memory=False.
-  has_raised = await self.run_ast_nodes(code_ast.body, cell_name,
+C:\Users\Pedro\Anaconda3\envs\ml_gpu\lib\site-packages\IPython\core\interactiveshell.py:3357: DtypeWarning: Columns (17,30,31) have mixed types.Specify dtype option on import or set low_memory=False.
+  if (await self.run_code(code, result,  async_=asy)):
 </pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;There are </span><span class="si">{}</span><span class="s2"> neutron-related data points.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">neutrons</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+</pre></div>
+</div>
 </div>
 <div class="nboutput nblast docutils container">
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
 <div class="highlight"><pre>
-There are 6007126 neutron-induce reaction data points.
+There are 6007126 neutron-related data points.
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -534,7 +541,7 @@ There are 6007126 neutron-induce reaction data points.
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -550,27 +557,14 @@ Index([&#39;Projectile&#39;, &#39;Target_Metastable_State&#39;, &#39;MF&#39;, &#
       dtype=&#39;object&#39;)
 </pre></div></div>
 </div>
-<p>Other supported projectiles are <code class="docutils literal notranslate"><span class="pre">protons</span></code>, <code class="docutils literal notranslate"><span class="pre">alphas</span></code>, <code class="docutils literal notranslate"><span class="pre">deuterons</span></code>, <code class="docutils literal notranslate"><span class="pre">gammas</span></code>, and `helions.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># protons = pd.read_csv(&quot;../CSV_Files/EXFOR_protons/EXFOR_protons_ORIGINAL.csv&quot;)</span>
-<span class="c1"># alphas = pd.read_csv(&quot;../CSV_Files/EXFOR_alphas/EXFOR_alphas_ORIGINAL.csv&quot;)</span>
-<span class="c1"># deuterons = pd.read_csv(&quot;../CSV_Files/EXFOR_deuterons/EXFOR_deuterons_ORIGINAL.csv&quot;)</span>
-<span class="c1"># gammas = pd.read_csv(&quot;../CSV_Files/EXFOR_gammas/EXFOR_gammas_ORIGINAL.csv&quot;)</span>
-<span class="c1"># helions = pd.read_csv(&quot;../CSV_Files/EXFOR_helions/EXFOR_helions_ORIGINAL.csv&quot;)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="EXFOR-XS-(MF3)-Data-Only">
-<h2>EXFOR XS (MF3) Data Only<a class="headerlink" href="#EXFOR-XS-(MF3)-Data-Only" title="Permalink to this headline">¶</a></h2>
-<p>There are a variety of <code class="docutils literal notranslate"><span class="pre">Files</span> <span class="pre">(MT)</span></code> included in <code class="docutils literal notranslate"><span class="pre">EXFOR</span></code>. In my work, we dealt only with reaction cross section vs energy datapoints (<code class="docutils literal notranslate"><span class="pre">MT=3</span></code>). <code class="docutils literal notranslate"><span class="pre">NucML</span></code> therefore offers many functionalities to create ML-ready particle-induced cross section reaction data.</p>
+<p>Other supported projectiles are <code class="docutils literal notranslate"><span class="pre">protons</span></code>, <code class="docutils literal notranslate"><span class="pre">alphas</span></code>, <code class="docutils literal notranslate"><span class="pre">deuterons</span></code>, <code class="docutils literal notranslate"><span class="pre">gammas</span></code>, and <code class="docutils literal notranslate"><span class="pre">helions</span></code>. Alternatively, you can load all data from all projectiles by specifying <code class="docutils literal notranslate"><span class="pre">mode=&quot;all&quot;</span></code></p>
+</section>
+<section id="Reaction-Data-(MF3)-Only">
+<h2>Reaction Data (MF3) Only<a class="headerlink" href="#Reaction-Data-(MF3)-Only" title="Permalink to this headline">¶</a></h2>
+<p>There are a variety of <code class="docutils literal notranslate"><span class="pre">Files</span> <span class="pre">(MT)</span></code> included in <code class="docutils literal notranslate"><span class="pre">EXFOR</span></code>. In our work, we dealt only with reaction cross section vs energy datapoints (<code class="docutils literal notranslate"><span class="pre">MT=3</span></code>). <code class="docutils literal notranslate"><span class="pre">NucML</span></code> therefore offers many functionalities to create ML-ready particle-induced cross section reaction data.</p>
 <p>We can simply load all <code class="docutils literal notranslate"><span class="pre">neutron</span></code> induce cross section reaction EXFOR data points by calling the <code class="docutils literal notranslate"><span class="pre">load_exfor()</span></code> method:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -587,16 +581,16 @@ INFO:root: MODE: neutrons
 INFO:root: LOW ENERGY: False
 INFO:root: LOG: False
 INFO:root: BASIC: -1
-INFO:root:Reading data from C:/Users/Pedro/Desktop/ML_Nuclear_Data/EXFOR/CSV_Files\EXFOR_neutrons\EXFOR_neutrons_MF3_AME_no_RawNaN.csv
+INFO:root:Reading data from C:/Users/Pedro/Desktop/ML_Nuclear_Data/EXFOR/CSV_Files\EXFOR_neutrons/EXFOR_neutrons_MF3_AME_no_RawNaN.csv
 INFO:root:Data read into dataframe with shape: (4255409, 104)
 INFO:root:Finished. Resulting dataset has shape (4255409, 104)
 </pre></div></div>
 </div>
 <p>When setting up <code class="docutils literal notranslate"><span class="pre">NucML</span></code>, the parsing and data creation utilities automatically created a <code class="docutils literal notranslate"><span class="pre">CSV</span></code> file ready which is almost ready for ML-modeling. The <code class="docutils literal notranslate"><span class="pre">.load_exfor()</span></code> method uses these preprocessed files to filter, prepare and return a truly ML-ready dataset.</p>
 <p><strong>NOTE: You should always analyze and inspect any recommended dataset. The following loading options are purely an opinion. You can start from the raw original EXFOR tables to build your dataset ideally.</strong></p>
-<p>You will notice that the returned dataset contains less data than the original tables. This is because we are only using the <code class="docutils literal notranslate"><span class="pre">MF=3</span></code> points and doing some basic filtering operations. Additionally, the AME database information is already appended and no missing values will be found. For information on the filtering and imputation techniques used, see the documentation.</p>
+<p>You will notice that the returned dataset contains less data than the original tables. This is because we are only using the <code class="docutils literal notranslate"><span class="pre">MF=3</span></code> points and doing some basic filtering operations. Notice that the AME database information is already appended and no missing values will be found. For information on the filtering and imputation techniques used, see the documentation.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -605,7 +599,7 @@ INFO:root:Finished. Resulting dataset has shape (4255409, 104)
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="output_area rendered_html docutils container">
@@ -1274,10 +1268,10 @@ INFO:root:Finished. Resulting dataset has shape (4255409, 104)
 </div></div>
 </div>
 <p>You can similarly load other particle-induce data such as proton-induce cross section reaction data.</p>
-</div>
-<div class="section" id="ML-ready-EXFOR-datasets">
+</section>
+<section id="ML-ready-EXFOR-datasets">
 <h2>ML-ready EXFOR datasets<a class="headerlink" href="#ML-ready-EXFOR-datasets" title="Permalink to this headline">¶</a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">exfor_neutrons</span></code> DataFrame returned is only a starting point for the truly ML-ready dataset. The <code class="docutils literal notranslate"><span class="pre">load_exfor()</span></code> method contains more than 10 customizable options that allow you to implement specific normalizers, transformations, numerical thresholds, splitting, and more.</p>
+<p>The returned <code class="docutils literal notranslate"><span class="pre">exfor_neutrons</span></code> DataFrame is only a starting point for the truly ML-ready dataset. The <code class="docutils literal notranslate"><span class="pre">load_exfor()</span></code> method contains more than 10 customizable options that allow you to implement specific normalizers, transformations, numerical thresholds, splitting, and more.</p>
 <p>Let us create an ML-ready dataset example:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
@@ -1298,7 +1292,7 @@ INFO:root: MODE: neutrons
 INFO:root: LOW ENERGY: True
 INFO:root: LOG: True
 INFO:root: BASIC: 0
-INFO:root:Reading data from C:/Users/Pedro/Desktop/ML_Nuclear_Data/EXFOR/CSV_Files\EXFOR_neutrons\EXFOR_neutrons_MF3_AME_no_RawNaN.csv
+INFO:root:Reading data from C:/Users/Pedro/Desktop/ML_Nuclear_Data/EXFOR/CSV_Files\EXFOR_neutrons/EXFOR_neutrons_MF3_AME_no_RawNaN.csv
 INFO:root:Data read into dataframe with shape: (4184115, 8)
 INFO:root:Splitting dataset into training and testing...
 INFO:root:Normalizing dataset...
@@ -1380,53 +1374,11 @@ INFO:root:Fitting new scaler.
   </thead>
   <tbody>
     <tr>
-      <th>3300094</th>
-      <td>0.832892</td>
-      <td>1.194840</td>
-      <td>1.227729</td>
-      <td>1.215866</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>1</td>
-      <td>1</td>
-      <td>0</td>
-    </tr>
-    <tr>
-      <th>990711</th>
-      <td>5.772175</td>
-      <td>-0.881397</td>
-      <td>-0.889103</td>
-      <td>-0.886585</td>
+      <th>1544604</th>
+      <td>7.024445</td>
+      <td>-0.788298</td>
+      <td>-0.851543</td>
+      <td>-0.828075</td>
       <td>1</td>
       <td>0</td>
       <td>0</td>
@@ -1464,29 +1416,29 @@ INFO:root:Fitting new scaler.
       <td>0</td>
     </tr>
     <tr>
-      <th>3871546</th>
-      <td>3.428151</td>
-      <td>1.256817</td>
-      <td>1.265195</td>
-      <td>1.262587</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
+      <th>2653877</th>
+      <td>2.323788</td>
+      <td>0.637075</td>
+      <td>0.590841</td>
+      <td>0.608525</td>
       <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1506,11 +1458,29 @@ INFO:root:Fitting new scaler.
       <td>0</td>
     </tr>
     <tr>
-      <th>1029021</th>
-      <td>1.965855</td>
-      <td>-0.850408</td>
-      <td>-0.889103</td>
-      <td>-0.874905</td>
+      <th>3608162</th>
+      <td>4.986324</td>
+      <td>1.225816</td>
+      <td>1.246470</td>
+      <td>1.239227</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
       <td>1</td>
       <td>0</td>
       <td>0</td>
@@ -1525,34 +1495,73 @@ INFO:root:Fitting new scaler.
       <td>0</td>
       <td>0</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
+      <td>1</td>
       <td>1</td>
       <td>0</td>
-      <td>1</td>
     </tr>
     <tr>
-      <th>3845666</th>
-      <td>3.342502</td>
-      <td>1.256817</td>
-      <td>1.265195</td>
-      <td>1.262587</td>
+      <th>3587225</th>
+      <td>2.129271</td>
+      <td>1.225816</td>
+      <td>1.246470</td>
+      <td>1.239227</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>784173</th>
+      <td>5.957368</td>
+      <td>-0.974217</td>
+      <td>-0.963937</td>
+      <td>-0.968231</td>
+      <td>1</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
       <td>0</td>
       <td>0</td>
       <td>0</td>
@@ -1572,22 +1581,7 @@ INFO:root:Fitting new scaler.
       <td>0</td>
       <td>1</td>
       <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
-      <td>0</td>
       <td>1</td>
-      <td>1</td>
-      <td>0</td>
     </tr>
   </tbody>
 </table>
@@ -1605,11 +1599,11 @@ INFO:root:Fitting new scaler.
 <p>Notice that the loader returned 7 objects:</p>
 <ol class="arabic simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">data</span></code>: contains the raw unprocessed data.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">x_train</span></code>, <code class="docutils literal notranslate"><span class="pre">x_test</span></code>, <code class="docutils literal notranslate"><span class="pre">y_train</span></code>, <code class="docutils literal notranslate"><span class="pre">y_test</span></code>: are the splits of the data that can be used to train any ML model. The default fraction is 0.1. You can change it by setting a different <code class="docutils literal notranslate"><span class="pre">frac</span></code> number.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">x_train</span></code>, <code class="docutils literal notranslate"><span class="pre">x_test</span></code>, <code class="docutils literal notranslate"><span class="pre">y_train</span></code>, <code class="docutils literal notranslate"><span class="pre">y_test</span></code>: are the splits of the data that can be used to train an ML model. The default fraction is 0.1. You can change it by setting a different <code class="docutils literal notranslate"><span class="pre">frac</span></code> number.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">to_scale</span></code>: is the name of the features that were subject to normalization.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">scaler</span></code>: the scaler object that can be used to transform future data or inversely transform any split back to its original scales.</p></li>
 </ol>
-<p>There are many more options you can customize including the type of normalizer and transformer. Additionally, all core arguments reviewd here are applicable to other projectile particle reactions. For example, for protons:</p>
+<p>There are many more options you can customize including the type of normalizer and transformer. Additionally, all core arguments reviewed here are applicable to other projectile particle reactions. For example, for protons:</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
@@ -2027,9 +2021,9 @@ INFO:root:Fitting new scaler.
 </table>
 </div></div>
 </div>
-<p>Look at the full arguments fot the <code class="docutils literal notranslate"><span class="pre">load_exfor()</span></code> documentation for more information.</p>
-</div>
-</div>
+<p>Look at the full arguments fot the <code class="docutils literal notranslate"><span class="pre">load_exfor()</span></code> documentation for more information and more functionalities.</p>
+</section>
+</section>
 
 
            </div>

@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Reference Input Data Library (RIPL) &mdash; NucML 1.0.0 documentation</title>
@@ -39,8 +40,8 @@
     
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Generating ML XS, ACE Files, Benchmark Inputs and Serpent Scripts" href="0_Generating_MLXS_Benchmark.html" />
-    <link rel="prev" title="Experimental Nuclear Reaction Data (EXFOR)" href="3_EDA_EXFOR.html" /> 
+    <link rel="next" title="Generating Benchmark Files and Serpent Scripts" href="0_Generating_MLXS_Benchmark.html" />
+    <link rel="prev" title="Visualizing EXFOR Cross Sections" href="3_EDA_Cross_Sections.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -85,21 +86,22 @@
               
             
             
-              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
+              <p><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p class="caption"><span class="caption-text">GET STARTED</span></p>
+<p><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html">Loading Data</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="2_EDA_AME.html">Atomic Mass Evaluation (2016)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="3_EDA_EXFOR.html">Experimental Nuclear Reaction Data (EXFOR)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_EDA_Cross_Sections.html">Visualizing EXFOR Cross Sections</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Reference Input Data Library (RIPL)</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Loading-RIPL/ENSDF-Data">Loading RIPL/ENSDF Data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Plotting-Some-Features-Distributions">Plotting Some Features Distributions</a><ul>
@@ -121,11 +123,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
+<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
+</ul>
+<p><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">nucml</a></li>
 </ul>
-<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
+<p><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
@@ -468,23 +477,23 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="Reference-Input-Data-Library-(RIPL)">
+<section id="Reference-Input-Data-Library-(RIPL)">
 <h1>Reference Input Data Library (RIPL)<a class="headerlink" href="#Reference-Input-Data-Library-(RIPL)" title="Permalink to this headline">¶</a></h1>
-<p>In this brief notebook we use the processed RIPL data to explore and visualize some attributes. Let us start by importing the necessary packages.</p>
-<p><strong>NOTE: This notebook is not meant to be a complete exploration resource. You are responsible for exploring and validating any used data.</strong></p>
+<p>In this brief notebook, we use the processed RIPL data to explore and visualize some attributes. Let us start by importing the necessary packages.</p>
+<p><strong>NOTE: This notebook is not meant to be a complete exploration resource. You are responsible for exploring and validating any provided data.</strong></p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># PROTOTYPE</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../..&quot;</span><span class="p">)</span>
+<span></span><span class="c1"># # PROTOTYPE</span>
+<span class="c1"># import sys</span>
+<span class="c1"># sys.path.append(&quot;../..&quot;)</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -502,7 +511,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -511,11 +520,11 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<div class="section" id="Loading-RIPL/ENSDF-Data">
+<section id="Loading-RIPL/ENSDF-Data">
 <h2>Loading RIPL/ENSDF Data<a class="headerlink" href="#Loading-RIPL/ENSDF-Data" title="Permalink to this headline">¶</a></h2>
-<p>Let us first load both the original and the cut-off RIPL data. Recall that the cut-off version is based on the RIPL cut-off parameteres.</p>
+<p>Let us first load both the original and the cut-off RIPL data. Recall that the cut-off version is based on the RIPL cut-off parameters.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -537,14 +546,14 @@ INFO:root:AME: Reading and loading Atomic Mass Evaluation files from:
  C:/Users/Pedro/Desktop/ML_Nuclear_Data/AME/CSV_Files\AME_all_merged_no_NaN.csv
 </pre></div></div>
 </div>
-</div>
-<div class="section" id="Plotting-Some-Features-Distributions">
+</section>
+<section id="Plotting-Some-Features-Distributions">
 <h2>Plotting Some Features Distributions<a class="headerlink" href="#Plotting-Some-Features-Distributions" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="Isotope-Energy-Distribution">
+<section id="Isotope-Energy-Distribution">
 <h3>Isotope Energy Distribution<a class="headerlink" href="#Isotope-Energy-Distribution" title="Permalink to this headline">¶</a></h3>
-<p>Let us observe what is the energy distribution as a function of the number of protons for all known levels againsta the cut-off dataset.</p>
+<p>Let us observe what is the energy distribution as a function of the number of protons for all known levels against the cut-off dataset.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -554,7 +563,7 @@ INFO:root:AME: Reading and loading Atomic Mass Evaluation files from:
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -572,9 +581,9 @@ INFO:root:AME: Reading and loading Atomic Mass Evaluation files from:
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-C:\Users\Pedro\Anaconda3\envs\tf_nightly\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variables as keyword args: x, y. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+C:\Users\Pedro\Anaconda3\envs\nucml\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variables as keyword args: x, y. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
   warnings.warn(
-C:\Users\Pedro\Anaconda3\envs\tf_nightly\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variables as keyword args: x, y. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+C:\Users\Pedro\Anaconda3\envs\nucml\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variables as keyword args: x, y. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
   warnings.warn(
 </pre></div></div>
 </div>
@@ -587,7 +596,7 @@ C:\Users\Pedro\Anaconda3\envs\tf_nightly\lib\site-packages\seaborn\_decorators.p
 </div>
 <p>Similarly, for neutrons:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -605,9 +614,9 @@ C:\Users\Pedro\Anaconda3\envs\tf_nightly\lib\site-packages\seaborn\_decorators.p
 </div>
 <div class="output_area stderr docutils container">
 <div class="highlight"><pre>
-C:\Users\Pedro\Anaconda3\envs\tf_nightly\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variables as keyword args: x, y. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+C:\Users\Pedro\Anaconda3\envs\nucml\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variables as keyword args: x, y. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
   warnings.warn(
-C:\Users\Pedro\Anaconda3\envs\tf_nightly\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variables as keyword args: x, y. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+C:\Users\Pedro\Anaconda3\envs\nucml\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variables as keyword args: x, y. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
   warnings.warn(
 </pre></div></div>
 </div>
@@ -618,11 +627,11 @@ C:\Users\Pedro\Anaconda3\envs\tf_nightly\lib\site-packages\seaborn\_decorators.p
 <img alt="../_images/notebooks_2_EDA_RIPL_10_1.png" src="../_images/notebooks_2_EDA_RIPL_10_1.png" />
 </div>
 </div>
-</div>
-<div class="section" id="Atomic-Mass-Number-Distribution">
+</section>
+<section id="Atomic-Mass-Number-Distribution">
 <h3>Atomic Mass Number Distribution<a class="headerlink" href="#Atomic-Mass-Number-Distribution" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -640,11 +649,11 @@ C:\Users\Pedro\Anaconda3\envs\tf_nightly\lib\site-packages\seaborn\_decorators.p
 <img alt="../_images/notebooks_2_EDA_RIPL_12_0.png" src="../_images/notebooks_2_EDA_RIPL_12_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="Energy-Distribution">
+</section>
+<section id="Energy-Distribution">
 <h3>Energy Distribution<a class="headerlink" href="#Energy-Distribution" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -664,11 +673,11 @@ C:\Users\Pedro\Anaconda3\envs\tf_nightly\lib\site-packages\seaborn\_decorators.p
 <img alt="../_images/notebooks_2_EDA_RIPL_14_0.png" src="../_images/notebooks_2_EDA_RIPL_14_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="Level-Number-Distribution">
+</section>
+<section id="Level-Number-Distribution">
 <h3>Level Number Distribution<a class="headerlink" href="#Level-Number-Distribution" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -688,11 +697,11 @@ C:\Users\Pedro\Anaconda3\envs\tf_nightly\lib\site-packages\seaborn\_decorators.p
 <img alt="../_images/notebooks_2_EDA_RIPL_16_0.png" src="../_images/notebooks_2_EDA_RIPL_16_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="Uranium-and-Chlorine-Energy-Distribution">
+</section>
+<section id="Uranium-and-Chlorine-Energy-Distribution">
 <h3>Uranium and Chlorine Energy Distribution<a class="headerlink" href="#Uranium-and-Chlorine-Energy-Distribution" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -715,13 +724,13 @@ C:\Users\Pedro\Anaconda3\envs\tf_nightly\lib\site-packages\seaborn\_decorators.p
 <img alt="../_images/notebooks_2_EDA_RIPL_18_0.png" src="../_images/notebooks_2_EDA_RIPL_18_0.png" />
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="Energy-vs-Level-Number">
+</section>
+</section>
+<section id="Energy-vs-Level-Number">
 <h2>Energy vs Level Number<a class="headerlink" href="#Energy-vs-Level-Number" title="Permalink to this headline">¶</a></h2>
 <p>Ideally, we would like to model the level energy vs level number. It is a difficult challenge as there are collective states and more. Furthemore, when implementing the RIPL cut-off parameters, we lose more than half of the avaliable data for training.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -741,12 +750,12 @@ C:\Users\Pedro\Anaconda3\envs\tf_nightly\lib\site-packages\seaborn\_decorators.p
 <img alt="../_images/notebooks_2_EDA_RIPL_20_0.png" src="../_images/notebooks_2_EDA_RIPL_20_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="NucML-Plotting-Utilities:-Level-and-Level-Density">
+</section>
+<section id="NucML-Plotting-Utilities:-Level-and-Level-Density">
 <h2>NucML Plotting Utilities: Level and Level Density<a class="headerlink" href="#NucML-Plotting-Utilities:-Level-and-Level-Density" title="Permalink to this headline">¶</a></h2>
 <p>For EXFOR, a useful future might be the level density at incident energies. To model RIPL/XUNDL we can take two approaches: (1) model the level energy as a function of the level number with the cut-off dataset or (2) model the level density. We can visualize the level density using <code class="docutils literal notranslate"><span class="pre">NucML</span></code> ensdf plotting utilities. Let us import it.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -756,7 +765,7 @@ C:\Users\Pedro\Anaconda3\envs\tf_nightly\lib\site-packages\seaborn\_decorators.p
 </div>
 <p>We can plot the level density of both the original and the cut-off dataset. All you need to do is pass both datasets to the <code class="docutils literal notranslate"><span class="pre">level_density()</span></code> function. For example, let us plot it for Chlorine 35:</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -788,8 +797,8 @@ C:\Users\Pedro\Anaconda3\envs\tf_nightly\lib\site-packages\seaborn\_decorators.p
 <img alt="../_images/notebooks_2_EDA_RIPL_26_0.png" src="../_images/notebooks_2_EDA_RIPL_26_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="Statistics-Example---Chlorine-35-and-Uranium-235">
+</section>
+<section id="Statistics-Example---Chlorine-35-and-Uranium-235">
 <h2>Statistics Example - Chlorine-35 and Uranium-235<a class="headerlink" href="#Statistics-Example---Chlorine-35-and-Uranium-235" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
@@ -1060,7 +1069,7 @@ C:\Users\Pedro\Anaconda3\envs\tf_nightly\lib\site-packages\seaborn\_decorators.p
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Results for 35Cl:
-The Pearson Correlation Coefficient is 0.9391959945279043  with a P-value of P = 1.5087122958224384e-164
+The Pearson Correlation Coefficient is 0.9391959945279038  with a P-value of P = 1.508712295824325e-164
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1129,7 +1138,7 @@ The Pearson Correlation Coefficient is 0.9020790472746514  with a P-value of P =
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Results for 35Cl:
-The Pearson Correlation Coefficient is 0.9757198447187727  with a P-value of P = 2.9599489350352726e-232
+The Pearson Correlation Coefficient is 0.9757198447187734  with a P-value of P = 2.959948935021139e-232
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
@@ -1147,12 +1156,12 @@ The Pearson Correlation Coefficient is 0.9757198447187727  with a P-value of P =
 <div class="output_area docutils container">
 <div class="highlight"><pre>
 Results for 35Cl:
-The Pearson Correlation Coefficient is 0.9635162177216405  with a P-value of P = 1.2790722608514528e-21
+The Pearson Correlation Coefficient is 0.9635162177216403  with a P-value of P = 1.279072260851587e-21
 </pre></div></div>
 </div>
-<p>In the log scale the energy is highly correlated. The p-value results in 1% confidence that this correlation is significant. We therefore expect that a linear model will work in this data. However is not as simple as that, we know that this dependency might start as linear but start deviating at some point.</p>
-</div>
-</div>
+<p>In the log scale, the energy is highly correlated. The p-value results in 1% confidence that this correlation is significant. We, therefore, expect that a linear model will work in this data. However is not as simple as that, we know that this dependency might start as linear but start deviating at some point.</p>
+</section>
+</section>
 
 
            </div>
@@ -1160,8 +1169,8 @@ The Pearson Correlation Coefficient is 0.9635162177216405  with a P-value of P =
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="0_Generating_MLXS_Benchmark.html" class="btn btn-neutral float-right" title="Generating ML XS, ACE Files, Benchmark Inputs and Serpent Scripts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="3_EDA_EXFOR.html" class="btn btn-neutral float-left" title="Experimental Nuclear Reaction Data (EXFOR)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="0_Generating_MLXS_Benchmark.html" class="btn btn-neutral float-right" title="Generating Benchmark Files and Serpent Scripts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="3_EDA_Cross_Sections.html" class="btn btn-neutral float-left" title="Visualizing EXFOR Cross Sections" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

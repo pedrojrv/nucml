@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Reference Input Parameter Library (RIPL) &mdash; NucML 1.0.0 documentation</title>
@@ -85,16 +86,16 @@
               
             
             
-              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
+              <p><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p class="caption"><span class="caption-text">GET STARTED</span></p>
+<p><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../navigating-the-nde.html">Loading Data</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="1_Loading_AME_Datasets.html">Atomic Mass Evaluation (2016)</a></li>
@@ -117,11 +118,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
+<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
+</ul>
+<p><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">nucml</a></li>
 </ul>
-<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
+<p><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
@@ -464,17 +472,17 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="Reference-Input-Parameter-Library-(RIPL)">
+<section id="Reference-Input-Parameter-Library-(RIPL)">
 <h1>Reference Input Parameter Library (RIPL)<a class="headerlink" href="#Reference-Input-Parameter-Library-(RIPL)" title="Permalink to this headline">¶</a></h1>
-<p>The Reference Input Parameter Library (RIPL) contains nuclear strcuture information. These files are much easier to parse and maniuplate than their source, the Experimental Nuclear Structure Database (XUNDL). XUNDL files are not directly supported for now. Let us get an overview of what <code class="docutils literal notranslate"><span class="pre">NucML</span></code> can do for us. Let us begin, as always, by importing the <code class="docutils literal notranslate"><span class="pre">nucml.datasets</span></code> module.</p>
+<p>The Reference Input Parameter Library (RIPL) contains nuclear structure information. These files are much easier to parse and manipulate than their source, the Experimental Nuclear Structure Database (XUNDL). XUNDL files are not directly supported for now. Let us get an overview of what <code class="docutils literal notranslate"><span class="pre">NucML</span></code> can do for us. Let us begin, as always, by importing the <code class="docutils literal notranslate"><span class="pre">nucml.datasets</span></code> module.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># PROTOTYPE</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../..&quot;</span><span class="p">)</span>
+<span></span><span class="c1"># # PROTOTYPE</span>
+<span class="c1"># import sys</span>
+<span class="c1"># sys.path.append(&quot;../..&quot;)</span>
 </pre></div>
 </div>
 </div>
@@ -483,12 +491,11 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">nucml.datasets</span> <span class="k">as</span> <span class="nn">nuc_data</span>
+<span></span><span class="kn">import</span> <span class="nn">nucml.datasets</span> <span class="k">as</span> <span class="nn">nuc_data</span>
 </pre></div>
 </div>
 </div>
-<div class="section" id="RIPL/XUNDL-Headers">
+<section id="RIPL/XUNDL-Headers">
 <h2>RIPL/XUNDL Headers<a class="headerlink" href="#RIPL/XUNDL-Headers" title="Permalink to this headline">¶</a></h2>
 <p>The RIPL headers are the most basic information in terms of nuclear structure. It includes the elements, the number of levels and gammas available, and the neutron and proton separation energy.</p>
 <div class="nbinput nblast docutils container">
@@ -608,8 +615,8 @@ div.rendered_html tbody tr:hover {
 </table>
 </div></div>
 </div>
-</div>
-<div class="section" id="Elemental-RIPL-Information">
+</section>
+<section id="Elemental-RIPL-Information">
 <h2>Elemental RIPL Information<a class="headerlink" href="#Elemental-RIPL-Information" title="Permalink to this headline">¶</a></h2>
 <p>We can easily load all available nuclear structure levels for a given isotope using the <code class="docutils literal notranslate"><span class="pre">load_ensdf_isotopic()</span></code>. It returns all levels and their energies, the spin, parity, half-life, gammas per level, a RIPL specific flag, and the number of decay modes.</p>
 <div class="nbinput nblast docutils container">
@@ -735,8 +742,8 @@ div.rendered_html tbody tr:hover {
 </table>
 </div></div>
 </div>
-</div>
-<div class="section" id="Elemental-RIPL-Gammas">
+</section>
+<section id="Elemental-RIPL-Gammas">
 <h2>Elemental RIPL Gammas<a class="headerlink" href="#Elemental-RIPL-Gammas" title="Permalink to this headline">¶</a></h2>
 <p>We can also obtain the known gammas per level including their initial and final level state, the energy, the gamma and electromagnetic decay probability, and the ICC.</p>
 <div class="nbinput nblast docutils container">
@@ -838,8 +845,8 @@ div.rendered_html tbody tr:hover {
 </table>
 </div></div>
 </div>
-</div>
-<div class="section" id="Ground-State-Data">
+</section>
+<section id="Ground-State-Data">
 <h2>Ground State Data<a class="headerlink" href="#Ground-State-Data" title="Permalink to this headline">¶</a></h2>
 <p>With the previous functions, you can obtain most of the basic nuclear structure data. Another commodity function offered by <code class="docutils literal notranslate"><span class="pre">NucML</span></code> is the <code class="docutils literal notranslate"><span class="pre">load_ensdf_ground_states()</span></code>. This will load only the ground state for all available isotopes.</p>
 <div class="nbinput nblast docutils container">
@@ -959,8 +966,8 @@ div.rendered_html tbody tr:hover {
 </table>
 </div></div>
 </div>
-</div>
-<div class="section" id="RIPL-Cut-Off-Parameters">
+</section>
+<section id="RIPL-Cut-Off-Parameters">
 <h2>RIPL Cut-Off Parameters<a class="headerlink" href="#RIPL-Cut-Off-Parameters" title="Permalink to this headline">¶</a></h2>
 <p>RIPL offers some recommended cut-off parameters for nuclear structure data. These will be useful when deciding the transformations applied to an ML-ready XUNDL dataset. For now, you can obtain the Cut-Off parameters using the <code class="docutils literal notranslate"><span class="pre">load_riple_parameteres()</span></code>.</p>
 <div class="nbinput nblast docutils container">
@@ -1146,8 +1153,8 @@ div.rendered_html tbody tr:hover {
 </table>
 </div></div>
 </div>
-</div>
-<div class="section" id="All-RIPL/XUNDL-Data">
+</section>
+<section id="All-RIPL/XUNDL-Data">
 <h2>All RIPL/XUNDL Data<a class="headerlink" href="#All-RIPL/XUNDL-Data" title="Permalink to this headline">¶</a></h2>
 <p>You can also load all nuclear structure levels and their energies along with some basic information. It is a good place to get started building an ML-ready dataset.</p>
 <div class="nbinput docutils container">
@@ -1341,8 +1348,8 @@ INFO:root:Reading data from C:/Users/Pedro/Desktop/ML_Nuclear_Data/ENSDF\CSV_Fil
 (21354, 11)
 </pre></div></div>
 </div>
-</div>
-<div class="section" id="ML-ready-RIPL-Dataset">
+</section>
+<section id="ML-ready-RIPL-Dataset">
 <h2>ML-ready RIPL Dataset<a class="headerlink" href="#ML-ready-RIPL-Dataset" title="Permalink to this headline">¶</a></h2>
 <p>Modeling nuclear structure is tricky. There are many ways we could prepare the dataset and model it using different algorithms and approaches. One option is using processing similar to that of EXFOR. We can achieve this using the <code class="docutils literal notranslate"><span class="pre">load_ensdf_ml()</span></code> method.</p>
 <p><strong>NOTE: This method is experimental and the returned data should always be inspected.</strong></p>
@@ -1492,8 +1499,8 @@ INFO:root:Finished. Resulting dataset has shape (72138, 12), Training and Testin
 </div></div>
 </div>
 <p>This loader function offers less flexibility than the EXFOR counterpart. The same functionalities will hopefully be integrated in the future.</p>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

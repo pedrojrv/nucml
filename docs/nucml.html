@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>nucml package &mdash; NucML 1.0.0 documentation</title>
@@ -85,16 +86,16 @@
               
             
             
-              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
+              <p><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p class="caption"><span class="caption-text">GET STARTED</span></p>
+<p><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html">Loading Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
@@ -102,7 +103,14 @@
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
+<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
+</ul>
+<p><span class="caption-text">DOCUMENTATION</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">nucml</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">nucml package</a><ul>
@@ -129,7 +137,7 @@
 </ul>
 </li>
 </ul>
-<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
+<p><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
@@ -226,9 +234,9 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="nucml-package">
+<section id="nucml-package">
 <h1>nucml package<a class="headerlink" href="#nucml-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="subpackages">
+<section id="subpackages">
 <h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
@@ -242,6 +250,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="nucml.ame.html">nucml.ame package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="nucml.ame.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nucml.ame.html#module-nucml.ame.parsing">nucml.ame.parsing module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nucml.ame.html#module-nucml.ame.parsing_utilities">nucml.ame.parsing_utilities module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nucml.ame.html#module-nucml.ame">Module contents</a></li>
 </ul>
@@ -271,6 +280,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="nucml.model.html">nucml.model package</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="nucml.model.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nucml.model.html#module-nucml.model.building_utils">nucml.model.building_utils module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nucml.model.html#module-nucml.model.model_building">nucml.model.model_building module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nucml.model.html#module-nucml.model.plot">nucml.model.plot module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="nucml.model.html#module-nucml.model.training">nucml.model.training module</a></li>
@@ -292,18 +302,18 @@
 </li>
 </ul>
 </div>
-</div>
-<div class="section" id="submodules">
+</section>
+<section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="module-nucml.config">
+</section>
+<section id="module-nucml.config">
 <span id="nucml-config-module"></span><h2>nucml.config module<a class="headerlink" href="#module-nucml.config" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="module-nucml.configure">
+</section>
+<section id="module-nucml.configure">
 <span id="nucml-configure-module"></span><h2>nucml.configure module<a class="headerlink" href="#module-nucml.configure" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="nucml.configure.configure">
-<code class="sig-prename descclassname">nucml.configure.</code><code class="sig-name descname">configure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_path</span></em>, <em class="sig-param"><span class="n">ace_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/configure.html#configure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.configure.configure" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">nucml.configure.</code><code class="sig-name descname">configure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_path</span></em>, <em class="sig-param"><span class="n">ace_path</span></em>, <em class="sig-param"><span class="n">matlab_exe_path</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/configure.html#configure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.configure.configure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configures an internal file necessary to enable all NucML functionalities that
 deal with loading data files from EXFOR, AME, ACE, ENSDF, and RIPL.</p>
 <p>The ace_path can be an already existing directory from a serpent distribution. The
@@ -315,6 +325,8 @@ the ace utilities may not work.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>user_path</strong> (<em>str</em>) – Path-like string pointing to the project directory.</p></li>
 <li><p><strong>ace_path</strong> (<em>str</em>) – Path-like string pointing to the .ace files.</p></li>
+<li><p><strong>matplab_exe_path</strong> (<em>str</em><em>, </em><em>optional</em>) – Path-like string pointing towards the MATLAB executable.
+The default is None</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -323,9 +335,20 @@ the ace utilities may not work.</p>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-nucml.datasets">
+</section>
+<section id="module-nucml.datasets">
 <span id="nucml-datasets-module"></span><h2>nucml.datasets module<a class="headerlink" href="#module-nucml.datasets" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="nucml.datasets.generate_bigquery_csv">
+<code class="sig-prename descclassname">nucml.datasets.</code><code class="sig-name descname">generate_bigquery_csv</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/datasets.html#generate_bigquery_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.datasets.generate_bigquery_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a single EXFOR data file to update Google BigQuery database.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py function">
 <dt id="nucml.datasets.generate_exfor_dataset">
 <code class="sig-prename descclassname">nucml.datasets.</code><code class="sig-name descname">generate_exfor_dataset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">user_path</span></em>, <em class="sig-param"><span class="n">modes</span><span class="o">=</span><span class="default_value">['neutrons', 'protons', 'alphas', 'deuterons', 'gammas', 'helions']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/datasets.html#generate_exfor_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.datasets.generate_exfor_dataset" title="Permalink to this definition">¶</a></dt>
@@ -431,8 +454,31 @@ include “levels” and “gammas”. Defaults to “levels”.</p></li>
 
 <dl class="py function">
 <dt id="nucml.datasets.load_ensdf_ml">
-<code class="sig-prename descclassname">nucml.datasets.</code><code class="sig-name descname">load_ensdf_ml</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">log_sqrt</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">append_ame</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">basic</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">num</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">frac</span><span class="o">=</span><span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">scaling_type</span><span class="o">=</span><span class="default_value">'std'</span></em>, <em class="sig-param"><span class="n">scaler_dir</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/datasets.html#load_ensdf_ml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.datasets.load_ensdf_ml" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="sig-prename descclassname">nucml.datasets.</code><code class="sig-name descname">load_ensdf_ml</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">cutoff</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">log_sqrt</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">append_ame</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">basic</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">num</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">frac</span><span class="o">=</span><span class="default_value">0.3</span></em>, <em class="sig-param"><span class="n">scaling_type</span><span class="o">=</span><span class="default_value">'standard'</span></em>, <em class="sig-param"><span class="n">scaler_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">normalize</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/datasets.html#load_ensdf_ml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.datasets.load_ensdf_ml" title="Permalink to this definition">¶</a></dt>
+<dd><p>EXPERIMENTAL (NOT MEANT FOR USE)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cutoff</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description]. Defaults to False.</p></li>
+<li><p><strong>log_sqrt</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description]. Defaults to False.</p></li>
+<li><p><strong>log</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description]. Defaults to False.</p></li>
+<li><p><strong>append_ame</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description]. Defaults to False.</p></li>
+<li><p><strong>basic</strong> (<em>int</em><em>, </em><em>optional</em>) – [description]. Defaults to -1.</p></li>
+<li><p><strong>num</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description]. Defaults to False.</p></li>
+<li><p><strong>frac</strong> (<em>float</em><em>, </em><em>optional</em>) – [description]. Defaults to 0.3.</p></li>
+<li><p><strong>scaling_type</strong> (<em>str</em><em>, </em><em>optional</em>) – [description]. Defaults to “standard”.</p></li>
+<li><p><strong>scaler_dir</strong> (<em>[</em><em>type</em><em>]</em><em>, </em><em>optional</em>) – [description]. Defaults to None.</p></li>
+<li><p><strong>normalize</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description]. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[description]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[type]</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py function">
 <dt id="nucml.datasets.load_evaluation">
@@ -465,7 +511,7 @@ manually for future loading.</p>
 
 <dl class="py function">
 <dt id="nucml.datasets.load_exfor">
-<code class="sig-prename descclassname">nucml.datasets.</code><code class="sig-name descname">load_exfor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">low_en</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">basic</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">num</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">frac</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'neutrons'</span></em>, <em class="sig-param"><span class="n">scaling_type</span><span class="o">=</span><span class="default_value">'standard'</span></em>, <em class="sig-param"><span class="n">scaler_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">filters</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">max_en</span><span class="o">=</span><span class="default_value">20000000.0</span></em>, <em class="sig-param"><span class="n">mt_coding</span><span class="o">=</span><span class="default_value">'one_hot'</span></em>, <em class="sig-param"><span class="n">scale_energy</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">projectile_coding</span><span class="o">=</span><span class="default_value">'one_hot'</span></em>, <em class="sig-param"><span class="n">normalize</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">pedro</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/datasets.html#load_exfor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.datasets.load_exfor" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">nucml.datasets.</code><code class="sig-name descname">load_exfor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">low_en</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">basic</span><span class="o">=</span><span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">num</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">frac</span><span class="o">=</span><span class="default_value">0.1</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'neutrons'</span></em>, <em class="sig-param"><span class="n">scaling_type</span><span class="o">=</span><span class="default_value">'standard'</span></em>, <em class="sig-param"><span class="n">scaler_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">filters</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">max_en</span><span class="o">=</span><span class="default_value">20000000.0</span></em>, <em class="sig-param"><span class="n">mt_coding</span><span class="o">=</span><span class="default_value">'one_hot'</span></em>, <em class="sig-param"><span class="n">scale_energy</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">projectile_coding</span><span class="o">=</span><span class="default_value">'one_hot'</span></em>, <em class="sig-param"><span class="n">normalize</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">pedro</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">pedro_v2</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/datasets.html#load_exfor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.datasets.load_exfor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads the EXFOR dataset in its varius forms. This function helps load ML-ready EXFOR datasets
 for different particle induce reactions or all of them.</p>
 <dl class="field-list simple">
@@ -504,6 +550,20 @@ DataFrames: Multiple dataframes and objects if num=True.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt id="nucml.datasets.load_exfor_raw">
+<code class="sig-prename descclassname">nucml.datasets.</code><code class="sig-name descname">load_exfor_raw</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'neutrons'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/datasets.html#load_exfor_raw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.datasets.load_exfor_raw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads the original EXFOR library.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) – Projectile type to load data for. Defaults to “neutrons”. Options also include “alphas”, “deuterons”, “gammas”, “helions”, and “protons”.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>pd.DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="nucml.datasets.load_ripl_parameters">
 <code class="sig-prename descclassname">nucml.datasets.</code><code class="sig-name descname">load_ripl_parameters</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/datasets.html#load_ripl_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.datasets.load_ripl_parameters" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads the RIPL level cut-off parameters file.</p>
@@ -514,8 +574,8 @@ DataFrames: Multiple dataframes and objects if num=True.</p>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-nucml.general_utilities">
+</section>
+<section id="module-nucml.general_utilities">
 <span id="nucml-general-utilities-module"></span><h2>nucml.general_utilities module<a class="headerlink" href="#module-nucml.general_utilities" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="nucml.general_utilities.check_if_files_exist">
@@ -669,8 +729,8 @@ the <cite>.pkl</cite> extension to all saved files.</p>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-nucml.processing">
+</section>
+<section id="module-nucml.processing">
 <span id="nucml-processing-module"></span><h2>nucml.processing module<a class="headerlink" href="#module-nucml.processing" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="nucml.processing.impute_values">
@@ -716,11 +776,11 @@ transform the provided dataframe. Defaults to None.</p></li>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-nucml">
+</section>
+<section id="module-nucml">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-nucml" title="Permalink to this headline">¶</a></h2>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

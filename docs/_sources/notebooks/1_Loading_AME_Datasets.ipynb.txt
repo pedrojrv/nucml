@@ -23,29 +23,29 @@
   },
   {
    "cell_type": "code",
-   "execution_count": 1,
+   "execution_count": 2,
    "id": "dutch-stereo",
    "metadata": {
     "ExecuteTime": {
-     "end_time": "2021-02-23T00:54:42.092251Z",
-     "start_time": "2021-02-23T00:54:42.088251Z"
+     "end_time": "2021-05-05T21:51:10.353810Z",
+     "start_time": "2021-05-05T21:51:10.350311Z"
     }
    },
    "outputs": [],
    "source": [
-    "# Prototype\n",
-    "import sys\n",
-    "sys.path.append(\"../..\")"
+    "# # Prototype\n",
+    "# import sys\n",
+    "# sys.path.append(\"../..\")"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 2,
+   "execution_count": 1,
    "id": "manufactured-creature",
    "metadata": {
     "ExecuteTime": {
-     "end_time": "2021-02-23T00:54:43.773359Z",
-     "start_time": "2021-02-23T00:54:42.093254Z"
+     "end_time": "2021-05-05T21:51:05.803782Z",
+     "start_time": "2021-05-05T21:51:03.806995Z"
     }
    },
    "outputs": [],
@@ -67,8 +67,8 @@
    "id": "fantastic-translator",
    "metadata": {
     "ExecuteTime": {
-     "end_time": "2021-02-23T00:54:43.818350Z",
-     "start_time": "2021-02-23T00:54:43.775360Z"
+     "end_time": "2021-05-05T21:51:17.215483Z",
+     "start_time": "2021-05-05T21:51:17.159516Z"
     }
    },
    "outputs": [
@@ -254,8 +254,8 @@
    "id": "sudden-fault",
    "metadata": {
     "ExecuteTime": {
-     "end_time": "2021-02-23T00:54:43.848354Z",
-     "start_time": "2021-02-23T00:54:43.819347Z"
+     "end_time": "2021-05-05T21:51:19.669948Z",
+     "start_time": "2021-05-05T21:51:19.630448Z"
     }
    },
    "outputs": [
@@ -420,8 +420,8 @@
    "id": "ultimate-brisbane",
    "metadata": {
     "ExecuteTime": {
-     "end_time": "2021-02-23T00:54:43.878349Z",
-     "start_time": "2021-02-23T00:54:43.850351Z"
+     "end_time": "2021-05-05T21:51:23.847228Z",
+     "start_time": "2021-05-05T21:51:23.807728Z"
     }
    },
    "outputs": [
@@ -594,8 +594,8 @@
    "id": "coordinate-ecology",
    "metadata": {
     "ExecuteTime": {
-     "end_time": "2021-02-23T00:54:43.945359Z",
-     "start_time": "2021-02-23T00:54:43.879348Z"
+     "end_time": "2021-05-05T21:51:25.087728Z",
+     "start_time": "2021-05-05T21:51:25.015729Z"
     }
    },
    "outputs": [
@@ -832,8 +832,8 @@
    "id": "pretty-river",
    "metadata": {
     "ExecuteTime": {
-     "end_time": "2021-02-23T00:54:44.017351Z",
-     "start_time": "2021-02-23T00:54:43.947349Z"
+     "end_time": "2021-05-05T21:51:26.843649Z",
+     "start_time": "2021-05-05T21:51:26.768150Z"
     }
    },
    "outputs": [
@@ -1073,8 +1073,8 @@
    "id": "civilian-medline",
    "metadata": {
     "ExecuteTime": {
-     "end_time": "2021-02-23T00:54:44.084227Z",
-     "start_time": "2021-02-23T00:54:44.018351Z"
+     "end_time": "2021-05-05T21:51:30.608110Z",
+     "start_time": "2021-05-05T21:51:30.536109Z"
     }
    },
    "outputs": [
@@ -1297,8 +1297,8 @@
    "id": "executive-award",
    "metadata": {
     "ExecuteTime": {
-     "end_time": "2021-02-23T00:54:44.152215Z",
-     "start_time": "2021-02-23T00:54:44.085216Z"
+     "end_time": "2021-05-05T21:51:32.854803Z",
+     "start_time": "2021-05-05T21:51:32.783303Z"
     }
    },
    "outputs": [
@@ -1547,7 +1547,7 @@
    "name": "python",
    "nbconvert_exporter": "python",
    "pygments_lexer": "ipython3",
-   "version": "3.8.5"
+   "version": "3.8.8"
   }
  },
  "nbformat": 4,

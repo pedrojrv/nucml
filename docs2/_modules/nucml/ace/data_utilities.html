@@ -1,0 +1,1203 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>nucml.ace.data_utilities &mdash; NucML 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> NucML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../what-is-nucml.html">What is NucML?</a></li>
+</ul>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basic-walkthrough.html">Basic Walkthrough</a></li>
+</ul>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html">Loading Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#modeling-data">Modeling Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
+</ul>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">nucml</a></li>
+</ul>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">NucML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>nucml.ace.data_utilities</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for nucml.ace.data_utilities</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">scipy.io</span>
+<span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">find_peaks</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../..&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">nucml.general_utilities</span> <span class="k">as</span> <span class="nn">gen_utils</span>        
+<span class="kn">import</span> <span class="nn">nucml.model.utilities</span> <span class="k">as</span> <span class="nn">model_utils</span>        
+<span class="kn">import</span> <span class="nn">nucml.exfor.data_utilities</span> <span class="k">as</span> <span class="nn">exfor_utils</span>   
+<span class="kn">import</span> <span class="nn">nucml.config</span> <span class="k">as</span> <span class="nn">config</span>                      
+
+<span class="n">empty_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+<span class="n">ace_dir</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">ace_path</span>
+<span class="n">template_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">bench_template_path</span>
+
+
+<div class="viewcode-block" id="get_to_skip_lines"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.get_to_skip_lines">[docs]</a><span class="k">def</span> <span class="nf">get_to_skip_lines</span><span class="p">(</span><span class="n">isotope</span><span class="p">,</span> <span class="n">temp</span><span class="o">=</span><span class="s2">&quot;03c&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This utility returns the path to the corresponding ACE file for a given isotope, returns the number of lines to skip </span>
+<span class="sd">    to get to the data block belonging to the given energy, and the number of lines corresponding to that block.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        isotope (str): Element in ZZAAA format (i.e. 92233, 6012).</span>
+<span class="sd">        temp (str, optional): Temperature in ACE format (i.e. 03c means 300C). Defaults to &quot;03c&quot;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (tuple): tuple containing:</span>
+<span class="sd">            path (str): Path to the queried isotope in the ACE directory.</span>
+<span class="sd">            to_skip (int): Number of lines to skip in the original file until the wanted temperature begins.</span>
+<span class="sd">            lines (int): Number of total lines covering the queried isotope at a given temperature.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        FileNotFoundError: If a given isotope file does not exists, an error will be raised. </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">isotope</span> <span class="o">==</span> <span class="s2">&quot;6012&quot;</span><span class="p">:</span>
+        <span class="n">isotope</span> <span class="o">=</span> <span class="s2">&quot;6000&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">isotope</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+        <span class="n">line_spaces</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">line_spaces</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ace_dir</span><span class="p">,</span> <span class="n">isotope</span> <span class="o">+</span> <span class="s2">&quot;ENDF7.ace&quot;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ace_file</span><span class="p">:</span>
+            <span class="n">points</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">indexes</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ace_file</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">*</span><span class="n">line_spaces</span> <span class="o">+</span> <span class="n">isotope</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span><span class="p">):</span> 
+                    <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+                    <span class="n">indexes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+                    
+        <span class="n">to_search</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">*</span><span class="n">line_spaces</span> <span class="o">+</span> <span class="n">isotope</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">temp</span>
+        <span class="n">to_skip</span> <span class="o">=</span> <span class="n">indexes</span><span class="p">[</span><span class="n">points</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">to_search</span><span class="p">)]</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">indexes</span><span class="p">[</span><span class="n">points</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">to_search</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">to_skip</span> <span class="o">-</span> <span class="mi">12</span>
+
+        <span class="k">return</span> <span class="n">path</span><span class="p">,</span> <span class="n">to_skip</span><span class="p">,</span> <span class="n">lines</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> does not exists.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="get_nxs_jxs_xss"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.get_nxs_jxs_xss">[docs]</a><span class="k">def</span> <span class="nf">get_nxs_jxs_xss</span><span class="p">(</span><span class="n">isotope</span><span class="p">,</span> <span class="n">temp</span><span class="o">=</span><span class="s2">&quot;03c&quot;</span><span class="p">,</span> <span class="n">custom_path</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retrieves the NSX, JXS, and XSS tables for a given isotope at a given temperature</span>
+<span class="sd">    The JSX DataFrame indicates the indices to the XSS where different pieces of data begin.</span>
+<span class="sd">    The XSS table contains the actual data needed by many functions of the ACE utilities.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        isotope (str): Isotope in ZZAAA format.</span>
+<span class="sd">        temp (str, optional): Temperature in ace format (i.e. 03c means 300C). Defaults to &quot;03c&quot;.</span>
+<span class="sd">        custom_path (str, optional): File-path to a new ACE file not stored in the configured ACE directory. Defaults to None.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (tuple): tuple containing:</span>
+<span class="sd">            nxs (DataFrame)</span>
+<span class="sd">            jxs (DataFrame)</span>
+<span class="sd">            xss (np.array)</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">path</span><span class="p">,</span> <span class="n">to_skip</span><span class="p">,</span> <span class="n">lines</span> <span class="o">=</span> <span class="n">get_to_skip_lines</span><span class="p">(</span><span class="n">isotope</span><span class="p">,</span> <span class="n">temp</span><span class="o">=</span><span class="n">temp</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">path</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">custom_path</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
+        <span class="n">nxs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">custom_path</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="n">to_skip</span><span class="o">+</span><span class="mi">6</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">jxs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">custom_path</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="n">to_skip</span><span class="o">+</span><span class="mi">8</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">xss</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">custom_path</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="n">to_skip</span><span class="o">+</span><span class="mi">12</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="n">lines</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">nxs</span><span class="p">,</span> <span class="n">jxs</span><span class="p">,</span> <span class="n">xss</span>
+    <span class="k">elif</span> <span class="n">path</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">nxs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="n">to_skip</span><span class="o">+</span><span class="mi">6</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> 
+        <span class="n">jxs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="n">to_skip</span><span class="o">+</span><span class="mi">8</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+        <span class="n">xss</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="n">to_skip</span><span class="o">+</span><span class="mi">12</span><span class="p">,</span> <span class="n">nrows</span><span class="o">=</span><span class="n">lines</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">nxs</span><span class="p">,</span> <span class="n">jxs</span><span class="p">,</span> <span class="n">xss</span></div>
+    
+
+<div class="viewcode-block" id="get_nxs_dictionary"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.get_nxs_dictionary">[docs]</a><span class="k">def</span> <span class="nf">get_nxs_dictionary</span><span class="p">(</span><span class="n">nxs_df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given the extracted NSX DataFrame, this function will transform it into a dictionary.</span>
+<span class="sd">    The keys are XSS_length, ZZAAA, Num_Energies, &quot;NTR&quot;, &quot;NR&quot;, &quot;NTRP&quot;, &quot;NPCR&quot;, &quot;S&quot;, &quot;Z&quot;, and &quot;A&quot;.</span>
+<span class="sd">    For a definition, check out the ACE formatting documentation. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        nxs_df (DataFrame): The NSX DataFrame extracted using the get_nxs_jxs_xss() function.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: dictionary containing the NSX results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">nxs_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;XSS_Length&quot;</span><span class="p">:</span> <span class="n">nxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;ZZAAA&quot;</span><span class="p">:</span> <span class="n">nxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+        <span class="s2">&quot;Num_Energies&quot;</span><span class="p">:</span> <span class="n">nxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+        <span class="s2">&quot;NTR&quot;</span><span class="p">:</span> <span class="n">nxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span>
+        <span class="s2">&quot;NR&quot;</span><span class="p">:</span> <span class="n">nxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span>
+        <span class="s2">&quot;NTRP&quot;</span><span class="p">:</span> <span class="n">nxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span>
+        <span class="s2">&quot;NPCR&quot;</span><span class="p">:</span> <span class="n">nxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span>
+        <span class="s2">&quot;S&quot;</span><span class="p">:</span> <span class="n">nxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;Z&quot;</span><span class="p">:</span> <span class="n">nxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+        <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">nxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">nxs_dict</span></div>
+
+<div class="viewcode-block" id="get_jxs_dictionary"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.get_jxs_dictionary">[docs]</a><span class="k">def</span> <span class="nf">get_jxs_dictionary</span><span class="p">(</span><span class="n">jxs_df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given the extracted JXS DataFrame, this function will return a key:value dictionary</span>
+<span class="sd">    of the values in the JXS in accordance to the ACE formatting documentation. JXS values</span>
+<span class="sd">    are mostly indexes in the XSS array to indicate the beggining of a data type. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        jxs_df (DataFrame): The JXS DataFrame extracted using the get_nxs_jxs_xss() function.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: Dictionary containing the JXS results.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">jxs_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;E_Table&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;Fis_v_Data&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+        <span class="s2">&quot;MT_Array&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+        <span class="s2">&quot;Q_value_Array&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span>
+        <span class="s2">&quot;Rx_Type_Array&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span>
+        <span class="s2">&quot;XS_Loc_Table&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span>
+        <span class="s2">&quot;XS&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span>
+        <span class="s2">&quot;Ang_Dist_Loc&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span>
+        <span class="s2">&quot;Ang_Dist&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;E_Dist_Loc&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+        <span class="s2">&quot;E_Dist&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+        <span class="s2">&quot;Photon_Prod_Data&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span>
+        <span class="s2">&quot;Photon_Prod_MT_Array&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span>
+        <span class="s2">&quot;Photon_Prod_XS_Loc&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span>
+        <span class="s2">&quot;Photon_Prod_XS&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span>
+        <span class="s2">&quot;Photon_Prod_Ang_Dist_Loc&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span>
+        <span class="s2">&quot;Photon_Prod_Ang_Dist&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;Photon_Prod_E_Dist_Loc&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+        <span class="s2">&quot;Photon_Prod_E_Dist&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">],</span>
+        <span class="s2">&quot;Yield_Mult_Table&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],</span>
+        <span class="s2">&quot;Tot_Fis_XS&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">],</span>
+        <span class="s2">&quot;Last_Word&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">5</span><span class="p">],</span>
+        <span class="s2">&quot;Probability_Tab&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">6</span><span class="p">],</span>
+        <span class="s2">&quot;Delayed_v_Data&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span>
+        <span class="s2">&quot;Basic_Delayed_Neut_Precursor_Data&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span>
+        <span class="s2">&quot;Delayed_Neut_E_Dist_Loc&quot;</span><span class="p">:</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">1</span><span class="p">],</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">jxs_dict</span></div>
+
+<div class="viewcode-block" id="get_pointers"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.get_pointers">[docs]</a><span class="k">def</span> <span class="nf">get_pointers</span><span class="p">(</span><span class="n">nxs</span><span class="p">,</span> <span class="n">jxs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gets general information from NXS and JXS needed to start manipulating cross sections. </span>
+<span class="sd">    This includes several pointers for Energy, MT Array, LSIG, SIG, and Fission. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        nxs (dict): Dictionary obtained using the get_nxs_dictionary().</span>
+<span class="sd">        jxs (dict): Dictionary obtained using the get_jxs_dictionary().</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: Contains several pointers to different data types in the xss array.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">nxs_dict</span> <span class="o">=</span> <span class="n">get_nxs_dictionary</span><span class="p">(</span><span class="n">nxs</span><span class="p">)</span>
+    <span class="n">jxs_dict</span> <span class="o">=</span> <span class="n">get_jxs_dictionary</span><span class="p">(</span><span class="n">jxs</span><span class="p">)</span>    
+
+    <span class="n">final_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;nes&quot;</span><span class="p">:</span><span class="n">nxs_dict</span><span class="p">[</span><span class="s2">&quot;Num_Energies&quot;</span><span class="p">],</span> <span class="c1"># NES: Number of Energy points (3),</span>
+        <span class="s2">&quot;ntr&quot;</span><span class="p">:</span><span class="n">nxs_dict</span><span class="p">[</span><span class="s2">&quot;NTR&quot;</span><span class="p">],</span>          <span class="c1"># NTR: Number of reaction types excluding elastic scattering MT2 (4)</span>
+        <span class="s2">&quot;energy_pointer&quot;</span><span class="p">:</span><span class="n">jxs_dict</span><span class="p">[</span><span class="s2">&quot;E_Table&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>              <span class="c1"># ESZ (1) ENERGY TABLE POINTER</span>
+        <span class="s2">&quot;mt_pointer&quot;</span><span class="p">:</span><span class="n">jxs_dict</span><span class="p">[</span><span class="s2">&quot;MT_Array&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>                  <span class="c1"># MTR (3) MT ARRAY POINTER</span>
+        <span class="s2">&quot;xs_pointers&quot;</span><span class="p">:</span><span class="n">jxs_dict</span><span class="p">[</span><span class="s2">&quot;XS_Loc_Table&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>            <span class="c1"># LSIG (6) TABLE OF XS LOCATORS/POINTERS</span>
+        <span class="s2">&quot;xs_table_pointer&quot;</span><span class="p">:</span><span class="n">jxs_dict</span><span class="p">[</span><span class="s2">&quot;XS&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>                 <span class="c1"># SIG (7) CROSS SECTION ARRAY POINTER</span>
+        <span class="s2">&quot;mt_18_pointer&quot;</span><span class="p">:(</span><span class="n">jxs_dict</span><span class="p">[</span><span class="s2">&quot;Tot_Fis_XS&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># FIS (21) FISSION POINTER</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">final_dict</span></div>
+
+<div class="viewcode-block" id="get_energy_array"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.get_energy_array">[docs]</a><span class="k">def</span> <span class="nf">get_energy_array</span><span class="p">(</span><span class="n">xss</span><span class="p">,</span> <span class="n">pointers_dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the energy grid given the XSS array and the pointers dictionary.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        xss (np.array): The XSS array obtained through the get_nxs_jxs_xss() function.</span>
+<span class="sd">        pointers_dict (dict): Pointers dictionary obtained through the get_pointers() function.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.array: Numpy array containing the energy grid values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">energies</span> <span class="o">=</span> <span class="n">xss</span><span class="p">[</span><span class="n">pointers_dict</span><span class="p">[</span><span class="s2">&quot;energy_pointer&quot;</span><span class="p">]</span> <span class="p">:</span> <span class="n">pointers_dict</span><span class="p">[</span><span class="s2">&quot;energy_pointer&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">pointers_dict</span><span class="p">[</span><span class="s2">&quot;nes&quot;</span><span class="p">]]</span>   <span class="c1"># ENERGY TABLE ARRAY</span>
+    <span class="k">return</span> <span class="n">energies</span></div>
+
+<div class="viewcode-block" id="get_mt_array"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.get_mt_array">[docs]</a><span class="k">def</span> <span class="nf">get_mt_array</span><span class="p">(</span><span class="n">xss</span><span class="p">,</span> <span class="n">pointer_dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the avaliable MT reactions as a numpy array given the XSS and pointers dictionary.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        xss (np.array): The XSS array obtained through the get_nxs_jxs_xss() function.</span>
+<span class="sd">        pointers_dict (dict): Pointers dictionary obtained through the get_pointers() function.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.array: Numpy array containing the avaliable MT values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">mt_array</span> <span class="o">=</span> <span class="n">xss</span><span class="p">[</span><span class="n">pointer_dict</span><span class="p">[</span><span class="s2">&quot;mt_pointer&quot;</span><span class="p">]</span> <span class="p">:</span> <span class="n">pointer_dict</span><span class="p">[</span><span class="s2">&quot;mt_pointer&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">pointer_dict</span><span class="p">[</span><span class="s2">&quot;ntr&quot;</span><span class="p">]]</span>           <span class="c1"># MT TABLE ARRAY</span>
+    <span class="k">return</span> <span class="n">mt_array</span></div>
+
+<div class="viewcode-block" id="get_mt_xs_pointers_array"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.get_mt_xs_pointers_array">[docs]</a><span class="k">def</span> <span class="nf">get_mt_xs_pointers_array</span><span class="p">(</span><span class="n">xss</span><span class="p">,</span> <span class="n">pointer_dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns the XS pointers for each MT reaction in the MT array in the form of an equal length array.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        xss (np.array): The XSS array obtained through the get_nxs_jxs_xss() function.</span>
+<span class="sd">        pointers_dict (dict): Pointers dictionary obtained through the get_pointers() function.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.array: Numpy array containing the XS pointers grid values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">mt_xs_pointers_array</span> <span class="o">=</span> <span class="n">xss</span><span class="p">[</span><span class="n">pointer_dict</span><span class="p">[</span><span class="s2">&quot;xs_pointers&quot;</span><span class="p">]</span> <span class="p">:</span> <span class="n">pointer_dict</span><span class="p">[</span><span class="s2">&quot;xs_pointers&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">pointer_dict</span><span class="p">[</span><span class="s2">&quot;ntr&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="c1"># CROSS SECTION TABLE ARRAY</span>
+    <span class="k">return</span> <span class="n">mt_xs_pointers_array</span></div>
+
+<div class="viewcode-block" id="get_mt_array_w_pointers"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.get_mt_array_w_pointers">[docs]</a><span class="k">def</span> <span class="nf">get_mt_array_w_pointers</span><span class="p">(</span><span class="n">mt_array</span><span class="p">,</span> <span class="n">mt_xs_pointers_array</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a dictionary with the avaliable MT reactions as keys and the cross section pointers as values.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        mt_array (np.array): Array containing the MT reactions. Usually obtained by the get_mt_array() function.</span>
+<span class="sd">        mt_xs_pointers_array (np.array): Array containing the XS pointers obtained through the get_mt_xs_pointers_array() function.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: Dictionary containing the mt_array:xs_pointer key:value pairs. </span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">mt_pointer_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">mt_array</span><span class="p">,</span> <span class="n">mt_xs_pointers_array</span><span class="p">):</span>
+        <span class="n">mt_pointer_dict</span><span class="p">[</span><span class="n">A</span><span class="p">]</span> <span class="o">=</span> <span class="n">B</span>
+    <span class="k">return</span> <span class="n">mt_pointer_dict</span></div>
+    
+<div class="viewcode-block" id="get_basic_mts"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.get_basic_mts">[docs]</a><span class="k">def</span> <span class="nf">get_basic_mts</span><span class="p">(</span><span class="n">xss</span><span class="p">,</span> <span class="n">pointer_dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a dcitionary containing the cross section values for MT1, MT 101, MT2, and MT3. These are not part of the MT array. </span>
+<span class="sd">    The Cross Section values start inmediatly after the energy points. The corresponding energy grid is the entire energy grid.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        xss (np.array): The XSS array obtained through the get_nxs_jxs_xss() function.</span>
+<span class="sd">        pointers_dict (dict): Pointers dictionary obtained through the get_pointers() function.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: Dicitonary containing the cross section values for the basic reaction types.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">nes</span> <span class="o">=</span> <span class="n">pointer_dict</span><span class="p">[</span><span class="s2">&quot;nes&quot;</span><span class="p">]</span>
+    <span class="n">mt1</span> <span class="o">=</span> <span class="n">xss</span><span class="p">[</span><span class="n">nes</span><span class="p">:</span><span class="n">nes</span><span class="o">*</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">mt101</span> <span class="o">=</span> <span class="n">xss</span><span class="p">[</span><span class="n">nes</span><span class="o">*</span><span class="mi">2</span><span class="p">:</span><span class="n">nes</span><span class="o">*</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">mt2</span> <span class="o">=</span> <span class="n">xss</span><span class="p">[</span><span class="n">nes</span><span class="o">*</span><span class="mi">3</span><span class="p">:</span><span class="n">nes</span><span class="o">*</span><span class="mi">4</span><span class="p">]</span>
+    <span class="n">mt3</span> <span class="o">=</span> <span class="n">mt1</span> <span class="o">-</span> <span class="n">mt2</span>
+
+    <span class="n">mt_data</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;MT_1&quot;</span><span class="p">:</span><span class="n">mt1</span><span class="p">,</span> <span class="s2">&quot;MT_2&quot;</span><span class="p">:</span><span class="n">mt2</span><span class="p">,</span> <span class="s2">&quot;MT_3&quot;</span><span class="p">:</span><span class="n">mt3</span><span class="p">,</span> <span class="s2">&quot;MT_101&quot;</span><span class="p">:</span><span class="n">mt101</span><span class="p">}</span>
+    <span class="k">return</span> <span class="n">mt_data</span></div>
+
+
+<div class="viewcode-block" id="get_xs_for_mt"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.get_xs_for_mt">[docs]</a><span class="k">def</span> <span class="nf">get_xs_for_mt</span><span class="p">(</span><span class="n">MT</span><span class="p">,</span> <span class="n">mt_array</span><span class="p">,</span> <span class="n">mt_xs_pointers_array</span><span class="p">,</span> <span class="n">jxs_df</span><span class="p">,</span> <span class="n">xss</span><span class="p">,</span> <span class="n">pointers</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns cross section values, the corresponding energy points, and the indexes corresponding</span>
+<span class="sd">    the starting and end point in the xss array for a given reaction channel as a dictionary.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        MT (int): MT number for the reaction to extract.</span>
+<span class="sd">        mt_array (np.array): Array containing the MT reactions. Usually obtained by the get_mt_array() function.</span>
+<span class="sd">        mt_xs_pointers_array (np.array): Array containing the XS pointers obtained through the get_mt_xs_pointers_array() function.</span>
+<span class="sd">        jxs_df (DataFrame): DataFrame containing the JXS values.</span>
+<span class="sd">        xss (np.array): The XSS array obtained through the get_nxs_jxs_xss() function.</span>
+<span class="sd">        verbose (bool, optional): To or not to print statements througout the process. Defaults to True.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: Contains cross section values and metadata for a given reaction channel.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mt_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mt_array</span><span class="o">==</span><span class="n">MT</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>                                 <span class="c1"># GET INDEX FOR REACTION TYPE MT</span>
+    <span class="k">if</span> <span class="n">MT</span> <span class="o">==</span> <span class="n">mt_array</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>                                                  <span class="c1"># IF REQUESTED MT IS THE LAST ONE ON TABLE </span>
+        <span class="n">start_index</span> <span class="o">=</span> <span class="n">pointers</span><span class="p">[</span><span class="s2">&quot;xs_table_pointer&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">mt_xs_pointers_array</span><span class="p">[</span><span class="n">mt_index</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1"># TABLE BEGINS + NUMBER OF ITEMS ACCORDING TO LSIG </span>
+        <span class="n">end_index</span> <span class="o">=</span> <span class="n">jxs_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">7</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>                                    <span class="c1"># ENDING INDEX</span>
+        <span class="n">mt_data</span> <span class="o">=</span> <span class="n">xss</span><span class="p">[</span><span class="n">start_index</span><span class="p">:</span> <span class="n">end_index</span><span class="p">]</span>               
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">start_index</span> <span class="o">=</span> <span class="n">pointers</span><span class="p">[</span><span class="s2">&quot;xs_table_pointer&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">mt_xs_pointers_array</span><span class="p">[</span><span class="n">mt_index</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span> 
+        <span class="n">end_index</span> <span class="o">=</span> <span class="n">pointers</span><span class="p">[</span><span class="s2">&quot;xs_table_pointer&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">mt_xs_pointers_array</span><span class="p">[</span><span class="n">mt_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">mt_data</span> <span class="o">=</span> <span class="n">xss</span><span class="p">[</span><span class="n">start_index</span><span class="p">:</span> <span class="n">end_index</span><span class="p">]</span>
+    
+    <span class="c1"># THE FIRST AND SECOND VALUE CORRESPOND TO ENERGY INDEX AND POINTS</span>
+    <span class="n">energy_index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">mt_data</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>   <span class="c1"># START INDEX IN ENERGY ARRAY FOR MT REACTION</span>
+    <span class="n">energy_points</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">mt_data</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>  <span class="c1"># NUMBER OF ENERGY POINTS FROM START INDEX </span>
+    <span class="n">energy_array</span> <span class="o">=</span> <span class="n">xss</span><span class="p">[</span><span class="n">energy_index</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">energy_index</span> <span class="o">+</span> <span class="n">energy_points</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> 
+    <span class="n">xs_data</span> <span class="o">=</span> <span class="n">mt_data</span><span class="p">[</span><span class="mi">2</span><span class="p">:]</span>            <span class="c1"># ACTUAL ARRAY BELONGING TO MT REACTION CHANNEL </span>
+
+    <span class="n">xs_info_dict</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;xs&quot;</span><span class="p">:</span><span class="n">xs_data</span><span class="p">,</span>
+        <span class="s2">&quot;energy&quot;</span><span class="p">:</span><span class="n">energy_array</span><span class="p">,</span> 
+        <span class="s2">&quot;xss_start&quot;</span><span class="p">:</span><span class="n">start_index</span><span class="p">,</span>
+        <span class="s2">&quot;xss_end&quot;</span><span class="p">:</span><span class="n">end_index</span><span class="p">,</span>
+        <span class="s2">&quot;energy_start&quot;</span><span class="p">:</span><span class="n">energy_index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="s2">&quot;energy_end&quot;</span><span class="p">:</span><span class="n">energy_index</span> <span class="o">+</span> <span class="n">energy_points</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">xs_info_dict</span></div>
+
+
+<div class="viewcode-block" id="fill_ml_xs"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.fill_ml_xs">[docs]</a><span class="k">def</span> <span class="nf">fill_ml_xs</span><span class="p">(</span><span class="n">MT</span><span class="p">,</span> <span class="n">ml_xs</span><span class="p">,</span> <span class="n">ace_xs</span><span class="p">,</span> <span class="n">use_peaks</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Utility function used by the get_hybrid_ml_xs() function to fill in the head and tail of a set of cross section values</span>
+<span class="sd">    using the hybrid approach.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        MT (int): ENDF MT reaction code for the reaction channel to adjust. </span>
+<span class="sd">        ml_xs (DataFrame): The DataFrame containing the cross section values for the MT reaction to adjust.</span>
+<span class="sd">        ace_xs (np.array): Array containing the ENDF cross sections that will be used to fill in the ml_xs DataFrame.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame: Adjusted ml_xs DataFrame.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">use_peaks</span><span class="p">:</span>
+        <span class="n">fallback</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">use_peaks</span><span class="p">:</span>
+        <span class="n">peaks</span><span class="p">,</span> <span class="n">properties</span> <span class="o">=</span> <span class="n">find_peaks</span><span class="p">(</span><span class="n">ace_xs</span><span class="p">,</span> <span class="n">prominence</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">peaks</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">fallback</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;prominences&quot;</span><span class="p">],</span> <span class="n">properties</span><span class="p">[</span><span class="s2">&quot;widths&quot;</span><span class="p">]</span>
+            <span class="n">to_append</span> <span class="o">=</span> <span class="n">ace_xs</span><span class="p">[:</span><span class="n">peaks</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+            <span class="n">new_xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">to_append</span><span class="p">,</span> <span class="n">ml_xs</span><span class="p">[</span><span class="n">MT</span><span class="p">][</span><span class="n">peaks</span><span class="p">[</span><span class="mi">0</span><span class="p">]:]</span><span class="o">.</span><span class="n">values</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">ml_xs</span><span class="p">[</span><span class="n">MT</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_xs</span>
+    <span class="k">if</span> <span class="n">fallback</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">use_peaks</span><span class="p">:</span>
+        <span class="c1"># FILLS VALUES IN ML DERIVED XS WHERE ALGORITHM IS UNABLE TO PERFORM (1/V AND TAIL)</span>
+        <span class="c1"># FOR ALL VALUES THE SAME AS THE FIRST AND LAST ONE SUBSTITUTE FOR EQUIVALENT VALUE IN ENERGY IN ACE XS</span>
+        <span class="n">ml_xs</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">ml_xs</span><span class="p">[</span><span class="n">ml_xs</span><span class="p">[</span><span class="n">MT</span><span class="p">]</span> <span class="o">==</span> <span class="n">ml_xs</span><span class="p">[</span><span class="n">MT</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">MT</span><span class="p">]</span> <span class="o">=</span> <span class="n">ace_xs</span><span class="p">[</span>
+            <span class="mi">0</span><span class="p">:</span><span class="n">ml_xs</span><span class="p">[</span><span class="n">ml_xs</span><span class="p">[</span><span class="n">MT</span><span class="p">]</span> <span class="o">==</span> <span class="n">ml_xs</span><span class="p">[</span><span class="n">MT</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">ml_xs</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="n">ml_xs</span><span class="p">[</span><span class="n">ml_xs</span><span class="p">[</span><span class="n">MT</span><span class="p">]</span> <span class="o">==</span> <span class="n">ml_xs</span><span class="p">[</span><span class="n">MT</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:,</span> <span class="n">ml_xs</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="n">MT</span><span class="p">)]</span> <span class="o">=</span> <span class="n">ace_xs</span><span class="p">[</span>
+            <span class="o">-</span><span class="n">ml_xs</span><span class="p">[</span><span class="n">ml_xs</span><span class="p">[</span><span class="n">MT</span><span class="p">]</span> <span class="o">==</span> <span class="n">ml_xs</span><span class="p">[</span><span class="n">MT</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">ml_xs</span></div>
+
+<div class="viewcode-block" id="get_hybrid_ml_xs"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.get_hybrid_ml_xs">[docs]</a><span class="k">def</span> <span class="nf">get_hybrid_ml_xs</span><span class="p">(</span><span class="n">ml_df</span><span class="p">,</span> <span class="n">basic_mt_dict</span><span class="p">,</span> <span class="n">mt_array</span><span class="p">,</span> <span class="n">mt_xs_pointers_array</span><span class="p">,</span> <span class="n">pointers</span><span class="p">,</span> <span class="n">jxs_df</span><span class="p">,</span> <span class="n">xss</span><span class="p">,</span> <span class="n">use_peaks</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Substitutes the ACE MT values in a machine learning generate dataframe containing a set of</span>
+<span class="sd">    reaction channels. For MT1, MT2, and MT3 we fix the 1/v and tail region of each cross section.</span>
+<span class="sd">    ML models like KNN and DT are coarse and sometimes unable to accuratly keep predicting a given </span>
+<span class="sd">    trend. For this we:</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ml_df (DataFrame): Contains the ML generated predictions under each columned named &quot;MT_MT&quot;.</span>
+<span class="sd">        basic_mt_dict (DICT): A dicitonary containing MT1, MT2, MT3, and MT101 ({&quot;mt1&quot;:values, &quot;mt2&quot;:...}).</span>
+<span class="sd">        mt_array (np.array): Contains the mt reactions avaliable in the .ace file.</span>
+<span class="sd">        mt_xs_pointers_array (np.array): Contains the mt XS pointers in the xss array.</span>
+<span class="sd">        xs_table_pointer (int): Index at which XS&#39;s start in the xss array.</span>
+<span class="sd">        jxs_df (DataFrame): The DataFrame obtained using the get_nxs_jxs_xss() function.</span>
+<span class="sd">        xss (np.array): Array containing all information in the .ace file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame: Merged DataFrame containing all ML and ACE reaction values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="c1"># Previously get_merged_df()</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">ml_df</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">&quot;Energy&quot;</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">&quot;MT_1&quot;</span><span class="p">:</span>
+            <span class="n">ml_df</span> <span class="o">=</span> <span class="n">fill_ml_xs</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">ml_df</span><span class="p">,</span> <span class="n">basic_mt_dict</span><span class="p">[</span><span class="s2">&quot;MT_1&quot;</span><span class="p">],</span> <span class="n">use_peaks</span><span class="o">=</span><span class="n">use_peaks</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">&quot;MT_2&quot;</span><span class="p">:</span>
+            <span class="n">ml_df</span> <span class="o">=</span> <span class="n">fill_ml_xs</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">ml_df</span><span class="p">,</span> <span class="n">basic_mt_dict</span><span class="p">[</span><span class="s2">&quot;MT_2&quot;</span><span class="p">],</span> <span class="n">use_peaks</span><span class="o">=</span><span class="n">use_peaks</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">&quot;MT_3&quot;</span><span class="p">:</span>
+            <span class="n">ml_df</span> <span class="o">=</span> <span class="n">fill_ml_xs</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">ml_df</span><span class="p">,</span> <span class="n">basic_mt_dict</span><span class="p">[</span><span class="s2">&quot;MT_3&quot;</span><span class="p">],</span> <span class="n">use_peaks</span><span class="o">=</span><span class="n">use_peaks</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">&quot;MT_101&quot;</span><span class="p">:</span>
+            <span class="n">ml_df</span> <span class="o">=</span> <span class="n">fill_ml_xs</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">ml_df</span><span class="p">,</span> <span class="n">basic_mt_dict</span><span class="p">[</span><span class="s2">&quot;MT_101&quot;</span><span class="p">],</span> <span class="n">use_peaks</span><span class="o">=</span><span class="n">use_peaks</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;MT_18&quot;</span><span class="p">,</span> <span class="s2">&quot;MT_102&quot;</span><span class="p">]):</span>
+                <span class="n">MT</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">mt_info</span> <span class="o">=</span> <span class="n">get_xs_for_mt</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">MT</span><span class="p">),</span> <span class="n">mt_array</span><span class="p">,</span> <span class="n">mt_xs_pointers_array</span><span class="p">,</span> <span class="n">jxs_df</span><span class="p">,</span> <span class="n">xss</span><span class="p">,</span> <span class="n">pointers</span><span class="p">)</span>
+                <span class="n">ml_df</span> <span class="o">=</span> <span class="n">fill_ml_xs</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">ml_df</span><span class="p">,</span> <span class="n">mt_info</span><span class="p">[</span><span class="s2">&quot;xs&quot;</span><span class="p">],</span> <span class="n">use_peaks</span><span class="o">=</span><span class="n">use_peaks</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">MT</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">mt_info</span> <span class="o">=</span> <span class="n">get_xs_for_mt</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">MT</span><span class="p">),</span> <span class="n">mt_array</span><span class="p">,</span> <span class="n">mt_xs_pointers_array</span><span class="p">,</span> <span class="n">jxs_df</span><span class="p">,</span> <span class="n">xss</span><span class="p">,</span> <span class="n">pointers</span><span class="p">)</span>
+                <span class="n">new_xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">mt_info</span><span class="p">[</span><span class="s2">&quot;energy_start&quot;</span><span class="p">]),</span> <span class="n">mt_info</span><span class="p">[</span><span class="s2">&quot;xs&quot;</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+                <span class="n">ml_df</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_xs</span>
+    <span class="k">return</span> <span class="n">ml_df</span></div>
+
+<div class="viewcode-block" id="create_mt2_mt3_mt101"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.create_mt2_mt3_mt101">[docs]</a><span class="k">def</span> <span class="nf">create_mt2_mt3_mt101</span><span class="p">(</span><span class="n">rx_grid</span><span class="p">,</span> <span class="n">mt_array</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Helps with the creation of MT3 and MT101 which requires them to be the summation of other MT reactions.</span>
+
+<span class="sd">    TODO: CHOOSE WHICH ONE TO ADJUST BASED ON EXPERIMENTAL DATAPOINTS (MT3 OR MT102)</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        rx_grid (DataFrame): DataFrame containing the grid by which to adjust the MT. This is usually the energy grid.</span>
+<span class="sd">        mt_array (np.array): Array containing the MT values avaliable.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame: Resulting dataframe containing the adjusted MT values.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">rx_grid</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="c1"># to_add = pd.DataFrame(index=rx_grid.index)</span>
+
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;MT_3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;MT_101&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="c1"># CREATE MT3 FROM ML VALUES MT 102, MT 18</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">36</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> 
+                <span class="c1"># BELONGS TO MT 101</span>
+                <span class="mi">102</span><span class="p">,</span> <span class="mi">103</span><span class="p">,</span> <span class="mi">104</span><span class="p">,</span> <span class="mi">105</span><span class="p">,</span> <span class="mi">106</span><span class="p">,</span> <span class="mi">107</span><span class="p">,</span> <span class="mi">108</span><span class="p">,</span> <span class="mi">109</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">111</span><span class="p">,</span> <span class="mi">112</span><span class="p">,</span> <span class="mi">113</span><span class="p">,</span> <span class="mi">114</span><span class="p">,</span> <span class="mi">115</span><span class="p">,</span> <span class="mi">116</span><span class="p">,</span> <span class="mi">117</span><span class="p">]:</span>
+        <span class="c1"># CREATE MT 3 FROM ALL OTHER MTS</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mt_array</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;MT_3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;MT_3&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">+</span> <span class="n">rx_grid</span><span class="p">[</span><span class="s2">&quot;MT_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="c1"># WE ADJUST MT 102 FOR EXCESS RELATIVE TO MT 3 ML</span>
+    <span class="c1"># to_add[&quot;to_add&quot;] = 0</span>
+    <span class="c1"># to_add[&quot;to_add&quot;] = rx_grid.MT_3 - df[&quot;MT_3&quot;]</span>
+    <span class="c1"># rx_grid[&quot;MT_102&quot;] = rx_grid[&quot;MT_102&quot;] + to_add[&quot;to_add&quot;]</span>
+    <span class="n">rx_grid</span><span class="p">[</span><span class="s2">&quot;MT_3&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;MT_3&quot;</span><span class="p">]</span>
+
+
+    <span class="c1"># ADJUSTING MT_102 means readjusting MT_101</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">102</span><span class="p">,</span> <span class="mi">117</span><span class="p">,</span> <span class="mi">117</span><span class="o">-</span><span class="mi">102</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mt_array</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;MT_101&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;MT_101&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">+</span> <span class="n">rx_grid</span><span class="p">[</span><span class="s2">&quot;MT_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="c1"># ADJUSTING MT_101 means adjusting MT_1</span>
+    <span class="c1"># to_add[&quot;to_add&quot;] = 0</span>
+    <span class="c1"># to_add[&quot;to_add&quot;] = rx_grid.MT_101 - df[&quot;MT_101&quot;]</span>
+    <span class="c1"># rx_grid[&quot;MT_1&quot;] = rx_grid[&quot;MT_1&quot;] + to_add[&quot;to_add&quot;]</span>
+
+    <span class="n">rx_grid</span><span class="p">[</span><span class="s2">&quot;MT_101&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;MT_101&quot;</span><span class="p">]</span>
+
+    <span class="c1"># MT2 almost always has no experimental datapoints, so we adjust MT2</span>
+    <span class="n">rx_grid</span><span class="p">[</span><span class="s2">&quot;MT_2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rx_grid</span><span class="p">[</span><span class="s2">&quot;MT_1&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">rx_grid</span><span class="p">[</span><span class="s2">&quot;MT_3&quot;</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">rx_grid</span></div>
+
+<div class="viewcode-block" id="enforce_unitarity"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.enforce_unitarity">[docs]</a><span class="k">def</span> <span class="nf">enforce_unitarity</span><span class="p">(</span><span class="n">ml_ace_df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Creates MT2 XS and adjusts MT1 accordingly.</span>
+
+<span class="sd">    Calculates MT2 by substracting MT3 from MT1. If MT2 is negative:</span>
+<span class="sd">    - Replace negatives with NaN</span>
+<span class="sd">    - Interpolates from closests values</span>
+<span class="sd">    - Adds back amount to MT1 to conserve XS.</span>
+
+<span class="sd">    TODO: INTRODUCE THIS FUNCTION TO THE get_final_ml_ace_df()</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ml_ace_df (DataFram): DataFrame containing the original MT1, MT2, and MT3.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame: returns an adjusted dataframe.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">adjusting_mt1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;MT_1&quot;</span><span class="p">:</span><span class="n">ml_ace_df</span><span class="o">.</span><span class="n">MT_1</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="s2">&quot;MT_3&quot;</span><span class="p">:</span><span class="n">ml_ace_df</span><span class="o">.</span><span class="n">MT_3</span><span class="o">.</span><span class="n">values</span><span class="p">})</span>
+    <span class="n">adjusting_mt1</span><span class="p">[</span><span class="s2">&quot;MT_2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adjusting_mt1</span><span class="o">.</span><span class="n">MT_1</span><span class="o">.</span><span class="n">values</span> <span class="o">-</span> <span class="n">adjusting_mt1</span><span class="o">.</span><span class="n">MT_3</span><span class="o">.</span><span class="n">values</span>
+    
+    <span class="c1"># neg_ix = adjusting_mt1[adjusting_mt1.MT_2 &lt; 0].index.tolist()</span>
+    <span class="n">adjusting_mt1</span><span class="p">[</span><span class="s2">&quot;MT_2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adjusting_mt1</span><span class="p">[</span><span class="s2">&quot;MT_2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">adjusting_mt1</span> <span class="o">=</span> <span class="n">adjusting_mt1</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+    <span class="n">adjusting_mt1</span> <span class="o">=</span> <span class="n">adjusting_mt1</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span>
+    <span class="n">adjusting_mt1</span><span class="p">[</span><span class="s2">&quot;MT_1_int&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adjusting_mt1</span><span class="p">[</span><span class="s2">&quot;MT_2&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">adjusting_mt1</span><span class="p">[</span><span class="s2">&quot;MT_3&quot;</span><span class="p">]</span>
+    <span class="n">adjusting_mt1</span><span class="p">[</span><span class="s2">&quot;MT_1_to_add&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adjusting_mt1</span><span class="p">[</span><span class="s2">&quot;MT_1_int&quot;</span><span class="p">]</span> <span class="o">-</span> <span class="n">adjusting_mt1</span><span class="p">[</span><span class="s2">&quot;MT_1&quot;</span><span class="p">]</span>
+    <span class="n">adjusting_mt1</span><span class="p">[</span><span class="s2">&quot;MT_1_Final&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adjusting_mt1</span><span class="p">[</span><span class="s2">&quot;MT_1&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">adjusting_mt1</span><span class="p">[</span><span class="s2">&quot;MT_1_to_add&quot;</span><span class="p">]</span>
+    
+    <span class="n">ml_ace_df</span><span class="p">[</span><span class="s2">&quot;MT_1&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adjusting_mt1</span><span class="p">[</span><span class="s2">&quot;MT_1_Final&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">ml_ace_df</span><span class="p">[</span><span class="s2">&quot;MT_2&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">adjusting_mt1</span><span class="p">[</span><span class="s2">&quot;MT_2&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+    <span class="k">return</span> <span class="n">ml_ace_df</span></div>
+    
+<div class="viewcode-block" id="get_final_ml_ace_df"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.get_final_ml_ace_df">[docs]</a><span class="k">def</span> <span class="nf">get_final_ml_ace_df</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">mt_array</span><span class="p">,</span> <span class="n">mt_xs_pointers_array</span><span class="p">,</span> <span class="n">pointers</span><span class="p">,</span> <span class="n">jxs_df</span><span class="p">,</span> <span class="n">xss</span><span class="p">,</span> <span class="n">ml_df</span><span class="p">,</span> <span class="n">ml_list</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;MT_1&quot;</span><span class="p">,</span> <span class="s2">&quot;MT_2&quot;</span><span class="p">,</span> <span class="s2">&quot;MT_3&quot;</span><span class="p">,</span> <span class="s2">&quot;MT_18&quot;</span><span class="p">,</span> <span class="s2">&quot;MT_101&quot;</span><span class="p">,</span> <span class="s2">&quot;MT_102&quot;</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;Given a set of ML generated XS (adjusted), this function allows to fill in other reaction channels not included</span>
+<span class="sd">    by the ML predictions. This is useful since for some calculations some MT reactions are not required but are still present</span>
+<span class="sd">    in the ACE files. This allows to preserve the ACE file values and structure. </span>
+
+<span class="sd">    For MT3 the ML generated cross sections are adjusted so that conservation rules are not broken. Same for MT101. </span>
+<span class="sd">    All values will be at the energy grid specified by the energies array.  </span>
+
+<span class="sd">    Note: MT2 is not calculated here.</span>
+
+<span class="sd">    TODO: DEAL WITH MT3 BETTER IN CASE IT IS GENERATED BY ML, WHAT ELSE TO ADJUST</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        energies (np.array): Array containing the energy values at which the ML generated values are created.</span>
+<span class="sd">        mt_array (np.array): Array containing all mt reactions avaliable in ACE.</span>
+<span class="sd">        mt_xs_pointers_array (np.array): Pointers for every reaction in the MT array in the XSS array.</span>
+<span class="sd">        xs_table_pointer (int): Index of xxs at which the XS values start.</span>
+<span class="sd">        jxs_df (DataFrame): The DataFrame containing the JXS table. </span>
+<span class="sd">        xss (np.array): Array containing all info for a specific ace file. </span>
+<span class="sd">        ml_df (DataFrame): DataFrame containing the ML generated cross sections. </span>
+<span class="sd">        ml_list (list): List containing the ML generated column names that should not be modified at any point.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame: DataFrame containing the resulting cross sections from both ML and ACE.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">Energy_Grid</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;Energy&quot;</span><span class="p">:</span> <span class="n">energies</span><span class="p">})</span>
+    <span class="n">Energy_Grid</span> <span class="o">=</span> <span class="n">Energy_Grid</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mt_array</span><span class="p">:</span>
+        <span class="c1"># we get the ace cross sections and add them to our main dataframe some are not going to have the </span>
+        <span class="c1"># same energy grid as mt1 so we fill missing values with 0</span>
+        <span class="n">mt_info</span> <span class="o">=</span> <span class="n">get_xs_for_mt</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">mt_array</span><span class="p">,</span> <span class="n">mt_xs_pointers_array</span><span class="p">,</span> <span class="n">jxs_df</span><span class="p">,</span> <span class="n">xss</span><span class="p">,</span> <span class="n">pointers</span><span class="p">)</span>
+        <span class="n">to_add</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;Energy&quot;</span><span class="p">:</span> <span class="n">mt_info</span><span class="p">[</span><span class="s2">&quot;energy&quot;</span><span class="p">],</span> <span class="s2">&quot;MT_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)):</span> <span class="n">mt_info</span><span class="p">[</span><span class="s2">&quot;xs&quot;</span><span class="p">]})</span>
+        <span class="n">to_add</span> <span class="o">=</span> <span class="n">to_add</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">)</span>
+        <span class="n">Energy_Grid</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">Energy_Grid</span><span class="p">,</span> <span class="n">to_add</span><span class="p">,</span> <span class="n">left_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">right_index</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;outer&quot;</span><span class="p">)</span> 
+    <span class="n">Energy_Grid</span> <span class="o">=</span> <span class="n">Energy_Grid</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ml_list</span><span class="p">:</span>
+        <span class="c1"># Once the ace XS are in a dataframe we can substitute the ace xs by those of ml </span>
+        <span class="n">Energy_Grid</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ml_df</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    
+    <span class="c1"># MT3 and MT101 are dependant on a bunch of other MTs, we need to adjust them in order for </span>
+    <span class="c1"># the conservation rules to be mantained.</span>
+    <span class="c1"># Energy_Grid[&quot;MT_3&quot;] = create_mt(Energy_Grid, &quot;MT_3&quot;, mt_array)</span>
+    <span class="c1"># Energy_Grid[&quot;MT_101&quot;] = create_mt(Energy_Grid, &quot;MT_101&quot;, mt_array)</span>
+    <span class="n">Energy_Grid</span> <span class="o">=</span> <span class="n">create_mt2_mt3_mt101</span><span class="p">(</span><span class="n">Energy_Grid</span><span class="p">,</span> <span class="n">mt_array</span><span class="p">)</span>
+    <span class="n">Energy_Grid</span> <span class="o">=</span> <span class="n">enforce_unitarity</span><span class="p">(</span><span class="n">Energy_Grid</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Energy_Grid</span></div>
+
+
+
+<div class="viewcode-block" id="modify_xss_w_df"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.modify_xss_w_df">[docs]</a><span class="k">def</span> <span class="nf">modify_xss_w_df</span><span class="p">(</span><span class="n">xss</span><span class="p">,</span> <span class="n">ml_ace_df</span><span class="p">,</span> <span class="n">mt_array</span><span class="p">,</span> <span class="n">mt_xs_pointers_array</span><span class="p">,</span> <span class="n">jxs_df</span><span class="p">,</span> <span class="n">pointers</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns a modified XSS array. It substitutes the MT reactions in ml_list in the original ACE xss array.</span>
+<span class="sd">    The resulting xss can then be used to create a new .ace file for use in monte carlo or deterministic codes.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ml_list (list): List of mt reactions to substitute in the original ACE xss.</span>
+<span class="sd">        xss (np.array): Original xss .ace array.</span>
+<span class="sd">        ml_ace_df (DataFrame): DataFrame containing all modified and unmodified MT values.</span>
+<span class="sd">        nes (int): Number of energy points in the original .ace file.</span>
+<span class="sd">        mt_array (np.array): Array containing the avaliable mt values in the .ace file.</span>
+<span class="sd">        mt_xs_pointers_array (np.array): Indexes where the XS starts in the xss array for each MT value.</span>
+<span class="sd">        xs_table_pointer (int): Index at which the XS values begin.</span>
+<span class="sd">        jxs_df (DataFrame): JXS DataFrame from the .ACE file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.array: Modified xss array.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">nes</span> <span class="o">=</span> <span class="n">pointers</span><span class="p">[</span><span class="s2">&quot;nes&quot;</span><span class="p">]</span>
+
+    <span class="c1"># for i in ml_list:</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">ml_ace_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">mt_value</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;_&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">mt_value</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">xss</span><span class="p">[</span><span class="n">nes</span><span class="p">:</span><span class="n">nes</span><span class="o">*</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">ml_ace_df</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+        <span class="k">elif</span> <span class="n">mt_value</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">xss</span><span class="p">[</span><span class="n">nes</span><span class="o">*</span><span class="mi">3</span><span class="p">:</span><span class="n">nes</span><span class="o">*</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">ml_ace_df</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+        <span class="k">elif</span> <span class="n">mt_value</span> <span class="o">==</span> <span class="mi">101</span><span class="p">:</span>
+            <span class="n">xss</span><span class="p">[</span><span class="n">nes</span><span class="o">*</span><span class="mi">2</span><span class="p">:</span><span class="n">nes</span><span class="o">*</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">ml_ace_df</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">mt_value</span> <span class="ow">in</span> <span class="n">mt_array</span><span class="p">:</span>
+                <span class="n">xs_info_dict</span> <span class="o">=</span> <span class="n">get_xs_for_mt</span><span class="p">(</span><span class="n">mt_value</span><span class="p">,</span> <span class="n">mt_array</span><span class="p">,</span> <span class="n">mt_xs_pointers_array</span><span class="p">,</span> <span class="n">jxs_df</span><span class="p">,</span> <span class="n">xss</span><span class="p">,</span> <span class="n">pointers</span><span class="p">)</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="n">xs_info_dict</span><span class="p">[</span><span class="s2">&quot;xss_start&quot;</span><span class="p">]</span>
+                <span class="n">end</span> <span class="o">=</span> <span class="n">xs_info_dict</span><span class="p">[</span><span class="s2">&quot;xss_end&quot;</span><span class="p">]</span>
+                <span class="n">xss</span><span class="p">[</span><span class="n">start</span> <span class="o">+</span> <span class="mi">2</span> <span class="p">:</span> <span class="n">end</span><span class="p">]</span> <span class="o">=</span> <span class="n">ml_ace_df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">xs_info_dict</span><span class="p">[</span><span class="s2">&quot;energy_start&quot;</span><span class="p">]:</span><span class="n">xs_info_dict</span><span class="p">[</span><span class="s2">&quot;energy_end&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span>
+            
+    <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xss</span><span class="p">)</span><span class="o">/</span><span class="mi">4</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">xss</span><span class="p">)</span><span class="o">//</span><span class="mi">4</span><span class="p">)</span><span class="o">/</span><span class="mf">0.25</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;It is wokring&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="mi">4</span> <span class="o">-</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xss</span><span class="p">)</span><span class="o">/</span><span class="mi">4</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">xss</span><span class="p">)</span><span class="o">//</span><span class="mi">4</span><span class="p">)</span><span class="o">/</span><span class="mf">0.25</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="n">xss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xss</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="mi">4</span> <span class="o">-</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xss</span><span class="p">)</span><span class="o">/</span><span class="mi">4</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">xss</span><span class="p">)</span><span class="o">//</span><span class="mi">4</span><span class="p">)</span><span class="o">/</span><span class="mf">0.25</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">xss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xss</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="mi">4</span> <span class="o">-</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xss</span><span class="p">)</span><span class="o">/</span><span class="mi">4</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">xss</span><span class="p">)</span><span class="o">//</span><span class="mi">4</span><span class="p">)</span><span class="o">/</span><span class="mf">0.25</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">xss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xss</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">))</span>
+        
+    <span class="k">return</span> <span class="n">xss</span></div>
+
+<div class="viewcode-block" id="parsing_datatypes"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.parsing_datatypes">[docs]</a><span class="k">def</span> <span class="nf">parsing_datatypes</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Utility function to correctly format numbers before writing them to new .ACE files.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        x (float): Number to format.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: Formatted value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">if</span> <span class="n">math</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">elif</span> <span class="n">x</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{:20}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{:20.11E}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="create_new_ace"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.create_new_ace">[docs]</a><span class="k">def</span> <span class="nf">create_new_ace</span><span class="p">(</span><span class="n">xss</span><span class="p">,</span> <span class="n">ZZAAA</span><span class="p">,</span> <span class="n">saving_dir</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates a new .ACE file ready to be used in transport codes. Everything is encoded in the XSS array. </span>
+<span class="sd">    The header is to be kept the same since different energy arrays are not supported. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        xss (np.array): Modified XSS array.</span>
+<span class="sd">        ZZAAA (int): ZZAAA formatted isotope for which to create modified .ACE file.</span>
+<span class="sd">        saving_dir (str): Path-like string on where to save the created .ACE file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="c1"># ACE FILES ARE IN FOUR COLUMNS SO WE RESHAPE OUR XSS ARRAY</span>
+    <span class="n">to_write</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">xss</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">)))</span>
+    <span class="n">to_write</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;column_1&quot;</span><span class="p">,</span> <span class="s2">&quot;column_2&quot;</span><span class="p">,</span> <span class="s2">&quot;column_3&quot;</span><span class="p">,</span> <span class="s2">&quot;column_4&quot;</span><span class="p">]</span>
+    <span class="n">to_write</span> <span class="o">=</span> <span class="n">to_write</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;object&quot;</span><span class="p">)</span>
+    <span class="n">to_write</span> <span class="o">=</span> <span class="n">to_write</span><span class="o">.</span><span class="n">applymap</span><span class="p">(</span><span class="n">parsing_datatypes</span><span class="p">)</span>
+    
+    <span class="n">ace_name</span> <span class="o">=</span> <span class="n">ZZAAA</span> <span class="o">+</span> <span class="s2">&quot;ENDF7&quot;</span>
+    <span class="n">tmp_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_dir</span><span class="p">,</span> <span class="n">ace_name</span> <span class="o">+</span> <span class="s2">&quot;_TMP.txt&quot;</span><span class="p">)</span>
+    <span class="n">tmp_file_2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_dir</span><span class="p">,</span> <span class="n">ace_name</span> <span class="o">+</span> <span class="s2">&quot;_TMP2.txt&quot;</span><span class="p">)</span>
+    <span class="n">ml_ace_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_dir</span><span class="p">,</span> <span class="n">ace_name</span> <span class="o">+</span> <span class="s2">&quot;.ace&quot;</span><span class="p">)</span>
+
+    <span class="n">to_write</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">tmp_file</span><span class="p">,</span> <span class="n">float_format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%.11E</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\t</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmp_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">fin</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmp_file_2</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fout</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">fin</span><span class="p">:</span>
+            <span class="n">fout</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">))</span>
+            
+    <span class="n">path</span><span class="p">,</span> <span class="n">to_skip</span><span class="p">,</span> <span class="n">line_count</span> <span class="o">=</span> <span class="n">get_to_skip_lines</span><span class="p">(</span><span class="n">ZZAAA</span><span class="p">)</span>
+    
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">ace</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">ml_ace_filename</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">new_ace</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">tmp_file_2</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">new_data</span><span class="p">:</span>
+        <span class="n">ace_lines</span> <span class="o">=</span> <span class="n">ace</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="n">new_lines</span> <span class="o">=</span> <span class="n">new_data</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ace_lines</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;</span> <span class="n">to_skip</span> <span class="o">+</span> <span class="mi">12</span><span class="p">):</span>
+                <span class="n">new_ace</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">new_lines</span><span class="p">):</span>
+            <span class="n">new_ace</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ace_lines</span><span class="p">):</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">&gt;</span> <span class="n">to_skip</span> <span class="o">+</span> <span class="n">line_count</span> <span class="o">+</span> <span class="mi">12</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">new_ace</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    
+    <span class="n">convert_dos_to_unix</span><span class="p">(</span><span class="n">ml_ace_filename</span><span class="p">)</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tmp_file</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">tmp_file_2</span><span class="p">)</span>
+    
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="create_new_ace_w_df"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.create_new_ace_w_df">[docs]</a><span class="k">def</span> <span class="nf">create_new_ace_w_df</span><span class="p">(</span><span class="n">ZZAAA</span><span class="p">,</span> <span class="n">path_to_ml_csv</span><span class="p">,</span> <span class="n">saving_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ignore_basename</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Creates new ACE file from a given processed ML generated CSV file. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ZZAAA (str): [description]</span>
+<span class="sd">        path_to_ml_csv (str): Path-like string pointing towards the ML and ACE processed CSV.</span>
+<span class="sd">        saving_dir (str, optional): Path where the newly generated ACE file will be saved. Defaults to None.</span>
+<span class="sd">        ignore_basename (bool, optional): TODO. Defaults to False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">nsx</span><span class="p">,</span> <span class="n">jxs</span><span class="p">,</span> <span class="n">xss</span> <span class="o">=</span> <span class="n">get_nxs_jxs_xss</span><span class="p">(</span><span class="n">ZZAAA</span><span class="p">,</span> <span class="n">temp</span><span class="o">=</span><span class="s2">&quot;03c&quot;</span><span class="p">)</span>
+    <span class="n">pointers_info</span> <span class="o">=</span> <span class="n">get_pointers</span><span class="p">(</span><span class="n">nsx</span><span class="p">,</span> <span class="n">jxs</span><span class="p">)</span>
+    <span class="c1"># nes, ntr, energy_pointer, mt_pointer, xs_pointers, xs_table_pointer, _ = get_pointers(nsx, jxs)</span>
+    <span class="n">energies</span> <span class="o">=</span> <span class="n">get_energy_array</span><span class="p">(</span><span class="n">xss</span><span class="p">,</span> <span class="n">pointers_info</span><span class="p">)</span>
+    <span class="n">mt_array</span> <span class="o">=</span> <span class="n">get_mt_array</span><span class="p">(</span><span class="n">xss</span><span class="p">,</span> <span class="n">pointers_info</span><span class="p">)</span>
+    <span class="n">mt_xs_pointers_array</span> <span class="o">=</span> <span class="n">get_mt_xs_pointers_array</span><span class="p">(</span><span class="n">xss</span><span class="p">,</span> <span class="n">pointers_info</span><span class="p">)</span> <span class="c1"># lsig</span>
+    <span class="n">mt_data</span> <span class="o">=</span> <span class="n">get_basic_mts</span><span class="p">(</span><span class="n">xss</span><span class="p">,</span> <span class="n">pointers_info</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">path_to_ml_csv</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">path_to_ml_csv</span> <span class="o">=</span> <span class="p">[</span><span class="n">path_to_ml_csv</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">path_to_ml_csv</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">ignore_basename</span><span class="p">:</span>
+            <span class="n">saving_dir_2</span> <span class="o">=</span> <span class="n">saving_dir</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">saving_dir_2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">i</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">saving_dir_2</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_dir</span><span class="p">,</span> <span class="n">saving_dir_2</span><span class="p">)</span>
+            <span class="n">gen_utils</span><span class="o">.</span><span class="n">initialize_directories</span><span class="p">(</span><span class="n">saving_dir_2</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">ml_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">ml_df</span><span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ml_df</span><span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">]</span> <span class="o">/</span> <span class="mf">1E6</span>
+        
+        <span class="n">ml_df_mod</span> <span class="o">=</span> <span class="n">get_hybrid_ml_xs</span><span class="p">(</span><span class="n">ml_df</span><span class="p">,</span> <span class="n">mt_data</span><span class="p">,</span> <span class="n">mt_array</span><span class="p">,</span> <span class="n">mt_xs_pointers_array</span><span class="p">,</span> <span class="n">pointers_info</span><span class="p">,</span> <span class="n">jxs</span><span class="p">,</span> <span class="n">xss</span><span class="p">)</span>
+        
+        <span class="n">Energy_Grid</span> <span class="o">=</span> <span class="n">get_final_ml_ace_df</span><span class="p">(</span><span class="n">energies</span><span class="p">,</span> <span class="n">mt_array</span><span class="p">,</span> <span class="n">mt_xs_pointers_array</span><span class="p">,</span> <span class="n">pointers_info</span><span class="p">,</span> <span class="n">jxs</span><span class="p">,</span> <span class="n">xss</span><span class="p">,</span> <span class="n">ml_df_mod</span><span class="p">)</span>   
+        
+        <span class="n">xss</span> <span class="o">=</span> <span class="n">modify_xss_w_df</span><span class="p">(</span><span class="n">xss</span><span class="p">,</span> <span class="n">Energy_Grid</span><span class="p">,</span> <span class="n">mt_array</span><span class="p">,</span> <span class="n">mt_xs_pointers_array</span><span class="p">,</span> <span class="n">jxs</span><span class="p">,</span> <span class="n">pointers_info</span><span class="p">)</span>
+
+        <span class="n">create_new_ace</span><span class="p">(</span><span class="n">xss</span><span class="p">,</span> <span class="n">ZZAAA</span><span class="p">,</span> <span class="n">saving_dir</span><span class="o">=</span><span class="n">saving_dir_2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="convert_dos_to_unix"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.convert_dos_to_unix">[docs]</a><span class="k">def</span> <span class="nf">convert_dos_to_unix</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Converts a given file from DOS to UNIX. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        file_path (str): Path to file to convert.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># replacement strings</span>
+    <span class="n">WINDOWS_LINE_ENDING</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\r\n</span><span class="s1">&#39;</span>
+    <span class="n">UNIX_LINE_ENDING</span> <span class="o">=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span>
+
+    <span class="c1"># relative or absolute file path, e.g.:</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">open_file</span><span class="p">:</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">open_file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+    <span class="n">content</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">WINDOWS_LINE_ENDING</span><span class="p">,</span> <span class="n">UNIX_LINE_ENDING</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">open_file</span><span class="p">:</span>
+        <span class="n">open_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+<span class="c1">################################################################################################</span>
+<span class="c1">################################################################################################</span>
+
+<span class="c1">################################################################################################</span>
+<span class="c1">################################################################################################</span>
+
+<div class="viewcode-block" id="generate_bench_ml_xs"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.generate_bench_ml_xs">[docs]</a><span class="k">def</span> <span class="nf">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">models_df</span><span class="p">,</span> <span class="n">bench_name</span><span class="p">,</span> <span class="n">to_scale</span><span class="p">,</span> <span class="n">raw_saving_dir</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">template_dir</span><span class="o">=</span><span class="n">template_path</span><span class="p">,</span> <span class="n">comp_threshold</span><span class="o">=</span><span class="mf">0.10</span><span class="p">,</span> <span class="n">reduce_ace_size</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+
+    <span class="n">results_df</span> <span class="o">=</span> <span class="n">models_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">bench_composition</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">template_dir</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">bench_name</span><span class="p">,</span> <span class="s2">&quot;composition.csv&quot;</span><span class="p">)))</span>
+    <span class="n">bench_composition_nonml</span> <span class="o">=</span> <span class="n">bench_composition</span><span class="p">[</span><span class="n">bench_composition</span><span class="o">.</span><span class="n">Fraction</span> <span class="o">&lt;</span> <span class="n">comp_threshold</span><span class="p">]</span>
+    <span class="n">bench_composition_ml</span> <span class="o">=</span> <span class="n">bench_composition</span><span class="p">[</span><span class="n">bench_composition</span><span class="o">.</span><span class="n">Fraction</span> <span class="o">&gt;</span> <span class="n">comp_threshold</span><span class="p">]</span>
+
+    <span class="n">results_df</span><span class="p">[</span><span class="s2">&quot;run_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results_df</span><span class="o">.</span><span class="n">model_path</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+    <span class="c1"># 3. We iterate over the rows to create data for each run</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">results_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">run_name</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">run_name</span>
+        
+        <span class="c1"># 3a. We create a directory for each model but before we check if it has already been created in the inventory</span>
+        <span class="n">bench_saving_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">raw_saving_dir</span><span class="p">,</span> <span class="n">run_name</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">bench_name</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="p">))</span>
+        <span class="n">ml_xs_saving_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">bench_saving_dir</span><span class="p">,</span> <span class="s2">&quot;ml_xs_csv&quot;</span><span class="p">)</span>
+        <span class="n">acelib_saving_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">bench_saving_dir</span><span class="p">,</span> <span class="s2">&quot;acelib&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">bench_saving_dir</span><span class="p">))</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">reset</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">bench_saving_dir</span><span class="p">))</span> <span class="ow">and</span> <span class="n">reset</span><span class="p">:</span>
+            <span class="n">gen_utils</span><span class="o">.</span><span class="n">initialize_directories</span><span class="p">(</span><span class="n">bench_saving_dir</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">gen_utils</span><span class="o">.</span><span class="n">initialize_directories</span><span class="p">(</span><span class="n">ml_xs_saving_dir</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">gen_utils</span><span class="o">.</span><span class="n">initialize_directories</span><span class="p">(</span><span class="n">acelib_saving_dir</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">gen_utils</span><span class="o">.</span><span class="n">initialize_directories</span><span class="p">(</span><span class="n">ml_xs_saving_dir</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="n">gen_utils</span><span class="o">.</span><span class="n">initialize_directories</span><span class="p">(</span><span class="n">acelib_saving_dir</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="n">model</span><span class="p">,</span> <span class="n">scaler</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">load_model_and_scaler</span><span class="p">({</span><span class="s2">&quot;model_path&quot;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">model_path</span><span class="p">,</span> <span class="s2">&quot;scaler_path&quot;</span><span class="p">:</span><span class="n">row</span><span class="o">.</span><span class="n">scaler_path</span><span class="p">},</span> <span class="n">df</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">comp_row</span> <span class="ow">in</span> <span class="n">bench_composition_ml</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+            <span class="n">Z</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">comp_row</span><span class="o">.</span><span class="n">Z</span><span class="p">)</span>
+            <span class="n">A</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">comp_row</span><span class="o">.</span><span class="n">A</span><span class="p">)</span>
+            <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}{}</span><span class="s2">_ml.csv&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">)</span>
+            <span class="n">path_to_ml_csv</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ml_xs_saving_dir</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path_to_ml_csv</span><span class="p">):</span>
+                <span class="n">_</span> <span class="o">=</span> <span class="n">exfor_utils</span><span class="o">.</span><span class="n">get_csv_for_ace</span><span class="p">(</span>
+                    <span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">to_scale</span><span class="p">,</span> <span class="n">saving_dir</span><span class="o">=</span><span class="n">ml_xs_saving_dir</span><span class="p">,</span> <span class="n">saving_filename</span><span class="o">=</span><span class="n">filename</span><span class="p">)</span>
+
+            <span class="n">create_new_ace_w_df</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">path_to_ml_csv</span><span class="p">,</span> <span class="n">saving_dir</span><span class="o">=</span><span class="n">acelib_saving_dir</span><span class="p">,</span> <span class="n">ignore_basename</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">bench_composition_nonml</span><span class="p">[</span><span class="s2">&quot;ZA&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">bench_composition_nonml</span><span class="o">.</span><span class="n">Z</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="n">bench_composition_nonml</span><span class="o">.</span><span class="n">A</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">comp_row</span> <span class="ow">in</span> <span class="n">bench_composition_nonml</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+
+            <span class="n">copy_ace_w_name</span><span class="p">(</span><span class="n">comp_row</span><span class="o">.</span><span class="n">ZA</span><span class="p">,</span> <span class="n">acelib_saving_dir</span><span class="p">)</span>
+
+        <span class="n">generate_sss_xsdata</span><span class="p">(</span><span class="n">bench_saving_dir</span><span class="p">)</span>
+        <span class="n">copy_benchmark_files</span><span class="p">(</span><span class="n">bench_name</span><span class="p">,</span> <span class="n">bench_saving_dir</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">reduce_ace_size</span><span class="p">:</span>
+            <span class="n">reduce_ace_filesize</span><span class="p">(</span><span class="n">bench_saving_dir</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="copy_ace_w_name"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.copy_ace_w_name">[docs]</a><span class="k">def</span> <span class="nf">copy_ace_w_name</span><span class="p">(</span><span class="n">ZAAA</span><span class="p">,</span> <span class="n">saving_dir</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Copies an ACE file from the configured ace directory.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ZAAA (str): Isotope ace file to copy (i.e. 92233).</span>
+<span class="sd">        saving_dir (str): Path indicating the directory where the ACE file will be copy to.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">ace_dir</span><span class="p">)</span> 
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">i</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">ZAAA</span><span class="p">):</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ace_dir</span><span class="p">,</span> <span class="n">i</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_dir</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+            <span class="n">convert_dos_to_unix</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_dir</span><span class="p">,</span> <span class="n">i</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">continue</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="reduce_ace_filesize"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.reduce_ace_filesize">[docs]</a><span class="k">def</span> <span class="nf">reduce_ace_filesize</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="s2">&quot;03c&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Utility function to reduce the size of ACE files. Useful to remove all other information</span>
+<span class="sd">    other than the section of interest (i.e. .03c).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        directory (str): Path to directory where all ACE files will be searched and processed.</span>
+<span class="sd">        keep (str, optional): Temperature to keep. Must not include the dot. Defaults to &quot;03c&quot;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">all_ace_files</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.ace&quot;</span><span class="p">):</span>
+                <span class="n">all_ace_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file</span><span class="p">)))</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">all_ace_files</span><span class="p">:</span>
+        <span class="n">tags</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">final_tags</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">new_file_lines</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">infile</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span>
+                    <span class="n">tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">[:</span><span class="mi">10</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">tags</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">keep</span><span class="p">):</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">final_tags</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">:</span>
+            <span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">infile</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">7</span><span class="p">:</span><span class="mi">10</span><span class="p">]</span> <span class="o">==</span> <span class="n">keep</span><span class="p">:</span>
+                    <span class="n">flag</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">flag</span><span class="p">:</span>
+                    <span class="n">new_file_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">final_tags</span><span class="p">:</span>
+                    <span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
+        
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="n">outfile</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">new_file_lines</span><span class="p">)</span> 
+
+        <span class="n">convert_dos_to_unix</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="generate_sss_xsdata"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.generate_sss_xsdata">[docs]</a><span class="k">def</span> <span class="nf">generate_sss_xsdata</span><span class="p">(</span><span class="n">saving_dir</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Copies the .xsdata file to a given directory and configures it to match the paths. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        saving_dir (str): Path-like directory where the .xsdata file will be copied to.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">xsdata_filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">template_path</span><span class="p">,</span> <span class="s2">&quot;sss_endfb7u.xsdata&quot;</span><span class="p">)</span>
+    <span class="n">new_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_dir</span><span class="p">,</span> <span class="s2">&quot;sss_endfb7u.xsdata&quot;</span><span class="p">)</span>
+
+    <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">xsdata_filepath</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">)</span>
+    <span class="n">new_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">new_file_path</span><span class="p">,</span> <span class="s2">&quot;wt&quot;</span><span class="p">)</span>
+
+    <span class="n">to_replace</span> <span class="o">=</span> <span class="s2">&quot;to_replace/&quot;</span>
+    <span class="n">to_insert</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_dir</span><span class="p">,</span> <span class="s2">&quot;acelib/&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;/mnt/c/&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span>
+
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">new_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="p">,</span> <span class="n">to_insert</span><span class="p">))</span>
+    
+    <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">new_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">convert_dos_to_unix</span><span class="p">(</span><span class="n">new_file_path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="copy_benchmark_files"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.copy_benchmark_files">[docs]</a><span class="k">def</span> <span class="nf">copy_benchmark_files</span><span class="p">(</span><span class="n">benchmark_name</span><span class="p">,</span> <span class="n">saving_dir</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Copies all files for a given benchmark from the benchmark repository to a given directory. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        benchmark_name (str): Benchmark name. Check repository for valid names. </span>
+<span class="sd">        saving_dir (str): Path-like string where the new benchmark files will be saved to.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">to_replace</span> <span class="o">=</span> <span class="s2">&quot;to_replace&quot;</span>
+    <span class="n">new_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_dir</span><span class="p">,</span> <span class="s2">&quot;sss_endfb7u.xsdata&quot;</span><span class="p">)</span>
+    <span class="n">to_insert</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">new_file_path</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;/mnt/c/&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span>
+
+    <span class="n">benchmark_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">template_path</span><span class="p">,</span> <span class="n">benchmark_name</span> <span class="o">+</span> <span class="s2">&quot;/input&quot;</span><span class="p">)</span>
+    <span class="n">new_benchmark_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_dir</span><span class="p">,</span> <span class="s2">&quot;input&quot;</span><span class="p">)</span>
+
+    <span class="n">benchmark_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">benchmark_path</span><span class="p">,</span> <span class="s2">&quot;rt&quot;</span><span class="p">)</span>
+    <span class="n">new_benchmark_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">new_benchmark_path</span><span class="p">,</span> <span class="s2">&quot;wt&quot;</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">benchmark_file</span><span class="p">:</span>
+        <span class="n">new_benchmark_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="p">,</span> <span class="n">to_insert</span><span class="p">))</span>
+
+    <span class="n">benchmark_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="n">new_benchmark_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">convert_dos_to_unix</span><span class="p">(</span><span class="n">new_benchmark_path</span><span class="p">)</span>
+
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">template_path</span><span class="p">,</span> <span class="s2">&quot;converter.m&quot;</span><span class="p">),</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_dir</span><span class="p">,</span> <span class="s2">&quot;converter.m&quot;</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="generate_serpent_bash"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.generate_serpent_bash">[docs]</a><span class="k">def</span> <span class="nf">generate_serpent_bash</span><span class="p">(</span><span class="n">searching_directory</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gathers the path to all &quot;input&quot; benchmark files and returns a single bash script to run all </span>
+<span class="sd">    Serpent simulations and convert the resulting matlab file into .mat files for later reading.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        searching_directory (str): Top level directory that will be searched for &quot;input&quot; files.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">all_serpent_files</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">all_serpent_files_linux</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">searching_directory</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;input&quot;</span><span class="p">):</span>
+                <span class="n">all_serpent_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file</span><span class="p">)))</span>
+                    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">all_serpent_files</span><span class="p">:</span>
+        <span class="n">new</span> <span class="o">=</span> <span class="n">i</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;C:</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;/mnt/c/&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s2">&quot;template&quot;</span> <span class="ow">in</span> <span class="n">new</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">all_serpent_files_linux</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;cd </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">new</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span>
+            <span class="n">all_serpent_files_linux</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;sss2 -omp 10 &quot;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">new</span><span class="p">))</span>
+            <span class="n">all_serpent_files_linux</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;/mnt/c/Program\ Files/MATLAB/R2019a/bin/matlab.exe -nodisplay -nosplash -nodesktop -r </span><span class="se">\&quot;</span><span class="s2">run(&#39;converter.m&#39;);exit;</span><span class="se">\&quot;</span><span class="s2"> &quot;</span><span class="p">)</span>  <span class="c1"># pylint: disable=anomalous-backslash-in-string  </span>
+        
+    <span class="n">script_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">searching_directory</span><span class="p">,</span> <span class="s1">&#39;serpent_script.sh&#39;</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">script_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">all_serpent_files_linux</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">item</span><span class="p">)</span>
+
+    <span class="n">convert_dos_to_unix</span><span class="p">(</span><span class="n">script_path</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="gather_benchmark_results"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.gather_benchmark_results">[docs]</a><span class="k">def</span> <span class="nf">gather_benchmark_results</span><span class="p">(</span><span class="n">searching_directory</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Gathers all benchmark results from the resulting .mat files in the searching_directory and all subdirectories.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        searching_directory (str): Path to directory to search for .mat files.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame: Contains results for all found .mat files.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">all_results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">benchmark_names</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">searching_directory</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.mat&quot;</span><span class="p">):</span>
+                <span class="n">name_to_append</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">Path</span><span class="p">(</span><span class="n">root</span><span class="p">)</span><span class="o">.</span><span class="n">parents</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="n">names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name_to_append</span><span class="p">)</span>
+                <span class="n">all_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file</span><span class="p">)))</span>
+                <span class="n">benchmark_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file</span><span class="p">)))))</span>
+
+    <span class="n">k_results_ana</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">k_unc_ana</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">k_results_imp</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">k_unc_imp</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">all_results</span><span class="p">:</span>
+        <span class="n">mat</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">k_results_ana</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mat</span><span class="p">[</span><span class="s2">&quot;ANA_KEFF&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">k_unc_ana</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mat</span><span class="p">[</span><span class="s2">&quot;ANA_KEFF&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">k_results_imp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mat</span><span class="p">[</span><span class="s2">&quot;IMP_KEFF&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">k_unc_imp</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">mat</span><span class="p">[</span><span class="s2">&quot;IMP_KEFF&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="n">results_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;Model&quot;</span><span class="p">:</span><span class="n">names</span><span class="p">,</span> <span class="s2">&quot;Benchmark&quot;</span><span class="p">:</span><span class="n">benchmark_names</span><span class="p">,</span><span class="s2">&quot;K_eff_ana&quot;</span><span class="p">:</span><span class="n">k_results_ana</span><span class="p">,</span> <span class="s2">&quot;Unc_ana&quot;</span><span class="p">:</span><span class="n">k_unc_ana</span><span class="p">,</span> <span class="s2">&quot;K_eff_imp&quot;</span><span class="p">:</span><span class="n">k_results_imp</span><span class="p">,</span> <span class="s2">&quot;Unc_imp&quot;</span><span class="p">:</span><span class="n">k_unc_imp</span><span class="p">})</span>
+    <span class="n">results_df</span><span class="p">[</span><span class="s2">&quot;Deviation_Ana&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results_df</span><span class="o">.</span><span class="n">K_eff_ana</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="nb">abs</span><span class="p">((</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">results_df</span><span class="p">[</span><span class="s2">&quot;Deviation_Imp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results_df</span><span class="o">.</span><span class="n">K_eff_imp</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">k</span><span class="p">:</span> <span class="nb">abs</span><span class="p">((</span><span class="n">k</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">results_df</span></div>
+
+
+<div class="viewcode-block" id="get_energies"><a class="viewcode-back" href="../../../nucml.ace.html#nucml.ace.data_utilities.get_energies">[docs]</a><span class="k">def</span> <span class="nf">get_energies</span><span class="p">(</span><span class="n">isotope</span><span class="p">,</span> <span class="n">temp</span><span class="o">=</span><span class="s2">&quot;03c&quot;</span><span class="p">,</span> <span class="n">ev</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retrieves the energy array from a given isotope ENDF .ACE file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        isotope (str): ZZAAA formatted isotope.</span>
+<span class="sd">        temp (str, optional): Extension of ACE file to retrieve energies from. Defaults to &quot;03c&quot;.</span>
+<span class="sd">        ev (bool, optional): If True, energies are converted to eV from MeV. Defaults to False.</span>
+<span class="sd">        log (bool, optional): If True, the log is taken before returning the array. Defaults to False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.array: Energy grid numpy array.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">nxs</span><span class="p">,</span> <span class="n">jxs</span><span class="p">,</span> <span class="n">xss</span> <span class="o">=</span> <span class="n">get_nxs_jxs_xss</span><span class="p">(</span><span class="n">isotope</span><span class="p">,</span> <span class="n">temp</span><span class="o">=</span><span class="s2">&quot;03c&quot;</span><span class="p">)</span>
+    <span class="n">pointers</span> <span class="o">=</span> <span class="n">get_pointers</span><span class="p">(</span><span class="n">nxs</span><span class="p">,</span> <span class="n">jxs</span><span class="p">)</span>
+    <span class="n">energies</span> <span class="o">=</span> <span class="n">xss</span><span class="p">[</span><span class="n">pointers</span><span class="p">[</span><span class="s2">&quot;energy_pointer&quot;</span><span class="p">]</span> <span class="p">:</span> <span class="n">pointers</span><span class="p">[</span><span class="s2">&quot;energy_pointer&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">pointers</span><span class="p">[</span><span class="s2">&quot;nes&quot;</span><span class="p">]]</span>   <span class="c1"># ENERGY TABLE ARRAY</span>
+    <span class="k">if</span> <span class="n">ev</span><span class="p">:</span>
+        <span class="n">energies</span> <span class="o">=</span> <span class="n">energies</span> <span class="o">*</span> <span class="mf">1E6</span>
+    <span class="k">if</span> <span class="n">log</span><span class="p">:</span>
+        <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">energies</span></div>
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Pedro Jr. Vicente-Valdez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

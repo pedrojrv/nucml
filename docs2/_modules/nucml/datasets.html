@@ -1,0 +1,705 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>nucml.datasets &mdash; NucML 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> NucML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../what-is-nucml.html">What is NucML?</a></li>
+</ul>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic-walkthrough.html">Basic Walkthrough</a></li>
+</ul>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../navigating-the-nde.html">Loading Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../navigating-the-nde.html#modeling-data">Modeling Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
+</ul>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">nucml</a></li>
+</ul>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">NucML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>nucml.datasets</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for nucml.datasets</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">dump</span><span class="p">,</span> <span class="n">load</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+
+<span class="kn">import</span> <span class="nn">nucml.config</span> <span class="k">as</span> <span class="nn">config</span>
+<span class="kn">import</span> <span class="nn">nucml.general_utilities</span> <span class="k">as</span> <span class="nn">gen_utils</span> 
+<span class="kn">import</span> <span class="nn">nucml.processing</span> <span class="k">as</span> <span class="nn">nuc_proc</span> 
+<span class="kn">import</span> <span class="nn">nucml.exfor.parsing</span> <span class="k">as</span> <span class="nn">exfor_parsing</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">)</span>
+
+<span class="n">ame_dir_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">ame_dir_path</span>
+<span class="n">evaluations_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">evaluations_path</span>
+<span class="n">ensdf_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">ensdf_path</span>
+<span class="n">exfor_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">exfor_path</span>
+
+<span class="n">dtype_exfor</span> <span class="o">=</span> <span class="n">gen_utils</span><span class="o">.</span><span class="n">load_obj</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;objects/EXFOR_AME_dtypes.pkl&#39;</span><span class="p">))</span>
+<span class="n">exfor_elements</span> <span class="o">=</span> <span class="n">gen_utils</span><span class="o">.</span><span class="n">load_obj</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;objects/exfor_elements_list.pkl&#39;</span><span class="p">))</span>
+<span class="n">elements_dict</span> <span class="o">=</span> <span class="n">gen_utils</span><span class="o">.</span><span class="n">load_obj</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="s1">&#39;objects/Element_AAA.pkl&#39;</span><span class="p">))</span>
+
+<div class="viewcode-block" id="generate_exfor_dataset"><a class="viewcode-back" href="../../nucml.html#nucml.datasets.generate_exfor_dataset">[docs]</a><span class="k">def</span> <span class="nf">generate_exfor_dataset</span><span class="p">(</span><span class="n">user_path</span><span class="p">,</span> <span class="n">modes</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;neutrons&quot;</span><span class="p">,</span> <span class="s2">&quot;protons&quot;</span><span class="p">,</span> <span class="s2">&quot;alphas&quot;</span><span class="p">,</span> <span class="s2">&quot;deuterons&quot;</span><span class="p">,</span> <span class="s2">&quot;gammas&quot;</span><span class="p">,</span> <span class="s2">&quot;helions&quot;</span><span class="p">]):</span>
+    <span class="sd">&quot;&quot;&quot;Generates all needed EXFOR datasets for neutron-, proton-, alpha-, deuterons-, gammas-, and </span>
+<span class="sd">    helion-induce reactions. Beware, NucML configuration needs to be performed first. See nucml.configure.</span>
+<span class="sd">    The `modes` argument can be modified for the function to generate only user-defined datasets.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        user_path (str): path-like string where all information including the datasets will be stored. </span>
+<span class="sd">        modes (list, optional): Type of projectile for which to generate the datasets. </span>
+<span class="sd">            Defaults to [&quot;neutrons&quot;, &quot;protons&quot;, &quot;alphas&quot;, &quot;deuterons&quot;, &quot;gammas&quot;, &quot;helions&quot;].</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">user_abs_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">user_path</span><span class="p">)</span>
+    <span class="n">tmp_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">user_abs_path</span><span class="p">,</span> <span class="s2">&quot;EXFOR/tmp/&quot;</span><span class="p">)</span>
+    <span class="n">heavy_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">user_abs_path</span><span class="p">,</span> <span class="s2">&quot;EXFOR/CSV_Files/&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">mode</span> <span class="ow">in</span> <span class="n">modes</span><span class="p">:</span>
+        <span class="n">tmp_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">user_abs_path</span><span class="p">,</span> <span class="s2">&quot;EXFOR/tmp/&quot;</span><span class="p">)</span>
+        <span class="n">heavy_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">user_abs_path</span><span class="p">,</span> <span class="s2">&quot;EXFOR/CSV_Files/&quot;</span><span class="p">)</span>
+        <span class="n">exfor_directory</span> <span class="o">=</span>  <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">user_abs_path</span><span class="p">,</span> <span class="s2">&quot;EXFOR/C4_Files/</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
+
+        <span class="n">exfor_parsing</span><span class="o">.</span><span class="n">get_all</span><span class="p">(</span><span class="n">exfor_parsing</span><span class="o">.</span><span class="n">get_c4_names</span><span class="p">(</span><span class="n">exfor_directory</span><span class="p">),</span> <span class="n">heavy_dir</span><span class="p">,</span> <span class="n">tmp_dir</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">)</span>
+        <span class="n">exfor_parsing</span><span class="o">.</span><span class="n">csv_creator</span><span class="p">(</span><span class="n">heavy_dir</span><span class="p">,</span> <span class="n">tmp_dir</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">append_ame</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">exfor_parsing</span><span class="o">.</span><span class="n">impute_original_exfor</span><span class="p">(</span><span class="n">heavy_dir</span><span class="p">,</span> <span class="n">tmp_dir</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1">####################### ATOMIC MASS EVALUATION ################################</span>
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="load_ame"><a class="viewcode-back" href="../../nucml.html#nucml.datasets.load_ame">[docs]</a><span class="k">def</span> <span class="nf">load_ame</span><span class="p">(</span><span class="n">natural</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">imputed_nan</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="s2">&quot;merged&quot;</span><span class="p">):</span>    
+    <span class="sd">&quot;&quot;&quot;Loads the Atomic Mass Evaluation 2016 data generated by NucML using the parsing utilities.</span>
+
+<span class="sd">    For file=&quot;merged&quot;, there are four AME dataset versions:</span>
+<span class="sd">    1. AME_all_merged (natural=False, imputed_nan=False): Contains all avaliable AME information from the mass, rct1, and rct2 files. </span>
+<span class="sd">    2. AME_all_merged_no_NaN (natural=False, imputed_nan=True): Same as 1, except all missing values are imputed linearly and element-wise.</span>
+<span class="sd">    3. AME_Natural_Properties_w_NaN (natural=True, imputed_nan=False): Similar to 2, except data for natural abundance elements is included.</span>
+<span class="sd">    4. AME_Natural_Properties_no_NaN (natural=True, imputed_nan=True): Same as 3. except all missing values are imputed linearly and element-wise.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        natural (bool): if True, the AME data containing natural element data will be loaded. Only applicable when file=&#39;merged&#39;.</span>
+<span class="sd">        imputed_nan (bool): If True, the dataset loaded will not contain any missing values (imputed version will be loaded).</span>
+<span class="sd">        file (str): Dataset to extract. Options include &#39;merged&#39;, &#39;mass16&#39;, &#39;rct1&#39;, and &#39;rct2&#39;.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame: a pandas dataframe cantaining the queried AME data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;merged&quot;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">natural</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">imputed_nan</span><span class="p">:</span>
+                <span class="n">ame_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ame_dir_path</span><span class="p">,</span> <span class="s2">&quot;AME_Natural_Properties_no_NaN.csv&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ame_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ame_dir_path</span><span class="p">,</span> <span class="s2">&quot;AME_Natural_Properties_w_NaN.csv&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">imputed_nan</span><span class="p">:</span>
+                <span class="n">ame_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ame_dir_path</span><span class="p">,</span> <span class="s2">&quot;AME_all_merged_no_NaN.csv&quot;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ame_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ame_dir_path</span><span class="p">,</span> <span class="s2">&quot;AME_all_merged.csv&quot;</span><span class="p">)</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;AME: Reading and loading Atomic Mass Evaluation files from: </span><span class="se">\n</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ame_file_path</span><span class="p">))</span>
+        <span class="n">ame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">ame_file_path</span><span class="p">)</span>
+        <span class="n">ame</span><span class="p">[[</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">ame</span><span class="p">[[</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">file</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;mass16&quot;</span><span class="p">,</span> <span class="s2">&quot;rct1&quot;</span><span class="p">,</span> <span class="s2">&quot;rct2&quot;</span><span class="p">]:</span>
+        <span class="n">ame_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ame_dir_path</span><span class="p">,</span> <span class="s2">&quot;AME_</span><span class="si">{}</span><span class="s2">.csv&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;AME: Reading and loading the Atomic Mass Evaluation file from: </span><span class="se">\n</span><span class="s2"> </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">ame_file_path</span><span class="p">))</span>
+        <span class="n">ame</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">ame_file_path</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ame</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1">####################### EVALUATED LIBRARIES ###################################</span>
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="load_evaluation"><a class="viewcode-back" href="../../nucml.html#nucml.datasets.load_evaluation">[docs]</a><span class="k">def</span> <span class="nf">load_evaluation</span><span class="p">(</span><span class="n">isotope</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;neutrons&quot;</span><span class="p">,</span> <span class="n">library</span><span class="o">=</span><span class="s2">&quot;endfb8.0&quot;</span><span class="p">,</span> <span class="n">mev_to_ev</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mb_to_b</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">drop_u</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Reads an evaluation file for a specific isotope, reaction channel, and evaluated library. It is important</span>
+<span class="sd">    to inspect the returned data since it queries a local database of an external source which extracted data from ENDF </span>
+<span class="sd">    using an extraction script. It has been found that some particular reactions are not included. These can be added </span>
+<span class="sd">    manually for future loading. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        isotope (str): Isotope to query (i.e. U233, Cl35).</span>
+<span class="sd">        MT (int): Reaction channel ENDF code. Must be an integer (i.e. 1, 2, 3)</span>
+<span class="sd">        mode (str): Type of projectile. Only &quot;neutrons&quot; and &quot;protons&quot; are supported for now.</span>
+<span class="sd">        library (str): Evaluation library to query. Allowed options include endfb8.0, jendl4.0, jeff3.3, and tendl.2019.</span>
+<span class="sd">        mev_to_ev (bool): If True, it converts the energy from MeV to eV.</span>
+<span class="sd">        mb_to_b (bool): If True, it converts the cross sections from millibarns to barns.</span>
+<span class="sd">        log (bool): If True, it applies the log10 to both the Energy and the Cross Section.</span>
+<span class="sd">        drop_u (bool): Sometimes, evaluation files contain uncertainty values. If True, these features are removed.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        evaluation (DataFrame): pandas DataFrame containing the ENDF datapoints.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">MT</span> <span class="o">=</span> <span class="n">gen_utils</span><span class="o">.</span><span class="n">parse_mt</span><span class="p">(</span><span class="n">MT</span><span class="p">)</span>
+    <span class="n">isotope</span> <span class="o">=</span> <span class="n">gen_utils</span><span class="o">.</span><span class="n">parse_isotope</span><span class="p">(</span><span class="n">isotope</span><span class="p">,</span> <span class="n">parse_for</span><span class="o">=</span><span class="s1">&#39;endf&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;protons&quot;</span><span class="p">:</span>
+        <span class="n">projectile</span> <span class="o">=</span> <span class="s1">&#39;p&#39;</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;neutrons&quot;</span><span class="p">:</span>
+        <span class="n">projectile</span> <span class="o">=</span> <span class="s1">&#39;n&#39;</span>
+
+    <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">evaluations_path</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">/</span><span class="si">{}</span><span class="s1">/tables/xs/</span><span class="si">{}</span><span class="s1">-</span><span class="si">{}</span><span class="s1">-</span><span class="si">{}</span><span class="s1">.</span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mode</span><span class="p">,</span> <span class="n">isotope</span><span class="p">,</span> <span class="n">library</span><span class="p">,</span> <span class="n">projectile</span><span class="p">,</span> <span class="n">isotope</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="n">library</span><span class="p">))</span>    
+
+    <span class="n">file</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">file</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EVALUATION: Extracting data from </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+        <span class="n">evaluation</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Data&quot;</span><span class="p">,</span> <span class="s2">&quot;dDataLow&quot;</span><span class="p">,</span> <span class="s2">&quot;dDataUpp&quot;</span><span class="p">],</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">mev_to_ev</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EVALUATION: Converting MeV to eV...&quot;</span><span class="p">)</span>
+            <span class="n">evaluation</span><span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">evaluation</span><span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">]</span><span class="o">*</span><span class="mf">1E6</span>
+        <span class="k">if</span> <span class="n">mb_to_b</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EVALUATION: Converting mb to b...&quot;</span><span class="p">)</span>
+            <span class="n">evaluation</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">evaluation</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">]</span><span class="o">*</span><span class="mf">0.001</span>
+        <span class="k">if</span> <span class="n">log</span><span class="p">:</span>
+            <span class="n">evaluation</span><span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">evaluation</span><span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">])</span>
+            <span class="n">evaluation</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">evaluation</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">])</span>
+            <span class="n">evaluation</span><span class="p">[</span><span class="s2">&quot;dDataLow&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">evaluation</span><span class="p">[</span><span class="s2">&quot;dDataLow&quot;</span><span class="p">])</span>
+            <span class="n">evaluation</span><span class="p">[</span><span class="s2">&quot;dDataUpp&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">evaluation</span><span class="p">[</span><span class="s2">&quot;dDataUpp&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">drop_u</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;dData&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">evaluation</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+                <span class="n">evaluation</span> <span class="o">=</span> <span class="n">evaluation</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;dDataLow&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="s2">&quot;dData2&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">evaluation</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+                <span class="n">evaluation</span> <span class="o">=</span> <span class="n">evaluation</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;dDataUpp&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="s2">&quot;dDataLow&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">evaluation</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+                <span class="n">evaluation</span> <span class="o">=</span> <span class="n">evaluation</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;dDataLow&quot;</span><span class="p">])</span>
+            <span class="k">if</span> <span class="s2">&quot;dDataUpp&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">evaluation</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+                <span class="n">evaluation</span> <span class="o">=</span> <span class="n">evaluation</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;dDataUpp&quot;</span><span class="p">])</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EVALUATION: Finished. ENDF data contains </span><span class="si">{}</span><span class="s2"> datapoints.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">evaluation</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">evaluation</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s1">&#39;Evaluation file does not exists at </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span></div>
+
+
+
+        
+<span class="c1">###############################################################################</span>
+<span class="c1">####################### ENSDF LIBRARIES #######################################</span>
+<span class="c1">###############################################################################</span>
+<div class="viewcode-block" id="load_ensdf_headers"><a class="viewcode-back" href="../../nucml.html#nucml.datasets.load_ensdf_headers">[docs]</a><span class="k">def</span> <span class="nf">load_ensdf_headers</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Loads ENSDF headers from RIPL .dat files.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">csv_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ensdf_path</span><span class="p">,</span> <span class="s2">&quot;CSV_Files/all_ensdf_headers_formatted.csv&quot;</span><span class="p">)</span>
+    <span class="n">ensdf_index_col</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Element_w_A&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;Number_of_Levels&quot;</span><span class="p">,</span> <span class="s2">&quot;Number_of_Gammas&quot;</span><span class="p">,</span> <span class="s2">&quot;N_max&quot;</span><span class="p">,</span> <span class="s2">&quot;N_c&quot;</span><span class="p">,</span> <span class="s2">&quot;Sn&quot;</span><span class="p">,</span> <span class="s2">&quot;Sp&quot;</span><span class="p">]</span>
+    <span class="n">ensdf_index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csv_file</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">ensdf_index_col</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ensdf_index</span></div>
+
+<div class="viewcode-block" id="load_ensdf_isotopic"><a class="viewcode-back" href="../../nucml.html#nucml.datasets.load_ensdf_isotopic">[docs]</a><span class="k">def</span> <span class="nf">load_ensdf_isotopic</span><span class="p">(</span><span class="n">isotope</span><span class="p">,</span> <span class="n">filetype</span><span class="o">=</span><span class="s2">&quot;levels&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Loads level or gamma records for a given isotope (i.e. U235).</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        isotope (str): Isotope to query (i.e. u235, cl35, 239Pu)</span>
+<span class="sd">        filetype (str, optional): Specifies if level or gamma records are to be extracted. Options </span>
+<span class="sd">            include &quot;levels&quot; and &quot;gammas&quot;. Defaults to &quot;levels&quot;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">isotope</span> <span class="o">=</span> <span class="n">gen_utils</span><span class="o">.</span><span class="n">parse_isotope</span><span class="p">(</span><span class="n">isotope</span><span class="p">,</span> <span class="n">parse_for</span><span class="o">=</span><span class="s2">&quot;ENSDF&quot;</span><span class="p">)</span>
+    <span class="n">file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ensdf_path</span><span class="p">,</span> <span class="s2">&quot;Elemental_ENSDF/Elemental_ENSDF_no_Header_F/</span><span class="si">{}</span><span class="s2">.txt&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">isotope</span><span class="p">))</span>
+    <span class="n">elemental</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+    <span class="n">elemental</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">elemental</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="n">filetype</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;levels&quot;</span><span class="p">:</span>
+        <span class="n">elemental_level_records</span> <span class="o">=</span> <span class="n">elemental</span><span class="p">[</span><span class="n">elemental</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()]</span>
+        <span class="n">elemental_level_records</span> <span class="o">=</span> <span class="n">elemental_level_records</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">])</span>
+        <span class="n">elemental_level_records</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">,</span> <span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Spin&quot;</span><span class="p">,</span> <span class="s2">&quot;Parity&quot;</span><span class="p">,</span> <span class="s2">&quot;Half_Life&quot;</span><span class="p">,</span> <span class="s2">&quot;Gammas&quot;</span><span class="p">,</span> <span class="s2">&quot;Flag&quot;</span><span class="p">,</span> <span class="s2">&quot;ENSDF_Spin&quot;</span><span class="p">,</span> <span class="s2">&quot;Num_Decay_Modes&quot;</span><span class="p">,</span> <span class="s2">&quot;Decay_Info&quot;</span><span class="p">]</span>
+        <span class="n">elemental_level_records</span><span class="o">.</span><span class="n">Num_Decay_Modes</span> <span class="o">=</span> <span class="n">elemental_level_records</span><span class="o">.</span><span class="n">Num_Decay_Modes</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;0+#&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">elemental_level_records</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">elemental_level_records</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">elemental_level_records</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">elemental_level_records</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;Flag&quot;</span><span class="p">,</span> <span class="s2">&quot;ENSDF_Spin&quot;</span><span class="p">,</span> <span class="s2">&quot;Decay_Info&quot;</span><span class="p">]:</span>
+                <span class="n">elemental_level_records</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">elemental_level_records</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">elemental_level_records</span>
+    <span class="k">elif</span> <span class="n">filetype</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;gammas&quot;</span><span class="p">:</span>
+        <span class="n">elemental</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">elemental</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;ffill&#39;</span><span class="p">)</span>
+        <span class="n">elemental</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">elemental</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+        <span class="n">elemental_gamma_records</span> <span class="o">=</span> <span class="n">elemental</span><span class="p">[</span><span class="o">~</span><span class="n">elemental</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()]</span>
+        <span class="n">new_columns</span> <span class="o">=</span> <span class="n">elemental_gamma_records</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">expand</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">elemental_gamma_records</span> <span class="o">=</span> <span class="n">elemental_gamma_records</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">])</span>
+        <span class="n">elemental_gamma_records</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">elemental_gamma_records</span><span class="p">,</span> <span class="n">new_columns</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">elemental_gamma_records</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Level_Record&quot;</span><span class="p">,</span> <span class="s2">&quot;Final_State&quot;</span><span class="p">,</span> <span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Gamma_Decay_Prob&quot;</span><span class="p">,</span> <span class="s2">&quot;Electromag_Decay_Prob&quot;</span><span class="p">,</span> <span class="s2">&quot;ICC&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">elemental_gamma_records</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="n">elemental_gamma_records</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">elemental_gamma_records</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">elemental_gamma_records</span></div>
+
+<div class="viewcode-block" id="load_ensdf_ground_states"><a class="viewcode-back" href="../../nucml.html#nucml.datasets.load_ensdf_ground_states">[docs]</a><span class="k">def</span> <span class="nf">load_ensdf_ground_states</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Loads the ENSDF file. Only ground state information.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ensdf_path</span><span class="p">,</span> <span class="s2">&quot;CSV_Files/ensdf_stable_state_formatted.csv&quot;</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;|&#39;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Element_w_A&quot;</span><span class="p">,</span> <span class="s2">&quot;Spin&quot;</span><span class="p">,</span> <span class="s2">&quot;Parity&quot;</span><span class="p">,</span> <span class="s2">&quot;Half_Life&quot;</span><span class="p">,</span> <span class="s2">&quot;Flag&quot;</span><span class="p">,</span> <span class="s2">&quot;ENSDF_Spin&quot;</span><span class="p">,</span> <span class="s2">&quot;Num_Decay_Modes&quot;</span><span class="p">,</span> <span class="s2">&quot;Modifier&quot;</span><span class="p">,</span> <span class="s2">&quot;Decay_Info&quot;</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">Num_Decay_Modes</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Num_Decay_Modes</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;0+#&quot;</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;Element_w_A&quot;</span><span class="p">,</span> <span class="s2">&quot;Flag&quot;</span><span class="p">,</span> <span class="s2">&quot;ENSDF_Spin&quot;</span><span class="p">,</span> <span class="s2">&quot;Modifier&quot;</span><span class="p">,</span> <span class="s2">&quot;Decay_Info&quot;</span><span class="p">]:</span>
+            <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="load_ripl_parameters"><a class="viewcode-back" href="../../nucml.html#nucml.datasets.load_ripl_parameters">[docs]</a><span class="k">def</span> <span class="nf">load_ripl_parameters</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Loads the RIPL level cut-off parameters file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">ripl_params</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ensdf_path</span><span class="p">,</span> <span class="s2">&quot;CSV_Files/ripl_cut_off_energies.csv&quot;</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">ripl_params</span></div>
+
+<div class="viewcode-block" id="load_ensdf"><a class="viewcode-back" href="../../nucml.html#nucml.datasets.load_ensdf">[docs]</a><span class="k">def</span> <span class="nf">load_ensdf</span><span class="p">(</span><span class="n">cutoff</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">append_ame</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Loads the Evalauted Nuclear Structure Data File structure levels data generated through NucML parsings utilities.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        cutoff (bool, optional): If True, the excited levels are cut-off according to the RIPL cutoof parameters. Defaults to False.</span>
+<span class="sd">        append_ame (bool, optional) If True, AME isotopic properties will be appended to the loaded ENSDF data. Defaults to False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">if</span> <span class="n">cutoff</span><span class="p">:</span>
+        <span class="n">datapath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ensdf_path</span><span class="p">,</span> <span class="s2">&quot;CSV_Files/ensdf_cutoff.csv&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">datapath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ensdf_path</span><span class="p">,</span> <span class="s2">&quot;CSV_Files/ensdf.csv&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Reading data from </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datapath</span><span class="p">))</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">datapath</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">append_ame</span><span class="p">:</span>
+        <span class="n">ame</span> <span class="o">=</span> <span class="n">load_ame</span><span class="p">(</span><span class="n">imputed_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ame</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;Element_w_A&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="load_ensdf_ml"><a class="viewcode-back" href="../../nucml.html#nucml.datasets.load_ensdf_ml">[docs]</a><span class="k">def</span> <span class="nf">load_ensdf_ml</span><span class="p">(</span><span class="n">log_sqrt</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">append_ame</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">basic</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">scaling_type</span><span class="o">=</span><span class="s2">&quot;std&quot;</span><span class="p">,</span> <span class="n">scaler_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    
+    <span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;../../ENSDF/CSV_Files/Level_Density&#39;</span> <span class="c1"># use your path</span>
+    <span class="n">all_files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;/*.csv&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">all_files</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+
+        <span class="n">li</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">all_files</span><span class="p">:</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">li</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">li</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;Target_Element_w_A&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;Target_Element_w_A&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">log_sqrt</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">])</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">log</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Dropping Ground State...&quot;</span><span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)]</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">])</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">append_ame</span><span class="p">:</span>
+            <span class="n">ame</span> <span class="o">=</span> <span class="n">load_ame</span><span class="p">(</span><span class="n">imputed_nan</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ame</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;Target_Element_w_A&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">basic</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">basic_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">,</span> <span class="s2">&quot;Level_Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Protons&quot;</span><span class="p">,</span> <span class="s2">&quot;Neutrons&quot;</span><span class="p">,</span> <span class="s2">&quot;Mass_Number&quot;</span><span class="p">,</span> <span class="s2">&quot;Atomic_Mass_Micro&quot;</span><span class="p">]</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">basic_cols</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">basic</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">basic_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">,</span> <span class="s2">&quot;Level_Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Protons&quot;</span><span class="p">,</span> <span class="s2">&quot;Neutrons&quot;</span><span class="p">,</span> <span class="s2">&quot;Mass_Number&quot;</span><span class="p">,</span> <span class="s2">&quot;Atomic_Mass_Micro&quot;</span><span class="p">,</span>
+                        <span class="s1">&#39;Mass_Excess&#39;</span><span class="p">,</span> <span class="s1">&#39;Binding_Energy&#39;</span><span class="p">,</span> <span class="s1">&#39;B_Decay_Energy&#39;</span><span class="p">,</span> <span class="s1">&#39;S(2n)&#39;</span><span class="p">,</span> <span class="s1">&#39;S(n)&#39;</span><span class="p">,</span> <span class="s1">&#39;S(p)&#39;</span><span class="p">]</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">basic_cols</span><span class="p">]</span> 
+        <span class="k">if</span> <span class="n">num</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Dropping unnecessary features and one-hot encoding categorical columns...&quot;</span><span class="p">)</span>
+
+            <span class="c1"># We need to keep track of columns to normalize excluding categorical data.</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Splitting dataset into training and testing...&quot;</span><span class="p">)</span>
+            <span class="n">x_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Level_Energy&quot;</span><span class="p">],</span> <span class="n">test_size</span><span class="o">=</span><span class="n">frac</span><span class="p">)</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Normalizing dataset...&quot;</span><span class="p">)</span>
+            <span class="n">to_scale</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">x_train</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">log_sqrt</span> <span class="ow">or</span> <span class="n">log</span><span class="p">:</span>
+                <span class="n">to_scale</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">)</span>
+            <span class="n">scaler</span> <span class="o">=</span> <span class="n">nuc_proc</span><span class="o">.</span><span class="n">normalize_features</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">to_scale</span><span class="p">,</span> <span class="n">scaling_type</span><span class="o">=</span><span class="n">scaling_type</span><span class="p">,</span> <span class="n">scaler_dir</span><span class="o">=</span><span class="n">scaler_dir</span><span class="p">)</span>
+            <span class="n">x_train</span><span class="p">[</span><span class="n">to_scale</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">x_train</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+            <span class="n">x_test</span><span class="p">[</span><span class="n">to_scale</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">x_test</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished. Resulting dataset has shape </span><span class="si">{}</span><span class="s2">, Training and Testing dataset shapes are </span><span class="si">{}</span><span class="s2"> and </span><span class="si">{}</span><span class="s2"> respesctively.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">x_train</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">x_test</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">df</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">to_scale</span><span class="p">,</span> <span class="n">scaler</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished. Resulting dataset has shape </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+            <span class="k">return</span> <span class="n">df</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;CSV file does not exists. Check path.&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1">###############################################################################</span>
+<span class="c1">####################### EXFOR DATABASE ########################################</span>
+<span class="c1">###############################################################################</span>
+<span class="n">supported_modes</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;neutrons&quot;</span><span class="p">,</span> <span class="s2">&quot;protons&quot;</span><span class="p">,</span> <span class="s2">&quot;alphas&quot;</span><span class="p">,</span> <span class="s2">&quot;deuterons&quot;</span><span class="p">,</span> <span class="s2">&quot;gammas&quot;</span><span class="p">,</span> <span class="s2">&quot;helions&quot;</span><span class="p">,</span> <span class="s2">&quot;all&quot;</span><span class="p">]</span>
+<span class="n">supported_mt_coding</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;one_hot&quot;</span><span class="p">,</span> <span class="s2">&quot;particle_coded&quot;</span><span class="p">]</span>
+<div class="viewcode-block" id="load_exfor"><a class="viewcode-back" href="../../nucml.html#nucml.datasets.load_exfor">[docs]</a><span class="k">def</span> <span class="nf">load_exfor</span><span class="p">(</span><span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">low_en</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">basic</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;neutrons&quot;</span><span class="p">,</span> <span class="n">scaling_type</span><span class="o">=</span><span class="s2">&quot;standard&quot;</span><span class="p">,</span> 
+    <span class="n">scaler_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filters</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">max_en</span><span class="o">=</span><span class="mf">2.0E7</span><span class="p">,</span> <span class="n">mt_coding</span><span class="o">=</span><span class="s2">&quot;one_hot&quot;</span><span class="p">,</span> <span class="n">scale_energy</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">projectile_coding</span><span class="o">=</span><span class="s2">&quot;one_hot&quot;</span>
+    <span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pedro</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Loads the EXFOR dataset in its varius forms. This function helps load ML-ready EXFOR datasets</span>
+<span class="sd">    for different particle induce reactions or all of them.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        log (bool, optional): If True, the log of the Energy and Cross Section is taken. Defaults to False.</span>
+<span class="sd">        low_en (bool, optional): If True, an upper limit in energy is applied given by the max_en argument. Defaults to False.</span>
+<span class="sd">        basic (int, optional): Indicates how many features to load. -1 means all avaliable features. Defaults to -1.</span>
+<span class="sd">        num (bool, optional): If True, only numerical and relevant categorical features are loaded. Defaults to False.</span>
+<span class="sd">        frac (float, optional): Fraction of the dataset for test set. Defaults to 0.1.</span>
+<span class="sd">        mode (str, optional): Dataset to load. Options include neutrons, gammas, and protons. Defaults to &quot;neutrons&quot;.</span>
+<span class="sd">        scaling_type (str, optional): Type of scaler to use for normalizing the dataset. Defaults to &quot;standard&quot;.</span>
+<span class="sd">        scaler_dir (str, optional): Directory in which to store the trained scaler. Defaults to None.</span>
+<span class="sd">        filters (bool, optional): If True, a variety of filters are applied that help discard irregular data. Defaults to False.</span>
+<span class="sd">        max_en (float, optional): Maximum energy threshold by which the dataset is filtered. Defaults to 2.0E7.</span>
+<span class="sd">        mt_coding (str, optional): Method used to process the MT reaction channel codes. Defaults to &quot;one_hot&quot;.</span>
+<span class="sd">        scale_energy (bool, optional): If True, the energy will be normalized along with all other features. Defaults to False.</span>
+<span class="sd">        projectile_coding (str, optional): Method used to process the type of projectile. Defaults to &quot;one_hot&quot;.</span>
+<span class="sd">        pedro (bool, optional): Personal settings. Defaults to False.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        FileNotFoundError: If mode is all and one of the files is missing.</span>
+<span class="sd">        FileNotFoundError: If the selected mode file does not exist.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame: Only returns one dataset if num=False.</span>
+<span class="sd">        DataFrames: Multiple dataframes and objects if num=True.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">pedro</span><span class="p">:</span>
+        <span class="n">log</span> <span class="o">=</span> <span class="n">low_en</span> <span class="o">=</span> <span class="n">num</span> <span class="o">=</span> <span class="n">filters</span> <span class="o">=</span> <span class="n">normalize</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">supported_modes</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Specified MODE not supported. Supporte modes include: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">supported_modes</span><span class="p">])))</span>
+    <span class="k">if</span> <span class="n">mt_coding</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">supported_mt_coding</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Specified mt_coding not supported. Supported codings include: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">supported_mt_coding</span><span class="p">])))</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot; MODE: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot; LOW ENERGY: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">low_en</span><span class="p">))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot; LOG: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">log</span><span class="p">))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot; BASIC: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">basic</span><span class="p">))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot; SCALER: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">scaling_type</span><span class="o">.</span><span class="n">upper</span><span class="p">()))</span>
+
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+        <span class="n">neutrons_datapath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">exfor_path</span><span class="p">,</span> <span class="s1">&#39;EXFOR_&#39;</span> <span class="o">+</span> <span class="s2">&quot;neutrons&quot;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">EXFOR_&#39;</span> <span class="o">+</span> <span class="s2">&quot;neutrons&quot;</span> <span class="o">+</span> <span class="s1">&#39;_MF3_AME_no_RawNaN.csv&#39;</span><span class="p">)</span>
+        <span class="c1"># neutrons_datapath = &#39;C:\\Users\\Pedro\\Desktop\\ML_Nuclear_Data\\EXFOR\\CSV_Files\\EXFOR_&#39; + &quot;neutrons&quot; + &#39;\\EXFOR_&#39; + &quot;neutrons&quot; + &#39;_MF3_AME_no_RawNaN.csv&#39;</span>
+        <span class="n">protons_datapath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">exfor_path</span><span class="p">,</span> <span class="s1">&#39;EXFOR_&#39;</span> <span class="o">+</span> <span class="s2">&quot;protons&quot;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">EXFOR_&#39;</span> <span class="o">+</span> <span class="s2">&quot;protons&quot;</span> <span class="o">+</span> <span class="s1">&#39;_MF3_AME_no_RawNaN.csv&#39;</span><span class="p">)</span>
+        <span class="n">alphas_datapath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">exfor_path</span><span class="p">,</span> <span class="s1">&#39;EXFOR_&#39;</span> <span class="o">+</span> <span class="s2">&quot;alphas&quot;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">EXFOR_&#39;</span> <span class="o">+</span> <span class="s2">&quot;alphas&quot;</span> <span class="o">+</span> <span class="s1">&#39;_MF3_AME_no_RawNaN.csv&#39;</span><span class="p">)</span>
+        <span class="n">deuterons_datapath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">exfor_path</span><span class="p">,</span> <span class="s1">&#39;EXFOR_&#39;</span> <span class="o">+</span> <span class="s2">&quot;deuterons&quot;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">EXFOR_&#39;</span> <span class="o">+</span> <span class="s2">&quot;deuterons&quot;</span> <span class="o">+</span> <span class="s1">&#39;_MF3_AME_no_RawNaN.csv&#39;</span><span class="p">)</span>
+        <span class="n">gammas_datapath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">exfor_path</span><span class="p">,</span> <span class="s1">&#39;EXFOR_&#39;</span> <span class="o">+</span> <span class="s2">&quot;gammas&quot;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">EXFOR_&#39;</span> <span class="o">+</span> <span class="s2">&quot;gammas&quot;</span> <span class="o">+</span> <span class="s1">&#39;_MF3_AME_no_RawNaN.csv&#39;</span><span class="p">)</span>
+        <span class="n">helions_datapath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">exfor_path</span><span class="p">,</span> <span class="s1">&#39;EXFOR_&#39;</span> <span class="o">+</span> <span class="s2">&quot;helions&quot;</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">EXFOR_&#39;</span> <span class="o">+</span> <span class="s2">&quot;helions&quot;</span> <span class="o">+</span> <span class="s1">&#39;_MF3_AME_no_RawNaN.csv&#39;</span><span class="p">)</span>
+        <span class="n">all_datapaths</span> <span class="o">=</span> <span class="p">[</span><span class="n">neutrons_datapath</span><span class="p">,</span> <span class="n">protons_datapath</span><span class="p">,</span> <span class="n">alphas_datapath</span><span class="p">,</span> <span class="n">deuterons_datapath</span><span class="p">,</span> <span class="n">gammas_datapath</span><span class="p">,</span> <span class="n">helions_datapath</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">gen_utils</span><span class="o">.</span><span class="n">check_if_files_exist</span><span class="p">(</span><span class="n">all_datapaths</span><span class="p">):</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">neutrons_datapath</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype_exfor</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+            <span class="n">protons</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">protons_datapath</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype_exfor</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+            <span class="n">alphas</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">alphas_datapath</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype_exfor</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+            <span class="n">deuterons</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">deuterons_datapath</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype_exfor</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+            <span class="n">gammas</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">gammas_datapath</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype_exfor</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+            <span class="n">helions</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">helions_datapath</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype_exfor</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">protons</span><span class="p">,</span> <span class="n">alphas</span><span class="p">,</span> <span class="n">deuterons</span><span class="p">,</span> <span class="n">gammas</span><span class="p">,</span> <span class="n">helions</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;One ore more files are missing. Check directories.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">datapath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">exfor_path</span><span class="p">,</span> <span class="s1">&#39;EXFOR_&#39;</span> <span class="o">+</span> <span class="n">mode</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">EXFOR_&#39;</span> <span class="o">+</span> <span class="n">mode</span> <span class="o">+</span> <span class="s1">&#39;_MF3_AME_no_RawNaN.csv&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">datapath</span><span class="p">):</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Reading data from </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datapath</span><span class="p">))</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">datapath</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype_exfor</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;CSV file does not exists. Check given path: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">datapath</span><span class="p">))</span>
+        
+    <span class="k">if</span> <span class="n">filters</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="o">~</span><span class="p">((</span><span class="n">df</span><span class="o">.</span><span class="n">Reaction_Notation</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;WTR&quot;</span><span class="p">))</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Title</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;DERIV&quot;</span><span class="p">))</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Energy</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Data</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))]</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="o">.</span><span class="n">MT</span> <span class="o">!=</span> <span class="s2">&quot;203&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">MT</span> <span class="o">!=</span> <span class="s2">&quot;1003&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">MT</span> <span class="o">!=</span> <span class="s2">&quot;1108&quot;</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">MT</span> <span class="o">!=</span> <span class="s2">&quot;2103&quot;</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">low_en</span><span class="p">:</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">Energy</span> <span class="o">&lt;</span> <span class="n">max_en</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">log</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">Energy</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="o">.</span><span class="n">Data</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;Cannot take log. Either Energy or Data contain zeros. Ignoring log.&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">])</span>
+            <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">])</span>
+
+    <span class="n">magic_numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">82</span><span class="p">,</span> <span class="mi">126</span><span class="p">,</span> <span class="mi">184</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;N_valence&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">N</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">neutrons</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">neutrons</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">magic_numbers</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">neutrons</span><span class="p">))))</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Z_valence&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Z</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">protons</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">protons</span> <span class="o">-</span> <span class="nb">min</span><span class="p">(</span><span class="n">magic_numbers</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="nb">abs</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">protons</span><span class="p">))))</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;P_factor&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;N_valence&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Z_valence&quot;</span><span class="p">])</span> <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;N_valence&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Z_valence&quot;</span><span class="p">])</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">P_factor</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">P_factor</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;N_tag&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">N_valence</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">neutrons</span><span class="p">:</span> <span class="s2">&quot;even&quot;</span> <span class="k">if</span> <span class="n">neutrons</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">&quot;odd&quot;</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Z_tag&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Z_valence</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">protons</span><span class="p">:</span> <span class="s2">&quot;even&quot;</span> <span class="k">if</span> <span class="n">protons</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">&quot;odd&quot;</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;NZ_tag&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;N_tag&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;_&quot;</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Z_tag&quot;</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">basic</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">basic</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">basic_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Data&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;MT&quot;</span><span class="p">,</span> <span class="s2">&quot;Center_of_Mass_Flag&quot;</span><span class="p">,</span> <span class="s2">&quot;Element_Flag&quot;</span><span class="p">]</span>
+            <span class="n">cat_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;MT&quot;</span><span class="p">,</span> <span class="s2">&quot;Center_of_Mass_Flag&quot;</span><span class="p">,</span> <span class="s2">&quot;Element_Flag&quot;</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">basic</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">basic_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Data&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;MT&quot;</span><span class="p">,</span> <span class="s2">&quot;Center_of_Mass_Flag&quot;</span><span class="p">,</span> <span class="s2">&quot;Element_Flag&quot;</span><span class="p">,</span> 
+                <span class="s2">&quot;Atomic_Mass_Micro&quot;</span><span class="p">,</span> <span class="s2">&quot;Nucleus_Radius&quot;</span><span class="p">,</span> <span class="s2">&quot;Neutron_Nucleus_Radius_Ratio&quot;</span><span class="p">]</span>
+            <span class="n">cat_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;MT&quot;</span><span class="p">,</span> <span class="s2">&quot;Center_of_Mass_Flag&quot;</span><span class="p">,</span> <span class="s2">&quot;Element_Flag&quot;</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">basic</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">basic_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Data&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;MT&quot;</span><span class="p">,</span> <span class="s2">&quot;Center_of_Mass_Flag&quot;</span><span class="p">,</span> <span class="s2">&quot;Element_Flag&quot;</span><span class="p">,</span> 
+                <span class="s2">&quot;Atomic_Mass_Micro&quot;</span><span class="p">,</span> <span class="s2">&quot;Nucleus_Radius&quot;</span><span class="p">,</span> <span class="s2">&quot;Neutron_Nucleus_Radius_Ratio&quot;</span><span class="p">,</span> <span class="s2">&quot;Mass_Excess&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Binding_Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;B_Decay_Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;S(n)&quot;</span><span class="p">,</span> <span class="s2">&quot;S(p)&quot;</span><span class="p">,</span> <span class="s2">&quot;S(2n)&quot;</span><span class="p">,</span> <span class="s2">&quot;S(2p)&quot;</span><span class="p">]</span>
+            <span class="n">cat_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;MT&quot;</span><span class="p">,</span> <span class="s2">&quot;Center_of_Mass_Flag&quot;</span><span class="p">,</span> <span class="s2">&quot;Element_Flag&quot;</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">basic</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">basic_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Data&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;MT&quot;</span><span class="p">,</span> <span class="s2">&quot;Center_of_Mass_Flag&quot;</span><span class="p">,</span> <span class="s2">&quot;Element_Flag&quot;</span><span class="p">,</span> 
+                <span class="s2">&quot;Atomic_Mass_Micro&quot;</span><span class="p">,</span> <span class="s2">&quot;Nucleus_Radius&quot;</span><span class="p">,</span> <span class="s2">&quot;Neutron_Nucleus_Radius_Ratio&quot;</span><span class="p">,</span> <span class="s2">&quot;Mass_Excess&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Binding_Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;B_Decay_Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;S(n)&quot;</span><span class="p">,</span> <span class="s2">&quot;S(p)&quot;</span><span class="p">,</span> <span class="s2">&quot;S(2n)&quot;</span><span class="p">,</span> <span class="s2">&quot;S(2p)&quot;</span><span class="p">,</span> <span class="s2">&quot;N_valence&quot;</span><span class="p">,</span> <span class="s2">&quot;Z_valence&quot;</span><span class="p">,</span> <span class="s2">&quot;P_factor&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;N_tag&quot;</span><span class="p">,</span> <span class="s2">&quot;Z_tag&quot;</span><span class="p">,</span> <span class="s2">&quot;NZ_tag&quot;</span><span class="p">]</span>
+            <span class="n">cat_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;MT&quot;</span><span class="p">,</span> <span class="s2">&quot;Center_of_Mass_Flag&quot;</span><span class="p">,</span> <span class="s2">&quot;Element_Flag&quot;</span><span class="p">,</span> <span class="s2">&quot;N_tag&quot;</span><span class="p">,</span> <span class="s2">&quot;Z_tag&quot;</span><span class="p">,</span> <span class="s2">&quot;NZ_tag&quot;</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="n">basic</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="n">basic_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Data&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;MT&quot;</span><span class="p">,</span> <span class="s2">&quot;Center_of_Mass_Flag&quot;</span><span class="p">,</span> <span class="s2">&quot;Element_Flag&quot;</span><span class="p">,</span> 
+                <span class="s2">&quot;Atomic_Mass_Micro&quot;</span><span class="p">,</span> <span class="s2">&quot;Nucleus_Radius&quot;</span><span class="p">,</span> <span class="s2">&quot;Neutron_Nucleus_Radius_Ratio&quot;</span><span class="p">,</span> <span class="s2">&quot;Mass_Excess&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;Binding_Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;B_Decay_Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;S(n)&quot;</span><span class="p">,</span> <span class="s2">&quot;S(p)&quot;</span><span class="p">,</span> <span class="s2">&quot;S(2n)&quot;</span><span class="p">,</span> <span class="s2">&quot;S(2p)&quot;</span><span class="p">,</span> <span class="s2">&quot;N_valence&quot;</span><span class="p">,</span> <span class="s2">&quot;Z_valence&quot;</span><span class="p">,</span> <span class="s2">&quot;P_factor&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;N_tag&quot;</span><span class="p">,</span> <span class="s2">&quot;Z_tag&quot;</span><span class="p">,</span> <span class="s2">&quot;NZ_tag&quot;</span><span class="p">]</span>
+            <span class="n">to_append</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Q&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;dQ&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">x</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;dS&quot;</span><span class="p">)]</span>
+            <span class="n">basic_cols</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">to_append</span><span class="p">)</span>
+            <span class="n">cat_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;MT&quot;</span><span class="p">,</span> <span class="s2">&quot;Center_of_Mass_Flag&quot;</span><span class="p">,</span> <span class="s2">&quot;Element_Flag&quot;</span><span class="p">,</span> <span class="s2">&quot;N_tag&quot;</span><span class="p">,</span> <span class="s2">&quot;Z_tag&quot;</span><span class="p">,</span> <span class="s2">&quot;NZ_tag&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">projectile_coding</span> <span class="o">==</span> <span class="s2">&quot;particle_coded&quot;</span><span class="p">:</span>
+                <span class="n">basic_cols</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;Projectile_Z&quot;</span><span class="p">,</span> <span class="s2">&quot;Projectile_A&quot;</span><span class="p">,</span> <span class="s2">&quot;Projectile_N&quot;</span><span class="p">,</span> <span class="s2">&quot;Target_Metastable_State&quot;</span><span class="p">,</span> <span class="s2">&quot;Product_Metastable_State&quot;</span><span class="p">])</span>
+            <span class="k">elif</span> <span class="n">projectile_coding</span> <span class="o">==</span> <span class="s2">&quot;one_hot&quot;</span><span class="p">:</span>
+                <span class="n">basic_cols</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;Projectile&quot;</span><span class="p">,</span> <span class="s2">&quot;Target_Metastable_State&quot;</span><span class="p">,</span> <span class="s2">&quot;Product_Metastable_State&quot;</span><span class="p">])</span>
+                <span class="n">cat_cols</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s2">&quot;Projectile&quot;</span><span class="p">])</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">basic_cols</span><span class="p">]</span>   
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Data read into dataframe with shape: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">num</span><span class="p">:</span>        
+        <span class="k">if</span> <span class="n">mt_coding</span> <span class="o">==</span> <span class="s2">&quot;particle_coded&quot;</span><span class="p">:</span>
+            <span class="n">cat_cols</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;MT&quot;</span><span class="p">)</span>
+            <span class="n">mt_codes_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">exfor_path</span><span class="p">,</span> <span class="s1">&#39;CSV_Files/mt_codes.csv&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;MT_Tag&quot;</span><span class="p">,</span> <span class="s2">&quot;MT_Reaction_Notation&quot;</span><span class="p">])</span>
+            <span class="n">mt_codes_df</span><span class="p">[</span><span class="s2">&quot;MT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">mt_codes_df</span><span class="p">[</span><span class="s2">&quot;MT&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+            <span class="c1"># We need to keep track of columns to normalize excluding categorical data.</span>
+            <span class="n">norm_columns</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">cat_cols</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">cat_cols</span><span class="p">])],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">cat_cols</span><span class="p">)</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">mt_codes_df</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;MT&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;MT&quot;</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">mt_coding</span> <span class="o">==</span> <span class="s2">&quot;one_hot&quot;</span><span class="p">:</span>
+            <span class="c1"># We need to keep track of columns to normalize excluding categorical data.</span>
+            <span class="n">norm_columns</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">cat_cols</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">cat_cols</span><span class="p">])],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">cat_cols</span><span class="p">)</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Splitting dataset into training and testing...&quot;</span><span class="p">)</span>
+        <span class="n">x_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;Data&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">],</span> <span class="n">test_size</span><span class="o">=</span><span class="n">frac</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">normalize</span><span class="p">:</span>
+            <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Normalizing dataset...&quot;</span><span class="p">)</span>
+            <span class="n">to_scale</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">x_train</span><span class="o">.</span><span class="n">columns</span><span class="p">)[:</span><span class="n">norm_columns</span><span class="p">]</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">scale_energy</span><span class="p">:</span>
+                <span class="n">to_scale</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s2">&quot;Energy&quot;</span><span class="p">)</span>
+            <span class="n">scaler</span> <span class="o">=</span> <span class="n">nuc_proc</span><span class="o">.</span><span class="n">normalize_features</span><span class="p">(</span><span class="n">x_train</span><span class="p">,</span> <span class="n">to_scale</span><span class="p">,</span> <span class="n">scaling_type</span><span class="o">=</span><span class="n">scaling_type</span><span class="p">,</span> <span class="n">scaler_dir</span><span class="o">=</span><span class="n">scaler_dir</span><span class="p">)</span>
+            <span class="n">x_train</span><span class="p">[</span><span class="n">to_scale</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">x_train</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+            <span class="n">x_test</span><span class="p">[</span><span class="n">to_scale</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">x_test</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+            <span class="k">return</span> <span class="n">df</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">to_scale</span><span class="p">,</span> <span class="n">scaler</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">df</span><span class="p">,</span> <span class="n">x_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished. Resulting dataset has shape </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">df</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Pedro Jr. Vicente-Valdez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

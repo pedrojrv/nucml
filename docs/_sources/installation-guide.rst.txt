@@ -74,6 +74,10 @@ In the rest of the setup it is assumeed you cloned the repository to your Deskto
 
     Feel free to rename the :code:`ML_Nuclear_Data` directory now rather than later as it can cause some issues. 
 
+Before proceeding, it is important that you have a local copy of the ACE files utilized by SERPENT2. If you do not have one, feel free to 
+download them by `here <https://storage.googleapis.com/original_nuclear_data/acedata.csv>`__. Once the download is done, place it in a location 
+of your choice. Here, we assume you unzipped and moved the :code:`acedata` directory into the :code:`ML_Nuclear_Data` directory.
+
 NucML makes use of a configuration file to get the paths to the generated data based on the working directory structure. Having
 downloaded the repository, it is time to tell :code:`NucML` where is it located. Write the following commands in your terminal:
 
@@ -86,20 +90,25 @@ downloaded the repository, it is time to tell :code:`NucML` where is it located.
     # navigate to the cloned repo
     cd /Users/pedrovicentevaldez/Desktop/ML_Nuclear_Data
     
-    # configure nucml paths
-    python -c "import nucml.configure as config; config.configure('.', 'ACE/')"
+    # configure nucml paths - if you do not have matlab feel free to delete that entire argument
+    python -c "import nucml.configure as config; config.configure('.', 'acedata/', matlab_exe_path='/mnt/c/Program\ Files/MATLAB/R2019a/bin/matlab.exe')"
 
 
-Now, we are ready to generate the EXFOR datasets. A utility python script is provided to help you get started quickly.
+Now, we are ready to generate the EXFOR datasets. There are two options: (1) Download the already parsed/formated files or 
+(2) generate them yourself using the provided utility python script. We recommend the first approach. You can download the needed data 
+`here <https://storage.googleapis.com/original_nuclear_data/CSV_Files.zip>`__. Unzip and substitute the CSV_Files directory 
+in the :code:`ML_Nuclear_Data/EXFOR/` directory (feel free to delete the previous folder if taking the first approach). If for some reason
+you would like to re-parse the EXFOR C4 Files write the following commands in the terminal:
 
 ..  note::
 
-    This will generate EXFOR datasets for all avaliable projectiles and will therefore take a couple of minutes.
+    This will generate EXFOR datasets for all avaliable projectiles and will therefore take a couple of minutes. Only do
+    this if you opted out for the second approach, otherwise ignore. 
 
 
 ..  code-block:: bash
 
-    # navigate to the cloned repo - if already there ignore
+    # navigate to the cloned repo
     cd /Users/pedrovicentevaldez/Desktop/ML_Nuclear_Data
     
     # generate the exfor datasets

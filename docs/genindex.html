@@ -83,16 +83,16 @@
               
             
             
-              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
+              <p><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p class="caption"><span class="caption-text">GET STARTED</span></p>
+<p><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html">Loading Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
@@ -100,11 +100,18 @@
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
+<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
+</ul>
+<p><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">nucml</a></li>
 </ul>
-<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
+<p><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
@@ -222,10 +229,18 @@
 </li>
       <li><a href="nucml.model.html#nucml.model.utilities.cleanup_model_dir">cleanup_model_dir() (in module nucml.model.utilities)</a>
 </li>
-      <li><a href="nucml.model.html#nucml.model.model_building.compile_and_fit">compile_and_fit() (in module nucml.model.model_building)</a>
+      <li><a href="nucml.model.html#nucml.model.building_utils.compile_and_fit">compile_and_fit() (in module nucml.model.building_utils)</a>
+
+      <ul>
+        <li><a href="nucml.model.html#nucml.model.model_building.compile_and_fit">(in module nucml.model.model_building)</a>
 </li>
-      <li><a href="nucml.model.html#nucml.model.model_building.compile_and_fit_lw">compile_and_fit_lw() (in module nucml.model.model_building)</a>
+      </ul></li>
+      <li><a href="nucml.model.html#nucml.model.building_utils.compile_and_fit_lw">compile_and_fit_lw() (in module nucml.model.building_utils)</a>
+
+      <ul>
+        <li><a href="nucml.model.html#nucml.model.model_building.compile_and_fit_lw">(in module nucml.model.model_building)</a>
 </li>
+      </ul></li>
       <li><a href="nucml.html#nucml.configure.configure">configure() (in module nucml.configure)</a>
 </li>
       <li><a href="nucml.ace.html#nucml.ace.data_utilities.convert_dos_to_unix">convert_dos_to_unix() (in module nucml.ace.data_utilities)</a>
@@ -242,8 +257,12 @@
 </li>
       <li><a href="nucml.ace.html#nucml.ace.data_utilities.create_mt2_mt3_mt101">create_mt2_mt3_mt101() (in module nucml.ace.data_utilities)</a>
 </li>
-      <li><a href="nucml.ame.html#nucml.ame.parsing_utilities.create_natural_element_data">create_natural_element_data() (in module nucml.ame.parsing_utilities)</a>
+      <li><a href="nucml.ame.html#nucml.ame.parsing.create_natural_element_data">create_natural_element_data() (in module nucml.ame.parsing)</a>
+
+      <ul>
+        <li><a href="nucml.ame.html#nucml.ame.parsing_utilities.create_natural_element_data">(in module nucml.ame.parsing_utilities)</a>
 </li>
+      </ul></li>
       <li><a href="nucml.ace.html#nucml.ace.data_utilities.create_new_ace">create_new_ace() (in module nucml.ace.data_utilities)</a>
 </li>
       <li><a href="nucml.ace.html#nucml.ace.data_utilities.create_new_ace_w_df">create_new_ace_w_df() (in module nucml.ace.data_utilities)</a>
@@ -296,6 +315,8 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nucml.model.html#nucml.model.utilities.filter_by_parameters">filter_by_parameters() (in module nucml.model.utilities)</a>
+</li>
       <li><a href="nucml.html#nucml.general_utilities.func">func() (in module nucml.general_utilities)</a>
 </li>
   </ul></td>
@@ -307,6 +328,8 @@
       <li><a href="nucml.ace.html#nucml.ace.data_utilities.gather_benchmark_results">gather_benchmark_results() (in module nucml.ace.data_utilities)</a>
 </li>
       <li><a href="nucml.ace.html#nucml.ace.data_utilities.generate_bench_ml_xs">generate_bench_ml_xs() (in module nucml.ace.data_utilities)</a>
+</li>
+      <li><a href="nucml.html#nucml.datasets.generate_bigquery_csv">generate_bigquery_csv() (in module nucml.datasets)</a>
 </li>
       <li><a href="nucml.ensdf.html#nucml.ensdf.parsing.generate_cutoff_ensdf">generate_cutoff_ensdf() (in module nucml.ensdf.parsing)</a>
 </li>
@@ -322,22 +345,32 @@
 </li>
       <li><a href="nucml.ace.html#nucml.ace.data_utilities.generate_sss_xsdata">generate_sss_xsdata() (in module nucml.ace.data_utilities)</a>
 </li>
-      <li><a href="nucml.ame.html#nucml.ame.parsing_utilities.get_all">get_all() (in module nucml.ame.parsing_utilities)</a>
+      <li><a href="nucml.ame.html#nucml.ame.parsing.get_all">get_all() (in module nucml.ame.parsing)</a>
 
       <ul>
+        <li><a href="nucml.ame.html#nucml.ame.parsing_utilities.get_all">(in module nucml.ame.parsing_utilities)</a>
+</li>
         <li><a href="nucml.exfor.html#nucml.exfor.parsing.get_all">(in module nucml.exfor.parsing)</a>
 </li>
       </ul></li>
-      <li><a href="nucml.ame.html#nucml.ame.parsing_utilities.get_ame_originals">get_ame_originals() (in module nucml.ame.parsing_utilities)</a>
+      <li><a href="nucml.ame.html#nucml.ame.parsing.get_ame_originals">get_ame_originals() (in module nucml.ame.parsing)</a>
+
+      <ul>
+        <li><a href="nucml.ame.html#nucml.ame.parsing_utilities.get_ame_originals">(in module nucml.ame.parsing_utilities)</a>
 </li>
+      </ul></li>
       <li><a href="nucml.ace.html#nucml.ace.data_utilities.get_basic_mts">get_basic_mts() (in module nucml.ace.data_utilities)</a>
 </li>
       <li><a href="nucml.model.html#nucml.model.utilities.get_best_models_df">get_best_models_df() (in module nucml.model.utilities)</a>
 </li>
       <li><a href="nucml.exfor.html#nucml.exfor.parsing.get_c4_names">get_c4_names() (in module nucml.exfor.parsing)</a>
 </li>
-      <li><a href="nucml.model.html#nucml.model.model_building.get_callbacks">get_callbacks() (in module nucml.model.model_building)</a>
+      <li><a href="nucml.model.html#nucml.model.building_utils.get_callbacks">get_callbacks() (in module nucml.model.building_utils)</a>
+
+      <ul>
+        <li><a href="nucml.model.html#nucml.model.model_building.get_callbacks">(in module nucml.model.model_building)</a>
 </li>
+      </ul></li>
       <li><a href="nucml.exfor.html#nucml.exfor.data_utilities.get_csv_for_ace">get_csv_for_ace() (in module nucml.exfor.data_utilities)</a>
 </li>
       <li><a href="nucml.objects.html#nucml.objects.objects.get_element">get_element() (in module nucml.objects.objects)</a>
@@ -384,6 +417,10 @@
 </li>
       <li><a href="nucml.ace.html#nucml.ace.data_utilities.get_nxs_jxs_xss">get_nxs_jxs_xss() (in module nucml.ace.data_utilities)</a>
 </li>
+      <li><a href="nucml.model.html#nucml.model.building_utils.get_optimizer">get_optimizer() (in module nucml.model.building_utils)</a>
+</li>
+      <li><a href="nucml.model.html#nucml.model.utilities.get_parameters_from_line">get_parameters_from_line() (in module nucml.model.utilities)</a>
+</li>
       <li><a href="nucml.ace.html#nucml.ace.data_utilities.get_pointers">get_pointers() (in module nucml.ace.data_utilities)</a>
 </li>
       <li><a href="nucml.ensdf.html#nucml.ensdf.parsing.get_ripl_dat_paths">get_ripl_dat_paths() (in module nucml.ensdf.parsing)</a>
@@ -391,6 +428,8 @@
       <li><a href="nucml.ensdf.html#nucml.ensdf.parsing.get_stable_states">get_stable_states() (in module nucml.ensdf.parsing)</a>
 </li>
       <li><a href="nucml.ace.html#nucml.ace.data_utilities.get_to_skip_lines">get_to_skip_lines() (in module nucml.ace.data_utilities)</a>
+</li>
+      <li><a href="nucml.model.html#nucml.model.building_utils.get_xgboost_params">get_xgboost_params() (in module nucml.model.building_utils)</a>
 </li>
       <li><a href="nucml.ace.html#nucml.ace.data_utilities.get_xs_for_mt">get_xs_for_mt() (in module nucml.ace.data_utilities)</a>
 </li>
@@ -468,6 +507,8 @@
 </li>
       <li><a href="nucml.html#nucml.datasets.load_exfor">load_exfor() (in module nucml.datasets)</a>
 </li>
+      <li><a href="nucml.html#nucml.datasets.load_exfor_raw">load_exfor_raw() (in module nucml.datasets)</a>
+</li>
       <li><a href="nucml.exfor.html#nucml.exfor.data_utilities.load_isotope">load_isotope() (in module nucml.exfor.data_utilities)</a>
 </li>
       <li><a href="nucml.model.html#nucml.model.utilities.load_model_and_scaler">load_model_and_scaler() (in module nucml.model.utilities)</a>
@@ -506,8 +547,12 @@
 </li>
       <li><a href="nucml.ensdf.html#nucml.ensdf.data_utilities.make_predictions_w_levels_nodata">make_predictions_w_levels_nodata() (in module nucml.ensdf.data_utilities)</a>
 </li>
-      <li><a href="nucml.ame.html#nucml.ame.parsing_utilities.merge_mass_rct">merge_mass_rct() (in module nucml.ame.parsing_utilities)</a>
+      <li><a href="nucml.ame.html#nucml.ame.parsing.merge_mass_rct">merge_mass_rct() (in module nucml.ame.parsing)</a>
+
+      <ul>
+        <li><a href="nucml.ame.html#nucml.ame.parsing_utilities.merge_mass_rct">(in module nucml.ame.parsing_utilities)</a>
 </li>
+      </ul></li>
       <li><a href="nucml.exfor.html#nucml.exfor.plot.ml_results">ml_results() (in module nucml.exfor.plot)</a>
 </li>
       <li><a href="nucml.ace.html#nucml.ace.data_utilities.modify_xss_w_df">modify_xss_w_df() (in module nucml.ace.data_utilities)</a>
@@ -527,6 +572,8 @@
         <li><a href="nucml.ace.html#module-nucml.ace.plotting_utilities">nucml.ace.plotting_utilities</a>
 </li>
         <li><a href="nucml.ame.html#module-nucml.ame">nucml.ame</a>
+</li>
+        <li><a href="nucml.ame.html#module-nucml.ame.parsing">nucml.ame.parsing</a>
 </li>
         <li><a href="nucml.ame.html#module-nucml.ame.parsing_utilities">nucml.ame.parsing_utilities</a>
 </li>
@@ -561,6 +608,8 @@
         <li><a href="nucml.html#module-nucml.general_utilities">nucml.general_utilities</a>
 </li>
         <li><a href="nucml.model.html#module-nucml.model">nucml.model</a>
+</li>
+        <li><a href="nucml.model.html#module-nucml.model.building_utils">nucml.model.building_utils</a>
 </li>
         <li><a href="nucml.model.html#module-nucml.model.model_building">nucml.model.model_building</a>
 </li>
@@ -629,6 +678,13 @@
 
       <ul>
         <li><a href="nucml.ame.html#module-nucml.ame">module</a>
+</li>
+      </ul></li>
+      <li>
+    nucml.ame.parsing
+
+      <ul>
+        <li><a href="nucml.ame.html#module-nucml.ame.parsing">module</a>
 </li>
       </ul></li>
       <li>
@@ -753,6 +809,13 @@
 </li>
       </ul></li>
       <li>
+    nucml.model.building_utils
+
+      <ul>
+        <li><a href="nucml.model.html#module-nucml.model.building_utils">module</a>
+</li>
+      </ul></li>
+      <li>
     nucml.model.model_building
 
       <ul>
@@ -845,20 +908,34 @@
         <li><a href="nucml.exfor.html#nucml.exfor.data_utilities.predicting_nuclear_xs_v2">(in module nucml.exfor.data_utilities)</a>
 </li>
       </ul></li>
+      <li><a href="nucml.exfor.html#nucml.exfor.data_utilities.predicting_nuclear_xs_v2_no_norm">predicting_nuclear_xs_v2_no_norm() (in module nucml.exfor.data_utilities)</a>
+</li>
   </ul></td>
 </tr></table>
 
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="nucml.ame.html#nucml.ame.parsing_utilities.read_mass16">read_mass16() (in module nucml.ame.parsing_utilities)</a>
+      <li><a href="nucml.ame.html#nucml.ame.parsing.read_mass16">read_mass16() (in module nucml.ame.parsing)</a>
+
+      <ul>
+        <li><a href="nucml.ame.html#nucml.ame.parsing_utilities.read_mass16">(in module nucml.ame.parsing_utilities)</a>
 </li>
-      <li><a href="nucml.ame.html#nucml.ame.parsing_utilities.read_rct1">read_rct1() (in module nucml.ame.parsing_utilities)</a>
+      </ul></li>
+      <li><a href="nucml.ame.html#nucml.ame.parsing.read_rct1">read_rct1() (in module nucml.ame.parsing)</a>
+
+      <ul>
+        <li><a href="nucml.ame.html#nucml.ame.parsing_utilities.read_rct1">(in module nucml.ame.parsing_utilities)</a>
 </li>
-      <li><a href="nucml.ame.html#nucml.ame.parsing_utilities.read_rct2">read_rct2() (in module nucml.ame.parsing_utilities)</a>
-</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nucml.ame.html#nucml.ame.parsing.read_rct2">read_rct2() (in module nucml.ame.parsing)</a>
+
+      <ul>
+        <li><a href="nucml.ame.html#nucml.ame.parsing_utilities.read_rct2">(in module nucml.ame.parsing_utilities)</a>
+</li>
+      </ul></li>
       <li><a href="nucml.ace.html#nucml.ace.data_utilities.reduce_ace_filesize">reduce_ace_filesize() (in module nucml.ace.data_utilities)</a>
 </li>
       <li><a href="nucml.model.html#nucml.model.utilities.regression_error_metrics">regression_error_metrics() (in module nucml.model.utilities)</a>
@@ -879,12 +956,14 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="nucml.model.html#nucml.model.training.train_dt">train_dt() (in module nucml.model.training)</a>
+      <li><a href="nucml.model.html#nucml.model.building_utils.tf_dataset_gen">tf_dataset_gen() (in module nucml.model.building_utils)</a>
 </li>
-      <li><a href="nucml.model.html#nucml.model.training.train_knn">train_knn() (in module nucml.model.training)</a>
+      <li><a href="nucml.model.html#nucml.model.training.train_dt">train_dt() (in module nucml.model.training)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nucml.model.html#nucml.model.training.train_knn">train_knn() (in module nucml.model.training)</a>
+</li>
       <li><a href="nucml.model.html#nucml.model.plot.train_test">train_test() (in module nucml.model.plot)</a>
 </li>
       <li><a href="nucml.model.html#nucml.model.training.train_xgb">train_xgb() (in module nucml.model.training)</a>
@@ -896,6 +975,10 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="nucml.model.html#nucml.model.plot.xgb_training">xgb_training() (in module nucml.model.plot)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="nucml.model.html#nucml.model.plot.xgb_training_w_path">xgb_training_w_path() (in module nucml.model.plot)</a>
 </li>
   </ul></td>
 </tr></table>

@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Atomic Mass Evaluation (2016) &mdash; NucML 1.0.0 documentation</title>
@@ -85,16 +86,16 @@
               
             
             
-              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
+              <p><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p class="caption"><span class="caption-text">GET STARTED</span></p>
+<p><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html">Loading Data</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a><ul class="current">
@@ -110,6 +111,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="3_EDA_EXFOR.html">Experimental Nuclear Reaction Data (EXFOR)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_EDA_Cross_Sections.html">Visualizing EXFOR Cross Sections</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2_EDA_RIPL.html">Reference Input Data Library (RIPL)</a></li>
 </ul>
 </li>
@@ -117,11 +119,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
+<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
+</ul>
+<p><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">nucml</a></li>
 </ul>
-<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
+<p><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
@@ -464,23 +473,23 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="Atomic-Mass-Evaluation-(2016)">
+<section id="Atomic-Mass-Evaluation-(2016)">
 <h1>Atomic Mass Evaluation (2016)<a class="headerlink" href="#Atomic-Mass-Evaluation-(2016)" title="Permalink to this headline">¶</a></h1>
-<p>In this brief notebook we use the processed AME data to explore and visualize some attributes. Let us start by importing the necessary packages.</p>
-<p><strong>NOTE: This notebook is not meant to be a complete exploration resource. You are responsible for exploring and validating any used data.</strong></p>
+<p>In this brief notebook, we use the processed AME data to explore and visualize some attributes. Let us start by importing the necessary packages.</p>
+<p><strong>NOTE: This notebook is not meant to be a complete exploration resource. You are responsible for exploring and validating the data.</strong></p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># PROTOTYPE</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../..&quot;</span><span class="p">)</span>
+<span></span><span class="c1"># # PROTOTYPE</span>
+<span class="c1"># import sys</span>
+<span class="c1"># sys.path.append(&quot;../..&quot;)</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -488,7 +497,6 @@ div.rendered_html tbody tr:hover {
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 
 <span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
 
@@ -497,7 +505,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -506,10 +514,10 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<div class="section" id="Loading-Merged-AME-Files-with-Natural-Data-AND-with-and-without-NaNs">
+<section id="Loading-Merged-AME-Files-with-Natural-Data-AND-with-and-without-NaNs">
 <h2>Loading Merged AME Files with Natural Data AND with and without NaNs<a class="headerlink" href="#Loading-Merged-AME-Files-with-Natural-Data-AND-with-and-without-NaNs" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -530,7 +538,7 @@ INFO:root:AME: Reading and loading Atomic Mass Evaluation files from:
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -539,7 +547,7 @@ INFO:root:AME: Reading and loading Atomic Mass Evaluation files from:
 </div>
 </div>
 <div class="nboutput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="output_area docutils container">
@@ -548,7 +556,7 @@ INFO:root:AME: Reading and loading Atomic Mass Evaluation files from:
 </pre></div></div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -1189,8 +1197,8 @@ INFO:root:AME: Reading and loading Atomic Mass Evaluation files from:
 </table>
 </div></div>
 </div>
-</div>
-<div class="section" id="Visualizing-some-Features">
+</section>
+<section id="Visualizing-some-Features">
 <h2>Visualizing some Features<a class="headerlink" href="#Visualizing-some-Features" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
@@ -1201,7 +1209,7 @@ INFO:root:AME: Reading and loading Atomic Mass Evaluation files from:
 </pre></div>
 </div>
 </div>
-<div class="section" id="Binding-Energy-per-Nucleon">
+<section id="Binding-Energy-per-Nucleon">
 <h3>Binding Energy per Nucleon<a class="headerlink" href="#Binding-Energy-per-Nucleon" title="Permalink to this headline">¶</a></h3>
 <p>We can easily plot the binding energy per nucleon using <code class="docutils literal notranslate"><span class="pre">seaborn</span></code>:</p>
 <div class="nbinput docutils container">
@@ -1223,8 +1231,8 @@ INFO:root:AME: Reading and loading Atomic Mass Evaluation files from:
 <img alt="../_images/notebooks_2_EDA_AME_13_0.png" src="../_images/notebooks_2_EDA_AME_13_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="Packing-Fraction">
+</section>
+<section id="Packing-Fraction">
 <h3>Packing Fraction<a class="headerlink" href="#Packing-Fraction" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
@@ -1255,8 +1263,8 @@ INFO:root:AME: Reading and loading Atomic Mass Evaluation files from:
 <img alt="../_images/notebooks_2_EDA_AME_16_0.png" src="../_images/notebooks_2_EDA_AME_16_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="Proton-Neutron-Behaviour">
+</section>
+<section id="Proton-Neutron-Behaviour">
 <h3>Proton-Neutron Behaviour<a class="headerlink" href="#Proton-Neutron-Behaviour" title="Permalink to this headline">¶</a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
@@ -1295,9 +1303,9 @@ WARNING:matplotlib.axes._axes:*c* argument looks like a single numeric RGB or RG
 <img alt="../_images/notebooks_2_EDA_AME_18_2.png" src="../_images/notebooks_2_EDA_AME_18_2.png" />
 </div>
 </div>
-</div>
-</div>
-<div class="section" id="Original-vs-Imputed-AME-Dataset">
+</section>
+</section>
+<section id="Original-vs-Imputed-AME-Dataset">
 <h2>Original vs Imputed AME Dataset<a class="headerlink" href="#Original-vs-Imputed-AME-Dataset" title="Permalink to this headline">¶</a></h2>
 <p>As mentioned in the loading data section of the documentation, the values for the imputed version of the AME dataset were obtained by linear interpolation. We can visualize the imputed values by overlapping both the AME dataset with and without NaN values. For example, let us visualize the Mass Excess value for natural uranium (remember that we needed natural data for EXFOR’s natural target samples):</p>
 <div class="nbinput docutils container">
@@ -1350,7 +1358,7 @@ Text(0.5, 0, &#39;Atomic Mass Number&#39;)
 </pre></div>
 </div>
 </div>
-<p>In the following plots the blue points represent the imputed values either for a natural data point or an isotope for which a value was not reported. In some cases these values are not applicable but imputation is necessary for compatibility with some ML models. Let us plot the Mass Excess, Binding Energy, Beta Decay Energy, and the Neutron Separation Energy, all in a subplot</p>
+<p>In the following plots, the blue points represent the imputed values either for a natural data point or an isotope for which a value was not reported. In some cases, these values are not applicable but imputation is necessary for compatibility with some ML models. Let us plot the Mass Excess, Binding Energy, Beta Decay Energy, and the Neutron Separation Energy, all in a subplot</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
 </pre></div>
@@ -1379,18 +1387,9 @@ Text(0.5, 0, &#39;Atomic Mass Number&#39;)
 <img alt="../_images/notebooks_2_EDA_AME_24_0.png" src="../_images/notebooks_2_EDA_AME_24_0.png" />
 </div>
 </div>
-<p>While not perfect, it is better than not using the AME database at all. The AME database contains very useful information that a model can leverage to make bettery predictions.</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
+<p>While not perfect, it is better than not using the AME database at all. The AME database contains very useful information that a model can leverage to make better predictions.</p>
+</section>
+</section>
 
 
            </div>

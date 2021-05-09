@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>nucml.model package &mdash; NucML 1.0.0 documentation</title>
@@ -85,16 +86,16 @@
               
             
             
-              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
+              <p><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p class="caption"><span class="caption-text">GET STARTED</span></p>
+<p><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html">Loading Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
@@ -102,7 +103,14 @@
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
+<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
+</ul>
+<p><span class="caption-text">DOCUMENTATION</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">nucml</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="nucml.html">nucml package</a><ul class="current">
@@ -114,6 +122,7 @@
 <li class="toctree-l4"><a class="reference internal" href="nucml.exfor.html">nucml.exfor package</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">nucml.model package</a><ul>
 <li class="toctree-l5"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-nucml.model.building_utils">nucml.model.building_utils module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="#module-nucml.model.model_building">nucml.model.model_building module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="#module-nucml.model.plot">nucml.model.plot module</a></li>
 <li class="toctree-l5"><a class="reference internal" href="#module-nucml.model.training">nucml.model.training module</a></li>
@@ -137,7 +146,7 @@
 </ul>
 </li>
 </ul>
-<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
+<p><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
@@ -236,12 +245,117 @@
     text-align: unset;
 }
 </style>
-<div class="section" id="nucml-model-package">
+<section id="nucml-model-package">
 <h1>nucml.model package<a class="headerlink" href="#nucml-model-package" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="submodules">
+<section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="module-nucml.model.model_building">
+</section>
+<section id="module-nucml.model.building_utils">
+<span id="nucml-model-building-utils-module"></span><h2>nucml.model.building_utils module<a class="headerlink" href="#module-nucml.model.building_utils" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="nucml.model.building_utils.compile_and_fit">
+<code class="sig-prename descclassname">nucml.model.building_utils.</code><code class="sig-name descname">compile_and_fit</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">x_train</span></em>, <em class="sig-param"><span class="n">y_train</span></em>, <em class="sig-param"><span class="n">x_test</span></em>, <em class="sig-param"><span class="n">y_test</span></em>, <em class="sig-param"><span class="n">BATCH_SIZE</span><span class="o">=</span><span class="default_value">120</span></em>, <em class="sig-param"><span class="n">max_epochs</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="n">DECAY_EPOCHS</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">lr_method</span><span class="o">=</span><span class="default_value">'plateau'</span></em>, <em class="sig-param"><span class="n">initial_epoch</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">logs_dir_name</span><span class="o">=</span><span class="default_value">'logs'</span></em>, <em class="sig-param"><span class="n">append_wandb</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">comet</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">comet_exp</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/model/building_utils.html#compile_and_fit"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.model.building_utils.compile_and_fit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compiles and fits a TensorFlow model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>object</em>) – TensorFlow model object.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – Name by which the TensorFlow model will be saved.</p></li>
+<li><p><strong>x_train</strong> (<em>np.array</em>) – The X-train numpy array set.</p></li>
+<li><p><strong>y_train</strong> (<em>np.array</em>) – The y-train numpy array.</p></li>
+<li><p><strong>x_test</strong> (<em>np.array</em>) – The X-test numpy array set.</p></li>
+<li><p><strong>y_test</strong> (<em>np.array</em>) – The y-test numpy array.</p></li>
+<li><p><strong>BATCH_SIZE</strong> (<em>int</em><em>, </em><em>optional</em>) – Batch size for the tensorflow dataset. Defaults to 120.</p></li>
+<li><p><strong>max_epochs</strong> (<em>int</em><em>, </em><em>optional</em>) – Max number of epochs to train for. Defaults to 5.</p></li>
+<li><p><strong>DECAY_EPOCHS</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of epochs before slightly decreasing the learning rate. Defaults to 10.</p></li>
+<li><p><strong>lr_method</strong> (<em>str</em><em>, </em><em>optional</em>) – Type of learning rate adjustment method. Defaults to “plateau”.</p></li>
+<li><p><strong>initial_epoch</strong> (<em>int</em><em>, </em><em>optional</em>) – Initial epoch of the provided model. Defaults to 0.</p></li>
+<li><p><strong>logs_dir_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the directory where the logs will be stored. Defaults to “logs”.</p></li>
+<li><p><strong>append_wandb</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the WANDB callback will be appended. Defaults to False.</p></li>
+<li><p><strong>verbose</strong> (<em>int</em><em>, </em><em>optional</em>) – See the TensorFlow verbosity for more information. Defaults to 0.</p></li>
+<li><p><strong>comet</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the training will be under a Comet experiment. Defaults to False.</p></li>
+<li><p><strong>comet_exp</strong> (<em>object</em><em>, </em><em>optional</em>) – The Comet experiment by which the training will happen. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Training history object.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.model.building_utils.compile_and_fit_lw">
+<code class="sig-prename descclassname">nucml.model.building_utils.</code><code class="sig-name descname">compile_and_fit_lw</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">x_train</span></em>, <em class="sig-param"><span class="n">y_train</span></em>, <em class="sig-param"><span class="n">x_test</span></em>, <em class="sig-param"><span class="n">y_test</span></em>, <em class="sig-param"><span class="n">BATCH_SIZE</span><span class="o">=</span><span class="default_value">120</span></em>, <em class="sig-param"><span class="n">max_epochs</span><span class="o">=</span><span class="default_value">5</span></em>, <em class="sig-param"><span class="n">DECAY_EPOCHS</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">lr_method</span><span class="o">=</span><span class="default_value">'plateau'</span></em>, <em class="sig-param"><span class="n">initial_epoch</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/model/building_utils.html#compile_and_fit_lw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.model.building_utils.compile_and_fit_lw" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compile and fits a TensorFlow model.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>model</strong> (<em>object</em>) – TensorFlow model to fit.</p></li>
+<li><p><strong>name</strong> (<em>str</em>) – Name by which the model will be saved.</p></li>
+<li><p><strong>x_train</strong> (<em>np.array</em>) – The X-train numpy array set.</p></li>
+<li><p><strong>y_train</strong> (<em>np.array</em>) – The y-train numpy array.</p></li>
+<li><p><strong>x_test</strong> (<em>np.array</em>) – The X-test numpy array set.</p></li>
+<li><p><strong>y_test</strong> (<em>np.array</em>) – The y-test numpy array.</p></li>
+<li><p><strong>BATCH_SIZE</strong> (<em>int</em><em>, </em><em>optional</em>) – Batch size for the tensorflow dataset. Defaults to 120.</p></li>
+<li><p><strong>max_epochs</strong> (<em>int</em><em>, </em><em>optional</em>) – Max number of epochs to train for. Defaults to 5.</p></li>
+<li><p><strong>DECAY_EPOCHS</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of epochs before slightly decreasing the learning rate. Defaults to 10.</p></li>
+<li><p><strong>lr_method</strong> (<em>str</em><em>, </em><em>optional</em>) – Type of learning rate adjustment method. Defaults to “plateau”.</p></li>
+<li><p><strong>initial_epoch</strong> (<em>int</em><em>, </em><em>optional</em>) – Initial epoch of the provided model. Defaults to 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Training history object.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.model.building_utils.get_callbacks">
+<code class="sig-prename descclassname">nucml.model.building_utils.</code><code class="sig-name descname">get_callbacks</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">logs_dir_name</span><span class="o">=</span><span class="default_value">'logs'</span></em>, <em class="sig-param"><span class="n">lr_method</span><span class="o">=</span><span class="default_value">'plateau'</span></em>, <em class="sig-param"><span class="n">patience_epochs</span><span class="o">=</span><span class="default_value">10</span></em>, <em class="sig-param"><span class="n">save_freq</span><span class="o">=</span><span class="default_value">37655</span></em>, <em class="sig-param"><span class="n">append_wandb</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/model/building_utils.html#get_callbacks"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.model.building_utils.get_callbacks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a callback list for TensorFlow training.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – Name of the model.</p></li>
+<li><p><strong>logs_dir_name</strong> (<em>str</em><em>, </em><em>optional</em>) – Name of the directory where the callback logs will be stored. Defaults to “logs”.</p></li>
+<li><p><strong>lr_method</strong> (<em>str</em><em>, </em><em>optional</em>) – Learning rate method to implement. Defaults to “plateau”.</p></li>
+<li><p><strong>patience_epochs</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of epochs to wait before stopping training due to lack of validation progress. Defaults to 10.</p></li>
+<li><p><strong>save_freq</strong> (<em>int</em><em>, </em><em>optional</em>) – Determines how many steps are needed to create a checkpoint. Defaults to 7531*5.</p></li>
+<li><p><strong>append_wandb</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the WANDB callback will be added. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List containing all TensorFlow callbacks.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.model.building_utils.get_optimizer">
+<code class="sig-prename descclassname">nucml.model.building_utils.</code><code class="sig-name descname">get_optimizer</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lr_schedule</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/model/building_utils.html#get_optimizer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.model.building_utils.get_optimizer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="nucml.model.building_utils.get_xgboost_params">
+<code class="sig-prename descclassname">nucml.model.building_utils.</code><code class="sig-name descname">get_xgboost_params</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">eta</span><span class="o">=</span><span class="default_value">0.5</span></em>, <em class="sig-param"><span class="n">gamma</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">l2</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">max_depth</span><span class="o">=</span><span class="default_value">30</span></em>, <em class="sig-param"><span class="n">grow_policy</span><span class="o">=</span><span class="default_value">'depthwise'</span></em>, <em class="sig-param"><span class="n">max_bin</span><span class="o">=</span><span class="default_value">256</span></em>, <em class="sig-param"><span class="n">determ_hist</span><span class="o">=</span><span class="default_value">'true'</span></em>, <em class="sig-param"><span class="n">objective</span><span class="o">=</span><span class="default_value">'rmse'</span></em>, <em class="sig-param"><span class="n">resume</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">gpu_id</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/model/building_utils.html#get_xgboost_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.model.building_utils.get_xgboost_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt id="nucml.model.building_utils.tf_dataset_gen">
+<code class="sig-prename descclassname">nucml.model.building_utils.</code><code class="sig-name descname">tf_dataset_gen</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">x</span></em>, <em class="sig-param"><span class="n">y</span></em>, <em class="sig-param"><span class="n">xt</span></em>, <em class="sig-param"><span class="n">yt</span></em>, <em class="sig-param"><span class="n">BUFFER_SIZE</span></em>, <em class="sig-param"><span class="n">BATCH_SIZE</span></em>, <em class="sig-param"><span class="n">N_TRAIN</span></em>, <em class="sig-param"><span class="n">gpu</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">multiplier</span><span class="o">=</span><span class="default_value">2</span></em>, <em class="sig-param"><span class="n">cache</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/model/building_utils.html#tf_dataset_gen"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.model.building_utils.tf_dataset_gen" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-nucml.model.model_building">
 <span id="nucml-model-model-building-module"></span><h2>nucml.model.model_building module<a class="headerlink" href="#module-nucml.model.model_building" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="nucml.model.model_building.compile_and_fit">
@@ -330,8 +444,8 @@
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-nucml.model.plot">
+</section>
+<section id="module-nucml.model.plot">
 <span id="nucml-model-plot-module"></span><h2>nucml.model.plot module<a class="headerlink" href="#module-nucml.model.plot" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="nucml.model.plot.dt_training">
@@ -361,7 +475,7 @@
 
 <dl class="py function">
 <dt id="nucml.model.plot.knn_training">
-<code class="sig-prename descclassname">nucml.model.plot.</code><code class="sig-name descname">knn_training</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">results_df</span></em>, <em class="sig-param"><span class="n">x_feature</span><span class="o">=</span><span class="default_value">'id'</span></em>, <em class="sig-param"><span class="n">train_metric</span><span class="o">=</span><span class="default_value">'train_mae'</span></em>, <em class="sig-param"><span class="n">val_metric</span><span class="o">=</span><span class="default_value">'val_mae'</span></em>, <em class="sig-param"><span class="n">test_metric</span><span class="o">=</span><span class="default_value">'test_mae'</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save_dir</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">show</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/model/plot.html#knn_training"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.model.plot.knn_training" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">nucml.model.plot.</code><code class="sig-name descname">knn_training</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">results_df</span></em>, <em class="sig-param"><span class="n">x_feature</span><span class="o">=</span><span class="default_value">'id'</span></em>, <em class="sig-param"><span class="n">train_metric</span><span class="o">=</span><span class="default_value">'train_mae'</span></em>, <em class="sig-param"><span class="n">val_metric</span><span class="o">=</span><span class="default_value">'val_mae'</span></em>, <em class="sig-param"><span class="n">test_metric</span><span class="o">=</span><span class="default_value">'test_mae'</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save_path</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">show</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/model/plot.html#knn_training"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.model.plot.knn_training" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plots both the train, val, and test loss as a function of a given parameter (i.e. number of neighbors).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -433,8 +547,13 @@ or parameters such as k-number, number of estimators, etc.</p></li>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-nucml.model.training">
+<dl class="py function">
+<dt id="nucml.model.plot.xgb_training_w_path">
+<code class="sig-prename descclassname">nucml.model.plot.</code><code class="sig-name descname">xgb_training_w_path</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path_to_csv</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">saving_path</span><span class="o">=</span><span class="default_value">'xgb_training.png'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/model/plot.html#xgb_training_w_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.model.plot.xgb_training_w_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-nucml.model.training">
 <span id="nucml-model-training-module"></span><h2>nucml.model.training module<a class="headerlink" href="#module-nucml.model.training" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="nucml.model.training.train_dt">
@@ -516,8 +635,8 @@ Values must be lists of parameteres to test.</p></li>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-nucml.model.utilities">
+</section>
+<section id="module-nucml.model.utilities">
 <span id="nucml-model-utilities-module"></span><h2>nucml.model.utilities module<a class="headerlink" href="#module-nucml.model.utilities" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="nucml.model.utilities.cleanup_model_dir">
@@ -578,6 +697,11 @@ Values must be lists of parameteres to test.</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt id="nucml.model.utilities.filter_by_parameters">
+<code class="sig-prename descclassname">nucml.model.utilities.</code><code class="sig-name descname">filter_by_parameters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">results_df</span></em>, <em class="sig-param"><span class="n">param_dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/model/utilities.html#filter_by_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.model.utilities.filter_by_parameters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt id="nucml.model.utilities.get_best_models_df">
 <code class="sig-prename descclassname">nucml.model.utilities.</code><code class="sig-name descname">get_best_models_df</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">results_df</span></em>, <em class="sig-param"><span class="n">keep_first</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/model/utilities.html#get_best_models_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.model.utilities.get_best_models_df" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a three row minimum dataframe with the best models based on training, validation, and testing
@@ -599,8 +723,13 @@ model and scaler paths.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt id="nucml.model.utilities.get_parameters_from_line">
+<code class="sig-prename descclassname">nucml.model.utilities.</code><code class="sig-name descname">get_parameters_from_line</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">results_df</span></em>, <em class="sig-param"><span class="n">model</span><span class="o">=</span><span class="default_value">'knn'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/model/utilities.html#get_parameters_from_line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.model.utilities.get_parameters_from_line" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt id="nucml.model.utilities.load_model_and_scaler">
-<code class="sig-prename descclassname">nucml.model.utilities.</code><code class="sig-name descname">load_model_and_scaler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model_scaler_info</span></em>, <em class="sig-param"><span class="n">df</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/model/utilities.html#load_model_and_scaler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.model.utilities.load_model_and_scaler" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">nucml.model.utilities.</code><code class="sig-name descname">load_model_and_scaler</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">model_scaler_info</span></em>, <em class="sig-param"><span class="n">df</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">model_only</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/model/utilities.html#load_model_and_scaler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.model.utilities.load_model_and_scaler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads both the model and scaler given a dataframe with path’s specified.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -609,6 +738,7 @@ model and scaler paths.</p>
 is passed. Else, it must contain the “model_path” and “scaler_path” as keys in a dictionary.</p></li>
 <li><p><strong>df</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the model_scaler_info variable must be a DataFrame. If False, it must be
 a python dictionary.</p></li>
+<li><p><strong>model_only</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the scaler will not be loaded. Only the model will be loaded.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -683,11 +813,11 @@ also keeps the best models in terms of multiplication factor.</p>
 </dl>
 </dd></dl>
 
-</div>
-<div class="section" id="module-nucml.model">
+</section>
+<section id="module-nucml.model">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-nucml.model" title="Permalink to this headline">¶</a></h2>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

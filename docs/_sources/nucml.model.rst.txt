@@ -4,6 +4,14 @@ nucml.model package
 Submodules
 ----------
 
+nucml.model.building\_utils module
+----------------------------------
+
+.. automodule:: nucml.model.building_utils
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 nucml.model.model\_building module
 ----------------------------------
 

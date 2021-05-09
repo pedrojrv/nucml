@@ -1,0 +1,381 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>nucml.evaluation package &mdash; NucML 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="nucml.exfor package" href="nucml.exfor.html" />
+    <link rel="prev" title="nucml.ensdf package" href="nucml.ensdf.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NucML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="what-is-nucml.html">What is NucML?</a></li>
+</ul>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic-walkthrough.html">Basic Walkthrough</a></li>
+</ul>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html">Loading Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#modeling-data">Modeling Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
+</ul>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">nucml</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="nucml.html">nucml package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="nucml.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="nucml.ace.html">nucml.ace package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.ame.html">nucml.ame package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.ensdf.html">nucml.ensdf package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">nucml.evaluation package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-nucml.evaluation.data_utilities">nucml.evaluation.data_utilities module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-nucml.evaluation.plot">nucml.evaluation.plot module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-nucml.evaluation">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.exfor.html">nucml.exfor package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.model.html">nucml.model package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.objects.html">nucml.objects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.plot.html">nucml.plot package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml.config">nucml.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml.configure">nucml.configure module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml.datasets">nucml.datasets module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml.general_utilities">nucml.general_utilities module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml.processing">nucml.processing module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NucML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">nucml</a> &raquo;</li>
+        
+          <li><a href="nucml.html">nucml package</a> &raquo;</li>
+        
+      <li>nucml.evaluation package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/nucml.evaluation.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="nucml-evaluation-package">
+<h1>nucml.evaluation package<a class="headerlink" href="#nucml-evaluation-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-nucml.evaluation.data_utilities">
+<span id="nucml-evaluation-data-utilities-module"></span><h2>nucml.evaluation.data_utilities module<a class="headerlink" href="#module-nucml.evaluation.data_utilities" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="nucml.evaluation.data_utilities.get_for_exfor">
+<code class="sig-prename descclassname">nucml.evaluation.data_utilities.</code><code class="sig-name descname">get_for_exfor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">Z</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">MT</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'neutrons'</span></em>, <em class="sig-param"><span class="n">library</span><span class="o">=</span><span class="default_value">'endfb8.0'</span></em>, <em class="sig-param"><span class="n">mev_to_ev</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">mb_to_b</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">drop_u</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/evaluation/data_utilities.html#get_for_exfor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.evaluation.data_utilities.get_for_exfor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets the queried ENDF data for EXFOR functions.</p>
+<p>Note: Internal Function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>Z</strong> (<em>int</em>) – Number of protons</p></li>
+<li><p><strong>A</strong> (<em>int</em>) – Mass number</p></li>
+<li><p><strong>MT</strong> (<em>int</em>) – Reaction type as an ENDF MT code integer.</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – Projectile of the reaction of interest. Only “neutrons” and “protons” is allowed for now.</p></li>
+<li><p><strong>library</strong> (<em>str</em>) – Evaluation library to query. Allowed options include endfb8.0, jendl4.0, jeff3.3, and tendl.2019.</p></li>
+<li><p><strong>mev_to_ev</strong> (<em>bool</em>) – If True, it converts the energy from MeV to eV.</p></li>
+<li><p><strong>mb_to_b</strong> (<em>bool</em>) – If True, it converts the cross sections from millibarns to barns.</p></li>
+<li><p><strong>log</strong> (<em>bool</em><em>, </em><em>optional</em>) – Apply log transformation to the Energy and Data features. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Contains the evaluation dataframe.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.evaluation.data_utilities.load_new">
+<code class="sig-prename descclassname">nucml.evaluation.data_utilities.</code><code class="sig-name descname">load_new</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">datapath</span></em>, <em class="sig-param"><span class="n">mev_to_ev</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/evaluation/data_utilities.html#load_new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.evaluation.data_utilities.load_new" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads new ENDF data from a given filepath. The function assumes the file is readable with
+pd.read_csv() and that the new ENDF file contains a column named “Energy”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>datapath</strong> (<em>str</em>) – Path-like string to new ENDF data file.</p></li>
+<li><p><strong>mev_to_ev</strong> (<em>bool</em><em>, </em><em>optional</em>) – Converts the energy column to eV. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Contains the new ENDF data.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nucml.evaluation.plot">
+<span id="nucml-evaluation-plot-module"></span><h2>nucml.evaluation.plot module<a class="headerlink" href="#module-nucml.evaluation.plot" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="nucml.evaluation.plot.plot">
+<code class="sig-prename descclassname">nucml.evaluation.plot.</code><code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">isotope</span></em>, <em class="sig-param"><span class="n">MT</span></em>, <em class="sig-param"><span class="n">exfor</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">exclude</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">new_data</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">new_data_label</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save_dir</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">z_order_dict</span><span class="o">=</span><span class="default_value">{'endf': 1, 'exfor': 3, 'jeff': 6, 'jendl': 5, 'new_data': 2, 'tendl': 4}</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'neutrons'</span></em>, <em class="sig-param"><span class="n">mev_to_ev</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">mb_to_b</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/evaluation/plot.html#plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.evaluation.plot.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots all evaluations for a specific reaction and a given isotope. It is possible to
+exclude some evaluations if needed. New data can also be added. The avaliable evaluations
+include endfb8.0, jendl4.0, jeff3.3, and tendl.2019</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>isotope</strong> (<em>str</em>) – Isotope to query (i.e. Cl35, u235).</p></li>
+<li><p><strong>MT</strong> (<em>[</em><em>type</em><em>]</em>) – Reaction channel to extract as an integer (ENDF MT codes).</p></li>
+<li><p><strong>exfor</strong> (<em>DataFrame</em><em>, </em><em>optional</em>) – EXFOR DataFrame to plot along the evaluations. Defaults to None.</p></li>
+<li><p><strong>exclude</strong> (<em>list</em><em>, </em><em>optional</em>) – List of evaluations to exclude from plot. Defaults to [].</p></li>
+<li><p><strong>new_data</strong> (<em>DataFrame</em><em>, </em><em>optional</em>) – DataFrame containing new data or extra data to plot. Defaults to None.</p></li>
+<li><p><strong>new_data_label</strong> (<em>str</em><em>, </em><em>optional</em>) – If new_data is being provided, a label for the legend needs to be provided. Defaults to “”.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the figure will be saved. Defaults to False.</p></li>
+<li><p><strong>save_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Directory where the figure will be saved. Defaults to “”.</p></li>
+<li><p><strong>z_order_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – Dictionary containing the order on which to plot the evaluations. For example,
+z_order_dict = {“endf”:1, “new_data”:2, “exfor”:3, “tendl”:4, “jendl”:5, “jeff”:6} will plot the endf
+first followed by the new data if avaliable and so on. Defaults to {“endf”:1, “new_data”:2, “exfor”:3, “tendl”:4, “jendl”:5, “jeff”:6}.</p></li>
+<li><p><strong>mode</strong> (<em>str</em><em>, </em><em>optional</em>) – Which type of projectile is to be extracted. The only options are
+“neutrons” and “protons”. Defaults to “neutrons”.</p></li>
+<li><p><strong>mev_to_ev</strong> (<em>bool</em><em>, </em><em>optional</em>) – Converts energy from MeV to eV. Defaults to True.</p></li>
+<li><p><strong>mb_to_b</strong> (<em>bool</em><em>, </em><em>optional</em>) – Converts cross section from millibarns to barns. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nucml.evaluation">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-nucml.evaluation" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="nucml.exfor.html" class="btn btn-neutral float-right" title="nucml.exfor package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="nucml.ensdf.html" class="btn btn-neutral float-left" title="nucml.ensdf package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Pedro Jr. Vicente-Valdez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

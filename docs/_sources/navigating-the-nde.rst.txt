@@ -1,5 +1,6 @@
 .. _navigating-the-nde-label:
 
+All tutorials showed here (and more) can be downloaded from the :code:`ML_Nuclear_Data` repository `here <https://github.com/pedrojrv/ML_Nuclear_Data>`_.
 
 Loading Data
 ============
@@ -28,6 +29,7 @@ to traditional structured data. Care must be taken to understand the strengths b
 
     notebooks/2_EDA_AME
     notebooks/3_EDA_EXFOR
+    notebooks/3_EDA_Cross_Sections
     notebooks/2_EDA_RIPL
 
 
@@ -110,4 +112,6 @@ and traditional ML but so is the nature of the challenge. Check the following ex
 .. toctree::
     :maxdepth: 1
 
-    notebooks/1_Gathering_Benchmark_Results_B0
+    notebooks/1_Gathering_Benchmark_Results_DT
+
+

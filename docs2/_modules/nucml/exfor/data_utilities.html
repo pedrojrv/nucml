@@ -1,0 +1,890 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>nucml.exfor.data_utilities &mdash; NucML 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> NucML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../what-is-nucml.html">What is NucML?</a></li>
+</ul>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basic-walkthrough.html">Basic Walkthrough</a></li>
+</ul>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html">Loading Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#modeling-data">Modeling Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
+</ul>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">nucml</a></li>
+</ul>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">NucML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>nucml.exfor.data_utilities</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for nucml.exfor.data_utilities</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">xgboost</span> <span class="k">as</span> <span class="nn">xgb</span>
+
+<span class="c1"># This allows us to import the nucml utilities</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../..&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">nucml.ace.data_utilities</span> <span class="k">as</span> <span class="nn">ace_utils</span>              <span class="c1"># pylint: disable=import-error</span>
+<span class="kn">import</span> <span class="nn">nucml.evaluation.data_utilities</span> <span class="k">as</span> <span class="nn">endf_utils</span>      <span class="c1"># pylint: disable=import-error</span>
+<span class="kn">import</span> <span class="nn">nucml.datasets</span> <span class="k">as</span> <span class="nn">nuc_data</span>                         <span class="c1"># pylint: disable=import-error</span>
+<span class="kn">import</span> <span class="nn">nucml.model.utilities</span> <span class="k">as</span> <span class="nn">model_utils</span>               <span class="c1"># pylint: disable=import-error</span>
+<span class="kn">import</span> <span class="nn">nucml.plot.utilities</span> <span class="k">as</span> <span class="nn">plot_utils</span>                 <span class="c1"># pylint: disable=import-error</span>
+<span class="kn">import</span> <span class="nn">nucml.general_utilities</span> <span class="k">as</span> <span class="nn">gen_utils</span>               <span class="c1"># pylint: disable=import-error</span>
+<span class="kn">import</span> <span class="nn">nucml.exfor.plot</span> <span class="k">as</span> <span class="nn">exfor_plot_utils</span>               <span class="c1"># pylint: disable=import-error</span>
+<span class="kn">import</span> <span class="nn">nucml.config</span> <span class="k">as</span> <span class="nn">config</span>                             <span class="c1"># pylint: disable=import-error</span>
+
+<span class="n">ame_dir_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">ame_dir_path</span>
+<span class="n">elements_dict</span> <span class="o">=</span> <span class="n">nuc_data</span><span class="o">.</span><span class="n">elements_dict</span>
+
+<span class="n">empty_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="load_samples"><a class="viewcode-back" href="../../../nucml.exfor.html#nucml.exfor.data_utilities.load_samples">[docs]</a><span class="k">def</span> <span class="nf">load_samples</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="n">nat_iso</span><span class="o">=</span><span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_scale</span><span class="o">=</span><span class="p">[],</span> <span class="n">mt_for</span><span class="o">=</span><span class="s2">&quot;EXFOR&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Extracts datapoints belonging to a particular isotope-reaction channel pair.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (DataFrame): DataFrame containing all avaliable datapoints from where to extract the information.</span>
+<span class="sd">        Z (int): Number of protons.</span>
+<span class="sd">        A (int): Atomic mass number.</span>
+<span class="sd">        MT (int): Reaction channel (ENDF-coded).</span>
+<span class="sd">        nat_iso (str, optional): &quot;I&quot; means isotopic while &quot;N&quot; means natural experimental campaigns. Defaults to &quot;I&quot;.</span>
+<span class="sd">        one_hot (bool, optional): If True, the script assumes that the reaction channel is one-hot encoded. Defaults to False.</span>
+<span class="sd">        scale (bool, optional): If True, the scaler object passed will be use to normalize the extracted information. Defaults to False.</span>
+<span class="sd">        scaler (object, optional): Fitted scaler object. Defaults to None.</span>
+<span class="sd">        to_scale (list, optional): List of feature names that are to be scaled. Defaults to [].</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Extracting samples from dataframe.&quot;</span><span class="p">)</span>
+    <span class="n">MT</span> <span class="o">=</span> <span class="n">gen_utils</span><span class="o">.</span><span class="n">parse_mt</span><span class="p">(</span><span class="n">MT</span><span class="p">,</span> <span class="n">mt_for</span><span class="o">=</span><span class="n">mt_for</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="n">one_hot</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">one_hot</span><span class="p">:</span>
+        <span class="n">sample</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">Z</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">MT</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">A</span><span class="p">)</span> <span class="o">&amp;</span>
+                    <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Element_Flag_&quot;</span> <span class="o">+</span> <span class="n">nat_iso</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Energy&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sample</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">Z</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;MT&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">MT</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">A</span><span class="p">)</span> <span class="o">&amp;</span>
+                    <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Element_Flag&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">nat_iso</span><span class="p">)]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Energy&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">scale</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Scaling dataset...&quot;</span><span class="p">)</span>
+        <span class="n">sample</span><span class="p">[</span><span class="n">to_scale</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">sample</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR extracted DataFrame has shape: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">sample</span></div>
+
+<div class="viewcode-block" id="load_isotope"><a class="viewcode-back" href="../../../nucml.exfor.html#nucml.exfor.data_utilities.load_isotope">[docs]</a><span class="k">def</span> <span class="nf">load_isotope</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">nat_iso</span><span class="o">=</span><span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_scale</span><span class="o">=</span><span class="p">[]):</span>
+    <span class="sd">&quot;&quot;&quot;Loads all datapoints avaliable for a particular isotope.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (DataFrame): All avaliable experimental datapoints.</span>
+<span class="sd">        Z (int): Number of protons.</span>
+<span class="sd">        A (int): Atomic mass number.</span>
+<span class="sd">        nat_iso (str, optional): &quot;I&quot; means isotopic while &quot;N&quot; means natural experimental campaigns. Defaults to &quot;I&quot;.</span>
+<span class="sd">        one_hot (bool, optional): If True, the script assumes that the reaction channel is one-hot encoded. Defaults to False.</span>
+<span class="sd">        scale (bool, optional): If True, the scaler object passed will be use to normalize the extracted information. Defaults to False.</span>
+<span class="sd">        scaler (object, optional): Fitted scaler object. Defaults to None.</span>
+<span class="sd">        to_scale (list, optional): List of feature names that are to be scaled. Defaults to [].</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Extracting samples from dataframe.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">one_hot</span><span class="p">:</span>
+        <span class="n">sample</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">Z</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">A</span><span class="p">)</span> <span class="o">&amp;</span>
+                    <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Element_Flag_&quot;</span> <span class="o">+</span> <span class="n">nat_iso</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Energy&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sample</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">Z</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">A</span><span class="p">)</span> <span class="o">&amp;</span>
+                    <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Element_Flag&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">nat_iso</span><span class="p">)]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Energy&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">scale</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Scaling dataset...&quot;</span><span class="p">)</span>
+        <span class="n">sample</span><span class="p">[</span><span class="n">to_scale</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">sample</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR extracted DataFrame has shape: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">sample</span></div>
+
+<div class="viewcode-block" id="load_element"><a class="viewcode-back" href="../../../nucml.exfor.html#nucml.exfor.data_utilities.load_element">[docs]</a><span class="k">def</span> <span class="nf">load_element</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">nat_iso</span><span class="o">=</span><span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_scale</span><span class="o">=</span><span class="p">[]):</span>
+    <span class="sd">&quot;&quot;&quot;Loads all datapoints avaliable for a particular element.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (DataFrame): All avaliable experimental datapoints.</span>
+<span class="sd">        Z (int): Number of protons.</span>
+<span class="sd">        nat_iso (str, optional): &quot;I&quot; means isotopic while &quot;N&quot; means natural experimental campaigns. Defaults to &quot;I&quot;.</span>
+<span class="sd">        one_hot (bool, optional): If True, the script assumes that the reaction channel is one-hot encoded. Defaults to False.</span>
+<span class="sd">        scale (bool, optional): If True, the scaler object passed will be use to normalize the extracted information. Defaults to False.</span>
+<span class="sd">        scaler (object, optional): Fitted scaler object. Defaults to None.</span>
+<span class="sd">        to_scale (list, optional): List of feature names that are to be scaled. Defaults to [].</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Extracting samples from dataframe.&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">one_hot</span><span class="p">:</span>
+        <span class="n">sample</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">Z</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Element_Flag_&quot;</span> <span class="o">+</span> <span class="n">nat_iso</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Energy&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sample</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">Z</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Element_Flag&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">nat_iso</span><span class="p">)]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Energy&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">scale</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Scaling dataset...&quot;</span><span class="p">)</span>
+        <span class="n">sample</span><span class="p">[</span><span class="n">to_scale</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">sample</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR extracted DataFrame has shape: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sample</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">sample</span></div>
+
+<div class="viewcode-block" id="load_newdata"><a class="viewcode-back" href="../../../nucml.exfor.html#nucml.exfor.data_utilities.load_newdata">[docs]</a><span class="k">def</span> <span class="nf">load_newdata</span><span class="p">(</span><span class="n">datapath</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="n">nat_iso</span><span class="o">=</span><span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_scale</span><span class="o">=</span><span class="p">[]):</span>
+    <span class="sd">&quot;&quot;&quot;Loads new measurments and appends the appropiate EXFOR isotopic data. </span>
+<span class="sd">    Assumes new data only have two columns: Energy and Data.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        datapath (str): Path-like string of the new data file.</span>
+<span class="sd">        df (DataFrame): All avaliable experimental datapoints.</span>
+<span class="sd">        Z (int): Number of protons.</span>
+<span class="sd">        A (int): Atomic mass number.</span>
+<span class="sd">        MT (int): Reaction channel (endf-coded).</span>
+<span class="sd">        nat_iso (str, optional): &quot;I&quot; means isotopic while &quot;N&quot; means natural experimental campaigns. Defaults to &quot;I&quot;.</span>
+<span class="sd">        one_hot (bool, optional): If True, the script assumes that the reaction channel is one-hot encoded. Defaults to False.</span>
+<span class="sd">        log (bool, optional): If True, the log of both the Energy and Data features will be taken.</span>
+<span class="sd">        scale (bool, optional): If True, the scaler object passed will be use to normalize the extracted information. Defaults to False.</span>
+<span class="sd">        scaler (object, optional): Fitted scaler object. Defaults to None.</span>
+<span class="sd">        to_scale (list, optional): List of feature names that are to be scaled. Defaults to [].</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">new_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">datapath</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">log</span><span class="p">:</span>
+        <span class="n">new_data</span><span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">new_data</span><span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">])</span>
+        <span class="n">new_data</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">new_data</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">])</span>
+    <span class="n">isotope_exfor</span> <span class="o">=</span> <span class="n">load_samples</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="n">nat_iso</span><span class="o">=</span><span class="n">nat_iso</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="n">one_hot</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">isotope_exfor</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Data&quot;</span><span class="p">]:</span>
+            <span class="n">new_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">isotope_exfor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">&quot;dData&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">new_data</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+        <span class="n">new_data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s2">&quot;dData&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;dEnergy&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">new_data</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+        <span class="n">new_data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s2">&quot;dEnergy&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">scale</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Scaling dataset...&quot;</span><span class="p">)</span>
+        <span class="n">new_data</span><span class="p">[</span><span class="n">to_scale</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">new_data</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR extracted DataFrame has shape: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new_data</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">new_data</span></div>
+
+<div class="viewcode-block" id="append_energy"><a class="viewcode-back" href="../../../nucml.exfor.html#nucml.exfor.data_utilities.append_energy">[docs]</a><span class="k">def</span> <span class="nf">append_energy</span><span class="p">(</span><span class="n">e_array</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="n">nat_iso</span><span class="o">=</span><span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">scaler</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_scale</span><span class="o">=</span><span class="p">[],</span> <span class="n">ignore_MT</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;The given energy array is appended to the passed DataFrame and feature values are coppied to these new rows.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        e_array (np.array): Numpy array with the additional energy values to append.</span>
+<span class="sd">        df (DataFrame): All avaliable experimental datapoints.</span>
+<span class="sd">        Z (int): Number of protons.</span>
+<span class="sd">        A (int): Atomic mass number.</span>
+<span class="sd">        MT (int): Reaction channel (endf-coded).</span>
+<span class="sd">        nat_iso (str, optional): &quot;I&quot; means isotopic while &quot;N&quot; means natural experimental campaigns. Defaults to &quot;I&quot;.</span>
+<span class="sd">        one_hot (bool, optional): If True, the script assumes that the reaction channel is one-hot encoded. Defaults to False.</span>
+<span class="sd">        log (bool, optional): If True, the log of both the Energy and Data features will be taken.</span>
+<span class="sd">        scale (bool, optional): If True, the scaler object passed will be use to normalize the extracted information. Defaults to False.</span>
+<span class="sd">        scaler (object, optional): Fitted scaler object. Defaults to None.</span>
+<span class="sd">        to_scale (list, optional): List of feature names that are to be scaled. Defaults to [].</span>
+<span class="sd">        ignore_MT (bool, optional): If True, the reaction channel is ignored and data for the total reaction is taken. Defaults to False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">new_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;Energy&quot;</span><span class="p">:</span><span class="n">e_array</span><span class="p">})</span>
+    <span class="k">if</span> <span class="n">log</span><span class="p">:</span>
+        <span class="n">new_data</span><span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">new_data</span><span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">ignore_MT</span><span class="p">:</span>
+        <span class="n">isotope_exfor</span> <span class="o">=</span> <span class="n">load_samples</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="s2">&quot;MT_1&quot;</span><span class="p">,</span> <span class="n">nat_iso</span><span class="o">=</span><span class="n">nat_iso</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="n">one_hot</span><span class="p">,</span> <span class="n">mt_for</span><span class="o">=</span><span class="s2">&quot;ACE&quot;</span><span class="p">)</span>
+        <span class="n">isotope_exfor</span><span class="o">.</span><span class="n">MT_1</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">isotope_exfor</span><span class="p">[</span><span class="n">MT</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">isotope_exfor</span> <span class="o">=</span> <span class="n">load_samples</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="n">nat_iso</span><span class="o">=</span><span class="n">nat_iso</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="n">one_hot</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">isotope_exfor</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Data&quot;</span><span class="p">]:</span>
+            <span class="n">new_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">isotope_exfor</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="s2">&quot;dData&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">new_data</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+        <span class="n">new_data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s2">&quot;dData&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="s2">&quot;dEnergy&quot;</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">new_data</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+        <span class="n">new_data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s2">&quot;dEnergy&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Expanded Dataset has shape: </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new_data</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">scale</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Scaling dataset...&quot;</span><span class="p">)</span>
+        <span class="n">new_data</span><span class="p">[</span><span class="n">to_scale</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">new_data</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">new_data</span></div>
+
+
+<div class="viewcode-block" id="expanding_dataset_energy"><a class="viewcode-back" href="../../../nucml.exfor.html#nucml.exfor.data_utilities.expanding_dataset_energy">[docs]</a><span class="k">def</span> <span class="nf">expanding_dataset_energy</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">E_min</span><span class="p">,</span> <span class="n">E_max</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="n">N</span><span class="p">,</span> <span class="n">e_array</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Expands a given DataFrames energy points by a given number of energy points between E_min and E_max.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data (DataFrame): DataFrame for which the Energy will be expanded.</span>
+<span class="sd">        E_min (int): Starting point for energy expansion.</span>
+<span class="sd">        E_max (float): Ending point for energy expansion.</span>
+<span class="sd">        log (bool): If True, it assumes the Energy in the passed data is already in log form.</span>
+<span class="sd">        N (int): Number of datapoints between E_min and E_max to create.</span>
+<span class="sd">        e_array (np.array, optional): If e_array is provided, this gets appended overriding any other parameters. Defaults to None.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">e_array_avaliable</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">False</span>
+    <span class="k">if</span> <span class="n">e_array_avaliable</span><span class="p">:</span>
+        <span class="n">energy_to_add</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;Energy&quot;</span><span class="p">:</span> <span class="n">e_array</span><span class="p">})</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">log</span><span class="p">:</span>
+            <span class="n">energy_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">E_min</span><span class="p">,</span> <span class="n">E_max</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">energy_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">E_min</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">E_max</span><span class="p">),</span> <span class="n">N</span><span class="p">))</span>
+        <span class="n">energy_to_add</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;Energy&quot;</span><span class="p">:</span> <span class="n">energy_range</span><span class="p">})</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">energy_to_add</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">energy_to_add</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Energy&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+<div class="viewcode-block" id="make_predictions_w_energy"><a class="viewcode-back" href="../../../nucml.exfor.html#nucml.exfor.data_utilities.make_predictions_w_energy">[docs]</a><span class="k">def</span> <span class="nf">make_predictions_w_energy</span><span class="p">(</span><span class="n">e_array</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">to_scale</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given an energy array and isotopic information, Predictions using a model are performed at the given energy points in the e_array for a given isotope. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        e_array (np.array): Numpy array representing energy points at which inferences will be made.</span>
+<span class="sd">        df (DataFrame): All avaliable experimental datapoints.</span>
+<span class="sd">        Z (int): Number of protons.</span>
+<span class="sd">        A (int): Atomic mass number.</span>
+<span class="sd">        MT (int): Reaction channel (endf-coded).</span>
+<span class="sd">        model (object): Trained model object.</span>
+<span class="sd">        model_type (str): Type of model. Options include None meaning scikit-learn models, &quot;tf&quot;, for tensorflow, and &quot;xgb&quot; for gradient boosting machines.</span>
+<span class="sd">        scaler (object): Fitted scaler object.</span>
+<span class="sd">        to_scale (list): List of feature names that are to be scaled.</span>
+<span class="sd">        one_hot (bool, optional): If True, the script assumes that the reaction channel is one-hot encoded. Defaults to False.</span>
+<span class="sd">        log (bool, optional): If True, the log of both the Energy and Data features will be taken.</span>
+<span class="sd">        show (bool, optional): If True, a plot of the predictions will be rendered. Defaults to False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.array</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;Z&quot;</span><span class="p">:</span><span class="n">Z</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">:</span><span class="n">A</span><span class="p">,</span> <span class="s2">&quot;MT&quot;</span><span class="p">:</span><span class="n">MT</span><span class="p">,</span> <span class="s2">&quot;log&quot;</span><span class="p">:</span><span class="n">log</span><span class="p">,</span> <span class="s2">&quot;scale&quot;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;scaler&quot;</span><span class="p">:</span><span class="n">scaler</span><span class="p">,</span> <span class="s2">&quot;to_scale&quot;</span><span class="p">:</span><span class="n">to_scale</span><span class="p">,</span> <span class="s2">&quot;one_hot&quot;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;ignore_MT&quot;</span><span class="p">:</span><span class="kc">True</span><span class="p">}</span>
+    <span class="n">to_infer</span> <span class="o">=</span> <span class="n">append_energy</span><span class="p">(</span><span class="n">e_array</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="o">**</span><span class="n">data_kwargs</span><span class="p">)</span>
+    <span class="n">exfor</span> <span class="o">=</span> <span class="n">load_samples</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="n">one_hot</span><span class="p">,</span> <span class="n">mt_for</span><span class="o">=</span><span class="s2">&quot;ACE&quot;</span><span class="p">)</span>
+    <span class="c1"># Make Predictions</span>
+    <span class="n">y_hat</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">make_predictions</span><span class="p">(</span><span class="n">to_infer</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_type</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">exfor</span><span class="o">.</span><span class="n">Energy</span><span class="p">,</span> <span class="n">exfor</span><span class="o">.</span><span class="n">Data</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;g&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">to_infer</span><span class="o">.</span><span class="n">Energy</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">y_hat</span></div>
+
+<div class="viewcode-block" id="make_predictions_from_df"><a class="viewcode-back" href="../../../nucml.exfor.html#nucml.exfor.data_utilities.make_predictions_from_df">[docs]</a><span class="k">def</span> <span class="nf">make_predictions_from_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_type</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">to_scale</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Returns predictions for all avaliable datapoints for a particular isotope-reaction channel pair.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (DataFrame): All avaliable experimental datapoints.</span>
+<span class="sd">        Z (int): Number of protons.</span>
+<span class="sd">        A (int): Atomic mass number.</span>
+<span class="sd">        MT (int): Reaction channel (endf-coded).</span>
+<span class="sd">        model (object): Trained model object.</span>
+<span class="sd">        model_type (str): Type of model. Options include None meaning scikit-learn models, &quot;tf&quot;, for tensorflow, and &quot;xgb&quot; for gradient boosting machines.</span>
+<span class="sd">        scaler (object): Fitted scaler object.</span>
+<span class="sd">        to_scale (list): List of feature names that are to be scaled.</span>
+<span class="sd">        log (bool, optional): If True, the log of both the Energy and Data features will be taken.</span>
+<span class="sd">        show (bool, optional): If True, a plot of the predictions will be rendered. Defaults to False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.array</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;nat_iso&quot;</span><span class="p">:</span> <span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="s2">&quot;one_hot&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;scaler&quot;</span><span class="p">:</span> <span class="n">scaler</span><span class="p">,</span> <span class="s2">&quot;to_scale&quot;</span><span class="p">:</span> <span class="n">to_scale</span><span class="p">}</span>
+    <span class="n">exfor</span> <span class="o">=</span> <span class="n">load_samples</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="c1"># Make Predictions</span>
+    <span class="n">y_hat</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">make_predictions</span><span class="p">(</span><span class="n">exfor</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_type</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">exfor</span><span class="o">.</span><span class="n">Energy</span><span class="p">,</span> <span class="n">exfor</span><span class="o">.</span><span class="n">Data</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="s2">&quot;g&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">exfor</span><span class="o">.</span><span class="n">Energy</span><span class="p">,</span> <span class="n">y_hat</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">y_hat</span></div>
+
+<div class="viewcode-block" id="predicting_nuclear_xs_v2"><a class="viewcode-back" href="../../../nucml.exfor.html#nucml.exfor.data_utilities.predicting_nuclear_xs_v2">[docs]</a><span class="k">def</span> <span class="nf">predicting_nuclear_xs_v2</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">to_scale</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">e_array</span><span class="o">=</span><span class="s2">&quot;ace&quot;</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+    <span class="n">model_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">new_data</span><span class="o">=</span><span class="n">empty_df</span><span class="p">,</span> <span class="n">nat_iso</span><span class="o">=</span><span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="n">get_endf</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">inv_trans</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> 
+    <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">plotter</span><span class="o">=</span><span class="s2">&quot;plotly&quot;</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="n">path</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">save_both</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">order_dict</span><span class="o">=</span><span class="p">{}):</span>
+    <span class="sd">&quot;&quot;&quot;Predicts values for a given isotope-reaction channel pair. This all-in-one function allows to not only get predictions</span>
+<span class="sd">    but also calculate the errors relative to the EXFOR and ENDF datapoints (if avaliable). In addition, the plotting </span>
+<span class="sd">    capabilities allow the user to inspect the predictions in a typical cross section plot. In addition to predicting </span>
+<span class="sd">    values at the original exfor datapoint energies, the .ACE energy grid is used for further comparison.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (DataFrame): All avaliable experimental datapoints.</span>
+<span class="sd">        Z (int): Number of protons.</span>
+<span class="sd">        A (int): Atomic mass number.</span>
+<span class="sd">        MT (int): Reaction channel (endf-coded).</span>
+<span class="sd">        model (object): Trained model object.</span>
+<span class="sd">        to_scale (list): List of feature names that are to be scaled. </span>
+<span class="sd">        scaler (object): Fitted scaler object.</span>
+<span class="sd">        e_array (str, optional): If &quot;ace&quot;, the energy grid from the appropiate ACE file is appended. An</span>
+<span class="sd">            alternative is to provide a specific energy array. Defaults to &quot;ace&quot;.</span>
+<span class="sd">        log (bool, optional): If True, it assumes the Energy is already in a log form. Defaults to False.</span>
+<span class="sd">        model_type (str): Type of model. Options include None meaning scikit-learn models, &quot;tf&quot;, for tensorflow, and &quot;xgb&quot; for gradient boosting machines.</span>
+<span class="sd">        html (bool, optional): If True, the plot will be rendered in an interactive browser tab. Defaults to False.</span>
+<span class="sd">        new_data (DataFrame, optional): New data for which to make predictions, get errors, and plot. Assumes it has all needed information. Defaults to empty_df.</span>
+<span class="sd">        save (bool, optional): If True, the plot will be saved. Defaults to False.</span>
+<span class="sd">        show (bool, optional): If True, a plot of the predictions will be rendered. Defaults to False.</span>
+<span class="sd">        path (str, optional): Path-like string on which to save the rendered plots. Defaults to &quot;&quot;.</span>
+<span class="sd">        nat_iso (str, optional): &quot;I&quot; means isotopic while &quot;N&quot; means natural experimental campaigns. Defaults to &quot;I&quot;.</span>
+<span class="sd">        order_dict (dict, optional): Order in which to plot the different lines. See plotly_ml_results() for more info. Defaults to {}.</span>
+<span class="sd">        get_endf (bool, optional): If True, the endf file will be extracted to calculate errors and create plots. Defaults to False.</span>
+<span class="sd">        inv_trans (bool, optional): If True, the returned data will be in its original form (not scaled). Defaults to False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: contains a variety of information including predictions, errors, and more.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">endf</span> <span class="o">=</span> <span class="n">empty_df</span>
+    <span class="k">if</span> <span class="n">get_endf</span><span class="p">:</span>
+        <span class="n">endf</span> <span class="o">=</span> <span class="n">endf_utils</span><span class="o">.</span><span class="n">get_for_exfor</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="n">log</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">e_array</span> <span class="o">==</span> <span class="s2">&quot;ace&quot;</span><span class="p">:</span>
+        <span class="c1"># e_array = ace_utils.get_energies(&#39;{:&lt;02d}&#39;.format(Z) + str(A).zfill(3), ev=True, log=log)</span>
+        <span class="n">e_array</span> <span class="o">=</span> <span class="n">ace_utils</span><span class="o">.</span><span class="n">get_energies</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">ev</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="n">log</span><span class="p">)</span>
+
+    <span class="n">new_data_avaliable</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">new_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">False</span>
+    <span class="n">endf_avaliable</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">endf</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">False</span>
+    <span class="n">e_array_avaliable</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">e_array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">False</span>
+
+    <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;nat_iso&quot;</span><span class="p">:</span><span class="n">nat_iso</span><span class="p">,</span> <span class="s2">&quot;one_hot&quot;</span><span class="p">:</span><span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;scaler&quot;</span><span class="p">:</span> <span class="n">scaler</span><span class="p">,</span> <span class="s2">&quot;to_scale&quot;</span><span class="p">:</span> <span class="n">to_scale</span><span class="p">}</span>
+    <span class="n">to_infer</span> <span class="o">=</span> <span class="n">load_samples</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">to_plot</span> <span class="o">=</span> <span class="n">load_samples</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">to_infer</span> <span class="o">=</span> <span class="n">to_infer</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">])</span>    
+
+    <span class="k">if</span> <span class="n">e_array_avaliable</span><span class="p">:</span> 
+        <span class="n">to_infer</span> <span class="o">=</span> <span class="n">expanding_dataset_energy</span><span class="p">(</span><span class="n">to_infer</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">e_array</span><span class="o">=</span><span class="n">e_array</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">to_infer</span> <span class="o">=</span> <span class="n">expanding_dataset_energy</span><span class="p">(</span><span class="n">to_infer</span><span class="p">,</span> <span class="o">-</span><span class="mf">5.00</span><span class="p">,</span> <span class="mf">7.30</span><span class="p">,</span> <span class="n">log</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+
+    <span class="n">to_infer</span><span class="p">[</span><span class="n">to_scale</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">to_infer</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+    
+    <span class="n">pred_exfor_expanded</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">make_predictions</span><span class="p">(</span><span class="n">to_infer</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_type</span><span class="p">)</span>
+    <span class="n">pred_exfor_original</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">make_predictions</span><span class="p">(</span><span class="n">to_plot</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_type</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">inv_trans</span><span class="p">:</span>
+        <span class="n">to_infer</span><span class="p">[</span><span class="n">to_scale</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">to_infer</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+        <span class="n">to_plot</span><span class="p">[</span><span class="n">to_scale</span><span class="p">]</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">to_plot</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+
+    <span class="n">all_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;exfor_ml_expanded&quot;</span><span class="p">:{</span><span class="s2">&quot;df&quot;</span><span class="p">:</span><span class="n">to_infer</span><span class="p">,</span> <span class="s2">&quot;predictions&quot;</span><span class="p">:</span><span class="n">pred_exfor_expanded</span><span class="p">},</span> 
+                <span class="s2">&quot;exfor_ml_original&quot;</span><span class="p">:{</span><span class="s2">&quot;df&quot;</span><span class="p">:</span><span class="n">to_plot</span><span class="p">,</span> <span class="s2">&quot;predictions&quot;</span><span class="p">:</span><span class="n">pred_exfor_original</span><span class="p">}}</span>
+
+    <span class="n">exfor_ml_error</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">regression_error_metrics</span><span class="p">(</span><span class="n">to_plot</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">],</span> <span class="n">pred_exfor_original</span><span class="p">)</span>
+    <span class="n">error_df</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">create_error_df</span><span class="p">(</span><span class="s2">&quot;EXFOR VS ML&quot;</span><span class="p">,</span> <span class="n">exfor_ml_error</span><span class="p">)</span>
+    <span class="n">all_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;error_metrics&quot;</span><span class="p">:</span><span class="n">error_df</span><span class="p">})</span>
+
+    <span class="k">if</span> <span class="n">new_data_avaliable</span><span class="p">:</span>
+        <span class="n">pred_exfor_new</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">make_predictions</span><span class="p">(</span><span class="n">new_data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">model_type</span><span class="p">)</span>
+        <span class="n">all_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;exfor_ml_new&quot;</span><span class="p">:{</span><span class="s2">&quot;df&quot;</span><span class="p">:</span><span class="n">new_data</span><span class="p">,</span> <span class="s2">&quot;predictions&quot;</span><span class="p">:</span><span class="n">pred_exfor_new</span><span class="p">}})</span>
+
+        <span class="n">exfor_ml_new_error</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">regression_error_metrics</span><span class="p">(</span><span class="n">new_data</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">],</span> <span class="n">pred_exfor_new</span><span class="p">)</span>
+        <span class="n">error_new_df</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">create_error_df</span><span class="p">(</span><span class="s2">&quot;EXFOR VS ML (NEW DATA)&quot;</span><span class="p">,</span> <span class="n">exfor_ml_new_error</span><span class="p">)</span>
+        <span class="n">error_df</span> <span class="o">=</span> <span class="n">error_df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">error_new_df</span><span class="p">)</span>
+        <span class="n">all_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;error_metrics&quot;</span><span class="p">:</span><span class="n">error_df</span><span class="p">})</span>
+
+    <span class="k">if</span> <span class="n">endf_avaliable</span><span class="p">:</span>
+        <span class="c1"># Gets interpolated endf data with anchor exfor</span>
+        <span class="n">exfor_endf</span><span class="p">,</span> <span class="n">error_endf</span> <span class="o">=</span> <span class="n">get_error_endf_exfor</span><span class="p">(</span><span class="n">endf</span><span class="p">,</span> <span class="n">to_plot</span><span class="p">)</span>
+        <span class="n">error_df</span> <span class="o">=</span> <span class="n">error_df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">error_endf</span><span class="p">)</span>
+        <span class="n">all_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;exfor_endf_original&quot;</span><span class="p">:</span><span class="n">exfor_endf</span><span class="p">,</span> <span class="s2">&quot;error_metrics&quot;</span><span class="p">:</span><span class="n">error_df</span><span class="p">,</span> <span class="s2">&quot;endf&quot;</span><span class="p">:</span><span class="n">endf</span><span class="p">})</span>
+        <span class="k">if</span> <span class="n">new_data_avaliable</span><span class="p">:</span>
+            <span class="c1"># Gets interpolated endf data with anchor new exfor</span>
+            <span class="n">exfor_endf_new_data</span><span class="p">,</span> <span class="n">error_endf_new</span> <span class="o">=</span> <span class="n">get_error_endf_new</span><span class="p">(</span><span class="n">endf</span><span class="p">,</span> <span class="n">new_data</span><span class="p">)</span>
+            <span class="n">error_df</span> <span class="o">=</span> <span class="n">error_df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">error_endf_new</span><span class="p">)</span>
+            <span class="n">all_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;exfor_endf_new&quot;</span><span class="p">:</span><span class="n">exfor_endf_new_data</span><span class="p">,</span> <span class="s2">&quot;error_metrics&quot;</span><span class="p">:</span><span class="n">error_df</span><span class="p">})</span>
+
+    <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">plotter</span> <span class="o">==</span> <span class="s2">&quot;plotly&quot;</span><span class="p">:</span>
+            <span class="n">exfor_plot_utils</span><span class="o">.</span><span class="n">ml_results</span><span class="p">(</span><span class="n">all_dict</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="n">save</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">order_dict</span><span class="o">=</span><span class="n">order_dict</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="n">show</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">plotter</span> <span class="o">==</span> <span class="s2">&quot;plt&quot;</span><span class="p">:</span>
+            <span class="n">exfor_plot_utils</span><span class="o">.</span><span class="n">ml_results</span><span class="p">(</span><span class="n">all_dict</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="n">save</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">order_dict</span><span class="o">=</span><span class="n">order_dict</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="n">show</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="n">log</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s2">&quot;sns&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">save_both</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">plotter</span> <span class="o">==</span> <span class="s2">&quot;plotly&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">order_dict</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">order_dict</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">order_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+                <span class="n">exfor_plot_utils</span><span class="o">.</span><span class="n">ml_results</span><span class="p">(</span><span class="n">all_dict</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="n">save</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">order_dict</span><span class="o">=</span><span class="n">order_dict</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="n">log</span><span class="p">,</span> <span class="n">plot_type</span><span class="o">=</span><span class="s2">&quot;sns&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">plotter</span> <span class="o">==</span> <span class="s2">&quot;plt&quot;</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">order_dict</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">order_dict</span> <span class="o">=</span> <span class="p">{</span><span class="nb">str</span><span class="p">(</span><span class="n">v</span><span class="p">):</span> <span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">order_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+                <span class="n">exfor_plot_utils</span><span class="o">.</span><span class="n">ml_results</span><span class="p">(</span><span class="n">all_dict</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="n">save</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">order_dict</span><span class="o">=</span><span class="n">order_dict</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">all_dict</span></div>
+
+
+<div class="viewcode-block" id="plot_exfor_w_references"><a class="viewcode-back" href="../../../nucml.exfor.html#nucml.exfor.data_utilities.plot_exfor_w_references">[docs]</a><span class="k">def</span> <span class="nf">plot_exfor_w_references</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="n">nat_iso</span><span class="o">=</span><span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="n">new_data</span><span class="o">=</span><span class="n">empty_df</span><span class="p">,</span> <span class="n">endf</span><span class="o">=</span><span class="n">empty_df</span><span class="p">,</span> <span class="n">error</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">get_endf</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">reverse_log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">legend_size</span><span class="o">=</span><span class="mi">21</span><span class="p">,</span>
+    <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">interpolate</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">legend</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">log_plot</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">ref</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">new_data_label</span><span class="o">=</span><span class="s2">&quot;Additional Data&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plots Cross Section for a particular Isotope with or without references. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (DataFrame): All avaliable experimental datapoints.</span>
+<span class="sd">        Z (int): Number of protons.</span>
+<span class="sd">        A (int): Atomic mass number.</span>
+<span class="sd">        MT (int): Reaction channel (endf-coded).</span>
+<span class="sd">        nat_iso (str, optional): &quot;I&quot; means isotopic while &quot;N&quot; means natural experimental campaigns. Defaults to &quot;I&quot;.</span>
+<span class="sd">        new_data (DataFrame, optional): New data for which to make predictions, get errors, and plot. Assumes it has all needed information. Defaults to empty_df.</span>
+<span class="sd">        endf (DataFrame, optional): DataFrame containing the appropiate ENDF data to plot against. Defaults to empty_df.</span>
+<span class="sd">        error (bool, optional): If True, error between the EXFOR and ENDF datapoints are calculated. Defaults to False.</span>
+<span class="sd">        get_endf (bool, optional): If True, the endf file will be extracted to calculate errors and create plots. Defaults to False.</span>
+<span class="sd">        reverse_log (bool, optional): If True, the log in Energy and Data is first removed from the passed dataframe. Defaults to False.</span>
+<span class="sd">        legend_size (int, optional): Legend size in plots. Useful when there are many experimental campaigns. Defaults to 21.</span>
+<span class="sd">        save (bool, optional): If True, the plot will be saved. Defaults to False.</span>
+<span class="sd">        interpolate (bool, optional): If True, the EXFOR will be ploted as a line rather than scatter points. Defaults to False.</span>
+<span class="sd">        legend (bool, optional): If True, a legend will appear in the image. Defaults to False.</span>
+<span class="sd">        alpha (float, optional): Level of transparency of ENDF and EXFOR plots. Defaults to 0.7.</span>
+<span class="sd">        one_hot (bool, optional): If True, the passed dataframe is assumed to be preprocessed. Defaults to False.</span>
+<span class="sd">        log_plot (bool, optional): If True, log scales will be applied. Defaults to False.</span>
+<span class="sd">        path (str, optional): Path-like string on which to save the rendered plots. Defaults to &quot;&quot;.</span>
+<span class="sd">        ref (bool, optional): If True, EXFOR will be ploted per experimental campaign (one color for each). Defaults to False.</span>
+<span class="sd">        new_data_label (str, optional): If new data is provided, this sets the label in the legend. Defaults to &quot;Additional Data&quot;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: All information requested including original data and errors are contained in a python dictionary.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">reverse_log</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">if</span> <span class="n">get_endf</span><span class="p">:</span>
+        <span class="n">endf</span> <span class="o">=</span> <span class="n">endf_utils</span><span class="o">.</span><span class="n">get_for_exfor</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="c1"># Extracting dataframe to make predictions and creating copy for evaluation</span>
+    <span class="n">exfor_sample</span> <span class="o">=</span> <span class="n">load_samples</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="n">nat_iso</span><span class="o">=</span><span class="n">nat_iso</span><span class="p">,</span> <span class="n">one_hot</span><span class="o">=</span><span class="n">one_hot</span><span class="p">)</span>
+
+    <span class="c1"># Initializing Figure and Plotting</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ref</span><span class="p">:</span>
+        <span class="n">groups</span> <span class="o">=</span> <span class="n">exfor_sample</span><span class="p">[[</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;Data&quot;</span><span class="p">,</span> <span class="s2">&quot;Short_Reference&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;Short_Reference&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">],</span> <span class="n">group</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">exfor_sample</span><span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">],</span> <span class="n">exfor_sample</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;EXFOR&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">)</span> <span class="c1"># pylint: disable=too-many-function-args  </span>
+    <span class="k">if</span> <span class="n">new_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">new_data</span><span class="o">.</span><span class="n">Energy</span><span class="p">,</span> <span class="n">new_data</span><span class="o">.</span><span class="n">Data</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">new_data_label</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">endf</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">endf</span><span class="o">.</span><span class="n">Energy</span><span class="p">,</span> <span class="n">endf</span><span class="o">.</span><span class="n">Data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ENDF/B-VIII.0&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span> <span class="c1"># alpha previously 0.8</span>
+    <span class="k">if</span> <span class="n">interpolate</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">exfor_sample</span><span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">],</span> <span class="n">exfor_sample</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">],</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="o">*</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Interpolation&quot;</span><span class="p">,</span> <span class="n">ci</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="c1"># pylint: disable=too-many-function-args</span>
+    <span class="k">if</span> <span class="n">log_plot</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">legend</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="n">legend_size</span><span class="p">)</span>
+
+    <span class="c1"># Setting Figure Limits</span>
+    <span class="n">exfor_plot_utils</span><span class="o">.</span><span class="n">plot_limits_ref</span><span class="p">(</span><span class="n">exfor_sample</span><span class="p">,</span> <span class="n">endf</span><span class="p">,</span> <span class="n">new_data</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Energy (eV)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Cross Section (b)&#39;</span><span class="p">)</span>
+
+    <span class="n">all_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;exfor&quot;</span><span class="p">:</span><span class="n">exfor_sample</span><span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s2">&quot;EXFOR_</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">_XS.png&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">exfor_sample</span><span class="o">.</span><span class="n">Isotope</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">MT</span><span class="p">),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">error</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">endf</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">exfor_endf</span><span class="p">,</span> <span class="n">error_endf</span> <span class="o">=</span> <span class="n">get_error_endf_exfor</span><span class="p">(</span><span class="n">endf</span><span class="o">=</span><span class="n">endf</span><span class="p">,</span> <span class="n">exfor_sample</span><span class="o">=</span><span class="n">exfor_sample</span><span class="p">)</span>
+            <span class="n">all_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;endf&quot;</span><span class="p">:</span><span class="n">endf</span><span class="p">,</span> <span class="s2">&quot;exfor_endf&quot;</span><span class="p">:</span><span class="n">exfor_endf</span><span class="p">,</span> <span class="s2">&quot;error_metrics&quot;</span><span class="p">:</span><span class="n">error_endf</span><span class="p">})</span>
+            <span class="k">if</span> <span class="n">new_data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">exfor_endf_new_data</span><span class="p">,</span> <span class="n">error_endf_new</span> <span class="o">=</span> <span class="n">get_error_endf_new</span><span class="p">(</span><span class="n">endf</span><span class="p">,</span> <span class="n">new_data</span><span class="p">)</span>
+                <span class="n">error_df</span> <span class="o">=</span> <span class="n">error_endf</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">error_endf_new</span><span class="p">)</span>
+                <span class="n">all_dict</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s2">&quot;exfor_endf_new&quot;</span><span class="p">:</span><span class="n">exfor_endf_new_data</span><span class="p">,</span> <span class="s2">&quot;error_metrics&quot;</span><span class="p">:</span><span class="n">error_df</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">all_dict</span></div>
+
+
+
+<div class="viewcode-block" id="get_error_endf_exfor"><a class="viewcode-back" href="../../../nucml.exfor.html#nucml.exfor.data_utilities.get_error_endf_exfor">[docs]</a><span class="k">def</span> <span class="nf">get_error_endf_exfor</span><span class="p">(</span><span class="n">endf</span><span class="p">,</span> <span class="n">exfor_sample</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates error between an ENDF and EXFOR sample. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        endf (DataFrame): ENDF DataFrame sample for the relevant isotope and reaction channel.</span>
+<span class="sd">        exfor_sample (DataFrame): EXFOR DataFrame sample for the relevant isotope and reaction channel.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame, DataFrame: first dataframe contains original values while the second one </span>
+<span class="sd">            the calculated errors.   </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">endf_copy</span> <span class="o">=</span> <span class="n">endf</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">exfor_copy</span> <span class="o">=</span> <span class="n">exfor_sample</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">exfor_copy</span> <span class="o">=</span> <span class="n">exfor_copy</span><span class="p">[</span><span class="n">exfor_copy</span><span class="o">.</span><span class="n">Energy</span> <span class="o">&gt;</span> <span class="n">endf_copy</span><span class="o">.</span><span class="n">Energy</span><span class="o">.</span><span class="n">min</span><span class="p">()]</span>
+    <span class="n">indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">endf</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">endf</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">exfor_copy</span><span class="p">))</span> <span class="c1"># start our index numbering after len(endf) (does not collide)</span>
+    <span class="n">exfor_copy</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">indexes</span> <span class="c1"># This will return a dataframe with non zero index</span>
+    <span class="n">energy_interest</span> <span class="o">=</span> <span class="n">exfor_copy</span><span class="p">[[</span><span class="s2">&quot;Energy&quot;</span><span class="p">]]</span> <span class="c1"># energy_interest will carry previous indexes</span>
+    <span class="n">energy_interest</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">endf_copy</span> <span class="o">=</span> <span class="n">endf_copy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">energy_interest</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Energy&#39;</span><span class="p">])</span>
+    <span class="n">endf_copy</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">endf_copy</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">(</span><span class="n">limit_direction</span><span class="o">=</span><span class="s2">&quot;forward&quot;</span><span class="p">)</span>
+    <span class="c1"># Measuring metrics on predictions.</span>
+    <span class="n">error_endf_exfor</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">regression_error_metrics</span><span class="p">(</span><span class="n">exfor_copy</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">],</span> <span class="n">endf_copy</span><span class="p">[[</span><span class="s2">&quot;Data&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">indexes</span><span class="p">])</span>
+    <span class="n">error_endf_exfor_df</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">create_error_df</span><span class="p">(</span><span class="s2">&quot;EXFOR VS ENDF&quot;</span><span class="p">,</span> <span class="n">error_endf_exfor</span><span class="p">)</span>
+
+    <span class="n">exfor_endf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;Energy&quot;</span><span class="p">:</span><span class="n">exfor_copy</span><span class="o">.</span><span class="n">Energy</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> 
+        <span class="s2">&quot;EXFOR&quot;</span><span class="p">:</span><span class="n">exfor_copy</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="s2">&quot;ENDF&quot;</span><span class="p">:</span><span class="n">endf_copy</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">indexes</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">})</span>
+    <span class="c1"># ORIGINAL return exfor_endf</span>
+    <span class="k">return</span> <span class="n">exfor_endf</span><span class="p">,</span> <span class="n">error_endf_exfor_df</span></div>
+
+<div class="viewcode-block" id="get_error_endf_new"><a class="viewcode-back" href="../../../nucml.exfor.html#nucml.exfor.data_utilities.get_error_endf_new">[docs]</a><span class="k">def</span> <span class="nf">get_error_endf_new</span><span class="p">(</span><span class="n">endf</span><span class="p">,</span> <span class="n">new_data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the error between a given dataframe of experimental datapoints to ENDF.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        endf (DataFrame): DataFrame containing the ENDF datapoints.</span>
+<span class="sd">        new_data (DataFrame): DataFrame containing the new experimental data points.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame, DataFrame: first dataframe contains original values while the second one </span>
+<span class="sd">            the calculated errors.  </span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">endf_copy</span> <span class="o">=</span> <span class="n">endf</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">indexes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">endf</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">endf</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_data</span><span class="p">))</span>
+    <span class="n">new_data</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">indexes</span>
+    <span class="n">energy_interest</span> <span class="o">=</span> <span class="n">new_data</span><span class="p">[[</span><span class="s2">&quot;Energy&quot;</span><span class="p">]]</span>
+    <span class="n">energy_interest</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+    <span class="n">endf_copy</span> <span class="o">=</span> <span class="n">endf_copy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">energy_interest</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">endf_copy</span> <span class="o">=</span> <span class="n">endf_copy</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Energy&#39;</span><span class="p">])</span>
+    <span class="n">endf_copy</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">endf_copy</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span>
+
+    <span class="c1"># Measuring metrics on predictions.</span>
+    <span class="n">error_endf_exfor_new</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">regression_error_metrics</span><span class="p">(</span><span class="n">new_data</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">],</span> <span class="n">endf_copy</span><span class="p">[[</span><span class="s2">&quot;Data&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">indexes</span><span class="p">])</span>
+    <span class="n">error_endf_exfor_new_df</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">create_error_df</span><span class="p">(</span><span class="s2">&quot;EXFOR VS ENDF (NEW DATA)&quot;</span><span class="p">,</span> <span class="n">error_endf_exfor_new</span><span class="p">)</span>
+
+
+    <span class="n">exfor_endf_new_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;Energy&quot;</span><span class="p">:</span><span class="n">new_data</span><span class="o">.</span><span class="n">Energy</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> 
+        <span class="s2">&quot;EXFOR&quot;</span><span class="p">:</span><span class="n">new_data</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="s2">&quot;ENDF&quot;</span><span class="p">:</span><span class="n">endf_copy</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">indexes</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">})</span>
+
+    <span class="c1"># ORIGINAL return exfor_endf_new_data</span>
+    <span class="k">return</span> <span class="n">exfor_endf_new_data</span><span class="p">,</span> <span class="n">error_endf_exfor_new_df</span></div>
+
+<div class="viewcode-block" id="get_mt_errors_exfor_ml"><a class="viewcode-back" href="../../../nucml.exfor.html#nucml.exfor.data_utilities.get_mt_errors_exfor_ml">[docs]</a><span class="k">def</span> <span class="nf">get_mt_errors_exfor_ml</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">to_scale</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the error between EXFOR and ML predictions for a given isotope.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (DataFrame): All avaliable experimental datapoints.</span>
+<span class="sd">        Z (int): Number of protons.</span>
+<span class="sd">        A (int): Atomic mass number.</span>
+<span class="sd">        scaler (object): Fitted scaler object.</span>
+<span class="sd">        to_scale (list): List of feature names that are to be scaled. </span>
+<span class="sd">        model (object): Machine learning object.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;nat_iso&quot;</span><span class="p">:</span> <span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="s2">&quot;one_hot&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;scaler&quot;</span><span class="p">:</span> <span class="n">scaler</span><span class="p">,</span> <span class="s2">&quot;to_scale&quot;</span><span class="p">:</span> <span class="n">to_scale</span><span class="p">}</span>
+    <span class="n">error_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;MT&#39;</span><span class="p">,</span> <span class="s1">&#39;MAE&#39;</span><span class="p">,</span> <span class="s1">&#39;MSE&#39;</span><span class="p">,</span> <span class="s1">&#39;EVS&#39;</span><span class="p">,</span> <span class="s1">&#39;MAE_M&#39;</span><span class="p">,</span> <span class="s1">&#39;R2&#39;</span><span class="p">])</span>
+    <span class="n">exfor_isotope</span> <span class="o">=</span> <span class="n">load_isotope</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="c1"># NEXT WE REMOVE ANY MT COLUMNS THAT ARE FILLED WITH ZEROS</span>
+    <span class="n">exfor_isotope_cols</span> <span class="o">=</span> <span class="n">exfor_isotope</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">(</span><span class="n">exfor_isotope</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)][:</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">exfor_isotope_cols</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;MT&quot;</span> <span class="ow">in</span> <span class="n">col</span><span class="p">:</span>
+            <span class="n">exfor_sample</span> <span class="o">=</span> <span class="n">load_samples</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">error_dict</span> <span class="o">=</span> <span class="n">model_utils</span><span class="o">.</span><span class="n">regression_error_metrics</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">exfor_sample</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">])),</span> 
+                                                              <span class="n">exfor_sample</span><span class="o">.</span><span class="n">Data</span><span class="p">)</span>
+            <span class="n">error_results</span> <span class="o">=</span> <span class="n">error_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;MT&quot;</span><span class="p">:[</span><span class="n">col</span><span class="p">],</span> <span class="s2">&quot;MAE&quot;</span><span class="p">:[</span><span class="n">error_dict</span><span class="p">[</span><span class="s2">&quot;mae&quot;</span><span class="p">]],</span> 
+                                                               <span class="s2">&quot;MSE&quot;</span><span class="p">:[</span><span class="n">error_dict</span><span class="p">[</span><span class="s2">&quot;mse&quot;</span><span class="p">]],</span> <span class="s2">&quot;EVS&quot;</span><span class="p">:[</span><span class="n">error_dict</span><span class="p">[</span><span class="s2">&quot;evs&quot;</span><span class="p">]],</span> 
+                                                               <span class="s2">&quot;MAE_M&quot;</span><span class="p">:[</span><span class="n">error_dict</span><span class="p">[</span><span class="s2">&quot;mae_m&quot;</span><span class="p">]],</span> <span class="s2">&quot;R2&quot;</span><span class="p">:[</span><span class="n">error_dict</span><span class="p">[</span><span class="s2">&quot;r2&quot;</span><span class="p">]]}))</span>
+    <span class="k">return</span> <span class="n">error_results</span></div>
+
+<div class="viewcode-block" id="get_mt_error_exfor_endf"><a class="viewcode-back" href="../../../nucml.exfor.html#nucml.exfor.data_utilities.get_mt_error_exfor_endf">[docs]</a><span class="k">def</span> <span class="nf">get_mt_error_exfor_endf</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">to_scale</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculates the error between EXFOR and ENDF for a given isotope. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (DataFrame): All avaliable experimental datapoints.</span>
+<span class="sd">        Z (int): Number of protons.</span>
+<span class="sd">        A (int): Atomic mass number.</span>
+<span class="sd">        scaler (object): Fitted scaler object.</span>
+<span class="sd">        to_scale (list): List of feature names that are to be scaled. </span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="c1"># TODO: FIND OUT IF WE NEED SCALER OR TO SCALE</span>
+    <span class="c1"># We don&#39;t care if its scaled or not since we only care abuot the Data feature, but we still need it?</span>
+    <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;nat_iso&quot;</span><span class="p">:</span> <span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="s2">&quot;one_hot&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;scaler&quot;</span><span class="p">:</span> <span class="n">scaler</span><span class="p">,</span> <span class="s2">&quot;to_scale&quot;</span><span class="p">:</span> <span class="n">to_scale</span><span class="p">}</span>
+    <span class="n">error_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;mae&#39;</span><span class="p">,</span> <span class="s1">&#39;mse&#39;</span><span class="p">,</span> <span class="s1">&#39;evs&#39;</span><span class="p">,</span> <span class="s1">&#39;mae_m&#39;</span><span class="p">,</span> <span class="s1">&#39;r2&#39;</span><span class="p">,</span> <span class="s1">&#39;MT&#39;</span><span class="p">])</span>
+    <span class="n">exfor_isotope</span> <span class="o">=</span> <span class="n">load_isotope</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">exfor_isotope_cols</span> <span class="o">=</span> <span class="n">exfor_isotope</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">(</span><span class="n">exfor_isotope</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)][:</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">exfor_isotope_cols</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;MT&quot;</span> <span class="ow">in</span> <span class="n">col</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;MT_101&quot;</span><span class="p">,</span> <span class="s2">&quot;MT_9000&quot;</span><span class="p">]:</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">exfor_sample</span> <span class="o">=</span> <span class="n">load_samples</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">endf_data</span> <span class="o">=</span> <span class="n">endf_utils</span><span class="o">.</span><span class="n">get_for_exfor</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">error_exfor_endf</span> <span class="o">=</span> <span class="n">get_error_endf_exfor</span><span class="p">(</span><span class="n">endf_data</span><span class="p">,</span> <span class="n">exfor_sample</span><span class="p">)</span>
+                <span class="n">error_exfor_endf</span><span class="p">[</span><span class="s2">&quot;MT&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">col</span>
+                <span class="n">error_results</span> <span class="o">=</span> <span class="n">error_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">error_exfor_endf</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">error_results</span></div>
+
+
+<div class="viewcode-block" id="get_csv_for_ace"><a class="viewcode-back" href="../../../nucml.exfor.html#nucml.exfor.data_utilities.get_csv_for_ace">[docs]</a><span class="k">def</span> <span class="nf">get_csv_for_ace</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">to_scale</span><span class="p">,</span> <span class="n">model_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">saving_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">saving_filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Creates a CSV with the model predictions for a particular isotope in the appropiate format for the ACE utilities.</span>
+<span class="sd">    The function returns a DataFrame which can then be saved as a CSV. The saving_dir argument provides a direct method </span>
+<span class="sd">    by which to save the CSV file in the process. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (DataFrame): All avaliable experimental datapoints.</span>
+<span class="sd">        Z (int): Number of protons.</span>
+<span class="sd">        A (int): Atomic mass number.</span>
+<span class="sd">        model (object): Trained model object.</span>
+<span class="sd">        scaler (object): Fitted scaler object.</span>
+<span class="sd">        to_scale (list): List of feature names that are to be scaled. </span>
+<span class="sd">        model_type (str): Type of model. Options include None meaning scikit-learn models, &quot;tf&quot;, for tensorflow, and &quot;xgb&quot; for gradient boosting machines.</span>
+<span class="sd">        saving_dir (str, optional): Path-like string on where to save the CSV file. If given, the CSV file will be saved. Defaults to None.</span>
+<span class="sd">        saving_filename (str, optional): Name for the CSV file to be saved. Defaults to None.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">ace_array</span> <span class="o">=</span> <span class="n">ace_utils</span><span class="o">.</span><span class="n">get_energies</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:&lt;02d}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">Z</span><span class="p">)</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">A</span><span class="p">)</span><span class="o">.</span><span class="n">zfill</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">ev</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">data_ace</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;Energy&quot;</span><span class="p">:</span><span class="n">ace_array</span><span class="p">})</span>
+    
+    <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;nat_iso&quot;</span><span class="p">:</span> <span class="s2">&quot;I&quot;</span><span class="p">,</span> <span class="s2">&quot;one_hot&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;scale&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;scaler&quot;</span><span class="p">:</span> <span class="n">scaler</span><span class="p">,</span> <span class="s2">&quot;to_scale&quot;</span><span class="p">:</span> <span class="n">to_scale</span><span class="p">}</span>
+    <span class="n">exfor_isotope</span> <span class="o">=</span> <span class="n">load_isotope</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">exfor_isotope_cols</span> <span class="o">=</span> <span class="n">exfor_isotope</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">(</span><span class="n">exfor_isotope</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)][:</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">exfor_isotope_cols</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s2">&quot;MT&quot;</span> <span class="ow">in</span> <span class="n">col</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">col</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;MT_9000&quot;</span><span class="p">]:</span>
+                <span class="k">continue</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">col</span><span class="p">)</span>
+                <span class="n">predictions</span> <span class="o">=</span> <span class="n">make_predictions_w_energy</span><span class="p">(</span><span class="n">ace_array</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> 
+                                              <span class="n">model_type</span><span class="p">,</span> <span class="n">scaler</span><span class="p">,</span> <span class="n">to_scale</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+                <span class="n">data_ace</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">predictions</span>
+
+    <span class="n">data_ace</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="n">data_ace</span>
+    <span class="k">if</span> <span class="n">saving_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">data_ace</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_dir</span><span class="p">,</span> <span class="n">saving_filename</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data_ace</span></div>
+
+<div class="viewcode-block" id="add_compound_nucleus_info"><a class="viewcode-back" href="../../../nucml.exfor.html#nucml.exfor.data_utilities.add_compound_nucleus_info">[docs]</a><span class="k">def</span> <span class="nf">add_compound_nucleus_info</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">drop_q</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Adds compound nucleus data to the original EXFOR DataFrame. This is performed</span>
+<span class="sd">    by just appending the AME data by shifting the number of neutrons by 1.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (DataFrame): Original EXFOR dataframe.</span>
+<span class="sd">        drop_q (bool, optional): If True, it will drop all Q-value information. Defaults to False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        DataFrame</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">drop_q</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR CSV: Dropping Q-Values...&quot;</span><span class="p">)</span>
+        <span class="n">q_value</span> <span class="o">=</span> <span class="p">[</span><span class="n">col</span> <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="k">if</span> <span class="s1">&#39;Q&#39;</span> <span class="ow">in</span> <span class="n">col</span><span class="p">]</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">q_value</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR CSV: Adding information for Compound Nucleus...&quot;</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Compound_Neutrons&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">N</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Compound_Mass_Number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">A</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Compound_Protons&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Z</span>
+
+    <span class="n">masses</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ame_dir_path</span><span class="p">,</span> <span class="s2">&quot;AME_Natural_Properties_no_NaN.csv&quot;</span><span class="p">))</span>
+    <span class="n">masses</span> <span class="o">=</span> <span class="n">masses</span><span class="p">[</span><span class="n">masses</span><span class="o">.</span><span class="n">Flag</span> <span class="o">==</span> <span class="s2">&quot;I&quot;</span><span class="p">]</span>
+    <span class="n">masses</span> <span class="o">=</span> <span class="n">masses</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Neutrons&quot;</span><span class="p">,</span> <span class="s2">&quot;Mass_Number&quot;</span><span class="p">,</span> <span class="s2">&quot;Flag&quot;</span><span class="p">])</span>
+    <span class="n">masses</span> <span class="o">=</span> <span class="n">masses</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="s1">&#39;Neutrons&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="s1">&#39;Mass_Number&#39;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">:</span><span class="s2">&quot;Protons&quot;</span><span class="p">,</span> <span class="s2">&quot;O&quot;</span><span class="p">:</span><span class="s2">&quot;Origin&quot;</span><span class="p">})</span>
+
+    <span class="n">nuclear_data_compound</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">masses</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+    <span class="n">nuclear_data_compound_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Compound_&quot;</span> <span class="o">+</span> <span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">nuclear_data_compound</span><span class="p">]</span>
+    <span class="n">masses</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">nuclear_data_compound_cols</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">masses</span> <span class="o">=</span> <span class="n">masses</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">masses</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Compound_Neutrons&#39;</span><span class="p">,</span> <span class="s1">&#39;Compound_Protons&#39;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Compound_Mass_Number_y&quot;</span><span class="p">])</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Compound_Mass_Number_x&#39;</span><span class="p">:</span> <span class="s1">&#39;Compound_Mass_Number&#39;</span><span class="p">})</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Pedro Jr. Vicente-Valdez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

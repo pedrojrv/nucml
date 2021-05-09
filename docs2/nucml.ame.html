@@ -1,0 +1,506 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>nucml.ame package &mdash; NucML 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="nucml.ensdf package" href="nucml.ensdf.html" />
+    <link rel="prev" title="nucml.ace package" href="nucml.ace.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NucML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="what-is-nucml.html">What is NucML?</a></li>
+</ul>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic-walkthrough.html">Basic Walkthrough</a></li>
+</ul>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html">Loading Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#modeling-data">Modeling Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
+</ul>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">nucml</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="nucml.html">nucml package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="nucml.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="nucml.ace.html">nucml.ace package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">nucml.ame package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-nucml.ame.parsing_utilities">nucml.ame.parsing_utilities module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-nucml.ame">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.ensdf.html">nucml.ensdf package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.evaluation.html">nucml.evaluation package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.exfor.html">nucml.exfor package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.model.html">nucml.model package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.objects.html">nucml.objects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.plot.html">nucml.plot package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml.config">nucml.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml.configure">nucml.configure module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml.datasets">nucml.datasets module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml.general_utilities">nucml.general_utilities module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml.processing">nucml.processing module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NucML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">nucml</a> &raquo;</li>
+        
+          <li><a href="nucml.html">nucml package</a> &raquo;</li>
+        
+      <li>nucml.ame package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/nucml.ame.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="nucml-ame-package">
+<h1>nucml.ame package<a class="headerlink" href="#nucml-ame-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-nucml.ame.parsing_utilities">
+<span id="nucml-ame-parsing-utilities-module"></span><h2>nucml.ame.parsing_utilities module<a class="headerlink" href="#module-nucml.ame.parsing_utilities" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="nucml.ame.parsing_utilities.create_natural_element_data">
+<code class="sig-prename descclassname">nucml.ame.parsing_utilities.</code><code class="sig-name descname">create_natural_element_data</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">originals_directory</span></em>, <em class="sig-param"><span class="n">saving_directory</span></em>, <em class="sig-param"><span class="n">fillna</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'elemental'</span></em>, <em class="sig-param"><span class="n">fill_value</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ame/parsing_utilities.html#create_natural_element_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ame.parsing_utilities.create_natural_element_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates natural element data by averaging isotopic data. Additionally it
+adds a flag to indicate rows which correspond to isotopic or natural data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>originals_directory</strong> (<em>str</em>) – Path to the Atomic Mass Evaluation directory where the
+periodic_table csv file is located.</p></li>
+<li><p><strong>saving_directory</strong> (<em>str</em>) – Path to directory where the resulting formatted
+csv file will be saved including the AME_all_merged.csv file.</p></li>
+<li><p><strong>fillna</strong> (<em>bool</em>) – If True, missing values are filled. For the remaining NaN values not filled by the
+used <cite>mode</cite>, a value of 0 will be inserted unless specified otherwise.</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – The supported modes are:
+elemental: missing values are filled using linear interpolation element-wise.</p></li>
+<li><p><strong>fill_value</strong> (<em>float</em>) – Value to fill remaining missing values with after imputation is finished
+with selected <cite>mode</cite>. Defaults to 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ame.parsing_utilities.get_all">
+<code class="sig-prename descclassname">nucml.ame.parsing_utilities.</code><code class="sig-name descname">get_all</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">originals_directory</span></em>, <em class="sig-param"><span class="n">saving_directory</span></em>, <em class="sig-param"><span class="n">fillna</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">fill_value</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">create_imputed</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">add_qvalues</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ame/parsing_utilities.html#get_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ame.parsing_utilities.get_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates 5 CSV files: Proccesed (1) mass16, (2) rct1, and (3) rct2 files. It then creates
+a (4) single CSV merging the first three CSV files. It then creates (5) a proccesed CSV file
+containing isotpic and natural element data with NaN values. If wanted a (6) copy of the fifth
+CSV file is saved with imputed NaN values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>originals_directory</strong> (<em>str</em>) – Path to the Atomic Mass Evaluation directory where the
+periodic_table csv file is located.</p></li>
+<li><p><strong>saving_directory</strong> (<em>str</em>) – Path to directory where the resulting formatted
+csv file will be saved.</p></li>
+<li><p><strong>fillna</strong> (<em>bool</em>) – If True, it fills the missing values. For NaN values not filled by the
+used “mode”, then the filling method is just the mean of the entire dataset.</p></li>
+<li><p><strong>fill_value</strong> (<em>int</em><em>, </em><em>float</em>) – Value to fill remaining missing values with after imputation is finished
+with selected <cite>mode</cite>. Defaults to 0.</p></li>
+<li><p><strong>create_imputed</strong> (<em>bool</em>) – If True, missing values will be imputed.</p></li>
+<li><p><strong>add_qvalues</strong> (<em>bool</em>) – If true it will add the following reaction Q-values:
+[“Q(g,p)”] = -1 * [“S(p)”]
+[“Q(g,n)”] = -1 * [“S(n)”]
+[“Q(g,pn)”] = [“Q(d,a)”] - 26071.0939
+[“Q(g,d)”] = [“Q(d,a)”] - 23846.5279
+[“Q(g,t)”] = [“Q(p,a)”] - 19813.8649
+[“Q(g,He3)”] = [“Q(n,a)”] - 20577.6194
+[“Q(g,2p)”] = -1 * [“S(2p)”]
+[“Q(g,2n)”] = -1 * [“S(2n)”]
+[“Q(g,a)”] = [“Q(a)”]
+[“Q(p,n)”] = [“B_Decay_Energy”] - 782.3465
+[“Q(p,2p)”] = -1 * [“S(p)”]
+[“Q(p,pn)”] = -1 * [“S(n)”]
+[“Q(p,d)”] = -1 * [“S(n)”] + 2224.5660
+[“Q(p,2n)”] = [“Q(B-n)”] - 782.3465
+[“Q(p,t)”] = -1 * [“S(2n)”] + 8481.7949
+[“Q(p,3He)”] = [“Q(d,a)”] - 18353.0535
+[“Q(n,2p)”] = [“Q(ep)”] + 782.3465
+[“Q(n,np)”] = -1 * [“S(p)”]
+[“Q(n,d)”] = -1 * [“S(p)”] + 2224.5660
+[“Q(n,2n)”] = -1 * [“S(n)”]
+[“Q(n,t)”] = [“Q(d,a)”] - 17589.2989
+[“Q(n,3He)”] = -1 * [“S(2p)”] + 7718.0404
+[“Q(d,t)”] = -1 * [“S(n)”] + 6257.2290
+[“Q(d,3He)”] = -1 * [“S(p)”] + 5493.4744
+[“Q(3He,t)”] = [“B_Decay_Energy”] - 18.5920
+[“Q(3He,a)”] = -1 * [“S(n)”] + 20577.6194
+[“Q(t,a)”] = -1 * [“S(p)”] + 19813.8649</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ame.parsing_utilities.get_ame_originals">
+<code class="sig-prename descclassname">nucml.ame.parsing_utilities.</code><code class="sig-name descname">get_ame_originals</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">originals_directory</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ame/parsing_utilities.html#get_ame_originals"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ame.parsing_utilities.get_ame_originals" title="Permalink to this definition">¶</a></dt>
+<dd><p>Requests and stores the three AME original files for further processing from the IAEA website.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>originals_directory</strong> (<em>str</em>) – Path-like string where the text files will be stored.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ame.parsing_utilities.merge_mass_rct">
+<code class="sig-prename descclassname">nucml.ame.parsing_utilities.</code><code class="sig-name descname">merge_mass_rct</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">directory</span></em>, <em class="sig-param"><span class="n">create_imputed</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">add_qvalues</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ame/parsing_utilities.html#merge_mass_rct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ame.parsing_utilities.merge_mass_rct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads the proccessed mass16, rct1, and rct2 files and merges them while adding other reaction
+Q-values if needed. It creates one main CSV file when finished. This assumes the three files
+were created using the read_mass(), read_rct1(), and read_rct2() functions. For more information
+visit the IAEA webiste: <a class="reference external" href="https://www-nds.iaea.org/amdc/">https://www-nds.iaea.org/amdc/</a>. It also creates a new CSV file where
+missing values are filled via linear imputation paramenter- and element-wise.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>directory</strong> (<em>str</em>) – Path to the Atomic Mass Evaluation directory where
+the processed mass16, rct2, and rct2 files are saved. The length of all three
+files must be the same. The resulting file will be stored in the same directory.</p></li>
+<li><p><strong>create_imputed</strong> (<em>bool</em>) – If True, missing values will be imputed.</p></li>
+<li><p><strong>add_qvalues</strong> (<em>bool</em>) – If true it will add the following reaction Q-values:
+[“Q(g,p)”] = -1 * [“S(p)”]
+[“Q(g,n)”] = -1 * [“S(n)”]
+[“Q(g,pn)”] = [“Q(d,a)”] - 26071.0939
+[“Q(g,d)”] = [“Q(d,a)”] - 23846.5279
+[“Q(g,t)”] = [“Q(p,a)”] - 19813.8649
+[“Q(g,He3)”] = [“Q(n,a)”] - 20577.6194
+[“Q(g,2p)”] = -1 * [“S(2p)”]
+[“Q(g,2n)”] = -1 * [“S(2n)”]
+[“Q(g,a)”] = [“Q(a)”]
+[“Q(p,n)”] = [“B_Decay_Energy”] - 782.3465
+[“Q(p,2p)”] = -1 * [“S(p)”]
+[“Q(p,pn)”] = -1 * [“S(n)”]
+[“Q(p,d)”] = -1 * [“S(n)”] + 2224.5660
+[“Q(p,2n)”] = [“Q(B-n)”] - 782.3465
+[“Q(p,t)”] = -1 * [“S(2n)”] + 8481.7949
+[“Q(p,3He)”] = [“Q(d,a)”] - 18353.0535
+[“Q(n,2p)”] = [“Q(ep)”] + 782.3465
+[“Q(n,np)”] = -1 * [“S(p)”]
+[“Q(n,d)”] = -1 * [“S(p)”] + 2224.5660
+[“Q(n,2n)”] = -1 * [“S(n)”]
+[“Q(n,t)”] = [“Q(d,a)”] - 17589.2989
+[“Q(n,3He)”] = -1 * [“S(2p)”] + 7718.0404
+[“Q(d,t)”] = -1 * [“S(n)”] + 6257.2290
+[“Q(d,3He)”] = -1 * [“S(p)”] + 5493.4744
+[“Q(3He,t)”] = [“B_Decay_Energy”] - 18.5920
+[“Q(3He,a)”] = -1 * [“S(n)”] + 20577.6194
+[“Q(t,a)”] = -1 * [“S(p)”] + 19813.8649</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ame.parsing_utilities.read_mass16">
+<code class="sig-prename descclassname">nucml.ame.parsing_utilities.</code><code class="sig-name descname">read_mass16</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">originals_directory</span></em>, <em class="sig-param"><span class="n">saving_directory</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ame/parsing_utilities.html#read_mass16"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ame.parsing_utilities.read_mass16" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads the mass16.txt file and creates a formatted CSV file. The Mass 16 file contains a variety of
+features including atomic mass, mass excess, binding energy, beta decay energy, and more.
+For more information visit the IAEA webiste: <a class="reference external" href="https://www-nds.iaea.org/amdc/">https://www-nds.iaea.org/amdc/</a></p>
+<p>It  is parse base on the Fortran formatting:
+a1,i3,i5,i5,i5,1x,a3,a4,1x,f13.5,f11.5,f11.3,f9.3,1x,a2,f11.3,f9.3,1x,i3,1x,f12.5,f11.5</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>originals_directory</strong> (<em>str</em>) – Path to the Atomic Mass Evaluation directory where the mass16_toparse.txt file is located.</p></li>
+<li><p><strong>saving_directory</strong> (<em>str</em>) – Path to save resulting formatted csv file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ame.parsing_utilities.read_rct1">
+<code class="sig-prename descclassname">nucml.ame.parsing_utilities.</code><code class="sig-name descname">read_rct1</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">originals_directory</span></em>, <em class="sig-param"><span class="n">saving_directory</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ame/parsing_utilities.html#read_rct1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ame.parsing_utilities.read_rct1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads the rct1-16.txt file and creates a formatted CSV file. The rct1-16 file contains a variety of
+features including neutron and proton separation energies and q-values for a variety of reactions.
+For more information visit the IAEA webiste: <a class="reference external" href="https://www-nds.iaea.org/amdc/">https://www-nds.iaea.org/amdc/</a></p>
+<p>It  is parse base on the Fortran formatting:
+a1,i3,1x,a3,i3,1x,6(f10.2,f8.2)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>originals_directory</strong> (<em>str</em>) – Path to the Atomic Mass Evaluation directory where the rct1-16.txt file is located.</p></li>
+<li><p><strong>saving_directory</strong> (<em>str</em>) – Path to save resulting formatted csv file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ame.parsing_utilities.read_rct2">
+<code class="sig-prename descclassname">nucml.ame.parsing_utilities.</code><code class="sig-name descname">read_rct2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">originals_directory</span></em>, <em class="sig-param"><span class="n">saving_directory</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ame/parsing_utilities.html#read_rct2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ame.parsing_utilities.read_rct2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reads the rct2-16.txt file and creates a formatted CSV file. The rct2-16 file contains a variety of
+features including neutron and proton separation energies and q-values for a variety of reactions.
+For more information visit the IAEA webiste: <a class="reference external" href="https://www-nds.iaea.org/amdc/">https://www-nds.iaea.org/amdc/</a></p>
+<p>It  is parse base on the Fortran formatting:
+a1,i3,1x,a3,i3,1x,6(f10.2,f8.2)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>originals_directory</strong> (<em>str</em>) – Path to the Atomic Mass Evaluation directory where the rct2-16.txt file is located.</p></li>
+<li><p><strong>saving_directory</strong> (<em>str</em>) – Path to save resulting formatted csv file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nucml.ame">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-nucml.ame" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="nucml.ensdf.html" class="btn btn-neutral float-right" title="nucml.ensdf package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="nucml.ace.html" class="btn btn-neutral float-left" title="nucml.ace package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Pedro Jr. Vicente-Valdez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

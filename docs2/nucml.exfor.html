@@ -1,0 +1,926 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>nucml.exfor package &mdash; NucML 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="nucml.model package" href="nucml.model.html" />
+    <link rel="prev" title="nucml.evaluation package" href="nucml.evaluation.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NucML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="what-is-nucml.html">What is NucML?</a></li>
+</ul>
+<p class="caption"><span class="caption-text">GET STARTED</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic-walkthrough.html">Basic Walkthrough</a></li>
+</ul>
+<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html">Loading Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#modeling-data">Modeling Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
+</ul>
+<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">nucml</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="nucml.html">nucml package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="nucml.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="nucml.ace.html">nucml.ace package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.ame.html">nucml.ame package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.ensdf.html">nucml.ensdf package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.evaluation.html">nucml.evaluation package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">nucml.exfor package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-nucml.exfor.data_utilities">nucml.exfor.data_utilities module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-nucml.exfor.parsing">nucml.exfor.parsing module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-nucml.exfor.plot">nucml.exfor.plot module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-nucml.exfor">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.model.html">nucml.model package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.objects.html">nucml.objects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.plot.html">nucml.plot package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml.config">nucml.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml.configure">nucml.configure module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml.datasets">nucml.datasets module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml.general_utilities">nucml.general_utilities module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml.processing">nucml.processing module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NucML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">nucml</a> &raquo;</li>
+        
+          <li><a href="nucml.html">nucml package</a> &raquo;</li>
+        
+      <li>nucml.exfor package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/nucml.exfor.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<div class="section" id="nucml-exfor-package">
+<h1>nucml.exfor package<a class="headerlink" href="#nucml-exfor-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-nucml.exfor.data_utilities">
+<span id="nucml-exfor-data-utilities-module"></span><h2>nucml.exfor.data_utilities module<a class="headerlink" href="#module-nucml.exfor.data_utilities" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="nucml.exfor.data_utilities.add_compound_nucleus_info">
+<code class="sig-prename descclassname">nucml.exfor.data_utilities.</code><code class="sig-name descname">add_compound_nucleus_info</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">drop_q</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/data_utilities.html#add_compound_nucleus_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.data_utilities.add_compound_nucleus_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Adds compound nucleus data to the original EXFOR DataFrame. This is performed
+by just appending the AME data by shifting the number of neutrons by 1.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – Original EXFOR dataframe.</p></li>
+<li><p><strong>drop_q</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, it will drop all Q-value information. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.exfor.data_utilities.append_energy">
+<code class="sig-prename descclassname">nucml.exfor.data_utilities.</code><code class="sig-name descname">append_energy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">e_array</span></em>, <em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">Z</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">MT</span></em>, <em class="sig-param"><span class="n">nat_iso</span><span class="o">=</span><span class="default_value">'I'</span></em>, <em class="sig-param"><span class="n">one_hot</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">scaler</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">to_scale</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">ignore_MT</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/data_utilities.html#append_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.data_utilities.append_energy" title="Permalink to this definition">¶</a></dt>
+<dd><p>The given energy array is appended to the passed DataFrame and feature values are coppied to these new rows.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e_array</strong> (<em>np.array</em>) – Numpy array with the additional energy values to append.</p></li>
+<li><p><strong>df</strong> (<em>DataFrame</em>) – All avaliable experimental datapoints.</p></li>
+<li><p><strong>Z</strong> (<em>int</em>) – Number of protons.</p></li>
+<li><p><strong>A</strong> (<em>int</em>) – Atomic mass number.</p></li>
+<li><p><strong>MT</strong> (<em>int</em>) – Reaction channel (endf-coded).</p></li>
+<li><p><strong>nat_iso</strong> (<em>str</em><em>, </em><em>optional</em>) – “I” means isotopic while “N” means natural experimental campaigns. Defaults to “I”.</p></li>
+<li><p><strong>one_hot</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the script assumes that the reaction channel is one-hot encoded. Defaults to False.</p></li>
+<li><p><strong>log</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the log of both the Energy and Data features will be taken.</p></li>
+<li><p><strong>scale</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the scaler object passed will be use to normalize the extracted information. Defaults to False.</p></li>
+<li><p><strong>scaler</strong> (<em>object</em><em>, </em><em>optional</em>) – Fitted scaler object. Defaults to None.</p></li>
+<li><p><strong>to_scale</strong> (<em>list</em><em>, </em><em>optional</em>) – List of feature names that are to be scaled. Defaults to [].</p></li>
+<li><p><strong>ignore_MT</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the reaction channel is ignored and data for the total reaction is taken. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.exfor.data_utilities.expanding_dataset_energy">
+<code class="sig-prename descclassname">nucml.exfor.data_utilities.</code><code class="sig-name descname">expanding_dataset_energy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">E_min</span></em>, <em class="sig-param"><span class="n">E_max</span></em>, <em class="sig-param"><span class="n">log</span></em>, <em class="sig-param"><span class="n">N</span></em>, <em class="sig-param"><span class="n">e_array</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/data_utilities.html#expanding_dataset_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.data_utilities.expanding_dataset_energy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expands a given DataFrames energy points by a given number of energy points between E_min and E_max.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>DataFrame</em>) – DataFrame for which the Energy will be expanded.</p></li>
+<li><p><strong>E_min</strong> (<em>int</em>) – Starting point for energy expansion.</p></li>
+<li><p><strong>E_max</strong> (<em>float</em>) – Ending point for energy expansion.</p></li>
+<li><p><strong>log</strong> (<em>bool</em>) – If True, it assumes the Energy in the passed data is already in log form.</p></li>
+<li><p><strong>N</strong> (<em>int</em>) – Number of datapoints between E_min and E_max to create.</p></li>
+<li><p><strong>e_array</strong> (<em>np.array</em><em>, </em><em>optional</em>) – If e_array is provided, this gets appended overriding any other parameters. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.exfor.data_utilities.get_csv_for_ace">
+<code class="sig-prename descclassname">nucml.exfor.data_utilities.</code><code class="sig-name descname">get_csv_for_ace</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">Z</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">scaler</span></em>, <em class="sig-param"><span class="n">to_scale</span></em>, <em class="sig-param"><span class="n">model_type</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">saving_dir</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">saving_filename</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/data_utilities.html#get_csv_for_ace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.data_utilities.get_csv_for_ace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a CSV with the model predictions for a particular isotope in the appropiate format for the ACE utilities.
+The function returns a DataFrame which can then be saved as a CSV. The saving_dir argument provides a direct method
+by which to save the CSV file in the process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – All avaliable experimental datapoints.</p></li>
+<li><p><strong>Z</strong> (<em>int</em>) – Number of protons.</p></li>
+<li><p><strong>A</strong> (<em>int</em>) – Atomic mass number.</p></li>
+<li><p><strong>model</strong> (<em>object</em>) – Trained model object.</p></li>
+<li><p><strong>scaler</strong> (<em>object</em>) – Fitted scaler object.</p></li>
+<li><p><strong>to_scale</strong> (<em>list</em>) – List of feature names that are to be scaled.</p></li>
+<li><p><strong>model_type</strong> (<em>str</em>) – Type of model. Options include None meaning scikit-learn models, “tf”, for tensorflow, and “xgb” for gradient boosting machines.</p></li>
+<li><p><strong>saving_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Path-like string on where to save the CSV file. If given, the CSV file will be saved. Defaults to None.</p></li>
+<li><p><strong>saving_filename</strong> (<em>str</em><em>, </em><em>optional</em>) – Name for the CSV file to be saved. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.exfor.data_utilities.get_error_endf_exfor">
+<code class="sig-prename descclassname">nucml.exfor.data_utilities.</code><code class="sig-name descname">get_error_endf_exfor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">endf</span></em>, <em class="sig-param"><span class="n">exfor_sample</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/data_utilities.html#get_error_endf_exfor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.data_utilities.get_error_endf_exfor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates error between an ENDF and EXFOR sample.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>endf</strong> (<em>DataFrame</em>) – ENDF DataFrame sample for the relevant isotope and reaction channel.</p></li>
+<li><p><strong>exfor_sample</strong> (<em>DataFrame</em>) – EXFOR DataFrame sample for the relevant isotope and reaction channel.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>first dataframe contains original values while the second one</dt><dd><p>the calculated errors.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame, DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.exfor.data_utilities.get_error_endf_new">
+<code class="sig-prename descclassname">nucml.exfor.data_utilities.</code><code class="sig-name descname">get_error_endf_new</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">endf</span></em>, <em class="sig-param"><span class="n">new_data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/data_utilities.html#get_error_endf_new"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.data_utilities.get_error_endf_new" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the error between a given dataframe of experimental datapoints to ENDF.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>endf</strong> (<em>DataFrame</em>) – DataFrame containing the ENDF datapoints.</p></li>
+<li><p><strong>new_data</strong> (<em>DataFrame</em>) – DataFrame containing the new experimental data points.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>first dataframe contains original values while the second one</dt><dd><p>the calculated errors.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame, DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.exfor.data_utilities.get_mt_error_exfor_endf">
+<code class="sig-prename descclassname">nucml.exfor.data_utilities.</code><code class="sig-name descname">get_mt_error_exfor_endf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">Z</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">scaler</span></em>, <em class="sig-param"><span class="n">to_scale</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/data_utilities.html#get_mt_error_exfor_endf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.data_utilities.get_mt_error_exfor_endf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the error between EXFOR and ENDF for a given isotope.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – All avaliable experimental datapoints.</p></li>
+<li><p><strong>Z</strong> (<em>int</em>) – Number of protons.</p></li>
+<li><p><strong>A</strong> (<em>int</em>) – Atomic mass number.</p></li>
+<li><p><strong>scaler</strong> (<em>object</em>) – Fitted scaler object.</p></li>
+<li><p><strong>to_scale</strong> (<em>list</em>) – List of feature names that are to be scaled.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.exfor.data_utilities.get_mt_errors_exfor_ml">
+<code class="sig-prename descclassname">nucml.exfor.data_utilities.</code><code class="sig-name descname">get_mt_errors_exfor_ml</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">Z</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">scaler</span></em>, <em class="sig-param"><span class="n">to_scale</span></em>, <em class="sig-param"><span class="n">model</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/data_utilities.html#get_mt_errors_exfor_ml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.data_utilities.get_mt_errors_exfor_ml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculates the error between EXFOR and ML predictions for a given isotope.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – All avaliable experimental datapoints.</p></li>
+<li><p><strong>Z</strong> (<em>int</em>) – Number of protons.</p></li>
+<li><p><strong>A</strong> (<em>int</em>) – Atomic mass number.</p></li>
+<li><p><strong>scaler</strong> (<em>object</em>) – Fitted scaler object.</p></li>
+<li><p><strong>to_scale</strong> (<em>list</em>) – List of feature names that are to be scaled.</p></li>
+<li><p><strong>model</strong> (<em>object</em>) – Machine learning object.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.exfor.data_utilities.load_element">
+<code class="sig-prename descclassname">nucml.exfor.data_utilities.</code><code class="sig-name descname">load_element</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">Z</span></em>, <em class="sig-param"><span class="n">nat_iso</span><span class="o">=</span><span class="default_value">'I'</span></em>, <em class="sig-param"><span class="n">one_hot</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">scaler</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">to_scale</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/data_utilities.html#load_element"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.data_utilities.load_element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads all datapoints avaliable for a particular element.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – All avaliable experimental datapoints.</p></li>
+<li><p><strong>Z</strong> (<em>int</em>) – Number of protons.</p></li>
+<li><p><strong>nat_iso</strong> (<em>str</em><em>, </em><em>optional</em>) – “I” means isotopic while “N” means natural experimental campaigns. Defaults to “I”.</p></li>
+<li><p><strong>one_hot</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the script assumes that the reaction channel is one-hot encoded. Defaults to False.</p></li>
+<li><p><strong>scale</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the scaler object passed will be use to normalize the extracted information. Defaults to False.</p></li>
+<li><p><strong>scaler</strong> (<em>object</em><em>, </em><em>optional</em>) – Fitted scaler object. Defaults to None.</p></li>
+<li><p><strong>to_scale</strong> (<em>list</em><em>, </em><em>optional</em>) – List of feature names that are to be scaled. Defaults to [].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.exfor.data_utilities.load_isotope">
+<code class="sig-prename descclassname">nucml.exfor.data_utilities.</code><code class="sig-name descname">load_isotope</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">Z</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">nat_iso</span><span class="o">=</span><span class="default_value">'I'</span></em>, <em class="sig-param"><span class="n">one_hot</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">scaler</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">to_scale</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/data_utilities.html#load_isotope"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.data_utilities.load_isotope" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads all datapoints avaliable for a particular isotope.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – All avaliable experimental datapoints.</p></li>
+<li><p><strong>Z</strong> (<em>int</em>) – Number of protons.</p></li>
+<li><p><strong>A</strong> (<em>int</em>) – Atomic mass number.</p></li>
+<li><p><strong>nat_iso</strong> (<em>str</em><em>, </em><em>optional</em>) – “I” means isotopic while “N” means natural experimental campaigns. Defaults to “I”.</p></li>
+<li><p><strong>one_hot</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the script assumes that the reaction channel is one-hot encoded. Defaults to False.</p></li>
+<li><p><strong>scale</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the scaler object passed will be use to normalize the extracted information. Defaults to False.</p></li>
+<li><p><strong>scaler</strong> (<em>object</em><em>, </em><em>optional</em>) – Fitted scaler object. Defaults to None.</p></li>
+<li><p><strong>to_scale</strong> (<em>list</em><em>, </em><em>optional</em>) – List of feature names that are to be scaled. Defaults to [].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.exfor.data_utilities.load_newdata">
+<code class="sig-prename descclassname">nucml.exfor.data_utilities.</code><code class="sig-name descname">load_newdata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">datapath</span></em>, <em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">Z</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">MT</span></em>, <em class="sig-param"><span class="n">nat_iso</span><span class="o">=</span><span class="default_value">'I'</span></em>, <em class="sig-param"><span class="n">one_hot</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">scaler</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">to_scale</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/data_utilities.html#load_newdata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.data_utilities.load_newdata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads new measurments and appends the appropiate EXFOR isotopic data.
+Assumes new data only have two columns: Energy and Data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>datapath</strong> (<em>str</em>) – Path-like string of the new data file.</p></li>
+<li><p><strong>df</strong> (<em>DataFrame</em>) – All avaliable experimental datapoints.</p></li>
+<li><p><strong>Z</strong> (<em>int</em>) – Number of protons.</p></li>
+<li><p><strong>A</strong> (<em>int</em>) – Atomic mass number.</p></li>
+<li><p><strong>MT</strong> (<em>int</em>) – Reaction channel (endf-coded).</p></li>
+<li><p><strong>nat_iso</strong> (<em>str</em><em>, </em><em>optional</em>) – “I” means isotopic while “N” means natural experimental campaigns. Defaults to “I”.</p></li>
+<li><p><strong>one_hot</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the script assumes that the reaction channel is one-hot encoded. Defaults to False.</p></li>
+<li><p><strong>log</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the log of both the Energy and Data features will be taken.</p></li>
+<li><p><strong>scale</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the scaler object passed will be use to normalize the extracted information. Defaults to False.</p></li>
+<li><p><strong>scaler</strong> (<em>object</em><em>, </em><em>optional</em>) – Fitted scaler object. Defaults to None.</p></li>
+<li><p><strong>to_scale</strong> (<em>list</em><em>, </em><em>optional</em>) – List of feature names that are to be scaled. Defaults to [].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.exfor.data_utilities.load_samples">
+<code class="sig-prename descclassname">nucml.exfor.data_utilities.</code><code class="sig-name descname">load_samples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">Z</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">MT</span></em>, <em class="sig-param"><span class="n">nat_iso</span><span class="o">=</span><span class="default_value">'I'</span></em>, <em class="sig-param"><span class="n">one_hot</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">scaler</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">to_scale</span><span class="o">=</span><span class="default_value">[]</span></em>, <em class="sig-param"><span class="n">mt_for</span><span class="o">=</span><span class="default_value">'EXFOR'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/data_utilities.html#load_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.data_utilities.load_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracts datapoints belonging to a particular isotope-reaction channel pair.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – DataFrame containing all avaliable datapoints from where to extract the information.</p></li>
+<li><p><strong>Z</strong> (<em>int</em>) – Number of protons.</p></li>
+<li><p><strong>A</strong> (<em>int</em>) – Atomic mass number.</p></li>
+<li><p><strong>MT</strong> (<em>int</em>) – Reaction channel (ENDF-coded).</p></li>
+<li><p><strong>nat_iso</strong> (<em>str</em><em>, </em><em>optional</em>) – “I” means isotopic while “N” means natural experimental campaigns. Defaults to “I”.</p></li>
+<li><p><strong>one_hot</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the script assumes that the reaction channel is one-hot encoded. Defaults to False.</p></li>
+<li><p><strong>scale</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the scaler object passed will be use to normalize the extracted information. Defaults to False.</p></li>
+<li><p><strong>scaler</strong> (<em>object</em><em>, </em><em>optional</em>) – Fitted scaler object. Defaults to None.</p></li>
+<li><p><strong>to_scale</strong> (<em>list</em><em>, </em><em>optional</em>) – List of feature names that are to be scaled. Defaults to [].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.exfor.data_utilities.make_predictions_from_df">
+<code class="sig-prename descclassname">nucml.exfor.data_utilities.</code><code class="sig-name descname">make_predictions_from_df</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">Z</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">MT</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">model_type</span></em>, <em class="sig-param"><span class="n">scaler</span></em>, <em class="sig-param"><span class="n">to_scale</span></em>, <em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">show</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/data_utilities.html#make_predictions_from_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.data_utilities.make_predictions_from_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns predictions for all avaliable datapoints for a particular isotope-reaction channel pair.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – All avaliable experimental datapoints.</p></li>
+<li><p><strong>Z</strong> (<em>int</em>) – Number of protons.</p></li>
+<li><p><strong>A</strong> (<em>int</em>) – Atomic mass number.</p></li>
+<li><p><strong>MT</strong> (<em>int</em>) – Reaction channel (endf-coded).</p></li>
+<li><p><strong>model</strong> (<em>object</em>) – Trained model object.</p></li>
+<li><p><strong>model_type</strong> (<em>str</em>) – Type of model. Options include None meaning scikit-learn models, “tf”, for tensorflow, and “xgb” for gradient boosting machines.</p></li>
+<li><p><strong>scaler</strong> (<em>object</em>) – Fitted scaler object.</p></li>
+<li><p><strong>to_scale</strong> (<em>list</em>) – List of feature names that are to be scaled.</p></li>
+<li><p><strong>log</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the log of both the Energy and Data features will be taken.</p></li>
+<li><p><strong>show</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, a plot of the predictions will be rendered. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.exfor.data_utilities.make_predictions_w_energy">
+<code class="sig-prename descclassname">nucml.exfor.data_utilities.</code><code class="sig-name descname">make_predictions_w_energy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">e_array</span></em>, <em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">Z</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">MT</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">model_type</span></em>, <em class="sig-param"><span class="n">scaler</span></em>, <em class="sig-param"><span class="n">to_scale</span></em>, <em class="sig-param"><span class="n">one_hot</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">show</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/data_utilities.html#make_predictions_w_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.data_utilities.make_predictions_w_energy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an energy array and isotopic information, Predictions using a model are performed at the given energy points in the e_array for a given isotope.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>e_array</strong> (<em>np.array</em>) – Numpy array representing energy points at which inferences will be made.</p></li>
+<li><p><strong>df</strong> (<em>DataFrame</em>) – All avaliable experimental datapoints.</p></li>
+<li><p><strong>Z</strong> (<em>int</em>) – Number of protons.</p></li>
+<li><p><strong>A</strong> (<em>int</em>) – Atomic mass number.</p></li>
+<li><p><strong>MT</strong> (<em>int</em>) – Reaction channel (endf-coded).</p></li>
+<li><p><strong>model</strong> (<em>object</em>) – Trained model object.</p></li>
+<li><p><strong>model_type</strong> (<em>str</em>) – Type of model. Options include None meaning scikit-learn models, “tf”, for tensorflow, and “xgb” for gradient boosting machines.</p></li>
+<li><p><strong>scaler</strong> (<em>object</em>) – Fitted scaler object.</p></li>
+<li><p><strong>to_scale</strong> (<em>list</em>) – List of feature names that are to be scaled.</p></li>
+<li><p><strong>one_hot</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the script assumes that the reaction channel is one-hot encoded. Defaults to False.</p></li>
+<li><p><strong>log</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the log of both the Energy and Data features will be taken.</p></li>
+<li><p><strong>show</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, a plot of the predictions will be rendered. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.exfor.data_utilities.plot_exfor_w_references">
+<code class="sig-prename descclassname">nucml.exfor.data_utilities.</code><code class="sig-name descname">plot_exfor_w_references</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">Z</em>, <em class="sig-param">A</em>, <em class="sig-param">MT</em>, <em class="sig-param">nat_iso='I'</em>, <em class="sig-param">new_data=Empty DataFrame Columns: [] Index: []</em>, <em class="sig-param">endf=Empty DataFrame Columns: [] Index: []</em>, <em class="sig-param">error=False</em>, <em class="sig-param">get_endf=True</em>, <em class="sig-param">reverse_log=False</em>, <em class="sig-param">legend_size=21</em>, <em class="sig-param">save=False</em>, <em class="sig-param">interpolate=False</em>, <em class="sig-param">legend=False</em>, <em class="sig-param">alpha=0.7</em>, <em class="sig-param">one_hot=False</em>, <em class="sig-param">log_plot=False</em>, <em class="sig-param">path=''</em>, <em class="sig-param">ref=False</em>, <em class="sig-param">new_data_label='Additional Data'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/data_utilities.html#plot_exfor_w_references"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.data_utilities.plot_exfor_w_references" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots Cross Section for a particular Isotope with or without references.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – All avaliable experimental datapoints.</p></li>
+<li><p><strong>Z</strong> (<em>int</em>) – Number of protons.</p></li>
+<li><p><strong>A</strong> (<em>int</em>) – Atomic mass number.</p></li>
+<li><p><strong>MT</strong> (<em>int</em>) – Reaction channel (endf-coded).</p></li>
+<li><p><strong>nat_iso</strong> (<em>str</em><em>, </em><em>optional</em>) – “I” means isotopic while “N” means natural experimental campaigns. Defaults to “I”.</p></li>
+<li><p><strong>new_data</strong> (<em>DataFrame</em><em>, </em><em>optional</em>) – New data for which to make predictions, get errors, and plot. Assumes it has all needed information. Defaults to empty_df.</p></li>
+<li><p><strong>endf</strong> (<em>DataFrame</em><em>, </em><em>optional</em>) – DataFrame containing the appropiate ENDF data to plot against. Defaults to empty_df.</p></li>
+<li><p><strong>error</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, error between the EXFOR and ENDF datapoints are calculated. Defaults to False.</p></li>
+<li><p><strong>get_endf</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the endf file will be extracted to calculate errors and create plots. Defaults to False.</p></li>
+<li><p><strong>reverse_log</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the log in Energy and Data is first removed from the passed dataframe. Defaults to False.</p></li>
+<li><p><strong>legend_size</strong> (<em>int</em><em>, </em><em>optional</em>) – Legend size in plots. Useful when there are many experimental campaigns. Defaults to 21.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the plot will be saved. Defaults to False.</p></li>
+<li><p><strong>interpolate</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the EXFOR will be ploted as a line rather than scatter points. Defaults to False.</p></li>
+<li><p><strong>legend</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, a legend will appear in the image. Defaults to False.</p></li>
+<li><p><strong>alpha</strong> (<em>float</em><em>, </em><em>optional</em>) – Level of transparency of ENDF and EXFOR plots. Defaults to 0.7.</p></li>
+<li><p><strong>one_hot</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the passed dataframe is assumed to be preprocessed. Defaults to False.</p></li>
+<li><p><strong>log_plot</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, log scales will be applied. Defaults to False.</p></li>
+<li><p><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – Path-like string on which to save the rendered plots. Defaults to “”.</p></li>
+<li><p><strong>ref</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, EXFOR will be ploted per experimental campaign (one color for each). Defaults to False.</p></li>
+<li><p><strong>new_data_label</strong> (<em>str</em><em>, </em><em>optional</em>) – If new data is provided, this sets the label in the legend. Defaults to “Additional Data”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>All information requested including original data and errors are contained in a python dictionary.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.exfor.data_utilities.predicting_nuclear_xs_v2">
+<code class="sig-prename descclassname">nucml.exfor.data_utilities.</code><code class="sig-name descname">predicting_nuclear_xs_v2</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">Z</em>, <em class="sig-param">A</em>, <em class="sig-param">MT</em>, <em class="sig-param">model</em>, <em class="sig-param">to_scale</em>, <em class="sig-param">scaler</em>, <em class="sig-param">e_array='ace'</em>, <em class="sig-param">log=False</em>, <em class="sig-param">model_type=None</em>, <em class="sig-param">new_data=Empty DataFrame Columns: [] Index: []</em>, <em class="sig-param">nat_iso='I'</em>, <em class="sig-param">get_endf=False</em>, <em class="sig-param">inv_trans=False</em>, <em class="sig-param">show=False</em>, <em class="sig-param">plotter='plotly'</em>, <em class="sig-param">save=False</em>, <em class="sig-param">path=''</em>, <em class="sig-param">save_both=True</em>, <em class="sig-param">order_dict={}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/data_utilities.html#predicting_nuclear_xs_v2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.data_utilities.predicting_nuclear_xs_v2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Predicts values for a given isotope-reaction channel pair. This all-in-one function allows to not only get predictions
+but also calculate the errors relative to the EXFOR and ENDF datapoints (if avaliable). In addition, the plotting
+capabilities allow the user to inspect the predictions in a typical cross section plot. In addition to predicting
+values at the original exfor datapoint energies, the .ACE energy grid is used for further comparison.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – All avaliable experimental datapoints.</p></li>
+<li><p><strong>Z</strong> (<em>int</em>) – Number of protons.</p></li>
+<li><p><strong>A</strong> (<em>int</em>) – Atomic mass number.</p></li>
+<li><p><strong>MT</strong> (<em>int</em>) – Reaction channel (endf-coded).</p></li>
+<li><p><strong>model</strong> (<em>object</em>) – Trained model object.</p></li>
+<li><p><strong>to_scale</strong> (<em>list</em>) – List of feature names that are to be scaled.</p></li>
+<li><p><strong>scaler</strong> (<em>object</em>) – Fitted scaler object.</p></li>
+<li><p><strong>e_array</strong> (<em>str</em><em>, </em><em>optional</em>) – If “ace”, the energy grid from the appropiate ACE file is appended. An
+alternative is to provide a specific energy array. Defaults to “ace”.</p></li>
+<li><p><strong>log</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, it assumes the Energy is already in a log form. Defaults to False.</p></li>
+<li><p><strong>model_type</strong> (<em>str</em>) – Type of model. Options include None meaning scikit-learn models, “tf”, for tensorflow, and “xgb” for gradient boosting machines.</p></li>
+<li><p><strong>html</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the plot will be rendered in an interactive browser tab. Defaults to False.</p></li>
+<li><p><strong>new_data</strong> (<em>DataFrame</em><em>, </em><em>optional</em>) – New data for which to make predictions, get errors, and plot. Assumes it has all needed information. Defaults to empty_df.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the plot will be saved. Defaults to False.</p></li>
+<li><p><strong>show</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, a plot of the predictions will be rendered. Defaults to False.</p></li>
+<li><p><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – Path-like string on which to save the rendered plots. Defaults to “”.</p></li>
+<li><p><strong>nat_iso</strong> (<em>str</em><em>, </em><em>optional</em>) – “I” means isotopic while “N” means natural experimental campaigns. Defaults to “I”.</p></li>
+<li><p><strong>order_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – Order in which to plot the different lines. See plotly_ml_results() for more info. Defaults to {}.</p></li>
+<li><p><strong>get_endf</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the endf file will be extracted to calculate errors and create plots. Defaults to False.</p></li>
+<li><p><strong>inv_trans</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the returned data will be in its original form (not scaled). Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>contains a variety of information including predictions, errors, and more.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nucml.exfor.parsing">
+<span id="nucml-exfor-parsing-module"></span><h2>nucml.exfor.parsing module<a class="headerlink" href="#module-nucml.exfor.parsing" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="nucml.exfor.parsing.csv_creator">
+<code class="sig-prename descclassname">nucml.exfor.parsing.</code><code class="sig-name descname">csv_creator</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">heavy_path</span></em>, <em class="sig-param"><span class="n">tmp_path</span></em>, <em class="sig-param"><span class="n">mode</span></em>, <em class="sig-param"><span class="n">append_ame</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/parsing.html#csv_creator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.parsing.csv_creator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates various CSV files from the information extracted using the get_all() function. This function
+is usually called after the get_all() function. The following CSV files will be created:</p>
+<ul class="simple">
+<li><p>EXFOR_mode_ORIGINAL.csv: Contains the EXFOR database in it’s original state.</p></li>
+<li><dl class="simple">
+<dt>EXFOR_mode_ORIGINAL_w_AME.csv: Contains the same features as in the original CSV</dt><dd><p>file plus AME data appended to each row. The appended AME is the original data therefore
+not containing natural element data.</p>
+</dd>
+</dl>
+</li>
+</ul>
+<p>Note: mode refers to the type of projectile selected in the ‘mode’ argument.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>heavy_path</strong> (<em>str</em>) – Path to directory where heavy files generated by the get_all() function are stored. This directory
+will also be used to store the resulting CSV files.</p></li>
+<li><p><strong>tmp_path</strong> (<em>str</em>) – Path to directory where temporary files are to be saved.</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – The reaction projectile of the originally provided C4 files.</p></li>
+<li><p><strong>append_ame</strong> (<em>bool</em>) – If True, the AME data will be appended to the final EXFOR CSV files. It is recommended this is
+always set to True. The features can be afterwards eliminated if wanted. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.exfor.parsing.get_all">
+<code class="sig-prename descclassname">nucml.exfor.parsing.</code><code class="sig-name descname">get_all</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">c4_list</span></em>, <em class="sig-param"><span class="n">heavy_path</span></em>, <em class="sig-param"><span class="n">tmp_path</span></em>, <em class="sig-param"><span class="n">mode</span><span class="o">=</span><span class="default_value">'neutrons'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/parsing.html#get_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.parsing.get_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves all avaliable information from all .c4 files. This function combines the
+proccesses defined on:</p>
+<ul class="simple">
+<li><p>get_c4_names()</p></li>
+<li><p>get_raw_datapoints()</p></li>
+<li><p>get_authors()</p></li>
+<li><p>get_years()</p></li>
+<li><p>get_institutes()</p></li>
+<li><p>get_dates()</p></li>
+<li><p>get_titles()</p></li>
+<li><p>get_references()</p></li>
+<li><p>get_reaction_notation()</p></li>
+<li><p>get_datapoints_per_experiment()</p></li>
+</ul>
+<p>It is optimized to run faster than running the individual functions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>c4_list</strong> (<em>list</em>) – List containing paths to all .c4 files.</p></li>
+<li><p><strong>heavy_path</strong> (<em>str</em>) – Path to directory where heavy files are to be saved.</p></li>
+<li><p><strong>tmp_path</strong> (<em>str</em>) – Path to directory where temporary files are to be saved.</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – The reaction projectile of the provided C4 files.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>FileNotFoundError</strong> – If no .c4 files are in the provided list, then an error is raised.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.exfor.parsing.get_c4_names">
+<code class="sig-prename descclassname">nucml.exfor.parsing.</code><code class="sig-name descname">get_c4_names</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">c4_directory</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/parsing.html#get_c4_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.parsing.get_c4_names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Searches given directory for EXFOR-generated C4 files.  It returns a list of relative paths for each found file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>c4_directory</strong> (<em>str</em>) – Path to the directory containing all .c4 files.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Contains relative paths to each encountered .c4 file.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>FileNotFoundError</strong> – If no C4 files are found an error will be raised.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.exfor.parsing.impute_original_exfor">
+<code class="sig-prename descclassname">nucml.exfor.parsing.</code><code class="sig-name descname">impute_original_exfor</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">heavy_path</span></em>, <em class="sig-param"><span class="n">tmp_path</span></em>, <em class="sig-param"><span class="n">mode</span></em>, <em class="sig-param"><span class="n">append_ame</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">MF_number</span><span class="o">=</span><span class="default_value">'3'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/parsing.html#impute_original_exfor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.parsing.impute_original_exfor" title="Permalink to this definition">¶</a></dt>
+<dd><p>Imputes missing values in the CSV files created using the csv_creator() function.
+It generates a new CSV files with filled missing values. The main features with considerable
+missing values are the Uncertainties in both Energy and Cross Section. It also limits the
+dataset to a particular type (MF ENDF code).</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>EXFOR_mode_MF3_AME_no_RawNaN: is a dataset created for personal use. It contains no</dt><dd><p>missing values in both the EXFOR and the AME data entries. Furthermore, it is limited to
+reaction data rows (MF=3).</p>
+</dd>
+</dl>
+</li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>heavy_path</strong> (<em>str</em>) – Path to directory where heavy files generated by the csv_creator() function are stored.
+This directory will also be used to store the resulting CSV files.</p></li>
+<li><p><strong>tmp_path</strong> (<em>str</em>) – Path to directory where temporary files are to be saved.</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – The reaction projectile of the originally provided C4 files.</p></li>
+<li><p><strong>append_ame</strong> (<em>bool</em>) – If True, the AME data will be appended to the final EXFOR CSV files. It is recommended this is
+always set to True. The features can be afterwards eliminated if wanted. Defaults to True.</p></li>
+<li><p><strong>MF_number</strong> (<em>str</em><em>, </em><em>optional</em>) – The MT ENDF code of data to retrieve and impute. Defaults to “3”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nucml.exfor.plot">
+<span id="nucml-exfor-plot-module"></span><h2>nucml.exfor.plot module<a class="headerlink" href="#module-nucml.exfor.plot" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="nucml.exfor.plot.make_chlorine_paper_figure">
+<code class="sig-prename descclassname">nucml.exfor.plot.</code><code class="sig-name descname">make_chlorine_paper_figure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">dt_model</span></em>, <em class="sig-param"><span class="n">dt_scaler</span></em>, <em class="sig-param"><span class="n">knn_model</span></em>, <em class="sig-param"><span class="n">knn_scaler</span></em>, <em class="sig-param"><span class="n">to_scale</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">saving_dir</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/plot.html#make_chlorine_paper_figure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.plot.make_chlorine_paper_figure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Personal function used to create the Chlorine figure used in a conference summary.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – Dataframe containing all the relevant chlorine datapoints.</p></li>
+<li><p><strong>dt_model</strong> (<em>object</em>) – Trained scikit-learn Decision Tree regressor model.</p></li>
+<li><p><strong>dt_scaler</strong> (<em>object</em>) – Trained scikit-learn scaler object used to scale data for the dt_model.</p></li>
+<li><p><strong>knn_model</strong> (<em>object</em>) – Trained scikit-learn KNN regressor model.</p></li>
+<li><p><strong>knn_scaler</strong> (<em>object</em>) – Trained scikit-learn scaler object used to scale data fro the knn_model.</p></li>
+<li><p><strong>to_scale</strong> (<em>list</em>) – Features subject to transformation/normalization by the applicable scalers.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.exfor.plot.ml_results">
+<code class="sig-prename descclassname">nucml.exfor.plot.</code><code class="sig-name descname">ml_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">results_dict</span></em>, <em class="sig-param"><span class="n">order_dict</span><span class="o">=</span><span class="default_value">{}</span></em>, <em class="sig-param"><span class="n">save_dir</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">render_browser</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">show</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">paper</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">plot_type</span><span class="o">=</span><span class="default_value">'plotly'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/plot.html#ml_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.plot.ml_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the machine learning predictions from the dictionary generated by the</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>results_dict</strong> (<em>dict</em>) – Generated dictionary from the .</p></li>
+<li><p><strong>order_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – Order of plots. Defaults to {}.</p></li>
+<li><p><strong>save_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Path-like string where the figure will be saved. Defaults to ‘’.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the figure will be saved. Defaults to False.</p></li>
+<li><p><strong>render_browser</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the plotly plot will be render in a new tab. Defaults to False.</p></li>
+<li><p><strong>show</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the plot will be render. Defaults to False.</p></li>
+<li><p><strong>paper</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the plot will be resized to 600 by 700 pixels. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Plotly graph object.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.exfor.plot.plot_limits">
+<code class="sig-prename descclassname">nucml.exfor.plot.</code><code class="sig-name descname">plot_limits</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">data</span></em>, <em class="sig-param"><span class="n">endf</span></em>, <em class="sig-param"><span class="n">new_data</span></em>, <em class="sig-param"><span class="n">y_hat</span></em>, <em class="sig-param"><span class="n">y_hat2</span></em>, <em class="sig-param"><span class="n">y_hat3</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/plot.html#plot_limits"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.plot.plot_limits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets new plot limits based on plotted data. It is a known issue that matplotlib “looses”
+the limits when thousand of scatter points are plotted. In these cases the limits need to be
+set manually. These occurs often for highly researched isotopes like U-235. ML-predictions can
+sometimes be outsied the default plot limits.</p>
+<p>Note: Internal Function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>DataFrame</em>) – DataFrame containing the EXFOR or Predicted data.</p></li>
+<li><p><strong>endf</strong> (<em>DataFrame</em>) – DataFrame containing the ENDF data.</p></li>
+<li><p><strong>new_data</strong> (<em>DataFrame</em>) – DataFrame containing new external data if applicable.</p></li>
+<li><p><strong>y_hat</strong> (<em>np.array</em>) – Numpy array containing the ML-predictions for EXFOR energy points.</p></li>
+<li><p><strong>y_hat2</strong> (<em>np.array</em>) – Numpy array containing the ML-predictions for ENDF energy points.</p></li>
+<li><p><strong>y_hat3</strong> (<em>np.array</em>) – Numpy array containing the ML-predicitons for the new data points.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.exfor.plot.plot_limits_ref">
+<code class="sig-prename descclassname">nucml.exfor.plot.</code><code class="sig-name descname">plot_limits_ref</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">exfor</span></em>, <em class="sig-param"><span class="n">endf</span></em>, <em class="sig-param"><span class="n">new_data</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/exfor/plot.html#plot_limits_ref"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.exfor.plot.plot_limits_ref" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets new plot limits based on plotted data. It is a known issue that matplotlib “looses”
+the limits when thousand of scatter points are plotted. In these cases the limits need to be
+set manually. These occurs often for highly researched isotopes like U-235.</p>
+<p>Note: Internal Function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>exfor_sample</strong> (<em>pd.DataFrame</em>) – Contains the EXFOR datapoints being plotted.</p></li>
+<li><p><strong>endf</strong> (<em>pd.DataFrame</em>) – Contains the ENDF datapoints being plotted.</p></li>
+<li><p><strong>new_data</strong> (<em>pd.DataFrame</em>) – Contains the New Datapoints being plotted if applicable.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-nucml.exfor">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-nucml.exfor" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="nucml.model.html" class="btn btn-neutral float-right" title="nucml.model package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="nucml.evaluation.html" class="btn btn-neutral float-left" title="nucml.evaluation package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Pedro Jr. Vicente-Valdez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

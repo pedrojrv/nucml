@@ -83,16 +83,16 @@
               
             
             
-              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
+              <p><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p class="caption"><span class="caption-text">GET STARTED</span></p>
+<p><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html">Loading Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
@@ -100,11 +100,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
+<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
+</ul>
+<p><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules.html">nucml</a></li>
 </ul>
-<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
+<p><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
@@ -180,6 +187,8 @@
 <span class="kn">from</span> <span class="nn">plotly.subplots</span> <span class="kn">import</span> <span class="n">make_subplots</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">matplotlib.ticker</span> <span class="kn">import</span> <span class="n">MaxNLocator</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="c1"># This allows us to import the nucml utilities</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">)</span>
@@ -254,7 +263,7 @@
         <span class="n">fig</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">&quot;model_performance_metric.html&quot;</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">fig</span></div>
 
-<div class="viewcode-block" id="knn_training"><a class="viewcode-back" href="../../../nucml.model.html#nucml.model.plot.knn_training">[docs]</a><span class="k">def</span> <span class="nf">knn_training</span><span class="p">(</span><span class="n">results_df</span><span class="p">,</span> <span class="n">x_feature</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">train_metric</span><span class="o">=</span><span class="s2">&quot;train_mae&quot;</span><span class="p">,</span> <span class="n">val_metric</span><span class="o">=</span><span class="s2">&quot;val_mae&quot;</span><span class="p">,</span> <span class="n">test_metric</span><span class="o">=</span><span class="s2">&quot;test_mae&quot;</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="knn_training"><a class="viewcode-back" href="../../../nucml.model.html#nucml.model.plot.knn_training">[docs]</a><span class="k">def</span> <span class="nf">knn_training</span><span class="p">(</span><span class="n">results_df</span><span class="p">,</span> <span class="n">x_feature</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="n">train_metric</span><span class="o">=</span><span class="s2">&quot;train_mae&quot;</span><span class="p">,</span> <span class="n">val_metric</span><span class="o">=</span><span class="s2">&quot;val_mae&quot;</span><span class="p">,</span> <span class="n">test_metric</span><span class="o">=</span><span class="s2">&quot;test_mae&quot;</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">save_path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Plots both the train, val, and test loss as a function of a given parameter (i.e. number of neighbors).</span>
 
 <span class="sd">    Args:</span>
@@ -271,7 +280,7 @@
 <span class="sd">    Returns:</span>
 <span class="sd">        object: Plotly figure object.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
 
     <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;tab:orange&#39;</span>
     <span class="n">lns1</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">results_df</span><span class="p">[</span><span class="n">x_feature</span><span class="p">],</span> <span class="n">results_df</span><span class="p">[</span><span class="n">train_metric</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Train MAE&quot;</span><span class="p">)</span>
@@ -298,7 +307,7 @@
     <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>  <span class="c1"># otherwise the right y-label is slightly clipped</span>
     
     <span class="k">if</span> <span class="n">save</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="s2">&quot;knn_training.png&quot;</span><span class="p">),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">save_path</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s2">&quot;tight&quot;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">show</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="k">return</span> <span class="kc">None</span></div>
@@ -354,6 +363,31 @@
     <span class="k">if</span> <span class="n">show</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<span class="c1"># def plot_dt_3d_hyperparams(df):</span>
+<span class="c1">#     fig = plt.figure()</span>
+<span class="c1">#     ax = fig.gca(projection=&#39;3d&#39;)</span>
+<span class="c1">#     fig.set_size_inches(20, 10.5, forward=True)</span>
+<span class="c1">#     surf = ax.plot_trisurf(df.max_depth, df.mss, df.train_mae, linewidth=0.2, antialiased=True, cmap=cm.viridis)</span>
+<span class="c1">#     ax.view_init(20, -30)</span>
+<span class="c1">#     ax.set_ylabel(&quot;MSS&quot;, labelpad=15)</span>
+<span class="c1">#     ax.set_xlabel(&quot;Max Depth&quot;, labelpad=10)</span>
+<span class="c1">#     ax.set_zlabel(&quot;Train MAE&quot;, labelpad=15)</span>
+
+<span class="c1">#     fig.colorbar(surf, shrink=0.5, aspect=5)</span>
+<span class="c1">#     plt.savefig(&quot;figures/dt_3d_hyperparams.png&quot;, bbox_inches=&#39;tight&#39;, dpi=300)</span>
+
+<div class="viewcode-block" id="xgb_training_w_path"><a class="viewcode-back" href="../../../nucml.model.html#nucml.model.plot.xgb_training_w_path">[docs]</a><span class="k">def</span> <span class="nf">xgb_training_w_path</span><span class="p">(</span><span class="n">path_to_csv</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">saving_path</span><span class="o">=</span><span class="s2">&quot;xgb_training.png&quot;</span><span class="p">):</span>
+    <span class="n">training_progress</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path_to_csv</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">training_progress</span><span class="o">.</span><span class="n">mae_train</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Train MAE&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="s2">&quot;20&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">training_progress</span><span class="o">.</span><span class="n">mae_test</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Validation MAE&quot;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="s2">&quot;5&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Number of Trees (Rounds)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;MAE&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">saving_path</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

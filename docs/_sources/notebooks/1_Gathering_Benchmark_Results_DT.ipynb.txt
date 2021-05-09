@@ -1,0 +1,1183 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Analyzing Benchmark Results for Validation\n",
+    "\n",
+    "So you ran your models against several criticality benchmarks. Nice! How do we analyze the results easily? NucML contains some utilities to help you get started."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-05-07T22:52:46.369373Z",
+     "start_time": "2021-05-07T22:52:46.366374Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "# Prototype\n",
+    "import sys\n",
+    "# This allows us to import the nucml utilities\n",
+    "sys.path.append(\"..\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-05-07T22:52:50.401278Z",
+     "start_time": "2021-05-07T22:52:46.723568Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import pandas as pd\n",
+    "import seaborn as sns\n",
+    "import matplotlib.pyplot as plt\n",
+    "import os\n",
+    "\n",
+    "pd.set_option('display.max_columns', 500)\n",
+    "pd.set_option('display.max_rows', 50)\n",
+    "pd.options.mode.chained_assignment = None  # default='warn'\n",
+    "sns.set_style(\"white\")\n",
+    "\n",
+    "import nucml.ace.data_utilities as ace_utils\n",
+    "import nucml.model.utilities as model_utils\n",
+    "import nucml.ace.plot as ace_plots"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-05-07T22:52:50.405280Z",
+     "start_time": "2021-05-07T22:52:50.402779Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "figure_dir = \"figures/B0/\""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-05-07T22:52:50.422282Z",
+     "start_time": "2021-05-07T22:52:50.407280Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "sns.set(font_scale=2.5)\n",
+    "sns.set_style('white')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Gathering Results from Serpent Runs\n",
+    "\n",
+    "You can automatically read all benchmark `.mat` files and format the results easily by simply specifying the directory where the benchmark model information is stored (see previous notebook)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-05-07T22:53:06.121217Z",
+     "start_time": "2021-05-07T22:52:51.601873Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "model_results_b0 = ace_utils.gather_benchmark_results(\"ml/DT_B0/\")\n",
+    "model_results_b1 = ace_utils.gather_benchmark_results(\"ml/DT_B1/\")\n",
+    "model_results_b2 = ace_utils.gather_benchmark_results(\"ml/DT_B2/\")\n",
+    "model_results_b3 = ace_utils.gather_benchmark_results(\"ml/DT_B3/\")\n",
+    "model_results_b4 = ace_utils.gather_benchmark_results(\"ml/DT_B4/\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-05-07T22:53:06.139717Z",
+     "start_time": "2021-05-07T22:53:06.122719Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Model</th>\n",
+       "      <th>Benchmark</th>\n",
+       "      <th>K_eff_ana</th>\n",
+       "      <th>Unc_ana</th>\n",
+       "      <th>K_eff_imp</th>\n",
+       "      <th>Unc_imp</th>\n",
+       "      <th>Deviation_Ana</th>\n",
+       "      <th>Deviation_Imp</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>DT100_MSS10_MSL1_none_one_hot_B0_v1</td>\n",
+       "      <td>U233_MET_FAST_001</td>\n",
+       "      <td>0.989927</td>\n",
+       "      <td>0.00044</td>\n",
+       "      <td>0.990024</td>\n",
+       "      <td>0.00030</td>\n",
+       "      <td>0.010073</td>\n",
+       "      <td>0.009976</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>DT100_MSS10_MSL1_none_one_hot_B0_v1</td>\n",
+       "      <td>U233_MET_FAST_002_001</td>\n",
+       "      <td>0.992332</td>\n",
+       "      <td>0.00042</td>\n",
+       "      <td>0.992233</td>\n",
+       "      <td>0.00029</td>\n",
+       "      <td>0.007668</td>\n",
+       "      <td>0.007767</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>DT100_MSS10_MSL1_none_one_hot_B0_v1</td>\n",
+       "      <td>U233_MET_FAST_002_002</td>\n",
+       "      <td>0.996557</td>\n",
+       "      <td>0.00044</td>\n",
+       "      <td>0.996643</td>\n",
+       "      <td>0.00031</td>\n",
+       "      <td>0.003443</td>\n",
+       "      <td>0.003357</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>DT100_MSS10_MSL3_none_one_hot_B0_v1</td>\n",
+       "      <td>U233_MET_FAST_001</td>\n",
+       "      <td>0.993064</td>\n",
+       "      <td>0.00044</td>\n",
+       "      <td>0.992735</td>\n",
+       "      <td>0.00030</td>\n",
+       "      <td>0.006936</td>\n",
+       "      <td>0.007265</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>DT100_MSS10_MSL3_none_one_hot_B0_v1</td>\n",
+       "      <td>U233_MET_FAST_002_001</td>\n",
+       "      <td>0.994547</td>\n",
+       "      <td>0.00043</td>\n",
+       "      <td>0.994306</td>\n",
+       "      <td>0.00029</td>\n",
+       "      <td>0.005453</td>\n",
+       "      <td>0.005694</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                                 Model              Benchmark  K_eff_ana  \\\n",
+       "0  DT100_MSS10_MSL1_none_one_hot_B0_v1      U233_MET_FAST_001   0.989927   \n",
+       "1  DT100_MSS10_MSL1_none_one_hot_B0_v1  U233_MET_FAST_002_001   0.992332   \n",
+       "2  DT100_MSS10_MSL1_none_one_hot_B0_v1  U233_MET_FAST_002_002   0.996557   \n",
+       "3  DT100_MSS10_MSL3_none_one_hot_B0_v1      U233_MET_FAST_001   0.993064   \n",
+       "4  DT100_MSS10_MSL3_none_one_hot_B0_v1  U233_MET_FAST_002_001   0.994547   \n",
+       "\n",
+       "   Unc_ana  K_eff_imp  Unc_imp  Deviation_Ana  Deviation_Imp  \n",
+       "0  0.00044   0.990024  0.00030       0.010073       0.009976  \n",
+       "1  0.00042   0.992233  0.00029       0.007668       0.007767  \n",
+       "2  0.00044   0.996643  0.00031       0.003443       0.003357  \n",
+       "3  0.00044   0.992735  0.00030       0.006936       0.007265  \n",
+       "4  0.00043   0.994306  0.00029       0.005453       0.005694  "
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "model_results_b0.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Analyzing Decision Tree Results\n",
+    "\n",
+    "That was easy. However, we do not have the training and validation metrics that we had before. We can simply read the results files and join them. First, let us load the results and keep the most basic columns including hyperparameters and performance metrics. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-05-07T22:56:45.613359Z",
+     "start_time": "2021-05-07T22:56:45.583861Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "results_b0 = pd.read_csv(\"../ML_EXFOR_neutrons/2_DT/dt_resultsB0.csv\").sort_values(by=\"max_depth\")\n",
+    "results_b1 = pd.read_csv(\"../ML_EXFOR_neutrons/2_DT/dt_resultsB1.csv\").sort_values(by=\"max_depth\")\n",
+    "results_b2 = pd.read_csv(\"../ML_EXFOR_neutrons/2_DT/dt_resultsB2.csv\").sort_values(by=\"max_depth\")\n",
+    "results_b3 = pd.read_csv(\"../ML_EXFOR_neutrons/2_DT/dt_resultsB3.csv\").sort_values(by=\"max_depth\")\n",
+    "results_b4 = pd.read_csv(\"../ML_EXFOR_neutrons/2_DT/dt_resultsB4.csv\").sort_values(by=\"max_depth\")\n",
+    "\n",
+    "results_b0 = results_b0[results_b0.normalizer == \"none\"]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-05-07T22:56:46.105400Z",
+     "start_time": "2021-05-07T22:56:46.102898Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "# IGNORE THIS CELL\n",
+    "# results_b0['Model'] = results_b0.model_path.apply(lambda x: os.path.basename(os.path.dirname(x)))\n",
+    "# results_b0['dataset'] = 'b0'\n",
+    "# results_b1['Model'] = results_b1.model_path.apply(lambda x: os.path.basename(os.path.dirname(x)))\n",
+    "# results_b1['dataset'] = 'b1'"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "This step is optional, but in this example, we will join the results from different models trained on different datasets. Some models might be named the same but were trained on different dataset versions. Here we add a unique identifier previous to merging the results. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-05-07T22:56:47.192845Z",
+     "start_time": "2021-05-07T22:56:47.174843Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "for df, dataset_tag in zip([results_b0, results_b1, results_b2, results_b3, results_b4], [\"b0\", \"b1\", \"b2\", \"b3\", \"b4\"]):\n",
+    "    df['Model'] = df.model_path.apply(lambda x: os.path.basename(os.path.dirname(x)))\n",
+    "    df['dataset'] = dataset_tag"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Filtering to obtain most basic features:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-05-07T22:56:48.352842Z",
+     "start_time": "2021-05-07T22:56:48.342843Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "results_b0 = results_b0[[\"Model\", \"train_mae\", \"val_mae\", \"test_mae\", \"max_depth\", \"mss\", \"msl\", \"dataset\"]]\n",
+    "results_b1 = results_b1[[\"Model\", \"train_mae\", \"val_mae\", \"test_mae\", \"max_depth\", \"mss\", \"msl\", \"dataset\"]]\n",
+    "results_b2 = results_b2[[\"Model\", \"train_mae\", \"val_mae\", \"test_mae\", \"max_depth\", \"mss\", \"msl\", \"dataset\"]]\n",
+    "results_b3 = results_b3[[\"Model\", \"train_mae\", \"val_mae\", \"test_mae\", \"max_depth\", \"mss\", \"msl\", \"dataset\"]]\n",
+    "results_b4 = results_b4[[\"Model\", \"train_mae\", \"val_mae\", \"test_mae\", \"max_depth\", \"mss\", \"msl\", \"dataset\"]]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Finally, we can merge the results with the gathered benchmark information."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-05-07T22:58:05.387379Z",
+     "start_time": "2021-05-07T22:58:05.366880Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "final_b0 = model_results_b0.merge(results_b0, on=\"Model\")\n",
+    "final_b1 = model_results_b1.merge(results_b1, on=\"Model\")\n",
+    "final_b2 = model_results_b2.merge(results_b2, on=\"Model\")\n",
+    "final_b3 = model_results_b3.merge(results_b3, on=\"Model\")\n",
+    "final_b4 = model_results_b4.merge(results_b4, on=\"Model\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-05-07T22:58:13.697262Z",
+     "start_time": "2021-05-07T22:58:13.686261Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "final_set = final_b0.append(final_b1).append(final_b2).append(final_b3).append(final_b4)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-05-07T22:58:16.963726Z",
+     "start_time": "2021-05-07T22:58:16.950224Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Model</th>\n",
+       "      <th>Benchmark</th>\n",
+       "      <th>K_eff_ana</th>\n",
+       "      <th>Unc_ana</th>\n",
+       "      <th>K_eff_imp</th>\n",
+       "      <th>Unc_imp</th>\n",
+       "      <th>Deviation_Ana</th>\n",
+       "      <th>Deviation_Imp</th>\n",
+       "      <th>train_mae</th>\n",
+       "      <th>val_mae</th>\n",
+       "      <th>test_mae</th>\n",
+       "      <th>max_depth</th>\n",
+       "      <th>mss</th>\n",
+       "      <th>msl</th>\n",
+       "      <th>dataset</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>DT100_MSS10_MSL1_none_one_hot_B0_v1</td>\n",
+       "      <td>U233_MET_FAST_001</td>\n",
+       "      <td>0.989927</td>\n",
+       "      <td>0.00044</td>\n",
+       "      <td>0.990024</td>\n",
+       "      <td>0.00030</td>\n",
+       "      <td>0.010073</td>\n",
+       "      <td>0.009976</td>\n",
+       "      <td>0.070281</td>\n",
+       "      <td>0.125724</td>\n",
+       "      <td>0.124429</td>\n",
+       "      <td>100</td>\n",
+       "      <td>10</td>\n",
+       "      <td>1</td>\n",
+       "      <td>b0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>DT100_MSS10_MSL1_none_one_hot_B0_v1</td>\n",
+       "      <td>U233_MET_FAST_002_001</td>\n",
+       "      <td>0.992332</td>\n",
+       "      <td>0.00042</td>\n",
+       "      <td>0.992233</td>\n",
+       "      <td>0.00029</td>\n",
+       "      <td>0.007668</td>\n",
+       "      <td>0.007767</td>\n",
+       "      <td>0.070281</td>\n",
+       "      <td>0.125724</td>\n",
+       "      <td>0.124429</td>\n",
+       "      <td>100</td>\n",
+       "      <td>10</td>\n",
+       "      <td>1</td>\n",
+       "      <td>b0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>DT100_MSS10_MSL1_none_one_hot_B0_v1</td>\n",
+       "      <td>U233_MET_FAST_002_002</td>\n",
+       "      <td>0.996557</td>\n",
+       "      <td>0.00044</td>\n",
+       "      <td>0.996643</td>\n",
+       "      <td>0.00031</td>\n",
+       "      <td>0.003443</td>\n",
+       "      <td>0.003357</td>\n",
+       "      <td>0.070281</td>\n",
+       "      <td>0.125724</td>\n",
+       "      <td>0.124429</td>\n",
+       "      <td>100</td>\n",
+       "      <td>10</td>\n",
+       "      <td>1</td>\n",
+       "      <td>b0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>DT100_MSS10_MSL3_none_one_hot_B0_v1</td>\n",
+       "      <td>U233_MET_FAST_001</td>\n",
+       "      <td>0.993064</td>\n",
+       "      <td>0.00044</td>\n",
+       "      <td>0.992735</td>\n",
+       "      <td>0.00030</td>\n",
+       "      <td>0.006936</td>\n",
+       "      <td>0.007265</td>\n",
+       "      <td>0.082464</td>\n",
+       "      <td>0.122372</td>\n",
+       "      <td>0.121066</td>\n",
+       "      <td>100</td>\n",
+       "      <td>10</td>\n",
+       "      <td>3</td>\n",
+       "      <td>b0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>DT100_MSS10_MSL3_none_one_hot_B0_v1</td>\n",
+       "      <td>U233_MET_FAST_002_001</td>\n",
+       "      <td>0.994547</td>\n",
+       "      <td>0.00043</td>\n",
+       "      <td>0.994306</td>\n",
+       "      <td>0.00029</td>\n",
+       "      <td>0.005453</td>\n",
+       "      <td>0.005694</td>\n",
+       "      <td>0.082464</td>\n",
+       "      <td>0.122372</td>\n",
+       "      <td>0.121066</td>\n",
+       "      <td>100</td>\n",
+       "      <td>10</td>\n",
+       "      <td>3</td>\n",
+       "      <td>b0</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                                 Model              Benchmark  K_eff_ana  \\\n",
+       "0  DT100_MSS10_MSL1_none_one_hot_B0_v1      U233_MET_FAST_001   0.989927   \n",
+       "1  DT100_MSS10_MSL1_none_one_hot_B0_v1  U233_MET_FAST_002_001   0.992332   \n",
+       "2  DT100_MSS10_MSL1_none_one_hot_B0_v1  U233_MET_FAST_002_002   0.996557   \n",
+       "3  DT100_MSS10_MSL3_none_one_hot_B0_v1      U233_MET_FAST_001   0.993064   \n",
+       "4  DT100_MSS10_MSL3_none_one_hot_B0_v1  U233_MET_FAST_002_001   0.994547   \n",
+       "\n",
+       "   Unc_ana  K_eff_imp  Unc_imp  Deviation_Ana  Deviation_Imp  train_mae  \\\n",
+       "0  0.00044   0.990024  0.00030       0.010073       0.009976   0.070281   \n",
+       "1  0.00042   0.992233  0.00029       0.007668       0.007767   0.070281   \n",
+       "2  0.00044   0.996643  0.00031       0.003443       0.003357   0.070281   \n",
+       "3  0.00044   0.992735  0.00030       0.006936       0.007265   0.082464   \n",
+       "4  0.00043   0.994306  0.00029       0.005453       0.005694   0.082464   \n",
+       "\n",
+       "    val_mae  test_mae  max_depth  mss  msl dataset  \n",
+       "0  0.125724  0.124429        100   10    1      b0  \n",
+       "1  0.125724  0.124429        100   10    1      b0  \n",
+       "2  0.125724  0.124429        100   10    1      b0  \n",
+       "3  0.122372  0.121066        100   10    3      b0  \n",
+       "4  0.122372  0.121066        100   10    3      b0  "
+      ]
+     },
+     "execution_count": 17,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "final_set.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Nice. You can then proceed to analyze your results and explor hyperparametres as a function of the multiplication factor and the error. Check the thesis for more information. \n",
+    "\n",
+    "You can, for example, create a DataFrame for each benchmark and analyze what models have good performance in terms of the multiplication factor. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-05-07T23:01:40.555312Z",
+     "start_time": "2021-05-07T23:01:40.547312Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "u233_002_001 = final_set[final_set.Benchmark == \"U233_MET_FAST_002_001\"].sort_values(by=\"Deviation_Ana\")\n",
+    "u233_002_002 = final_set[final_set.Benchmark == \"U233_MET_FAST_002_002\"].sort_values(by=\"Deviation_Ana\")\n",
+    "u233_001 = final_set[final_set.Benchmark == \"U233_MET_FAST_001\"].sort_values(by=\"Deviation_Ana\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-05-07T23:01:50.972101Z",
+     "start_time": "2021-05-07T23:01:50.963603Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "# converting error to 100% scale\n",
+    "u233_001.Deviation_Ana = u233_001.Deviation_Ana * 100\n",
+    "u233_002_001.Deviation_Ana = u233_002_001.Deviation_Ana * 100\n",
+    "u233_002_002.Deviation_Ana = u233_002_002.Deviation_Ana * 100"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-05-07T23:01:56.701499Z",
+     "start_time": "2021-05-07T23:01:56.685499Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Model</th>\n",
+       "      <th>Benchmark</th>\n",
+       "      <th>K_eff_ana</th>\n",
+       "      <th>Unc_ana</th>\n",
+       "      <th>K_eff_imp</th>\n",
+       "      <th>Unc_imp</th>\n",
+       "      <th>Deviation_Ana</th>\n",
+       "      <th>Deviation_Imp</th>\n",
+       "      <th>train_mae</th>\n",
+       "      <th>val_mae</th>\n",
+       "      <th>test_mae</th>\n",
+       "      <th>max_depth</th>\n",
+       "      <th>mss</th>\n",
+       "      <th>msl</th>\n",
+       "      <th>dataset</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>138</th>\n",
+       "      <td>DT136_MSS5_MSL3_none_one_hot_B0_v1</td>\n",
+       "      <td>U233_MET_FAST_001</td>\n",
+       "      <td>0.999906</td>\n",
+       "      <td>0.00043</td>\n",
+       "      <td>0.999979</td>\n",
+       "      <td>0.00029</td>\n",
+       "      <td>0.000094</td>\n",
+       "      <td>0.000021</td>\n",
+       "      <td>0.077729</td>\n",
+       "      <td>0.123489</td>\n",
+       "      <td>0.122285</td>\n",
+       "      <td>136</td>\n",
+       "      <td>5</td>\n",
+       "      <td>3</td>\n",
+       "      <td>b0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>90</th>\n",
+       "      <td>DT120_MSS5_MSL3_none_one_hot_B0_v1</td>\n",
+       "      <td>U233_MET_FAST_001</td>\n",
+       "      <td>0.999637</td>\n",
+       "      <td>0.00044</td>\n",
+       "      <td>0.999427</td>\n",
+       "      <td>0.00029</td>\n",
+       "      <td>0.000363</td>\n",
+       "      <td>0.000573</td>\n",
+       "      <td>0.077731</td>\n",
+       "      <td>0.123492</td>\n",
+       "      <td>0.122258</td>\n",
+       "      <td>120</td>\n",
+       "      <td>5</td>\n",
+       "      <td>3</td>\n",
+       "      <td>b0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>30</th>\n",
+       "      <td>DT100_MSS5_MSL3_none_one_hot_B0_v1</td>\n",
+       "      <td>U233_MET_FAST_001</td>\n",
+       "      <td>0.999544</td>\n",
+       "      <td>0.00041</td>\n",
+       "      <td>0.999753</td>\n",
+       "      <td>0.00028</td>\n",
+       "      <td>0.000456</td>\n",
+       "      <td>0.000247</td>\n",
+       "      <td>0.077741</td>\n",
+       "      <td>0.123487</td>\n",
+       "      <td>0.122248</td>\n",
+       "      <td>100</td>\n",
+       "      <td>5</td>\n",
+       "      <td>3</td>\n",
+       "      <td>b0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>543</th>\n",
+       "      <td>DT70_MSS5_MSL3_none_one_hot_B0_v1</td>\n",
+       "      <td>U233_MET_FAST_001</td>\n",
+       "      <td>0.999485</td>\n",
+       "      <td>0.00042</td>\n",
+       "      <td>0.999519</td>\n",
+       "      <td>0.00028</td>\n",
+       "      <td>0.000515</td>\n",
+       "      <td>0.000481</td>\n",
+       "      <td>0.077826</td>\n",
+       "      <td>0.123491</td>\n",
+       "      <td>0.122261</td>\n",
+       "      <td>70</td>\n",
+       "      <td>5</td>\n",
+       "      <td>3</td>\n",
+       "      <td>b0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>171</th>\n",
+       "      <td>DT160_MSS2_MSL1_none_one_hot_B0_v1</td>\n",
+       "      <td>U233_MET_FAST_001</td>\n",
+       "      <td>1.000560</td>\n",
+       "      <td>0.00043</td>\n",
+       "      <td>1.000950</td>\n",
+       "      <td>0.00030</td>\n",
+       "      <td>0.000560</td>\n",
+       "      <td>0.000950</td>\n",
+       "      <td>0.026063</td>\n",
+       "      <td>0.136077</td>\n",
+       "      <td>0.134881</td>\n",
+       "      <td>160</td>\n",
+       "      <td>2</td>\n",
+       "      <td>1</td>\n",
+       "      <td>b0</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                                  Model          Benchmark  K_eff_ana  \\\n",
+       "138  DT136_MSS5_MSL3_none_one_hot_B0_v1  U233_MET_FAST_001   0.999906   \n",
+       "90   DT120_MSS5_MSL3_none_one_hot_B0_v1  U233_MET_FAST_001   0.999637   \n",
+       "30   DT100_MSS5_MSL3_none_one_hot_B0_v1  U233_MET_FAST_001   0.999544   \n",
+       "543   DT70_MSS5_MSL3_none_one_hot_B0_v1  U233_MET_FAST_001   0.999485   \n",
+       "171  DT160_MSS2_MSL1_none_one_hot_B0_v1  U233_MET_FAST_001   1.000560   \n",
+       "\n",
+       "     Unc_ana  K_eff_imp  Unc_imp  Deviation_Ana  Deviation_Imp  train_mae  \\\n",
+       "138  0.00043   0.999979  0.00029       0.000094       0.000021   0.077729   \n",
+       "90   0.00044   0.999427  0.00029       0.000363       0.000573   0.077731   \n",
+       "30   0.00041   0.999753  0.00028       0.000456       0.000247   0.077741   \n",
+       "543  0.00042   0.999519  0.00028       0.000515       0.000481   0.077826   \n",
+       "171  0.00043   1.000950  0.00030       0.000560       0.000950   0.026063   \n",
+       "\n",
+       "      val_mae  test_mae  max_depth  mss  msl dataset  \n",
+       "138  0.123489  0.122285        136    5    3      b0  \n",
+       "90   0.123492  0.122258        120    5    3      b0  \n",
+       "30   0.123487  0.122248        100    5    3      b0  \n",
+       "543  0.123491  0.122261         70    5    3      b0  \n",
+       "171  0.136077  0.134881        160    2    1      b0  "
+      ]
+     },
+     "execution_count": 21,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "final_b0[final_b0.Benchmark == \"U233_MET_FAST_001\"].sort_values(by=\"Deviation_Ana\").head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "It seems like the `DT136_MSS5_MSL3_none_one_hot_B0_v1` model has great performance in the benchmark with an error of `0.000094%`. "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Getting Best Models Overall\n",
+    "\n",
+    "Similar to traditional ML validation techniques, it is only correct that we analyze the result of the ML algorithms on their average performance on a set of criticality benchmark cases, rather than just one. The examples here contain information on three benchmarks. Those will suffice for a proof-of-concept analysis. \n",
+    "\n",
+    "An option is simply grouping the model by performance. Beware, this can lead to some major misconceptions and it is shown here only as an example. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-05-07T23:09:03.346218Z",
+     "start_time": "2021-05-07T23:09:03.336219Z"
+    }
+   },
+   "outputs": [],
+   "source": [
+    "model_mean = final_set.groupby(\"Model\").mean()\n",
+    "# model_mean = model_mean[['K_eff_ana']]\n",
+    "model_mean[\"Error\"] = (abs(model_mean.K_eff_ana - 1) /1) * 100\n",
+    "model_mean[\"Unc_Error\"] = (abs(model_mean.Unc_ana - 1) /1) * 100\n",
+    "model_mean = model_mean.reset_index()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 34,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-05-07T23:09:16.645075Z",
+     "start_time": "2021-05-07T23:09:16.630574Z"
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Model</th>\n",
+       "      <th>K_eff_ana</th>\n",
+       "      <th>Unc_ana</th>\n",
+       "      <th>K_eff_imp</th>\n",
+       "      <th>Unc_imp</th>\n",
+       "      <th>Deviation_Ana</th>\n",
+       "      <th>Deviation_Imp</th>\n",
+       "      <th>train_mae</th>\n",
+       "      <th>val_mae</th>\n",
+       "      <th>test_mae</th>\n",
+       "      <th>max_depth</th>\n",
+       "      <th>mss</th>\n",
+       "      <th>msl</th>\n",
+       "      <th>Error</th>\n",
+       "      <th>Unc_Error</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>27</th>\n",
+       "      <td>DT110_MSS5_MSL1_none_one_hot_B0_v1</td>\n",
+       "      <td>0.999999</td>\n",
+       "      <td>0.000430</td>\n",
+       "      <td>1.000269</td>\n",
+       "      <td>0.000297</td>\n",
+       "      <td>0.002014</td>\n",
+       "      <td>0.001611</td>\n",
+       "      <td>0.052218</td>\n",
+       "      <td>0.131089</td>\n",
+       "      <td>0.129714</td>\n",
+       "      <td>110</td>\n",
+       "      <td>5</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0.000100</td>\n",
+       "      <td>99.957000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>374</th>\n",
+       "      <td>DT90_MSS5_MSL1_none_one_hot_B1_v1</td>\n",
+       "      <td>1.000030</td>\n",
+       "      <td>0.000440</td>\n",
+       "      <td>1.000064</td>\n",
+       "      <td>0.000297</td>\n",
+       "      <td>0.001430</td>\n",
+       "      <td>0.001469</td>\n",
+       "      <td>0.052356</td>\n",
+       "      <td>0.130018</td>\n",
+       "      <td>0.129852</td>\n",
+       "      <td>90</td>\n",
+       "      <td>5</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0.003000</td>\n",
+       "      <td>99.956000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>209</th>\n",
+       "      <td>DT310_MSS5_MSL1_none_one_hot_B1_v1</td>\n",
+       "      <td>1.000034</td>\n",
+       "      <td>0.000423</td>\n",
+       "      <td>1.000101</td>\n",
+       "      <td>0.000290</td>\n",
+       "      <td>0.001786</td>\n",
+       "      <td>0.001619</td>\n",
+       "      <td>0.051868</td>\n",
+       "      <td>0.130218</td>\n",
+       "      <td>0.130013</td>\n",
+       "      <td>310</td>\n",
+       "      <td>5</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0.003400</td>\n",
+       "      <td>99.957667</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>302</th>\n",
+       "      <td>DT60_MSS5_MSL1_none_one_hot_B0_v1</td>\n",
+       "      <td>1.000039</td>\n",
+       "      <td>0.000437</td>\n",
+       "      <td>1.000160</td>\n",
+       "      <td>0.000290</td>\n",
+       "      <td>0.001401</td>\n",
+       "      <td>0.001600</td>\n",
+       "      <td>0.053003</td>\n",
+       "      <td>0.131055</td>\n",
+       "      <td>0.129657</td>\n",
+       "      <td>60</td>\n",
+       "      <td>5</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0.003867</td>\n",
+       "      <td>99.956333</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>105</th>\n",
+       "      <td>DT180_MSS5_MSL1_none_one_hot_B1_v1</td>\n",
+       "      <td>0.999951</td>\n",
+       "      <td>0.000423</td>\n",
+       "      <td>1.000313</td>\n",
+       "      <td>0.000297</td>\n",
+       "      <td>0.001769</td>\n",
+       "      <td>0.001600</td>\n",
+       "      <td>0.051949</td>\n",
+       "      <td>0.130154</td>\n",
+       "      <td>0.129956</td>\n",
+       "      <td>180</td>\n",
+       "      <td>5</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0.004900</td>\n",
+       "      <td>99.957667</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                                  Model  K_eff_ana   Unc_ana  K_eff_imp  \\\n",
+       "27   DT110_MSS5_MSL1_none_one_hot_B0_v1   0.999999  0.000430   1.000269   \n",
+       "374   DT90_MSS5_MSL1_none_one_hot_B1_v1   1.000030  0.000440   1.000064   \n",
+       "209  DT310_MSS5_MSL1_none_one_hot_B1_v1   1.000034  0.000423   1.000101   \n",
+       "302   DT60_MSS5_MSL1_none_one_hot_B0_v1   1.000039  0.000437   1.000160   \n",
+       "105  DT180_MSS5_MSL1_none_one_hot_B1_v1   0.999951  0.000423   1.000313   \n",
+       "\n",
+       "      Unc_imp  Deviation_Ana  Deviation_Imp  train_mae   val_mae  test_mae  \\\n",
+       "27   0.000297       0.002014       0.001611   0.052218  0.131089  0.129714   \n",
+       "374  0.000297       0.001430       0.001469   0.052356  0.130018  0.129852   \n",
+       "209  0.000290       0.001786       0.001619   0.051868  0.130218  0.130013   \n",
+       "302  0.000290       0.001401       0.001600   0.053003  0.131055  0.129657   \n",
+       "105  0.000297       0.001769       0.001600   0.051949  0.130154  0.129956   \n",
+       "\n",
+       "     max_depth  mss  msl     Error  Unc_Error  \n",
+       "27         110    5    1  0.000100  99.957000  \n",
+       "374         90    5    1  0.003000  99.956000  \n",
+       "209        310    5    1  0.003400  99.957667  \n",
+       "302         60    5    1  0.003867  99.956333  \n",
+       "105        180    5    1  0.004900  99.957667  "
+      ]
+     },
+     "execution_count": 34,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "model_mean.sort_values(\"Error\").head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### ------------------------------------------------ PRIVATE SECTION"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-04-22T22:02:29.347888Z",
+     "start_time": "2021-04-22T22:02:29.319879Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\\begin{tabular}{lrrrrrrl}\n",
+      "\\toprule\n",
+      "                             Model &  K\\_eff\\_ana &  Unc\\_ana &  Deviation\\_Ana &  train\\_mae &  val\\_mae &  test\\_mae &   tag \\\\\n",
+      "\\midrule\n",
+      "DT400\\_MSS2\\_MSL1\\_none\\_one\\_hot\\_B0\\_v1 &   1.002320 &  0.00043 &         0.2320 &   0.025773 & 0.136140 &  0.135027 & Train \\\\\n",
+      "DT70\\_MSS10\\_MSL7\\_none\\_one\\_hot\\_B1\\_v1 &   0.997118 &  0.00044 &         0.2882 &   0.094443 & 0.118699 &  0.119142 &   Val \\\\\n",
+      "DT90\\_MSS10\\_MSL7\\_none\\_one\\_hot\\_B0\\_v1 &   0.922530 &  0.00046 &         7.7470 &   0.094439 & 0.119797 &  0.118706 &  Test \\\\\n",
+      "\\bottomrule\n",
+      "\\end{tabular}\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(model_utils.get_best_models_df(u233_001[[\"Model\", 'K_eff_ana', 'Unc_ana', 'Deviation_Ana', 'train_mae', 'val_mae', 'test_mae']]).to_latex(index=False))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-04-22T22:02:37.371937Z",
+     "start_time": "2021-04-22T22:02:37.358938Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\\begin{tabular}{lrrrrrr}\n",
+      "\\toprule\n",
+      "                             Model &  K\\_eff\\_ana &  Unc\\_ana &  Deviation\\_Ana &  train\\_mae &  val\\_mae &  test\\_mae \\\\\n",
+      "\\midrule\n",
+      "DT80\\_MSS15\\_MSL3\\_none\\_one\\_hot\\_B1\\_v1 &   0.999943 &  0.00041 &         0.0057 &   0.088061 & 0.120462 &  0.120684 \\\\\n",
+      "\\bottomrule\n",
+      "\\end{tabular}\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(u233_001[[\"Model\", 'K_eff_ana', 'Unc_ana', 'Deviation_Ana', 'train_mae', 'val_mae', 'test_mae']].head(1).to_latex(index=False))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-04-11T16:27:51.619674Z",
+     "start_time": "2021-04-11T16:27:51.594686Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\\begin{tabular}{lrrrrrrl}\n",
+      "\\toprule\n",
+      "                             Model &  K\\_eff\\_ana &  Unc\\_ana &  Deviation\\_Ana &  train\\_mae &  val\\_mae &  test\\_mae &   tag \\\\\n",
+      "\\midrule\n",
+      "DT400\\_MSS2\\_MSL1\\_none\\_one\\_hot\\_B0\\_v1 &   1.003330 &  0.00044 &         0.3330 &   0.025773 & 0.136140 &  0.135027 & Train \\\\\n",
+      "DT70\\_MSS10\\_MSL7\\_none\\_one\\_hot\\_B1\\_v1 &   0.997767 &  0.00044 &         0.2233 &   0.094443 & 0.118699 &  0.119142 &   Val \\\\\n",
+      "DT90\\_MSS10\\_MSL7\\_none\\_one\\_hot\\_B0\\_v1 &   0.929108 &  0.00045 &         7.0892 &   0.094439 & 0.119797 &  0.118706 &  Test \\\\\n",
+      "\\bottomrule\n",
+      "\\end{tabular}\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(model_utils.get_best_models_df(u233_002_001[[\"Model\", 'K_eff_ana', 'Unc_ana', 'Deviation_Ana', 'train_mae', 'val_mae', 'test_mae']]).to_latex(index=False))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-04-11T16:27:55.232320Z",
+     "start_time": "2021-04-11T16:27:55.218320Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\\begin{tabular}{lrrrrrr}\n",
+      "\\toprule\n",
+      "                             Model &  K\\_eff\\_ana &  Unc\\_ana &  Deviation\\_Ana &  train\\_mae &  val\\_mae &  test\\_mae \\\\\n",
+      "\\midrule\n",
+      "DT280\\_MSS5\\_MSL1\\_none\\_one\\_hot\\_B0\\_v1 &        1.0 &  0.00041 &            0.0 &    0.05187 & 0.131216 &  0.129827 \\\\\n",
+      "\\bottomrule\n",
+      "\\end{tabular}\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(u233_002_001[[\"Model\", 'K_eff_ana', 'Unc_ana', 'Deviation_Ana', 'train_mae', 'val_mae', 'test_mae']].head(1).to_latex(index=False))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-04-11T16:31:09.456701Z",
+     "start_time": "2021-04-11T16:31:09.431697Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\\begin{tabular}{lrrrrrrl}\n",
+      "\\toprule\n",
+      "                             Model &  K\\_eff\\_ana &  Unc\\_ana &  Deviation\\_Ana &  train\\_mae &  val\\_mae &  test\\_mae &   tag \\\\\n",
+      "\\midrule\n",
+      "DT400\\_MSS2\\_MSL1\\_none\\_one\\_hot\\_B0\\_v1 &   1.005650 &  0.00042 &         0.5650 &   0.025773 & 0.136140 &  0.135027 & Train \\\\\n",
+      "DT70\\_MSS10\\_MSL7\\_none\\_one\\_hot\\_B1\\_v1 &   1.000680 &  0.00044 &         0.0680 &   0.094443 & 0.118699 &  0.119142 &   Val \\\\\n",
+      "DT90\\_MSS10\\_MSL7\\_none\\_one\\_hot\\_B0\\_v1 &   0.936182 &  0.00046 &         6.3818 &   0.094439 & 0.119797 &  0.118706 &  Test \\\\\n",
+      "\\bottomrule\n",
+      "\\end{tabular}\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(model_utils.get_best_models_df(u233_002_002[[\"Model\", 'K_eff_ana', 'Unc_ana', 'Deviation_Ana', 'train_mae', 'val_mae', 'test_mae']]).to_latex(index=False))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "metadata": {
+    "ExecuteTime": {
+     "end_time": "2021-04-11T00:03:54.391117Z",
+     "start_time": "2021-04-11T00:03:54.376117Z"
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\\begin{tabular}{lrrrrrr}\n",
+      "\\toprule\n",
+      "                              Model &  K\\_eff\\_ana &  Unc\\_ana &  Deviation\\_Ana &  train\\_mae &  val\\_mae &  test\\_mae \\\\\n",
+      "\\midrule\n",
+      "DT170\\_MSS10\\_MSL3\\_none\\_one\\_hot\\_B0\\_v1 &    1.00022 &  0.00042 &          0.022 &   0.082419 & 0.121982 &  0.121942 \\\\\n",
+      "\\bottomrule\n",
+      "\\end{tabular}\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(u233_002_002[[\"Model\", 'K_eff_ana', 'Unc_ana', 'Deviation_Ana', 'train_mae', 'val_mae', 'test_mae']].head(1).to_latex(index=False))"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.8"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}

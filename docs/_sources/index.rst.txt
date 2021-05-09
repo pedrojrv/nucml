@@ -29,6 +29,12 @@ NucML is a python toolbox to aid the ML-enhanced Nuclear Data Evaluation pipelin
     navigating-the-nde
 
 .. toctree::
+    :maxdepth: 1
+    :caption: OTHER TUTORIALS
+
+    other-tutorials
+
+.. toctree::
     :maxdepth: 3
     :caption: DOCUMENTATION
 

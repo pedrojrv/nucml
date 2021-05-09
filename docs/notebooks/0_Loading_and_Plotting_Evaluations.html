@@ -4,7 +4,8 @@
 <html class="writer-html5" lang="en" >
 <head>
   <meta charset="utf-8" />
-  
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Evaluated Libraries &mdash; NucML 1.0.0 documentation</title>
@@ -85,23 +86,24 @@
               
             
             
-              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
+              <p><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p class="caption"><span class="caption-text">GET STARTED</span></p>
+<p><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="../navigating-the-nde.html">Loading Data</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="1_Loading_AME_Datasets.html">Atomic Mass Evaluation (2016)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="2_Loading_EXFOR_Datasets.html">Experimental Nuclear Reaction Data (EXFOR)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="1_Loading_ENSDF_RIPL_Datasets.html">Reference Input Parameter Library (RIPL)</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Evaluated Libraries</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Loading-and-Plotting-Evaluated-Data">Loading and Plotting Evaluated Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Loading-Evaluated-Data">Loading Evaluated Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Plotting-Evaluated-Data">Plotting Evaluated Data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#More-Examples">More Examples</a></li>
 </ul>
 </li>
@@ -112,11 +114,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
+<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
+</ul>
+<p><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules.html">nucml</a></li>
 </ul>
-<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
+<p><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
@@ -459,22 +468,22 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<div class="section" id="Evaluated-Libraries">
+<section id="Evaluated-Libraries">
 <h1>Evaluated Libraries<a class="headerlink" href="#Evaluated-Libraries" title="Permalink to this headline">¶</a></h1>
 <p>In this section we briefly show you how to load and plot evaluated data. Let us start by importing some visualizing packages and <code class="docutils literal notranslate"><span class="pre">nucml.datasets</span></code> and setting up a directory where some of the generated figures can be saved.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
-<span></span><span class="c1"># PROTOTYPE</span>
-<span class="kn">import</span> <span class="nn">sys</span>
-<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../../&quot;</span><span class="p">)</span>
+<span></span><span class="c1"># # PROTOTYPE</span>
+<span class="c1"># import sys</span>
+<span class="c1"># sys.path.append(&quot;../../&quot;)</span>
 </pre></div>
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -488,7 +497,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -496,11 +505,11 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-<div class="section" id="Loading-and-Plotting-Evaluated-Data">
-<h2>Loading and Plotting Evaluated Data<a class="headerlink" href="#Loading-and-Plotting-Evaluated-Data" title="Permalink to this headline">¶</a></h2>
+<section id="Loading-Evaluated-Data">
+<h2>Loading Evaluated Data<a class="headerlink" href="#Loading-Evaluated-Data" title="Permalink to this headline">¶</a></h2>
 <p>We can simply load ENDF data using the <code class="docutils literal notranslate"><span class="pre">load_evaluation()</span></code> method for any given isotope and reaction channel (<code class="docutils literal notranslate"><span class="pre">MT</span></code>).</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -509,9 +518,105 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <p>Notice the path where the data is being loaded from. There will be cases where the requested data will not be avaliable. If missing, please submit an issue in the GitHub repo or if possible submit a PR with the needed data for the community to use.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">uranium_nf</span> <span class="o">=</span> <span class="n">nuc_data</span><span class="o">.</span><span class="n">load_evaluation</span><span class="p">(</span><span class="s2">&quot;u235&quot;</span><span class="p">,</span> <span class="mi">18</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">uranium_nf</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Energy</th>
+      <th>Data</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-5.000000</td>
+      <td>4.490276</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-4.986224</td>
+      <td>4.483386</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-4.972451</td>
+      <td>4.476500</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-4.958670</td>
+      <td>4.469610</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-4.944901</td>
+      <td>4.462724</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">uranium_nf</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(46678, 2)
+</pre></div></div>
+</div>
+</section>
+<section id="Plotting-Evaluated-Data">
+<h2>Plotting Evaluated Data<a class="headerlink" href="#Plotting-Evaluated-Data" title="Permalink to this headline">¶</a></h2>
 <p>Next, <code class="docutils literal notranslate"><span class="pre">NucML</span></code> offers a variety of plotting utilities that will be explored later. In this case let us import the evaluation plotting utilities and use them to create visualizations of our cross sections.</p>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -520,7 +625,7 @@ div.rendered_html tbody tr:hover {
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -532,13 +637,13 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_8_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_8_0.png" />
+<img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_12_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_12_0.png" />
 </div>
 </div>
 <p>Notice that all data will be queried from all avaliable evaluated libraries. The rendered figure will be saved in the previously specified saving directory.</p>
 <p>In this case the <code class="docutils literal notranslate"><span class="pre">JEFF</span></code> evaluation does not seem to be appropiate for the <code class="docutils literal notranslate"><span class="pre">Chlorine</span></code> reaction. We can easily exclude a library from this plot using the <code class="docutils literal notranslate"><span class="pre">exclude</span></code> argument.</p>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -550,11 +655,11 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_10_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_10_0.png" />
+<img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_14_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_14_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
@@ -566,7 +671,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_11_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_11_0.png" />
+<img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_15_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_15_0.png" />
 </div>
 </div>
 <p>The ENDF evaluation is the main database behind the evaluation functionalities. We can plot only ENDF data by excluding everything else. Let us try this for the total cross section for <code class="docutils literal notranslate"><span class="pre">Chlorine-35</span></code>:</p>
@@ -583,7 +688,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_13_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_13_0.png" />
+<img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_17_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_17_0.png" />
 </div>
 </div>
 <p>You can even customize the order in which evaluations are plotted by passing in a dictionary that contains all needed keys. For example, to plot the <code class="docutils literal notranslate"><span class="pre">JENDL</span></code> evaluation first and the <code class="docutils literal notranslate"><span class="pre">ENDF</span></code> library last:</p>
@@ -601,11 +706,11 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_15_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_15_0.png" />
+<img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_19_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_19_0.png" />
 </div>
 </div>
-</div>
-<div class="section" id="More-Examples">
+</section>
+<section id="More-Examples">
 <h2>More Examples<a class="headerlink" href="#More-Examples" title="Permalink to this headline">¶</a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
@@ -620,7 +725,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_17_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_17_0.png" />
+<img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_21_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_21_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -636,7 +741,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_18_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_18_0.png" />
+<img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_22_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_22_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -652,7 +757,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_19_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_19_0.png" />
+<img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_23_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_23_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -668,7 +773,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_20_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_20_0.png" />
+<img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_24_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_24_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -684,7 +789,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_21_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_21_0.png" />
+<img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_25_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_25_0.png" />
 </div>
 </div>
 <div class="nbinput docutils container">
@@ -700,7 +805,7 @@ div.rendered_html tbody tr:hover {
 <div class="prompt empty docutils container">
 </div>
 <div class="output_area docutils container">
-<img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_22_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_22_0.png" />
+<img alt="../_images/notebooks_0_Loading_and_Plotting_Evaluations_26_0.png" src="../_images/notebooks_0_Loading_and_Plotting_Evaluations_26_0.png" />
 </div>
 </div>
 <div class="nbinput nblast docutils container">
@@ -712,8 +817,8 @@ div.rendered_html tbody tr:hover {
 </pre></div>
 </div>
 </div>
-</div>
-</div>
+</section>
+</section>
 
 
            </div>

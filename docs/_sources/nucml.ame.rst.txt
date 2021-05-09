@@ -4,6 +4,14 @@ nucml.ame package
 Submodules
 ----------
 
+nucml.ame.parsing module
+------------------------
+
+.. automodule:: nucml.ame.parsing
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 nucml.ame.parsing\_utilities module
 -----------------------------------
 

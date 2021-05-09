@@ -83,16 +83,16 @@
               
             
             
-              <p class="caption"><span class="caption-text">OVERVIEW</span></p>
+              <p><span class="caption-text">OVERVIEW</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../what-is-nucml.html">What is NucML?</a></li>
 </ul>
-<p class="caption"><span class="caption-text">GET STARTED</span></p>
+<p><span class="caption-text">GET STARTED</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installation-guide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../basic-walkthrough.html">Basic Walkthrough</a></li>
 </ul>
-<p class="caption"><span class="caption-text">NAVIGATING THE NDE</span></p>
+<p><span class="caption-text">NAVIGATING THE NDE</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../navigating-the-nde.html">Loading Data</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
@@ -100,11 +100,18 @@
 <li class="toctree-l1"><a class="reference internal" href="../../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
 </ul>
-<p class="caption"><span class="caption-text">DOCUMENTATION</span></p>
+<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
+</ul>
+<p><span class="caption-text">DOCUMENTATION</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">nucml</a></li>
 </ul>
-<p class="caption"><span class="caption-text">FAQ AND CONTACT</span></p>
+<p><span class="caption-text">FAQ AND CONTACT</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
@@ -304,7 +311,13 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">mt_number</span><span class="p">)</span>
     <span class="k">elif</span> <span class="n">mt_for</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;ACE&quot;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">mt_number</span></div>
+        <span class="k">if</span> <span class="n">one_hot</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">&quot;MT_&quot;</span> <span class="o">+</span> <span class="n">mt_number</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">mt_number</span><span class="p">)</span></div>
+
+
+        <span class="c1"># return mt_number</span>
     
 <div class="viewcode-block" id="parse_isotope"><a class="viewcode-back" href="../../nucml.html#nucml.general_utilities.parse_isotope">[docs]</a><span class="k">def</span> <span class="nf">parse_isotope</span><span class="p">(</span><span class="n">isotope</span><span class="p">,</span> <span class="n">parse_for</span><span class="o">=</span><span class="s2">&quot;ENDF&quot;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;This is an internal function that transforms element tags (i.e. U235) into formats appropiate for other internal functions.</span>
