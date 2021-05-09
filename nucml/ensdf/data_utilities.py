@@ -29,7 +29,7 @@ def load_ensdf_samples(df, Z, A, scale=False, scaler=None, to_scale=[]):
         DataFrame: Extracted isotope sample.
     """
     logging.info("Extracting samples from dataframe.")
-    sample = df[(df["Protons"] == Z) & (df["Mass_Number"] == A)].sort_values(by='Level_Number', ascending=True)
+    sample = df[(df["Z"] == Z) & (df["A"] == A)].sort_values(by='Level_Number', ascending=True)
     if scale:
         logging.info("Scaling dataset...")
         sample[to_scale] = scaler.transform(sample[to_scale])
@@ -51,7 +51,7 @@ def load_ensdf_element(df, Z, scale=False, scaler=None, to_scale=[]):
         DataFrame: Extracted element sample.
     """
     logging.info("Extracting samples from dataframe.")
-    sample = df[(df["Protons"] == Z)]
+    sample = df[(df["Z"] == Z)]
     if scale:
         logging.info("Scaling dataset...")
         sample[to_scale] = scaler.transform(sample[to_scale])
@@ -104,8 +104,8 @@ def append_ensdf_levels_nodata(tot_num_levels, df, log=False, scale=False, scale
     """
     new_data = pd.DataFrame({"Level_Number":np.arange(1,tot_num_levels + 1)})
     isotope_exfor = df.copy()
-    if "Level_Energy" in isotope_exfor.columns:
-        isotope_exfor =  isotope_exfor.drop(columns="Level_Energy")
+    if "Energy" in isotope_exfor.columns:
+        isotope_exfor =  isotope_exfor.drop(columns="Energy")
     for i in list(isotope_exfor.columns)[1:]:
         new_data[i] = isotope_exfor[i].values[0] # changed to 0 from 1
     logging.info("Expanded Dataset has shape: {}".format(new_data.shape))
@@ -172,7 +172,7 @@ def generate_level_density_csv(df, Z, A, nodata=False, upper_energy_mev=20, get_
     else:
         original = load_ensdf_samples(df, Z, A)
     
-    element = original.Target_Element_w_A.values[0]
+    element = original.Element_w_A.values[0]
     logging.info("Generating level density for {}".format(element))
 
     if tot_num_levels != 0:
@@ -184,19 +184,19 @@ def generate_level_density_csv(df, Z, A, nodata=False, upper_energy_mev=20, get_
         simple = original.copy()
     
 
-    original = original[["Level_Number", "Level_Energy"]]
+    original = original[["Level_Number", "Energy"]]
     simple = simple[["Level_Number"]]
     
     reg = linear_model.LinearRegression()
-    reg.fit(original.drop("Level_Energy", 1), original.Level_Energy)
+    reg.fit(original.drop("Energy", 1), original.Energy)
     
     pred = pd.DataFrame()
     pred["Level_Number"] = simple.Level_Number
-    pred["Level_Energy"] = reg.predict(pred)
+    pred["Energy"] = reg.predict(pred)
 
     if get_upper:
         logging.info("Initalizing starting variables for NLD extrapolation...")
-        last_energy = pred.Level_Energy.values[-1]
+        last_energy = pred.Energy.values[-1]
         number_levels = tot_num_levels
         upper_limit = np.log10(upper_energy_mev)
         x = 0
@@ -209,8 +209,8 @@ def generate_level_density_csv(df, Z, A, nodata=False, upper_energy_mev=20, get_
                     simple = append_ensdf_levels(number_levels, df.copy(), Z, A, log=True, scale=False)
                 pred = pd.DataFrame()
                 pred["Level_Number"] = simple.Level_Number
-                pred["Level_Energy"] = reg.predict(pred)
-                last_energy = pred.Level_Energy.values[-1]
+                pred["Energy"] = reg.predict(pred)
+                last_energy = pred.Energy.values[-1]
                 x = x + 1
                 if x == it_limit:
                     logging.info("Iteration limit reached. Target energy not reached.")
@@ -220,9 +220,9 @@ def generate_level_density_csv(df, Z, A, nodata=False, upper_energy_mev=20, get_
     if save:
         pred["A"] = A
         pred["Z"] = Z
-        pred["Target_Element_w_A"] = element
+        pred["Element_w_A"] = element
         pred["Level_Number"] = 10**pred.Level_Number.values
-        pred["Level_Energy"] = 10**pred.Level_Energy.values
+        pred["Energy"] = 10**pred.Energy.values
         pred["Level_Number"] = pred.Level_Number.astype(int)
         gen_utils.initialize_directories(saving_dir)
         pred.to_csv(os.path.join(saving_dir, "{}_Level_Density.csv".format(element)), index=False)
@@ -239,9 +239,9 @@ def get_level_density(energy_mev, df):
     Returns:
         float: Level density at "energy_mev".
     """    
-    to_append = pd.DataFrame({"Level_Number":[np.nan], "Level_Energy": [np.log10(energy_mev)], "N":[np.nan]})
+    to_append = pd.DataFrame({"Level_Number":[np.nan], "Energy": [np.log10(energy_mev)], "N":[np.nan]})
     to_interpolate = df.append(to_append, ignore_index=True)
-    to_interpolate = to_interpolate.sort_values(by="Level_Energy")
+    to_interpolate = to_interpolate.sort_values(by="Energy")
     new_index = len(to_interpolate) - 1
     to_interpolate = to_interpolate.interpolate()
     level_density = to_interpolate.loc[new_index]["N"]
@@ -272,13 +272,13 @@ def make_predictions_w_levels(df, Z, A, num_levels, model, model_type, scaler, t
     ensdf = load_ensdf_samples(df, Z, A)
     data_kwargs = {"Z":Z, "A":A, "log":log, "scale":True, "scaler":scaler, "to_scale":to_scale}
     to_infer = append_ensdf_levels(num_levels, df, **data_kwargs)
-    to_infer["Level_Energy"] = model_utils.make_predictions(to_infer.values, model, model_type)
+    to_infer["Energy"] = model_utils.make_predictions(to_infer.values, model, model_type)
     if plot:
         ensdf_plot.level_density_ml(ensdf, to_infer, log_sqrt=log_sqrt, log=log, save=save, save_dir=save_dir)
     if inv_transform:
         if log:
             to_infer["Level_Number"] = 10**to_infer.Level_Number.values
-            to_infer["Level_Energy"] = 10**to_infer.Level_Energy.values
+            to_infer["Energy"] = 10**to_infer.Energy.values
         to_infer[to_scale] = scaler.inverse_transform(to_infer[to_scale])
     return to_infer
 
@@ -304,13 +304,13 @@ def make_predictions_w_levels_nodata(df, num_levels, model, model_type, scaler, 
     """    
     data_kwargs = {"log":log, "scale":True, "scaler":scaler, "to_scale":to_scale}
     to_infer = append_ensdf_levels_nodata(num_levels, df, **data_kwargs)
-    to_infer["Level_Energy"] = model_utils.make_predictions(to_infer.values, model, model_type)
+    to_infer["Energy"] = model_utils.make_predictions(to_infer.values, model, model_type)
     if plot:
         ensdf_plot.level_density_ml(to_infer.copy(), to_infer.copy(), log_sqrt=log_sqrt, log=log, save=save, save_dir=save_dir)
     if inv_transform:
         if log:
             to_infer["Level_Number"] = 10**to_infer.Level_Number.values
-            to_infer["Level_Energy"] = 10**to_infer.Level_Energy.values
+            to_infer["Energy"] = 10**to_infer.Energy.values
         to_infer[to_scale] = scaler.inverse_transform(to_infer[to_scale])
     return to_infer
 
@@ -337,8 +337,8 @@ def make_predictions_from_df(df, Z, A, model, model_type, scaler, to_scale, log_
     kwargs = {"scale": True, "scaler": scaler, "to_scale": to_scale}
     ensdf = load_ensdf_samples(df, Z, A)
     to_infer = load_ensdf_samples(df, Z, A, **kwargs)
-    to_infer["Level_Energy"] = model_utils.make_predictions(
-        to_infer.drop(columns=["Level_Energy"]).values, model, model_type)
+    to_infer["Energy"] = model_utils.make_predictions(
+        to_infer.drop(columns=["Energy"]).values, model, model_type)
     if plot:
         ensdf_plot.level_density_ml(ensdf, to_infer, log_sqrt=log_sqrt, log=log, save=save, save_dir=save_dir)
     return ensdf, to_infer
@@ -375,11 +375,11 @@ def predicting_nuclear_xs_v2(df, Z, A, model, scaler, to_scale, num_levels=100, 
         data_kwargs = {"Z":Z, "A":A, "log":log_sqrt, "scale":True, "scaler":scaler, "to_scale":to_scale}
         to_infer = append_ensdf_levels(num_levels, df, **data_kwargs)
     else:
-        to_infer = to_plot.drop(columns=["Level_Energy"])  
+        to_infer = to_plot.drop(columns=["Energy"])  
     
     # Making Predictions
     pred_expanded = model_utils.make_predictions(to_infer.values, model, model_type)
-    pred_original = model_utils.make_predictions(to_plot.drop(columns=["Level_Energy"]).values, model, model_type)
+    pred_original = model_utils.make_predictions(to_plot.drop(columns=["Energy"]).values, model, model_type)
 
     if inv_trans:
         # De-Transforming Scaled Data
@@ -389,10 +389,10 @@ def predicting_nuclear_xs_v2(df, Z, A, model, scaler, to_scale, num_levels=100, 
     all_dict = {"expanded":{"df":to_infer, "predictions":pred_expanded}, 
                 "original":{"df":to_plot, "predictions":pred_original}}
 
-    ml_error_metrics = model_utils.regression_error_metrics(to_plot["Level_Energy"], pred_original)
+    ml_error_metrics = model_utils.regression_error_metrics(to_plot["Energy"], pred_original)
     error_df = model_utils.create_error_df("ENSDF VS ML", ml_error_metrics)
     all_dict.update({"error_metrics":error_df})
     if plot:
-        to_infer["Level_Energy"] = pred_expanded
+        to_infer["Energy"] = pred_expanded
         ensdf_plot.level_density_ml(to_plot, to_infer, log_sqrt=log_sqrt, save=save, save_dir=save_dir)
     return all_dict

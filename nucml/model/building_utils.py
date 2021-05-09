@@ -212,103 +212,19 @@ def get_xgboost_params(eta=0.5, gamma=0, l2=0, max_depth=30, grow_policy='depthw
 
 
 
+def tf_dataset_gen(x, y, xt, yt, BUFFER_SIZE, BATCH_SIZE, N_TRAIN, gpu=False, multiplier=2, cache=False):
+    if gpu == True:
+        BATCH_SIZE = BATCH_SIZE * multiplier
+        print("GPU: ON")
+    train_dataset = tf.data.Dataset.from_tensor_slices((x.values, y.values)).shuffle(BUFFER_SIZE).repeat().batch(BATCH_SIZE)
+    test_dataset = tf.data.Dataset.from_tensor_slices((xt.values, yt.values)).batch(BATCH_SIZE)
+    if cache == True: # Ensures loader doesnt re-read data at each epoch.
+        train_dataset = train_dataset.cache()
+        test_dataset = test_dataset.cache()
+    STEPS_PER_EPOCH = N_TRAIN//BATCH_SIZE
+    print("BATCH SIZE: ", BATCH_SIZE)
+    print("STEPS PER EPOCH: ", STEPS_PER_EPOCH)
+    return train_dataset, test_dataset, STEPS_PER_EPOCH, BATCH_SIZE
 
-
-
-
-
-# def tf_dataset_gen(x, y, xt, yt, BUFFER_SIZE, BATCH_SIZE, N_TRAIN, gpu=False, multiplier=2, cache=False):
-#     if gpu == True:
-#         BATCH_SIZE = BATCH_SIZE * multiplier
-#         print("GPU: ON")
-#     train_dataset = tf.data.Dataset.from_tensor_slices((x.values, y.values)).shuffle(BUFFER_SIZE).repeat().batch(BATCH_SIZE)
-#     test_dataset = tf.data.Dataset.from_tensor_slices((xt.values, yt.values)).batch(BATCH_SIZE)
-#     if cache == True: # Ensures loader doesnt re-read data at each epoch.
-#         train_dataset = train_dataset.cache()
-#         test_dataset = test_dataset.cache()
-#     STEPS_PER_EPOCH = N_TRAIN//BATCH_SIZE
-#     print("BATCH SIZE: ", BATCH_SIZE)
-#     print("STEPS PER EPOCH: ", STEPS_PER_EPOCH)
-#     return train_dataset, test_dataset, STEPS_PER_EPOCH, BATCH_SIZE
-
-
-# def get_optimizer(lr_schedule):
-#     return tf.keras.optimizers.Adam(lr_schedule)
-
-
-# def compile_and_fit(model, name, train_dataset, test_dataset, STEPS_PER_EPOCH, BATCH_SIZE=None, 
-#                     optimizer=None, max_epochs=10000, DECAY_EPOCHS=1000):
-#     lr_schedule = tf.keras.optimizers.schedules.InverseTimeDecay(
-#         0.001, decay_steps=STEPS_PER_EPOCH*DECAY_EPOCHS,
-#         decay_rate=1, staircase=False)
-    
-#     if optimizer is None:
-#         optimizer = get_optimizer(lr_schedule)
-#     model.compile(optimizer=optimizer,
-#                   loss='mse',
-#                   metrics=['mae', 'mse'])
-#     model.summary()
-#     history = model.fit(
-#         train_dataset,
-#         steps_per_epoch = STEPS_PER_EPOCH,
-#         epochs=max_epochs,
-#         validation_data=test_dataset,
-#         callbacks=get_callbacks(name),
-#         verbose=0)        
-#     return history
-
-
-# def train_ensdf_network(strategy):
-# 	with strategy.scope():
-# 	    tiny_model = tf.keras.Sequential([
-# 	        layers.Dense(16, activation='elu', input_shape=(FEATURES,)),
-# 	        layers.Dense(1)])
-# 	    history = compile_and_fit(tiny_model, 'sizes/Tiny_CPU', train_dataset, 
-# 	                                                 test_dataset, STEPS_PER_EPOCH_CPU, max_epochs=5000)
-# 	    return history
-
-
-
-# N_VALIDATION = len(x_test)
-# N_TRAIN = len(x_train)
-# FEATURES = len(x_train.columns)
-# BUFFER_SIZE = N_TRAIN
-# BATCH_SIZE_PER_REPLICA = 64
-# BATCH_SIZE = BATCH_SIZE_PER_REPLICA * strategy.num_replicas_in_sync
-
-
-# train_dataset, test_dataset, STEPS_PER_EPOCH_CPU, BATCH_SIZE_CPU = tf_dataset_gen(
-#     x_train, y_train, x_test, y_test, BUFFER_SIZE, BATCH_SIZE)
-
-
-
-# # def compile_and_fit(model, name, train_dataset, test_dataset, STEPS_PER_EPOCH, BATCH_SIZE=None, 
-# #                     optimizer=None, max_epochs=10000, DECAY_EPOCHS=1000):
-# def compile_and_fit(model, name, x_train, y_train, x_test, y_test, STEPS_PER_EPOCH, BATCH_SIZE=None, 
-#                     optimizer=None, max_epochs=10000, DECAY_EPOCHS=1000):
-#     lr_schedule = tf.keras.optimizers.schedules.InverseTimeDecay(
-#         0.001, decay_steps=STEPS_PER_EPOCH*DECAY_EPOCHS,
-#         decay_rate=1, staircase=False)
-    
-#     if optimizer is None:
-#         optimizer = get_optimizer(lr_schedule)
-#     model.compile(optimizer=optimizer,
-#                   loss='mse',
-#                   metrics=['mae', 'mse'])
-#     model.summary()
-# #     history = model.fit(
-# #         train_dataset,
-# #         steps_per_epoch = STEPS_PER_EPOCH,
-# #         epochs=max_epochs,
-# #         validation_data=test_dataset,
-# #         callbacks=get_callbacks(name),
-# #         verbose=1)   
-#     history = model.fit(
-#         x_train, y_train,
-#         batch_size=BATCH_SIZE,
-#         steps_per_epoch = STEPS_PER_EPOCH,
-#         epochs=max_epochs,
-#         validation_data=(x_test, y_test),
-#         callbacks=get_callbacks(name),
-#         verbose=1)   
-#     return history
+def get_optimizer(lr_schedule):
+    return tf.keras.optimizers.Adam(lr_schedule)

@@ -1,0 +1,300 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>nucml.evaluation.plot &mdash; NucML 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> NucML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">OVERVIEW</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../what-is-nucml.html">What is NucML?</a></li>
+</ul>
+<p><span class="caption-text">GET STARTED</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basic-walkthrough.html">Basic Walkthrough</a></li>
+</ul>
+<p><span class="caption-text">NAVIGATING THE NDE</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html">Loading Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#modeling-data">Modeling Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
+</ul>
+<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
+</ul>
+<p><span class="caption-text">DOCUMENTATION</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">nucml</a></li>
+</ul>
+<p><span class="caption-text">FAQ AND CONTACT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">NucML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>nucml.evaluation.plot</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for nucml.evaluation.plot</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../..&quot;</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">nucml.datasets</span> <span class="k">as</span> <span class="nn">nuc_data</span> 
+
+<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+
+
+<span class="n">z_order_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;endf&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;new_data&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;exfor&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="s2">&quot;tendl&quot;</span><span class="p">:</span><span class="mi">4</span><span class="p">,</span> <span class="s2">&quot;jendl&quot;</span><span class="p">:</span><span class="mi">5</span><span class="p">,</span> <span class="s2">&quot;jeff&quot;</span><span class="p">:</span><span class="mi">6</span><span class="p">}</span>
+<div class="viewcode-block" id="plot"><a class="viewcode-back" href="../../../nucml.evaluation.html#nucml.evaluation.plot.plot">[docs]</a><span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="n">isotope</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="n">exfor</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">exclude</span><span class="o">=</span><span class="p">[],</span> <span class="n">new_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">new_data_label</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">z_order_dict</span><span class="o">=</span><span class="n">z_order_dict</span><span class="p">,</span> 
+    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;neutrons&quot;</span><span class="p">,</span> <span class="n">mev_to_ev</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">mb_to_b</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plots all evaluations for a specific reaction and a given isotope. It is possible to </span>
+<span class="sd">    exclude some evaluations if needed. New data can also be added. The avaliable evaluations </span>
+<span class="sd">    include endfb8.0, jendl4.0, jeff3.3, and tendl.2019</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        isotope (str): Isotope to query (i.e. Cl35, u235).</span>
+<span class="sd">        MT ([type]): Reaction channel to extract as an integer (ENDF MT codes).</span>
+<span class="sd">        exfor (DataFrame, optional): EXFOR DataFrame to plot along the evaluations. Defaults to None.</span>
+<span class="sd">        exclude (list, optional): List of evaluations to exclude from plot. Defaults to [].</span>
+<span class="sd">        new_data (DataFrame, optional): DataFrame containing new data or extra data to plot. Defaults to None.</span>
+<span class="sd">        new_data_label (str, optional): If new_data is being provided, a label for the legend needs to be provided. Defaults to &quot;&quot;.</span>
+<span class="sd">        save (bool, optional): If True, the figure will be saved. Defaults to False.</span>
+<span class="sd">        save_dir (str, optional): Directory where the figure will be saved. Defaults to &quot;&quot;.</span>
+<span class="sd">        z_order_dict (dict, optional): Dictionary containing the order on which to plot the evaluations. For example,</span>
+<span class="sd">            z_order_dict = {&quot;endf&quot;:1, &quot;new_data&quot;:2, &quot;exfor&quot;:3, &quot;tendl&quot;:4, &quot;jendl&quot;:5, &quot;jeff&quot;:6} will plot the endf </span>
+<span class="sd">            first followed by the new data if avaliable and so on. Defaults to {&quot;endf&quot;:1, &quot;new_data&quot;:2, &quot;exfor&quot;:3, &quot;tendl&quot;:4, &quot;jendl&quot;:5, &quot;jeff&quot;:6}.</span>
+<span class="sd">        mode (str, optional): Which type of projectile is to be extracted. The only options are</span>
+<span class="sd">            &quot;neutrons&quot; and &quot;protons&quot;. Defaults to &quot;neutrons&quot;.</span>
+<span class="sd">        mev_to_ev (bool, optional): Converts energy from MeV to eV. Defaults to True.</span>
+<span class="sd">        mb_to_b (bool, optional): Converts cross section from millibarns to barns. Defaults to True.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">endf</span> <span class="o">=</span> <span class="n">nuc_data</span><span class="o">.</span><span class="n">load_evaluation</span><span class="p">(</span><span class="n">isotope</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">library</span><span class="o">=</span><span class="s2">&quot;endfb8.0&quot;</span><span class="p">,</span> <span class="n">mev_to_ev</span><span class="o">=</span><span class="n">mev_to_ev</span><span class="p">,</span> <span class="n">mb_to_b</span><span class="o">=</span><span class="n">mb_to_b</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">tendl</span> <span class="o">=</span> <span class="n">nuc_data</span><span class="o">.</span><span class="n">load_evaluation</span><span class="p">(</span><span class="n">isotope</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">library</span><span class="o">=</span><span class="s2">&quot;tendl.2019&quot;</span><span class="p">,</span> <span class="n">mev_to_ev</span><span class="o">=</span><span class="n">mev_to_ev</span><span class="p">,</span> <span class="n">mb_to_b</span><span class="o">=</span><span class="n">mb_to_b</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">jendl</span> <span class="o">=</span> <span class="n">nuc_data</span><span class="o">.</span><span class="n">load_evaluation</span><span class="p">(</span><span class="n">isotope</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">library</span><span class="o">=</span><span class="s2">&quot;jendl4.0&quot;</span><span class="p">,</span> <span class="n">mev_to_ev</span><span class="o">=</span><span class="n">mev_to_ev</span><span class="p">,</span> <span class="n">mb_to_b</span><span class="o">=</span><span class="n">mb_to_b</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">jeff</span> <span class="o">=</span> <span class="n">nuc_data</span><span class="o">.</span><span class="n">load_evaluation</span><span class="p">(</span><span class="n">isotope</span><span class="p">,</span> <span class="n">MT</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="n">library</span><span class="o">=</span><span class="s2">&quot;jeff3.3&quot;</span><span class="p">,</span> <span class="n">mev_to_ev</span><span class="o">=</span><span class="n">mev_to_ev</span><span class="p">,</span> <span class="n">mb_to_b</span><span class="o">=</span><span class="n">mb_to_b</span><span class="p">,</span> <span class="n">log</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">9</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">exfor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">exfor</span><span class="o">.</span><span class="n">Energy</span><span class="p">,</span> <span class="n">exfor</span><span class="o">.</span><span class="n">Data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;EXFOR&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="n">z_order_dict</span><span class="p">[</span><span class="s2">&quot;exfor&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">new_data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">new_data</span><span class="o">.</span><span class="n">Energy</span><span class="p">,</span> <span class="n">new_data</span><span class="o">.</span><span class="n">Data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">new_data_label</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="n">z_order_dict</span><span class="p">[</span><span class="s2">&quot;new_data&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">endf</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">&quot;endf&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">endf</span><span class="o">.</span><span class="n">Energy</span><span class="p">,</span> <span class="n">endf</span><span class="o">.</span><span class="n">Data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;ENDF/B-VIII&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="n">z_order_dict</span><span class="p">[</span><span class="s2">&quot;endf&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">tendl</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">&quot;tendl&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude</span> <span class="ow">and</span> <span class="s2">&quot;all&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">tendl</span><span class="o">.</span><span class="n">Energy</span><span class="p">,</span> <span class="n">tendl</span><span class="o">.</span><span class="n">Data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;TENDL 2019&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="n">z_order_dict</span><span class="p">[</span><span class="s2">&quot;tendl&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">jendl</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">&quot;jendl&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude</span> <span class="ow">and</span> <span class="s2">&quot;all&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">jendl</span><span class="o">.</span><span class="n">Energy</span><span class="p">,</span> <span class="n">jendl</span><span class="o">.</span><span class="n">Data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;JENDL 4.0&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="n">z_order_dict</span><span class="p">[</span><span class="s2">&quot;jendl&quot;</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">jeff</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s2">&quot;jeff&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude</span> <span class="ow">and</span> <span class="s2">&quot;all&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">exclude</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">loglog</span><span class="p">(</span><span class="n">jeff</span><span class="o">.</span><span class="n">Energy</span><span class="p">,</span> <span class="n">jeff</span><span class="o">.</span><span class="n">Data</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;JEFF 3.3&quot;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="n">z_order_dict</span><span class="p">[</span><span class="s2">&quot;jeff&quot;</span><span class="p">])</span> 
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Energy (eV)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Cross Section (b)&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">save</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">exfor</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">save_name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">_Evaluated_XS_w_EXFOR.png&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">isotope</span><span class="p">,</span> <span class="n">MT</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">save_name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">_Evaluated_XS.png&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">isotope</span><span class="p">,</span> <span class="n">MT</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">save_dir</span><span class="p">,</span> <span class="n">save_name</span><span class="p">),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+    
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Pedro Jr. Vicente-Valdez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

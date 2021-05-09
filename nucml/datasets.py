@@ -50,6 +50,26 @@ def generate_exfor_dataset(user_path, modes=["neutrons", "protons", "alphas", "d
         exfor_parsing.impute_original_exfor(heavy_dir, tmp_dir, mode)
     return None
 
+def generate_bigquery_csv():
+    """Creates a single EXFOR data file to update Google BigQuery database.
+
+    Returns:
+        None
+    """
+    alphas = pd.read_csv(os.path.join(exfor_path, "EXFOR_alphas/EXFOR_alphas_ORIGINAL.csv"))
+    deuterons = pd.read_csv(os.path.join(exfor_path, "EXFOR_deuterons/EXFOR_deuterons_ORIGINAL.csv"))
+    gammas = pd.read_csv(os.path.join(exfor_path, "EXFOR_gammas/EXFOR_gammas_ORIGINAL.csv"))
+    helions = pd.read_csv(os.path.join(exfor_path, "EXFOR_helions/EXFOR_helions_ORIGINAL.csv"))
+    neutrons = pd.read_csv(os.path.join(exfor_path, "EXFOR_neutrons/EXFOR_neutrons_ORIGINAL.csv"))
+    protons = pd.read_csv(os.path.join(exfor_path, "EXFOR_protons/EXFOR_protons_ORIGINAL.csv"))
+
+    final = alphas.append(deuterons).append(gammas).append(helions).append(neutrons).append(protons)
+
+    NEW_NAMES = {"Cos/LO":"Cos_LO", "dCos/LO":"dCos_LO", "ELV/HL":"ELV_HL", "dELV/HL":"dELV_HL"}
+    final = final.rename(NEW_NAMES, axis=1)
+
+    final.to_csv(os.path.join(exfor_path, "EXFOR_original.csv"), index=False)
+    return None
 
 ###############################################################################
 ####################### ATOMIC MASS EVALUATION ################################
@@ -261,6 +281,23 @@ def load_ensdf(cutoff=False, append_ame=False):
 
 
 def load_ensdf_ml(cutoff=False, log_sqrt=False, log=False, append_ame=False, basic=-1, num=False, frac=0.3, scaling_type="standard", scaler_dir=None, normalize=True):
+    """EXPERIMENTAL (NOT MEANT FOR USE)
+
+    Args:
+        cutoff (bool, optional): [description]. Defaults to False.
+        log_sqrt (bool, optional): [description]. Defaults to False.
+        log (bool, optional): [description]. Defaults to False.
+        append_ame (bool, optional): [description]. Defaults to False.
+        basic (int, optional): [description]. Defaults to -1.
+        num (bool, optional): [description]. Defaults to False.
+        frac (float, optional): [description]. Defaults to 0.3.
+        scaling_type (str, optional): [description]. Defaults to "standard".
+        scaler_dir ([type], optional): [description]. Defaults to None.
+        normalize (bool, optional): [description]. Defaults to True.
+
+    Returns:
+        [type]: [description]
+    """
     if cutoff:
         datapath = os.path.join(ensdf_path, "CSV_Files/ensdf_cutoff.csv")
     else:
@@ -315,6 +352,32 @@ def load_ensdf_ml(cutoff=False, log_sqrt=False, log=False, append_ame=False, bas
 ###############################################################################
 ####################### EXFOR DATABASE ########################################
 ###############################################################################
+def load_exfor_raw(mode="neutrons"):
+    """Loads the original EXFOR library.
+
+    Args:
+        mode (str, optional): Projectile type to load data for. Defaults to "neutrons". Options also include "alphas", "deuterons", "gammas", "helions", and "protons".
+
+    Returns:
+        pd.DataFrame
+    """    
+    if mode == "all":
+        alphas = pd.read_csv(os.path.join(exfor_path, "EXFOR_alphas/EXFOR_alphas_ORIGINAL.csv"))
+        deuterons = pd.read_csv(os.path.join(exfor_path, "EXFOR_deuterons/EXFOR_deuterons_ORIGINAL.csv"))
+        gammas = pd.read_csv(os.path.join(exfor_path, "EXFOR_gammas/EXFOR_gammas_ORIGINAL.csv"))
+        helions = pd.read_csv(os.path.join(exfor_path, "EXFOR_helions/EXFOR_helions_ORIGINAL.csv"))
+        neutrons = pd.read_csv(os.path.join(exfor_path, "EXFOR_neutrons/EXFOR_neutrons_ORIGINAL.csv"))
+        protons = pd.read_csv(os.path.join(exfor_path, "EXFOR_protons/EXFOR_protons_ORIGINAL.csv"))
+
+        data = alphas.append(deuterons).append(gammas).append(helions).append(neutrons).append(protons)    
+    else:
+        data_path = os.path.join(exfor_path, 'EXFOR_' + mode + '/EXFOR_' + mode + '_ORIGINAL.csv')
+        data = pd.read_csv(data_path)
+    data.MT = data.MT.astype(int)
+    return data
+
+
+
 supported_modes = ["neutrons", "protons", "alphas", "deuterons", "gammas", "helions", "all"]
 supported_mt_coding = ["one_hot", "particle_coded"]
 def load_exfor(log=False, low_en=False, basic=-1, num=False, frac=0.1, mode="neutrons", scaling_type="standard", 
@@ -382,7 +445,8 @@ def load_exfor(log=False, low_en=False, basic=-1, num=False, frac=0.1, mode="neu
         else:
             raise FileNotFoundError("One ore more files are missing. Check directories.")
     else:
-        datapath = os.path.join(exfor_path, 'EXFOR_' + mode + '\\EXFOR_' + mode + '_MF3_AME_no_RawNaN.csv')
+        # datapath = os.path.join(exfor_path, 'EXFOR_' + mode + '\\EXFOR_' + mode + '_MF3_AME_no_RawNaN.csv')
+        datapath = os.path.join(exfor_path, 'EXFOR_' + mode + '/EXFOR_' + mode + '_MF3_AME_no_RawNaN.csv')
         if os.path.exists(datapath):
             logging.info("Reading data from {}".format(datapath))
             df = pd.read_csv(datapath, dtype=dtype_exfor).dropna()

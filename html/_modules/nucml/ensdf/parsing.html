@@ -1,0 +1,517 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>nucml.ensdf.parsing &mdash; NucML 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> NucML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">OVERVIEW</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../what-is-nucml.html">What is NucML?</a></li>
+</ul>
+<p><span class="caption-text">GET STARTED</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basic-walkthrough.html">Basic Walkthrough</a></li>
+</ul>
+<p><span class="caption-text">NAVIGATING THE NDE</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html">Loading Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#modeling-data">Modeling Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
+</ul>
+<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
+</ul>
+<p><span class="caption-text">DOCUMENTATION</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">nucml</a></li>
+</ul>
+<p><span class="caption-text">FAQ AND CONTACT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">NucML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>nucml.ensdf.parsing</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for nucml.ensdf.parsing</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../..&quot;</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">nucml</span> <span class="kn">import</span> <span class="n">general_utilities</span> <span class="c1"># pylint: disable=import-error</span>
+<span class="kn">import</span> <span class="nn">nucml.datasets</span> <span class="k">as</span> <span class="nn">nuc_data</span>   <span class="c1"># pylint: disable=import-error</span>
+
+<div class="viewcode-block" id="get_ripl_dat_paths"><a class="viewcode-back" href="../../../nucml.ensdf.html#nucml.ensdf.parsing.get_ripl_dat_paths">[docs]</a><span class="k">def</span> <span class="nf">get_ripl_dat_paths</span><span class="p">(</span><span class="n">dat_directory</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Searches directory for RIPL .dat files and returns a list of relative paths for each one.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dat_directory (str): Path to the RIPL directory containing all dat files.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Contains relative path to each .dat file found.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;RIPL: Searching </span><span class="si">{}</span><span class="s2"> directory for .dat files...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dat_directory</span><span class="p">))</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="n">general_utilities</span><span class="o">.</span><span class="n">get_files_w_extension</span><span class="p">(</span><span class="n">dat_directory</span><span class="p">,</span> <span class="s2">&quot;*.dat&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;RIPL: Finished. Found </span><span class="si">{}</span><span class="s2"> .dat files.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">names</span></div>
+
+<div class="viewcode-block" id="get_headers"><a class="viewcode-back" href="../../../nucml.ensdf.html#nucml.ensdf.parsing.get_headers">[docs]</a><span class="k">def</span> <span class="nf">get_headers</span><span class="p">(</span><span class="n">dat_list</span><span class="p">,</span> <span class="n">saving_directory</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retrieves the avaliable raw headers for all .dat files.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dat_list (list): List containing the paths to all .dat files to be processed. Usually generated using the get_ripl_dat_paths() function.</span>
+<span class="sd">        saving_directory (str): Path-like string to directory for saving the header file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;ENSDF: Extracting headers ...&quot;</span><span class="p">)</span>
+    <span class="n">raw_header_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_directory</span><span class="p">,</span> <span class="s2">&quot;all_ensdf_headers.txt&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dat_list</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">raw_header_file</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">infile</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">nuc_data</span><span class="o">.</span><span class="n">exfor_elements</span><span class="p">:</span> 
+                    <span class="k">if</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+                        <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+    <span class="n">header_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_directory</span><span class="p">,</span> <span class="s1">&#39;all_ensdf_headers_formatted.csv&#39;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">raw_header_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">header_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">infile</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                <span class="n">string</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="mi">47</span><span class="p">]):</span>
+                    <span class="n">string</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">,</span> <span class="s1">&#39;|&#39;</span><span class="p">)</span>
+                <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">string</span><span class="p">))</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">raw_header_file</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;ENSDF: Finished. Saved to </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">header_file</span><span class="p">))</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+
+<div class="viewcode-block" id="generate_elemental_ensdf"><a class="viewcode-back" href="../../../nucml.ensdf.html#nucml.ensdf.parsing.generate_elemental_ensdf">[docs]</a><span class="k">def</span> <span class="nf">generate_elemental_ensdf</span><span class="p">(</span><span class="n">dat_list</span><span class="p">,</span> <span class="n">header_directory</span><span class="p">,</span> <span class="n">saving_directory</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates a new RIPL/ENSDF file for each element. The original files are organized by proton number. </span>
+<span class="sd">    This function is useful to organize by element instead. Three directories are created: one for raw elemental files </span>
+<span class="sd">    with headers, another one without headers, and a third one which is a formatted version of the second one.</span>
+
+<span class="sd">    Note: This script will delete all existing header files and create them again if run by a second time using the same directories.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dat_list (list): List containing the paths to all .dat files to be processed. Usually generated using the </span>
+<span class="sd">            get_ripl_dat_paths() function.</span>
+<span class="sd">        header_directory (str): Path-like string where the all_ensdf_headers_formatted.csv file is located. This file is </span>
+<span class="sd">            generated using the get_headers() function.</span>
+<span class="sd">        saving_directory (str): Path-like string where the new directories and ENSDF files will be stored.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">csv_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">header_directory</span><span class="p">,</span> <span class="s2">&quot;all_ensdf_headers_formatted.csv&quot;</span><span class="p">)</span>
+    <span class="n">ensdf_index_col</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SYMB&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;Nol&quot;</span><span class="p">,</span> <span class="s2">&quot;Nog&quot;</span><span class="p">,</span> <span class="s2">&quot;Nmax&quot;</span><span class="p">,</span> <span class="s2">&quot;Nc&quot;</span><span class="p">,</span> <span class="s2">&quot;Sn&quot;</span><span class="p">,</span> <span class="s2">&quot;Sp&quot;</span><span class="p">]</span>
+    <span class="n">ensdf_index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csv_file</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">ensdf_index_col</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+    <span class="n">ensdf_index</span><span class="p">[</span><span class="s2">&quot;Text_Filenames&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ensdf_index</span><span class="p">[</span><span class="s2">&quot;SYMB&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="n">element_list_endf</span> <span class="o">=</span> <span class="n">ensdf_index</span><span class="o">.</span><span class="n">SYMB</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="c1"># string that files start with</span>
+    <span class="n">element_list_names</span> <span class="o">=</span> <span class="n">ensdf_index</span><span class="o">.</span><span class="n">Text_Filenames</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="c1"># same strings but stripped</span>
+
+    <span class="n">ensdf_v1_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_directory</span><span class="p">,</span> <span class="s2">&quot;Elemental_ENSDF_v1/&quot;</span><span class="p">)</span>
+    <span class="n">general_utilities</span><span class="o">.</span><span class="n">initialize_directories</span><span class="p">(</span><span class="n">ensdf_v1_path</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;ENSDF Elemental: Extracting ENSDF data per element with header...&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">element_list_endf</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dat_list</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ensdf_v1_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+                <span class="n">lines</span> <span class="o">=</span> <span class="n">infile</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">z</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)):</span>
+                        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">ensdf_index</span><span class="p">[</span><span class="n">ensdf_index</span><span class="p">[</span><span class="s2">&quot;SYMB&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">e</span><span class="p">][[</span><span class="s2">&quot;Nol&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">ensdf_index</span><span class="p">[</span><span class="n">ensdf_index</span><span class="p">[</span><span class="s2">&quot;SYMB&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">e</span><span class="p">][[</span><span class="s2">&quot;Nog&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]):</span>
+                            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span> <span class="o">+</span> <span class="n">y</span><span class="p">])</span>
+
+    <span class="n">ensdf_v2_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_directory</span><span class="p">,</span> <span class="s2">&quot;Elemental_ENSDF_no_Header/&quot;</span><span class="p">)</span>
+    <span class="n">general_utilities</span><span class="o">.</span><span class="n">initialize_directories</span><span class="p">(</span><span class="n">ensdf_v2_path</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;ENSDF Elemental: Removing header from ENSDF elemental files...&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">element_list_endf</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dat_list</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ensdf_v2_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+                <span class="n">lines</span> <span class="o">=</span> <span class="n">infile</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">z</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)):</span>
+                        <span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">ensdf_index</span><span class="p">[</span><span class="n">ensdf_index</span><span class="p">[</span><span class="s2">&quot;SYMB&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">e</span><span class="p">][[</span><span class="s2">&quot;Nol&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">ensdf_index</span><span class="p">[</span><span class="n">ensdf_index</span><span class="p">[</span><span class="s2">&quot;SYMB&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">e</span><span class="p">][[</span><span class="s2">&quot;Nog&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]):</span>
+                            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span> <span class="o">+</span> <span class="n">y</span><span class="p">])</span>
+
+    <span class="n">ensdf_v3_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_directory</span><span class="p">,</span> <span class="s2">&quot;Elemental_ENSDF_no_Header_F/&quot;</span><span class="p">)</span>
+    <span class="n">general_utilities</span><span class="o">.</span><span class="n">initialize_directories</span><span class="p">(</span><span class="n">ensdf_v3_path</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;ENSDF Elemental: Formatting files...&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">element_list_names</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ensdf_v2_path</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">infile</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ensdf_v3_path</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="s2">&quot;.txt&quot;</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">infile</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                    <span class="n">string</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">39</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">54</span><span class="p">,</span> <span class="mi">65</span><span class="p">,</span> <span class="mi">66</span><span class="p">]):</span>
+                        <span class="n">string</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">,</span> <span class="s1">&#39;|&#39;</span><span class="p">)</span>
+                    <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">string</span><span class="p">))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;ENSDF Elemental: Finished formating data.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="get_stable_states"><a class="viewcode-back" href="../../../nucml.ensdf.html#nucml.ensdf.parsing.get_stable_states">[docs]</a><span class="k">def</span> <span class="nf">get_stable_states</span><span class="p">(</span><span class="n">dat_list</span><span class="p">,</span> <span class="n">header_directory</span><span class="p">,</span> <span class="n">saving_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates a CSV file containing only stable state information for each isotope.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dat_list (list): List containing the paths to all .dat files to be processed. Usually generated using the </span>
+<span class="sd">            get_ripl_dat_paths() function.</span>
+<span class="sd">        header_directory (str): Path-like string where the all_ensdf_headers_formatted.csv file is located. This file is </span>
+<span class="sd">            generated using the get_headers() function.</span>
+<span class="sd">        saving_directory (str): Path-like string where the resulting CSV file will be saved. If None, files will be </span>
+<span class="sd">            stored in the same directory as the header_directory.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">saving_directory</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">saving_directory</span> <span class="o">=</span> <span class="n">header_directory</span>
+    <span class="n">csv_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">header_directory</span><span class="p">,</span> <span class="s2">&quot;all_ensdf_headers_formatted.csv&quot;</span><span class="p">)</span>
+    <span class="n">ensdf_index_col</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SYMB&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;Nol&quot;</span><span class="p">,</span> <span class="s2">&quot;Nog&quot;</span><span class="p">,</span> <span class="s2">&quot;Nmax&quot;</span><span class="p">,</span> <span class="s2">&quot;Nc&quot;</span><span class="p">,</span> <span class="s2">&quot;Sn&quot;</span><span class="p">,</span> <span class="s2">&quot;Sp&quot;</span><span class="p">]</span>
+    <span class="n">ensdf_index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csv_file</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">ensdf_index_col</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+    <span class="n">element_list_endf</span> <span class="o">=</span> <span class="n">ensdf_index</span><span class="o">.</span><span class="n">SYMB</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="c1"># string that files start with</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;STABLE STATES: Extracting stable states from .dat files...&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">element_list_endf</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">dat_list</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">header_directory</span><span class="p">,</span> <span class="s2">&quot;ensdf_stable_state.txt&quot;</span><span class="p">),</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+                <span class="n">lines</span> <span class="o">=</span> <span class="n">infile</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">z</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)):</span>
+                        <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">e</span> <span class="o">+</span> <span class="n">lines</span><span class="p">[</span><span class="mi">1</span> <span class="o">+</span> <span class="n">z</span><span class="p">])</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;STABLE STATES: Formatting text file...&quot;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">header_directory</span><span class="p">,</span> <span class="s2">&quot;ensdf_stable_state.txt&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">infile</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_directory</span><span class="p">,</span> <span class="s1">&#39;ensdf_stable_state_formatted.csv&#39;</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">infile</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                <span class="n">string</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">39</span><span class="p">,</span> <span class="mi">42</span><span class="p">,</span> <span class="mi">44</span><span class="p">,</span> <span class="mi">68</span><span class="p">,</span> <span class="mi">71</span><span class="p">,</span> <span class="mi">74</span><span class="p">]):</span>
+                    <span class="n">string</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">,</span> <span class="s1">&#39;|&#39;</span><span class="p">)</span>
+                <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">string</span><span class="p">))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;STABLE STATES: Finished.&quot;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">header_directory</span><span class="p">,</span> <span class="s2">&quot;ensdf_stable_state.txt&quot;</span><span class="p">))</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="generate_ensdf_csv"><a class="viewcode-back" href="../../../nucml.ensdf.html#nucml.ensdf.parsing.generate_ensdf_csv">[docs]</a><span class="k">def</span> <span class="nf">generate_ensdf_csv</span><span class="p">(</span><span class="n">header_directory</span><span class="p">,</span> <span class="n">elemental_directory</span><span class="p">,</span> <span class="n">saving_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Generates a single CSV file containing information from all isotopes.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        header_directory (str): Path-like string where the all_ensdf_headers_formatted.csv file is located. This file is </span>
+<span class="sd">            generated using the get_headers() function.</span>
+<span class="sd">        elemental_directory (str): Path-like string to directory where the Elemental_ENSDF_no_Header_F directory is located.</span>
+<span class="sd">            This directory is first created using the generate_elemental_ensdf() function.</span>
+<span class="sd">        saving_directory (str): Path-like string where the new ENSDF CSV file will be stored. If None, </span>
+<span class="sd">            it will be saved in the header_directory.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">saving_directory</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">saving_directory</span> <span class="o">=</span> <span class="n">header_directory</span>
+    <span class="n">csv_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">header_directory</span><span class="p">,</span> <span class="s2">&quot;all_ensdf_headers_formatted.csv&quot;</span><span class="p">)</span>
+    <span class="n">ensdf_index_col</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;SYMB&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;Nol&quot;</span><span class="p">,</span> <span class="s2">&quot;Nog&quot;</span><span class="p">,</span> <span class="s2">&quot;Nmax&quot;</span><span class="p">,</span> <span class="s2">&quot;Nc&quot;</span><span class="p">,</span> <span class="s2">&quot;Sn&quot;</span><span class="p">,</span> <span class="s2">&quot;Sp&quot;</span><span class="p">]</span>
+    <span class="n">ensdf_index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csv_file</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">ensdf_index_col</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+    <span class="n">ensdf_index</span><span class="p">[</span><span class="s2">&quot;Text_Filenames&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ensdf_index</span><span class="p">[</span><span class="s2">&quot;SYMB&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="n">element_list_names</span> <span class="o">=</span> <span class="n">ensdf_index</span><span class="o">.</span><span class="n">Text_Filenames</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span> <span class="c1"># same strings but stripped</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;ENSDF CSV: Creatign DataFrame with Basic ENSDF data ...&quot;</span><span class="p">)</span>
+    <span class="n">appended_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">element_list_names</span><span class="p">:</span>
+        <span class="n">element_ensdf</span> <span class="o">=</span> <span class="n">nuc_data</span><span class="o">.</span><span class="n">load_ensdf_isotopic</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="n">element_ensdf</span><span class="p">[</span><span class="s2">&quot;Element_w_A&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span>
+        <span class="n">appended_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element_ensdf</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;ENSDF CSV: Finished creating list of dataframes.&quot;</span><span class="p">)</span>
+
+    <span class="n">appended_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">appended_data</span><span class="p">)</span>
+    <span class="n">appended_data</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_directory</span><span class="p">,</span> <span class="s2">&quot;ensdf.csv&quot;</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="get_level_parameters"><a class="viewcode-back" href="../../../nucml.ensdf.html#nucml.ensdf.parsing.get_level_parameters">[docs]</a><span class="k">def</span> <span class="nf">get_level_parameters</span><span class="p">(</span><span class="n">level_params_directory</span><span class="p">,</span> <span class="n">saving_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Converts the levels-param.data file from RIPL into a usable CSV file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        level_params_directory (str): Path-like string pointing towards the directory where the levels-param.data file is located.</span>
+<span class="sd">        saving_directory (str): Path-like string pointing towards the directory where the resulting CSV will be stored. If None, </span>
+<span class="sd">            it will be stored in the level_params_directory.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">saving_directory</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">saving_directory</span> <span class="o">=</span> <span class="n">level_params_directory</span>
+    <span class="n">data_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">level_params_directory</span><span class="p">,</span> <span class="s2">&quot;levels-param.data&quot;</span><span class="p">)</span>
+    <span class="c1"># Using the document with all data we insert commas following the EXFOR format</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;ENSDF RIPL: Parsing and formatting level parameters...&quot;</span><span class="p">)</span>
+    <span class="n">save_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_directory</span><span class="p">,</span> <span class="s1">&#39;ripl_cut_off_energies.csv&#39;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">data_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">save_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">infile</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                <span class="n">string</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">59</span><span class="p">,</span> <span class="mi">63</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">96</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">104</span><span class="p">,</span> <span class="mi">116</span><span class="p">]):</span>
+                    <span class="n">string</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">,</span> <span class="s1">&#39;;&#39;</span><span class="p">)</span>
+                <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">string</span><span class="p">))</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;ENSDF RIPL: Finished formating data. Converting to CSV...&quot;</span><span class="p">)</span>
+
+    <span class="n">cut_off_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;Element&quot;</span><span class="p">,</span> <span class="s2">&quot;Temperature_MeV&quot;</span><span class="p">,</span> <span class="s2">&quot;Temperature_U&quot;</span><span class="p">,</span> <span class="s2">&quot;Black_Shift&quot;</span><span class="p">,</span> 
+            <span class="s2">&quot;Black_Shift_U&quot;</span><span class="p">,</span> <span class="s2">&quot;N_Lev_ENSDF&quot;</span><span class="p">,</span> <span class="s2">&quot;N_Max_Lev_Complete&quot;</span><span class="p">,</span> <span class="s2">&quot;Min_Lev_Complete&quot;</span><span class="p">,</span> 
+            <span class="s2">&quot;Num_Lev_Unique_Spin&quot;</span><span class="p">,</span> <span class="s2">&quot;E_Max_N_Max&quot;</span><span class="p">,</span> <span class="s2">&quot;E_Num_Lev_U_Spin&quot;</span><span class="p">,</span> <span class="s2">&quot;Chi&quot;</span><span class="p">,</span> <span class="s2">&quot;Fit&quot;</span><span class="p">,</span> 
+            <span class="s2">&quot;Flag&quot;</span><span class="p">,</span> <span class="s2">&quot;Nox&quot;</span><span class="p">,</span> <span class="s2">&quot;Xm_Ex&quot;</span><span class="p">,</span> <span class="s2">&quot;Sigma&quot;</span><span class="p">]</span>
+    <span class="n">cut_off</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">save_file</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="n">cut_off_cols</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+    <span class="n">cut_off</span><span class="p">[</span><span class="s2">&quot;Element&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cut_off</span><span class="p">[</span><span class="s2">&quot;Element&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+    <span class="n">cut_off</span><span class="p">[</span><span class="s2">&quot;Element_w_A&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cut_off</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="n">cut_off</span><span class="p">[</span><span class="s2">&quot;Element&quot;</span><span class="p">]</span>
+    <span class="n">cut_off</span> <span class="o">=</span> <span class="n">cut_off</span><span class="p">[</span><span class="o">~</span><span class="n">cut_off</span><span class="o">.</span><span class="n">Element</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;\d&#39;</span><span class="p">)]</span>
+    <span class="n">cut_off</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">save_file</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;ENSDF RIPL: Finished.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="generate_cutoff_ensdf"><a class="viewcode-back" href="../../../nucml.ensdf.html#nucml.ensdf.parsing.generate_cutoff_ensdf">[docs]</a><span class="k">def</span> <span class="nf">generate_cutoff_ensdf</span><span class="p">(</span><span class="n">ensdf_directory</span><span class="p">,</span> <span class="n">elemental_directory</span><span class="p">,</span> <span class="n">ripl_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">saving_directory</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Uses the RIPL level parameters cut-off information to generate a new ENSDF CSV file.</span>
+<span class="sd">    It removes all nuclear level information above the given parameters for each isotope by using</span>
+<span class="sd">    the CSV file created using the get_level_parameters() function. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ensdf_directory (str): Path-like string indicating the directory where the ensdf.csv file is stored.</span>
+<span class="sd">        elemental_directory (str): Path-like string indicating the the Elemental_ENSDF_no_Header_F directory.</span>
+<span class="sd">        ripl_directory (str, optional): Path-like string indicating the directory where the ripl_cut_off_energies.csv file is </span>
+<span class="sd">            stored. If None, it is assumed that the file is located in the ensdf_directory. Defaults to None.</span>
+<span class="sd">        saving_directory (str, optional): The resulting file will be saved in this directory. If None,</span>
+<span class="sd">            the saving_directory will be set to the ensdf_directory. Defaults to None.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">if</span> <span class="n">saving_directory</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">saving_directory</span> <span class="o">=</span> <span class="n">ensdf_directory</span>
+    <span class="k">if</span> <span class="n">ripl_directory</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ripl_directory</span> <span class="o">=</span> <span class="n">ensdf_directory</span>
+
+    <span class="n">ensdf_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ensdf_directory</span><span class="p">,</span> <span class="s2">&quot;ensdf.csv&quot;</span><span class="p">)</span>
+    <span class="n">cut_off_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ripl_directory</span><span class="p">,</span> <span class="s2">&quot;ripl_cut_off_energies.csv&quot;</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;ENSDF CutOff: Loading ENSDF and RIPL parameters...&quot;</span><span class="p">)</span>
+    <span class="n">ensdf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">ensdf_path</span><span class="p">)</span>
+    <span class="n">cut_off</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">cut_off_path</span><span class="p">)</span>
+
+    <span class="n">str_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Spin&quot;</span><span class="p">,</span> <span class="s2">&quot;Parity&quot;</span><span class="p">,</span> <span class="s2">&quot;Element_w_A&quot;</span><span class="p">]</span>
+    <span class="n">ensdf</span><span class="p">[</span><span class="n">str_cols</span><span class="p">]</span> <span class="o">=</span> <span class="n">ensdf</span><span class="p">[</span><span class="n">str_cols</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;category&#39;</span><span class="p">)</span>
+    <span class="n">ensdf</span><span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ensdf</span><span class="p">[</span><span class="s2">&quot;Level_Number&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+    <span class="n">element_list_names</span> <span class="o">=</span> <span class="n">ensdf</span><span class="o">.</span><span class="n">Element_w_A</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+
+    <span class="n">appended_data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;ENSDF CutOff: Cutting off ENSDF...&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">element_list_names</span><span class="p">:</span>
+        <span class="n">element_ensdf</span> <span class="o">=</span> <span class="n">nuc_data</span><span class="o">.</span><span class="n">load_ensdf_isotopic</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="n">element_ensdf</span><span class="p">[</span><span class="s2">&quot;Element_w_A&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">e</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">cut_off</span><span class="p">[</span><span class="n">cut_off</span><span class="o">.</span><span class="n">Element_w_A</span> <span class="o">==</span> <span class="n">e</span><span class="p">]</span><span class="o">.</span><span class="n">N_Max_Lev_Complete</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">element_ensdf</span> <span class="o">=</span> <span class="n">element_ensdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">element_ensdf</span> <span class="o">=</span> <span class="n">element_ensdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">x</span><span class="p">]</span>    
+        <span class="n">appended_data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">element_ensdf</span><span class="p">)</span>
+
+    <span class="n">appended_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">appended_data</span><span class="p">)</span>
+    <span class="n">appended_data</span> <span class="o">=</span> <span class="n">appended_data</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">saving_directory</span><span class="p">,</span> <span class="s2">&quot;ensdf_cutoff.csv&quot;</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;ENSDF CutOff: Finished.&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Pedro Jr. Vicente-Valdez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -84,11 +84,7 @@ def get_nxs_jxs_xss(isotope, temp="03c", custom_path=None, reduced=False):
     path, to_skip, lines = get_to_skip_lines(isotope, temp=temp)
     if (path != None) and (custom_path != None):
         if reduced:
-            print(to_skip)
-            print(lines)
-            lines = to_skip - lines
             to_skip = 0
-            print(lines)
             
         nxs = pd.read_csv(custom_path, delim_whitespace=True, skiprows=to_skip+6, nrows=2, header=None)
         jxs = pd.read_csv(custom_path, delim_whitespace=True, skiprows=to_skip+8, nrows=4, header=None)

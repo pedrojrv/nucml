@@ -1,0 +1,827 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>nucml.exfor.parsing &mdash; NucML 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> NucML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">OVERVIEW</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../what-is-nucml.html">What is NucML?</a></li>
+</ul>
+<p><span class="caption-text">GET STARTED</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../basic-walkthrough.html">Basic Walkthrough</a></li>
+</ul>
+<p><span class="caption-text">NAVIGATING THE NDE</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html">Loading Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#modeling-data">Modeling Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
+</ul>
+<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
+</ul>
+<p><span class="caption-text">DOCUMENTATION</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">nucml</a></li>
+</ul>
+<p><span class="caption-text">FAQ AND CONTACT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contact.html">Contact</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">NucML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>nucml.exfor.parsing</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for nucml.exfor.parsing</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">numbers</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">natsort</span> <span class="kn">import</span> <span class="n">natsorted</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">)</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;../..&quot;</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">nucml</span> <span class="kn">import</span> <span class="n">general_utilities</span> 
+<span class="kn">import</span> <span class="nn">nucml.objects.objects</span> <span class="k">as</span> <span class="nn">objects</span> 
+<span class="kn">import</span> <span class="nn">nucml.config</span> <span class="k">as</span> <span class="nn">config</span>
+
+
+<span class="n">ame_dir_path</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">ame_dir_path</span>
+
+<div class="viewcode-block" id="get_c4_names"><a class="viewcode-back" href="../../../nucml.exfor.html#nucml.exfor.parsing.get_c4_names">[docs]</a><span class="k">def</span> <span class="nf">get_c4_names</span><span class="p">(</span><span class="n">c4_directory</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Searches given directory for EXFOR-generated C4 files.  It returns a list of relative paths for each found file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        c4_directory (str): Path to the directory containing all .c4 files.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: Contains relative paths to each encountered .c4 file.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        FileNotFoundError: If no C4 files are found an error will be raised.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="n">natsorted</span><span class="p">(</span><span class="n">general_utilities</span><span class="o">.</span><span class="n">get_files_w_extension</span><span class="p">(</span><span class="n">c4_directory</span><span class="p">,</span> <span class="s2">&quot;.c4&quot;</span><span class="p">))</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;No .C4 files found. Check your provided path.&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;C4: Finished. Found </span><span class="si">{}</span><span class="s2"> .c4 files.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="n">names</span></div>
+
+<div class="viewcode-block" id="get_all"><a class="viewcode-back" href="../../../nucml.exfor.html#nucml.exfor.parsing.get_all">[docs]</a><span class="k">def</span> <span class="nf">get_all</span><span class="p">(</span><span class="n">c4_list</span><span class="p">,</span> <span class="n">heavy_path</span><span class="p">,</span> <span class="n">tmp_path</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;neutrons&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Retrieves all avaliable information from all .c4 files. This function combines the</span>
+<span class="sd">    proccesses defined on:</span>
+
+<span class="sd">    - get_c4_names()</span>
+<span class="sd">    - get_raw_datapoints()</span>
+<span class="sd">    - get_authors()</span>
+<span class="sd">    - get_years()</span>
+<span class="sd">    - get_institutes()</span>
+<span class="sd">    - get_dates()</span>
+<span class="sd">    - get_titles()</span>
+<span class="sd">    - get_references()</span>
+<span class="sd">    - get_reaction_notation()</span>
+<span class="sd">    - get_datapoints_per_experiment()</span>
+
+<span class="sd">    It is optimized to run faster than running the individual functions. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        c4_list (list): List containing paths to all .c4 files.</span>
+<span class="sd">        heavy_path (str): Path to directory where heavy files are to be saved.</span>
+<span class="sd">        tmp_path (str): Path to directory where temporary files are to be saved.</span>
+<span class="sd">        mode (str): The reaction projectile of the provided C4 files.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        FileNotFoundError: If no .c4 files are in the provided list, then an error is raised.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">c4_list</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># This will be appended to the previous directories</span>
+        <span class="n">tmp_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s2">&quot;Extracted_Text_&quot;</span> <span class="o">+</span> <span class="n">mode</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="n">heavy_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">heavy_path</span><span class="p">,</span> <span class="s2">&quot;EXFOR_&quot;</span> <span class="o">+</span> <span class="n">mode</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span>
+        <span class="n">general_utilities</span><span class="o">.</span><span class="n">initialize_directories</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">general_utilities</span><span class="o">.</span><span class="n">initialize_directories</span><span class="p">(</span><span class="n">heavy_path</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+
+        <span class="n">cross_section_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">heavy_path</span><span class="p">,</span> <span class="s2">&quot;all_cross_sections.txt&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">cross_section_file</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">cross_section_file</span><span class="p">)</span>
+
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR: Extracting experimental data, authors, years, institutes, and dates...&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">c4_list</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">,</span> \
+                <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">heavy_path</span><span class="p">,</span> <span class="s2">&quot;all_cross_sections.txt&quot;</span><span class="p">),</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">num_data</span><span class="p">,</span> \
+                <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s1">&#39;authors.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">authors</span><span class="p">,</span> \
+                <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s1">&#39;years.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">years</span><span class="p">,</span> \
+                <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s1">&#39;institutes.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">institute</span><span class="p">,</span> \
+                <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s1">&#39;entry.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">entry</span><span class="p">,</span> \
+                <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s1">&#39;refcode.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">refcode</span><span class="p">,</span> \
+                <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s1">&#39;dataset_num.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">dataset_num</span><span class="p">,</span> \
+                <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s1">&#39;dates.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">date</span><span class="p">:</span>
+                <span class="n">copy</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">infile</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#AUTHOR1&quot;</span><span class="p">):</span>
+                        <span class="n">copy</span><span class="o">=</span><span class="kc">False</span>
+                        <span class="n">authors</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#YEAR&quot;</span><span class="p">):</span>
+                        <span class="n">copy</span><span class="o">=</span><span class="kc">False</span>
+                        <span class="n">years</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;#ENTRY&#39;</span><span class="p">):</span>
+                        <span class="n">copy</span><span class="o">=</span><span class="kc">False</span>
+                        <span class="n">entry</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;#REF-CODE&#39;</span><span class="p">):</span>
+                        <span class="n">copy</span><span class="o">=</span><span class="kc">False</span>
+                        <span class="n">refcode</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;#DATASET&#39;</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">16</span><span class="p">:</span>
+                            <span class="n">copy</span><span class="o">=</span><span class="kc">False</span>
+                            <span class="n">dataset_num</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>                    
+                    <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#INSTITUTE&quot;</span><span class="p">):</span>
+                        <span class="n">copy</span><span class="o">=</span><span class="kc">False</span>
+                        <span class="n">institute</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#DATE&quot;</span><span class="p">):</span>
+                        <span class="n">copy</span><span class="o">=</span><span class="kc">False</span>
+                        <span class="n">date</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#---&gt;&lt;----&gt;o&lt;-&gt;&lt;--&gt;ooo&lt;-------&gt;&lt;-------&gt;&lt;-------&gt;&lt;-------&gt;&lt;-------&gt;&lt;-------&gt;&lt;-------&gt;&lt;-------&gt;&lt;-&gt;&lt;-----------------------&gt;&lt;---&gt;&lt;-&gt;o&quot;</span><span class="p">):</span>
+                        <span class="n">copy</span> <span class="o">=</span> <span class="kc">True</span>
+                        <span class="k">continue</span>
+                    <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#/DATA&quot;</span><span class="p">):</span>
+                        <span class="n">copy</span> <span class="o">=</span> <span class="kc">False</span>
+                        <span class="k">continue</span>
+                    <span class="k">elif</span> <span class="n">copy</span><span class="p">:</span>
+                        <span class="n">num_data</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="n">infile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="n">authors</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="n">years</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="n">institute</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="n">date</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="n">num_data</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR: Finished extracting experimental data, authors, years, institutes, and dates.&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR: Extracting titles, references, and number of data points per experiment...&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">c4_list</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">,</span> \
+                <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s1">&#39;titles.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">titles</span><span class="p">,</span> \
+                <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s1">&#39;references.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">references</span><span class="p">,</span> \
+                <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s1">&#39;data_points_per_experiment_refined.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">data_points</span><span class="p">,</span> \
+                <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s1">&#39;reaction_notations.txt&#39;</span><span class="p">),</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">reactions</span><span class="p">:</span>
+                <span class="n">lines</span> <span class="o">=</span> <span class="n">infile</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">z</span><span class="p">,</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lines</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#TITLE&quot;</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="n">z</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#+&quot;</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="n">z</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#+&quot;</span><span class="p">):</span>
+                                <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="n">z</span> <span class="o">+</span> <span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#+&quot;</span><span class="p">):</span>
+                                    <span class="n">titles</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span>
+                                                <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span>
+                                                <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="n">titles</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span>
+                                                <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">titles</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">titles</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+                    <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#REFERENCE&quot;</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="n">z</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#+&quot;</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="n">z</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#+&quot;</span><span class="p">):</span>
+                                <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="n">z</span> <span class="o">+</span> <span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#+&quot;</span><span class="p">):</span>
+                                    <span class="n">references</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span>
+                                                <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span>
+                                                <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="n">references</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span>
+                                                <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">references</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">references</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+                    <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#DATA &quot;</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="n">z</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#+&quot;</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="n">z</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#+&quot;</span><span class="p">):</span>
+                                <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="n">z</span> <span class="o">+</span> <span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#+&quot;</span><span class="p">):</span>
+                                    <span class="n">data_points</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span>
+                                                <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span>
+                                                <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="n">data_points</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span>
+                                                <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">data_points</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">data_points</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+
+
+                    <span class="k">elif</span> <span class="n">line</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#REACTION&quot;</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="n">z</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#+&quot;</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="n">z</span> <span class="o">+</span> <span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#+&quot;</span><span class="p">):</span>
+                                <span class="k">if</span> <span class="n">lines</span><span class="p">[</span><span class="n">z</span> <span class="o">+</span> <span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;#+&quot;</span><span class="p">):</span>
+                                    <span class="n">reactions</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span>
+                                                <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span>
+                                                <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">6</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="n">reactions</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span>
+                                                <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="n">reactions</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot; &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">z</span><span class="o">+</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;#+&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                        <span class="k">else</span><span class="p">:</span>
+                            <span class="n">reactions</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                <span class="n">infile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="n">titles</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="n">references</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="n">data_points</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="n">reactions</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR: Finished extracting titles, references, and number of data points per experiment.&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR: Formatting experimental data...&quot;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">cross_section_file</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">heavy_path</span><span class="p">,</span> <span class="s2">&quot;all_cross_sections_v1.txt&quot;</span><span class="p">),</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">infile</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
+                    <span class="n">string</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+                    <span class="c1"># for i, j in enumerate([5, 11, 12, 15, 19, 22, 31, 40, 49, 58, 67, 76, 85, 94, 95, 122, 127]):</span>
+                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">21</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">49</span><span class="p">,</span> <span class="mi">58</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="mi">94</span><span class="p">,</span> <span class="mi">97</span><span class="p">,</span> <span class="mi">122</span><span class="p">,</span> <span class="mi">127</span><span class="p">,</span> <span class="mi">130</span><span class="p">]):</span>
+                        <span class="n">string</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">j</span><span class="p">,</span> <span class="s1">&#39;;&#39;</span><span class="p">)</span>
+                    <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">string</span><span class="p">))</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR: Finished formating experimental data.&quot;</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">cross_section_file</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR: Finished.&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;No .C4 files passed. Check your list.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="csv_creator"><a class="viewcode-back" href="../../../nucml.exfor.html#nucml.exfor.parsing.csv_creator">[docs]</a><span class="k">def</span> <span class="nf">csv_creator</span><span class="p">(</span><span class="n">heavy_path</span><span class="p">,</span> <span class="n">tmp_path</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">append_ame</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Creates various CSV files from the information extracted using the get_all() function. This function</span>
+<span class="sd">    is usually called after the get_all() function. The following CSV files will be created:</span>
+
+<span class="sd">    - EXFOR_mode_ORIGINAL.csv: Contains the EXFOR database in it&#39;s original state.</span>
+<span class="sd">    - EXFOR_mode_ORIGINAL_w_AME.csv: Contains the same features as in the original CSV</span>
+<span class="sd">        file plus AME data appended to each row. The appended AME is the original data therefore</span>
+<span class="sd">        not containing natural element data.</span>
+
+<span class="sd">    Note: mode refers to the type of projectile selected in the &#39;mode&#39; argument.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        heavy_path (str): Path to directory where heavy files generated by the get_all() function are stored. This directory</span>
+<span class="sd">            will also be used to store the resulting CSV files.</span>
+<span class="sd">        tmp_path (str): Path to directory where temporary files are to be saved.</span>
+<span class="sd">        mode (str): The reaction projectile of the originally provided C4 files.</span>
+<span class="sd">        append_ame (bool): If True, the AME data will be appended to the final EXFOR CSV files. It is recommended this is </span>
+<span class="sd">            always set to True. The features can be afterwards eliminated if wanted. Defaults to True.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">heavy_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">heavy_path</span><span class="p">,</span> <span class="s2">&quot;EXFOR_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
+    <span class="n">tmp_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s2">&quot;Extracted_Text_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR CSV: Reading data points from </span><span class="si">{}</span><span class="s2">/all_cross_sections_v1.txt file into a DataFrame...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">heavy_path</span><span class="p">))</span>
+    <span class="n">colnames</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Projectile&quot;</span><span class="p">,</span> <span class="s2">&quot;Target_ZA&quot;</span><span class="p">,</span> <span class="s2">&quot;Target_Metastable_State&quot;</span><span class="p">,</span> <span class="s2">&quot;MF&quot;</span><span class="p">,</span> <span class="s2">&quot;MT&quot;</span><span class="p">,</span> <span class="s2">&quot;Product_Metastable_State&quot;</span><span class="p">,</span> \
+                <span class="s2">&quot;EXFOR_Status&quot;</span><span class="p">,</span> <span class="s2">&quot;Center_of_Mass_Flag&quot;</span><span class="p">,</span> <span class="s2">&quot;Energy&quot;</span><span class="p">,</span>  <span class="s2">&quot;dEnergy&quot;</span><span class="p">,</span>  <span class="s2">&quot;Data&quot;</span><span class="p">,</span> <span class="s2">&quot;dData&quot;</span><span class="p">,</span>   <span class="s2">&quot;Cos/LO&quot;</span><span class="p">,</span>   <span class="s2">&quot;dCos/LO&quot;</span><span class="p">,</span> \
+                <span class="s2">&quot;ELV/HL&quot;</span><span class="p">,</span>  <span class="s2">&quot;dELV/HL&quot;</span><span class="p">,</span> <span class="s2">&quot;I78&quot;</span><span class="p">,</span> <span class="s2">&quot;Short_Reference&quot;</span><span class="p">,</span> <span class="s2">&quot;EXFOR_Accession_Number&quot;</span><span class="p">,</span> <span class="s2">&quot;EXFOR_SubAccession_Number&quot;</span><span class="p">,</span> \
+                <span class="s2">&quot;EXFOR_Pointer&quot;</span><span class="p">]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">heavy_path</span><span class="p">,</span> <span class="s2">&quot;all_cross_sections_v1.txt&quot;</span><span class="p">),</span> <span class="n">names</span><span class="o">=</span><span class="n">colnames</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+
+    <span class="c1">########################################################################################################</span>
+    <span class="c1">########################### FORMATTING CATEGORICAL AND STRING DATA #####################################</span>
+    <span class="c1">########################################################################################################</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR CSV: Formatting data (this may take a couple minutes)...&quot;</span><span class="p">)</span>
+    <span class="c1"># make string version of original column</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Target_ZA&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Target_ZA&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="c1"># Making Sure all rows have the same number of values</span>
+    <span class="n">max_length</span> <span class="o">=</span> <span class="mi">5</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">Target_ZA</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Target_ZA</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39;0&#39;</span><span class="o">*</span><span class="p">(</span><span class="n">max_length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span>
+
+    <span class="c1"># Target feature is formated as ZZAAA</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Z&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Target_ZA&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Target_ZA&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="p">[</span><span class="mi">2</span><span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># Calculating number of neutrons = mass number - protons</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;N&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">]</span>
+
+    <span class="n">metastate_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot; &quot;</span><span class="p">:</span> <span class="s2">&quot;All_or_Total&quot;</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">:</span> <span class="s2">&quot;Ground&quot;</span><span class="p">,</span> <span class="s2">&quot;1&quot;</span><span class="p">:</span> <span class="s2">&quot;M1&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">:</span> <span class="s2">&quot;M2&quot;</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">:</span> <span class="s2">&quot;M3&quot;</span><span class="p">,</span> <span class="s2">&quot;4&quot;</span><span class="p">:</span> <span class="s2">&quot;M4&quot;</span><span class="p">,</span> 
+                    <span class="s2">&quot;5&quot;</span><span class="p">:</span> <span class="s2">&quot;M5&quot;</span><span class="p">,</span> <span class="s2">&quot;?&quot;</span><span class="p">:</span> <span class="s2">&quot;Unknown&quot;</span><span class="p">,</span> <span class="s2">&quot;+&quot;</span><span class="p">:</span> <span class="s2">&quot;More_than_1&quot;</span><span class="p">,</span> <span class="s2">&quot;T&quot;</span><span class="p">:</span> <span class="s2">&quot;All_or_Total&quot;</span><span class="p">}</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="s2">&quot;Target_Metastable_State&quot;</span><span class="p">:</span> <span class="n">metastate_dict</span><span class="p">,</span> <span class="s2">&quot;Product_Metastable_State&quot;</span><span class="p">:</span> <span class="n">metastate_dict</span><span class="p">})</span>
+
+    <span class="n">exfor_status_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;U&quot;</span><span class="p">:</span><span class="s2">&quot;Un_normalized&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">:</span><span class="s2">&quot;Approved_by_Author&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">:</span><span class="s2">&quot;Correlated&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">:</span><span class="s2">&quot;Dependent&quot;</span><span class="p">,</span> 
+                     <span class="s2">&quot;O&quot;</span><span class="p">:</span><span class="s2">&quot;Outdated&quot;</span><span class="p">,</span> <span class="s2">&quot;P&quot;</span><span class="p">:</span><span class="s2">&quot;Preliminary&quot;</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">:</span><span class="s2">&quot;Re_normalized&quot;</span><span class="p">,</span> <span class="s2">&quot;S&quot;</span><span class="p">:</span><span class="s2">&quot;Superseded&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">:</span><span class="s2">&quot;Other&quot;</span><span class="p">}</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="s2">&quot;EXFOR_Status&quot;</span><span class="p">:</span> <span class="n">exfor_status_dict</span><span class="p">})</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="s2">&quot;Center_of_Mass_Flag&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;C&quot;</span><span class="p">:</span><span class="s2">&quot;Center_of_Mass&quot;</span><span class="p">,</span> <span class="s2">&quot; &quot;</span><span class="p">:</span><span class="s2">&quot;Lab&quot;</span><span class="p">}})</span>
+
+
+    <span class="c1">########################################################################################################</span>
+    <span class="c1">################################### FORMATTING NUMERICAL DATA ##########################################</span>
+    <span class="c1">########################################################################################################</span>
+    <span class="c1"># Defining Numerical Columns to Fix and casting them as strings</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;dEnergy&quot;</span><span class="p">,</span> <span class="s2">&quot;Data&quot;</span><span class="p">,</span> <span class="s2">&quot;dData&quot;</span><span class="p">,</span> <span class="s2">&quot;Cos/LO&quot;</span><span class="p">,</span> <span class="s2">&quot;dCos/LO&quot;</span><span class="p">,</span> <span class="s2">&quot;ELV/HL&quot;</span><span class="p">,</span> <span class="s2">&quot;dELV/HL&quot;</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+
+    <span class="c1"># df[cols] = df[cols].replace(to_replace=&quot;         &quot;, value=&quot;0.0000000&quot;)</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="s2">&quot;         &quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+    <span class="c1"># We now strip values that may contain quatation marks and starting and trailing spaces</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="c1"># df[cols] = df[cols].replace(to_replace=&quot;&quot;, value=&quot;0.0000000&quot;)</span>
+    <span class="n">df</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+
+    <span class="c1"># For the numerical values we know per formatting that each of them should be 9 characters in length</span>
+    <span class="n">max_length</span> <span class="o">=</span> <span class="mi">9</span>
+
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39; &#39;</span><span class="o">*</span><span class="p">(</span><span class="n">max_length</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span>
+
+    <span class="c1"># Add appropiate formating for python to recognize it as numerical</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+        <span class="n">new_col</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+                <span class="n">new_col</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="s2">&quot;+&quot;</span> <span class="o">==</span> <span class="n">x</span><span class="p">[</span><span class="mi">7</span><span class="p">]:</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span>
+                <span class="n">z</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">7</span><span class="p">:]</span>
+                <span class="n">new_col</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="s2">&quot;E&quot;</span> <span class="o">+</span> <span class="n">z</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="s2">&quot;+&quot;</span> <span class="o">==</span> <span class="n">x</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span>
+                <span class="n">z</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">6</span><span class="p">:]</span>
+                <span class="n">new_col</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="s2">&quot;E&quot;</span> <span class="o">+</span> <span class="n">z</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="s2">&quot;-&quot;</span> <span class="o">==</span> <span class="n">x</span><span class="p">[</span><span class="mi">7</span><span class="p">]:</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">7</span><span class="p">]</span>
+                <span class="n">z</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">7</span><span class="p">:]</span>
+                <span class="n">new_col</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="s2">&quot;E&quot;</span> <span class="o">+</span> <span class="n">z</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="s2">&quot;-&quot;</span> <span class="o">==</span> <span class="n">x</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span>
+                <span class="n">z</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">6</span><span class="p">:]</span>
+                <span class="n">new_col</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y</span> <span class="o">+</span> <span class="s2">&quot;E&quot;</span> <span class="o">+</span> <span class="n">z</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">new_col</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_col</span>
+
+    <span class="c1"># We now convert the columns to numerical</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR CSV: Finished converting </span><span class="si">{}</span><span class="s2"> to float.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">col</span><span class="p">))</span>
+
+    <span class="n">cat_cols</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Target_Metastable_State&quot;</span><span class="p">,</span> <span class="s2">&quot;MF&quot;</span><span class="p">,</span> <span class="s2">&quot;MT&quot;</span><span class="p">,</span> <span class="s2">&quot;I78&quot;</span><span class="p">,</span> <span class="s2">&quot;Product_Metastable_State&quot;</span><span class="p">,</span> <span class="s2">&quot;Center_of_Mass_Flag&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Convering all columns to strings and stripping whitespace</span>
+    <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cat_cols</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+
+    <span class="c1"># Replace empty values in I78 for L representing Low</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="s2">&quot;I78&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;E2&quot;</span><span class="p">:</span><span class="s2">&quot;Secondary_Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;LVL&quot;</span><span class="p">:</span><span class="s2">&quot;Level&quot;</span><span class="p">,</span> <span class="s2">&quot;HL&quot;</span><span class="p">:</span><span class="s2">&quot;Half_Life&quot;</span><span class="p">,</span> <span class="s2">&quot;DLV&quot;</span><span class="p">:</span><span class="s2">&quot;Level_Range&quot;</span><span class="p">,</span> 
+                         <span class="s2">&quot;EXC&quot;</span><span class="p">:</span><span class="s2">&quot;Excitation&quot;</span><span class="p">,</span> <span class="s2">&quot;DE2&quot;</span><span class="p">:</span><span class="s2">&quot;Secondary_Energy_Range&quot;</span><span class="p">,</span> <span class="s2">&quot;MIN&quot;</span><span class="p">:</span><span class="s2">&quot;Minimum_Energy&quot;</span><span class="p">,</span> 
+                         <span class="s2">&quot;MAX&quot;</span><span class="p">:</span><span class="s2">&quot;Maximum_Energy&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">:</span><span class="s2">&quot;Other&quot;</span><span class="p">}})</span>
+
+    <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Target_ZA&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1">########################################################################################################</span>
+    <span class="c1">################################# APPENDING OTHER INFORMATION ##########################################</span>
+    <span class="c1">########################################################################################################</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR CSV: Reading .txt files from </span><span class="si">{}</span><span class="s2"> into DataFrames...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">))</span>
+    <span class="c1"># Reading experiments reaction notation</span>
+    <span class="n">df1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s2">&quot;reaction_notations.txt&quot;</span><span class="p">),</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">df1</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Reaction&quot;</span><span class="p">,</span> <span class="s2">&quot;Reaction_Notation&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Reading Experiment Titles</span>
+    <span class="n">df2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s2">&quot;titles.txt&quot;</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;#TITLE      &quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="p">)</span>
+    <span class="n">df2</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Keyword&quot;</span><span class="p">,</span> <span class="s2">&quot;Title&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Reading Data Points per Experiment</span>
+    <span class="n">df3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s2">&quot;data_points_per_experiment_refined.txt&quot;</span><span class="p">),</span>  <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">df3</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">,</span> <span class="s2">&quot;Multiple&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Reading Experiment Year</span>
+    <span class="n">df4</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s2">&quot;years.txt&quot;</span><span class="p">),</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">df4</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Keyword&quot;</span><span class="p">,</span> <span class="s2">&quot;Year&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Reading Experiment Date</span>
+    <span class="n">df5</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s2">&quot;authors.txt&quot;</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;    &quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="p">)</span>
+    <span class="n">df5</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Keyword&quot;</span><span class="p">,</span> <span class="s2">&quot;Author&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Reading Experiment Institute</span>
+    <span class="n">df6</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s2">&quot;institutes.txt&quot;</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;  &quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="p">)</span>
+    <span class="n">df6</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Keyword&quot;</span><span class="p">,</span> <span class="s2">&quot;Institute&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Reading Experiment Year</span>
+    <span class="n">df7</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s2">&quot;dates.txt&quot;</span><span class="p">),</span> <span class="n">delim_whitespace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">df7</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Keyword&quot;</span><span class="p">,</span> <span class="s2">&quot;Date&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Reading Experiment Refere</span>
+    <span class="n">df8</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s2">&quot;references.txt&quot;</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;#REFERENCE  &quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="p">)</span>
+    <span class="n">df8</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Keyword&quot;</span><span class="p">,</span> <span class="s2">&quot;Reference&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Reading Dataset Number</span>
+    <span class="n">df9</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s2">&quot;dataset_num.txt&quot;</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;#DATASET    &quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="p">)</span>
+    <span class="n">df9</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Keyword&quot;</span><span class="p">,</span> <span class="s2">&quot;Dataset_Number&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Reading EXFOR entry number</span>
+    <span class="n">df10</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s2">&quot;entry.txt&quot;</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;#ENTRY      &quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="p">)</span>
+    <span class="n">df10</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Keyword&quot;</span><span class="p">,</span> <span class="s2">&quot;EXFOR_Entry&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Reading reference code</span>
+    <span class="n">df11</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s2">&quot;refcode.txt&quot;</span><span class="p">),</span> <span class="n">sep</span><span class="o">=</span><span class="s2">&quot;#REF-CODE   &quot;</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;python&quot;</span><span class="p">)</span>
+    <span class="n">df11</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Keyword&quot;</span><span class="p">,</span> <span class="s2">&quot;Reference_Code&quot;</span><span class="p">]</span>
+
+
+    <span class="c1"># Merging Datapoints, notation and titles and expanding based on datapoints</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR CSV: Expanding information based on the number of datapoints per experimental campaign...&quot;</span><span class="p">)</span>
+    <span class="n">pre_final</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df3</span><span class="p">,</span> <span class="n">df1</span><span class="p">,</span> <span class="n">df2</span><span class="p">,</span> <span class="n">df4</span><span class="p">,</span> <span class="n">df5</span><span class="p">,</span> <span class="n">df6</span><span class="p">,</span> <span class="n">df7</span><span class="p">,</span> <span class="n">df8</span><span class="p">,</span> <span class="n">df9</span><span class="p">,</span> <span class="n">df10</span><span class="p">,</span> <span class="n">df11</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">final</span> <span class="o">=</span> <span class="n">pre_final</span><span class="o">.</span><span class="n">reindex</span><span class="p">(</span><span class="n">pre_final</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">repeat</span><span class="p">(</span><span class="n">pre_final</span><span class="o">.</span><span class="n">Multiple</span><span class="p">))</span>
+    <span class="n">final</span><span class="p">[</span><span class="s1">&#39;position&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">final</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">cumcount</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+    
+    <span class="c1"># Indexing only required information and saving file</span>
+    <span class="n">final</span> <span class="o">=</span> <span class="n">final</span><span class="p">[[</span><span class="s2">&quot;Reaction_Notation&quot;</span><span class="p">,</span> <span class="s2">&quot;Title&quot;</span><span class="p">,</span> <span class="s2">&quot;Year&quot;</span><span class="p">,</span> <span class="s2">&quot;Author&quot;</span><span class="p">,</span> <span class="s2">&quot;Institute&quot;</span><span class="p">,</span> <span class="s2">&quot;Date&quot;</span><span class="p">,</span> <span class="s2">&quot;Reference&quot;</span><span class="p">,</span> 
+                <span class="s2">&quot;Dataset_Number&quot;</span><span class="p">,</span> <span class="s2">&quot;EXFOR_Entry&quot;</span><span class="p">,</span> <span class="s2">&quot;Reference_Code&quot;</span><span class="p">]]</span>
+
+    <span class="c1"># Reset Indexes to make copying faster</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">final</span> <span class="o">=</span> <span class="n">final</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR CSV: Appending information to main DataFrame...&quot;</span><span class="p">)</span>
+    <span class="c1"># Assign newly extracted data to main dataframe</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Reaction_Notation&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">final</span><span class="p">[</span><span class="s2">&quot;Reaction_Notation&quot;</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Title&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">final</span><span class="p">[</span><span class="s2">&quot;Title&quot;</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Year&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">final</span><span class="p">[</span><span class="s2">&quot;Year&quot;</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Author&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">final</span><span class="p">[</span><span class="s2">&quot;Author&quot;</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Institute&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">final</span><span class="p">[</span><span class="s2">&quot;Institute&quot;</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">final</span><span class="p">[</span><span class="s2">&quot;Date&quot;</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Reference&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">final</span><span class="p">[</span><span class="s2">&quot;Reference&quot;</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Dataset_Number&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">final</span><span class="p">[</span><span class="s2">&quot;Dataset_Number&quot;</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;EXFOR_Entry&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">final</span><span class="p">[</span><span class="s2">&quot;EXFOR_Entry&quot;</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Reference_Code&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">final</span><span class="p">[</span><span class="s2">&quot;Reference_Code&quot;</span><span class="p">]</span>
+
+    <span class="n">df</span><span class="o">.</span><span class="n">Title</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Title</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;No Title Found. Check EXFOR.&quot;</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">Reference</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Reference</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;No Reference Found. Check EXFOR.&quot;</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">Short_Reference</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Short_Reference</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;No Reference Found. Check EXFOR.&quot;</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">Reference_Code</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Reference_Code</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;No Reference Code Found. Check EXFOR.&quot;</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">Author</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Author</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;No Author Found. Check EXFOR.&quot;</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">EXFOR_Pointer</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">EXFOR_Pointer</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;No Pointer&quot;</span><span class="p">)</span>
+
+    <span class="n">df</span><span class="o">.</span><span class="n">EXFOR_Pointer</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">EXFOR_Pointer</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">))</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">numbers</span><span class="o">.</span><span class="n">Number</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">Date</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Date</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)[:</span><span class="mi">4</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">4</span><span class="p">:</span><span class="mi">6</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">6</span><span class="p">:])</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">EXFOR_SubAccession_Number</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">EXFOR_SubAccession_Number</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">Institute</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Institute</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;(&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;)&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="s1">&#39;Projectile&#39;</span><span class="p">:</span> <span class="p">{</span><span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;neutron&quot;</span><span class="p">,</span> <span class="mi">1001</span><span class="p">:</span> <span class="s2">&quot;proton&quot;</span><span class="p">,</span> <span class="mi">2003</span><span class="p">:</span><span class="s2">&quot;helion&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="s2">&quot;gamma&quot;</span><span class="p">,</span> <span class="mi">1002</span><span class="p">:</span><span class="s2">&quot;deuteron&quot;</span><span class="p">,</span> <span class="mi">2004</span><span class="p">:</span><span class="s2">&quot;alpha&quot;</span><span class="p">}})</span>
+
+    <span class="k">if</span> <span class="n">df</span><span class="o">.</span><span class="n">Projectile</span><span class="o">.</span><span class="n">unique</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;neutron&quot;</span><span class="p">:</span>
+        <span class="n">Projectile_Z</span><span class="p">,</span> <span class="n">Projectile_A</span><span class="p">,</span> <span class="n">Projectile_N</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">df</span><span class="o">.</span><span class="n">Projectile</span><span class="o">.</span><span class="n">unique</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;proton&quot;</span><span class="p">:</span>
+        <span class="n">Projectile_Z</span><span class="p">,</span> <span class="n">Projectile_A</span><span class="p">,</span> <span class="n">Projectile_N</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="n">df</span><span class="o">.</span><span class="n">Projectile</span><span class="o">.</span><span class="n">unique</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;helion&quot;</span><span class="p">:</span>
+        <span class="n">Projectile_Z</span><span class="p">,</span> <span class="n">Projectile_A</span><span class="p">,</span> <span class="n">Projectile_N</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">df</span><span class="o">.</span><span class="n">Projectile</span><span class="o">.</span><span class="n">unique</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;gamma&quot;</span><span class="p">:</span>
+        <span class="n">Projectile_Z</span><span class="p">,</span> <span class="n">Projectile_A</span><span class="p">,</span> <span class="n">Projectile_N</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="n">df</span><span class="o">.</span><span class="n">Projectile</span><span class="o">.</span><span class="n">unique</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;deuteron&quot;</span><span class="p">:</span>
+        <span class="n">Projectile_Z</span><span class="p">,</span> <span class="n">Projectile_A</span><span class="p">,</span> <span class="n">Projectile_N</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="n">df</span><span class="o">.</span><span class="n">Projectile</span><span class="o">.</span><span class="n">unique</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;alpha&quot;</span><span class="p">:</span>
+        <span class="n">Projectile_Z</span><span class="p">,</span> <span class="n">Projectile_A</span><span class="p">,</span> <span class="n">Projectile_N</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Projectile_Z&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Projectile_Z</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Projectile_A&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Projectile_A</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Projectile_N&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">Projectile_N</span>
+
+    <span class="n">element_w_a</span> <span class="o">=</span> <span class="n">objects</span><span class="o">.</span><span class="n">load_zan</span><span class="p">()</span>
+    <span class="n">element_w_a</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">element_w_a</span><span class="p">,</span> <span class="n">orient</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span>
+    <span class="c1"># There are no molecular</span>
+    <span class="n">element_w_a</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;12019&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Heavy Water&#39;</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="s2">&quot;Heavy Water&quot;</span><span class="p">]</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">element_w_a</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;Z&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+
+    <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;EXFOR_Accession_Number&quot;</span><span class="p">,</span> <span class="s2">&quot;Dataset_Number&quot;</span><span class="p">,</span> <span class="s2">&quot;EXFOR_Entry&quot;</span><span class="p">]]</span>  <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;EXFOR_Accession_Number&quot;</span><span class="p">,</span> <span class="s2">&quot;Dataset_Number&quot;</span><span class="p">,</span> <span class="s2">&quot;EXFOR_Entry&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">csv_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">heavy_path</span><span class="p">,</span> <span class="s2">&quot;EXFOR_&quot;</span> <span class="o">+</span> <span class="n">mode</span> <span class="o">+</span> <span class="s2">&quot;_ORIGINAL.csv&quot;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR CSV: Saving EXFOR CSV file to </span><span class="si">{}</span><span class="s2">...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">csv_name</span><span class="p">))</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">csv_name</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">append_ame</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR CSV: Reading AME file...&quot;</span><span class="p">)</span>
+        <span class="n">df_workxs</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">masses</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ame_dir_path</span><span class="p">,</span> <span class="s2">&quot;AME_Natural_Properties_w_NaN.csv&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+            <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="s1">&#39;Neutrons&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="s1">&#39;Mass_Number&#39;</span><span class="p">,</span> <span class="s1">&#39;Neutrons&#39;</span><span class="p">:</span><span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;Mass_Number&#39;</span><span class="p">:</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;Flag&#39;</span><span class="p">:</span><span class="s1">&#39;Element_Flag&#39;</span><span class="p">})</span>
+        <span class="n">df_workxs</span> <span class="o">=</span> <span class="n">df_workxs</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">masses</span> <span class="o">=</span> <span class="n">masses</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR CSV: Appending AME data to EXFOR File...&quot;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df_workxs</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">masses</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;Z&#39;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A_x&quot;</span><span class="p">,</span> <span class="s2">&quot;A_y&quot;</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;EL&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Neutrons&#39;</span><span class="p">:</span> <span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;Mass_Number&#39;</span><span class="p">:</span><span class="s1">&#39;A&#39;</span><span class="p">})</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="o">~</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;N&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span>
+        <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">csv_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">heavy_path</span><span class="p">,</span> <span class="s2">&quot;EXFOR_&quot;</span> <span class="o">+</span> <span class="n">mode</span> <span class="o">+</span> <span class="s2">&quot;_ORIGINAL_w_AME.csv&quot;</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR CSV: Saving EXFOR CSV file to </span><span class="si">{}</span><span class="s2">...&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">csv_name</span><span class="p">))</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">csv_name</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="impute_original_exfor"><a class="viewcode-back" href="../../../nucml.exfor.html#nucml.exfor.parsing.impute_original_exfor">[docs]</a><span class="k">def</span> <span class="nf">impute_original_exfor</span><span class="p">(</span><span class="n">heavy_path</span><span class="p">,</span> <span class="n">tmp_path</span><span class="p">,</span> <span class="n">mode</span><span class="p">,</span> <span class="n">append_ame</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">MF_number</span><span class="o">=</span><span class="s2">&quot;3&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Imputes missing values in the CSV files created using the csv_creator() function. </span>
+<span class="sd">    It generates a new CSV files with filled missing values. The main features with considerable</span>
+<span class="sd">    missing values are the Uncertainties in both Energy and Cross Section. It also limits the </span>
+<span class="sd">    dataset to a particular type (MF ENDF code).</span>
+
+<span class="sd">    - EXFOR_mode_MF3_AME_no_RawNaN: is a dataset created for personal use. It contains no</span>
+<span class="sd">        missing values in both the EXFOR and the AME data entries. Furthermore, it is limited to </span>
+<span class="sd">        reaction data rows (MF=3). </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        heavy_path (str): Path to directory where heavy files generated by the csv_creator() function are stored. </span>
+<span class="sd">            This directory will also be used to store the resulting CSV files.</span>
+<span class="sd">        tmp_path (str): Path to directory where temporary files are to be saved.</span>
+<span class="sd">        mode (str): The reaction projectile of the originally provided C4 files.</span>
+<span class="sd">        append_ame (bool): If True, the AME data will be appended to the final EXFOR CSV files. It is recommended this is </span>
+<span class="sd">            always set to True. The features can be afterwards eliminated if wanted. Defaults to True.</span>
+<span class="sd">        MF_number (str, optional): The MT ENDF code of data to retrieve and impute. Defaults to &quot;3&quot;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="n">heavy_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">heavy_path</span><span class="p">,</span> <span class="s2">&quot;EXFOR_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
+    <span class="n">tmp_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">tmp_path</span><span class="p">,</span> <span class="s2">&quot;Extracted_Text_</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
+
+    <span class="n">csv_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">heavy_path</span><span class="p">,</span> <span class="s2">&quot;EXFOR_</span><span class="si">{}</span><span class="s2">_ORIGINAL.csv&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csv_name</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">append_ame</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR CSV: Reading AME file...&quot;</span><span class="p">)</span>
+        <span class="n">df_workxs</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">masses</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ame_dir_path</span><span class="p">,</span> <span class="s2">&quot;AME_Natural_Properties_no_NaN.csv&quot;</span><span class="p">))</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span>
+            <span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;N&#39;</span><span class="p">:</span> <span class="s1">&#39;Neutrons&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">:</span> <span class="s1">&#39;Mass_Number&#39;</span><span class="p">,</span> <span class="s1">&#39;Neutrons&#39;</span><span class="p">:</span><span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;Mass_Number&#39;</span><span class="p">:</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;Flag&#39;</span><span class="p">:</span><span class="s1">&#39;Element_Flag&#39;</span><span class="p">})</span>
+
+        <span class="n">df_workxs</span> <span class="o">=</span> <span class="n">df_workxs</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">masses</span> <span class="o">=</span> <span class="n">masses</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR CSV: Appending AME data to EXFOR File...&quot;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df_workxs</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">masses</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;Z&#39;</span><span class="p">],</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;A_x&quot;</span><span class="p">,</span> <span class="s2">&quot;A_y&quot;</span><span class="p">,</span> <span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;EL&quot;</span><span class="p">])</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Neutrons&#39;</span><span class="p">:</span> <span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;Mass_Number&#39;</span><span class="p">:</span><span class="s1">&#39;A&#39;</span><span class="p">})</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="o">~</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;N&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span>
+        <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;N&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="n">df</span><span class="p">[</span><span class="s2">&quot;O&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;Other&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR CSV: Creating new CSV file with only MF=3 data...&quot;</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">MF</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">MF</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">MT</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">MT</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;MF&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">MF_number</span><span class="p">]</span>
+
+    <span class="c1"># We get rid of heavy water measurments</span>
+    <span class="k">if</span> <span class="n">MF_number</span> <span class="o">==</span> <span class="s2">&quot;3&quot;</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;...&quot;</span><span class="p">)</span>
+
+    <span class="n">columns_drop</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;MF&quot;</span><span class="p">,</span> <span class="s2">&quot;Cos/LO&quot;</span><span class="p">,</span> <span class="s2">&quot;dCos/LO&quot;</span><span class="p">]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">columns_drop</span><span class="p">)</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR CSV: Filling dEnergy, dData, and dELV by reaction channel...&quot;</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Uncertainty_E&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;dEnergy&quot;</span><span class="p">]</span><span class="o">/</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Energy&quot;</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Uncertainty_D&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;dData&quot;</span><span class="p">]</span><span class="o">/</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Data&quot;</span><span class="p">]</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Uncertainty_ELV&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;dELV/HL&quot;</span><span class="p">]</span><span class="o">/</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;ELV/HL&quot;</span><span class="p">]</span>
+
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Uncertainty_E&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;MT&quot;</span><span class="p">,</span> <span class="s2">&quot;Uncertainty_E&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;MT&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Uncertainty_D&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;MT&quot;</span><span class="p">,</span> <span class="s2">&quot;Uncertainty_D&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;MT&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Uncertainty_ELV&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;MT&quot;</span><span class="p">,</span> <span class="s2">&quot;Uncertainty_ELV&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;MT&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR CSV: Filling dEnergy, dData, and dELV by Institute...&quot;</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Uncertainty_E&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;Institute&quot;</span><span class="p">,</span> <span class="s2">&quot;Uncertainty_E&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;Institute&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Uncertainty_D&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;Institute&quot;</span><span class="p">,</span> <span class="s2">&quot;Uncertainty_D&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;Institute&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Uncertainty_ELV&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;Institute&quot;</span><span class="p">,</span> <span class="s2">&quot;Uncertainty_ELV&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;Institute&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR CSV: Filling dEnergy, dData, and dELV by Isotope...&quot;</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Uncertainty_E&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;Isotope&quot;</span><span class="p">,</span> <span class="s2">&quot;Uncertainty_E&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;Isotope&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Uncertainty_D&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;Isotope&quot;</span><span class="p">,</span> <span class="s2">&quot;Uncertainty_D&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;Isotope&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Uncertainty_ELV&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;Isotope&quot;</span><span class="p">,</span> <span class="s2">&quot;Uncertainty_ELV&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;Isotope&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Uncertainty_ELV&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s2">&quot;I78&quot;</span><span class="p">,</span> <span class="s2">&quot;Uncertainty_ELV&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;I78&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">()))</span>
+
+    <span class="n">df</span><span class="o">.</span><span class="n">dEnergy</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dEnergy</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Energy</span> <span class="o">*</span> <span class="n">df</span><span class="o">.</span><span class="n">Uncertainty_E</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">dData</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dData</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Data</span> <span class="o">*</span> <span class="n">df</span><span class="o">.</span><span class="n">Uncertainty_D</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;dELV/HL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;dELV/HL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;ELV/HL&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Uncertainty_ELV&quot;</span><span class="p">])</span>
+
+    <span class="n">df</span><span class="o">.</span><span class="n">Uncertainty_D</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">Uncertainty_D</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">dData</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dData</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;dELV/HL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;dELV/HL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ELV/HL&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;ELV/HL&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">to_replace</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="n">df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Nucleus_Radius&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.25</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">power</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;A&quot;</span><span class="p">],</span> <span class="mi">1</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Neutron_Nucleus_Radius_Ratio&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.8</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="s2">&quot;Nucleus_Radius&quot;</span><span class="p">]</span>
+    
+    <span class="c1"># Use this for ordering</span>
+    <span class="n">new_order</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)[:</span><span class="mi">35</span><span class="p">]</span>
+    <span class="n">new_order_2</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)[</span><span class="o">-</span><span class="mi">6</span><span class="p">:]</span>
+    <span class="n">new_order</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">new_order_2</span><span class="p">)</span>
+    <span class="n">nuclear_data_target</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)[</span><span class="mi">35</span><span class="p">:</span><span class="o">-</span><span class="mi">6</span><span class="p">]</span>
+    <span class="n">new_order</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">nuclear_data_target</span><span class="p">)</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">new_order</span><span class="p">]</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Uncertainty_D&quot;</span><span class="p">,</span> <span class="s2">&quot;Uncertainty_E&quot;</span><span class="p">,</span> <span class="s2">&quot;Uncertainty_ELV&quot;</span><span class="p">])</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR CSV: Dropping RAW experimental datapoints...&quot;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="o">~</span><span class="n">df</span><span class="o">.</span><span class="n">Reaction_Notation</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s2">&quot;RAW&quot;</span><span class="p">)]</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="o">~</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">Data</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)]</span>
+
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;EXFOR CSV: Saving MF3 NaN Imputed RAW Free EXFOR CSV...&quot;</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">heavy_path</span><span class="p">,</span> <span class="s2">&quot;EXFOR_&quot;</span> <span class="o">+</span> <span class="n">mode</span> <span class="o">+</span> <span class="s2">&quot;_MF3_AME_no_RawNaN.csv&quot;</span><span class="p">),</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Finished&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">None</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Pedro Jr. Vicente-Valdez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

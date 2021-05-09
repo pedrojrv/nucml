@@ -1,0 +1,316 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>nucml.processing &mdash; NucML 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> NucML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">OVERVIEW</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../what-is-nucml.html">What is NucML?</a></li>
+</ul>
+<p><span class="caption-text">GET STARTED</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../basic-walkthrough.html">Basic Walkthrough</a></li>
+</ul>
+<p><span class="caption-text">NAVIGATING THE NDE</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../navigating-the-nde.html">Loading Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../navigating-the-nde.html#modeling-data">Modeling Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
+</ul>
+<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
+</ul>
+<p><span class="caption-text">DOCUMENTATION</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">nucml</a></li>
+</ul>
+<p><span class="caption-text">FAQ AND CONTACT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contact</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">NucML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>nucml.processing</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for nucml.processing</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">joblib</span> <span class="kn">import</span> <span class="n">load</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">curve_fit</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">preprocessing</span>
+
+<span class="kn">from</span> <span class="nn">nucml.general_utilities</span> <span class="kn">import</span> <span class="n">func</span>  <span class="c1"># pylint: disable=import-error</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">chained_assignment</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># default=&#39;warn&#39;</span>
+
+<div class="viewcode-block" id="impute_values"><a class="viewcode-back" href="../../nucml.html#nucml.processing.impute_values">[docs]</a><span class="k">def</span> <span class="nf">impute_values</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Imputes feature values using linear interpolation element-wise. The passed dataframe </span>
+<span class="sd">    must contain both the number of protons and mass number as &quot;Z&quot; and &quot;A&quot; respetively. </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (pd.DataFrame): DataFrame to impute values off. All missing values will be filled. </span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: New imputed DataFrame.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">119</span><span class="p">):</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">interpolate</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">fit_df_original</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;A&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+            <span class="n">fit_df</span> <span class="o">=</span> <span class="n">fit_df_original</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+            <span class="n">col_params</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">guess</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+
+            <span class="c1"># Curve fit each column</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">fit_df</span><span class="o">.</span><span class="n">select_dtypes</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">number</span><span class="p">)</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">fit_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span> <span class="c1"># SHOULD IT BE 0?</span>
+                    <span class="c1"># Get x &amp; y</span>
+                    <span class="n">x</span> <span class="o">=</span> <span class="n">fit_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+                    <span class="n">y</span> <span class="o">=</span> <span class="n">fit_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">values</span>
+                    <span class="c1"># Curve fit column and get curve parameters</span>
+                    <span class="n">params</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">guess</span><span class="p">)</span>
+                    <span class="c1"># Store optimized parameters</span>
+                    <span class="n">col_params</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">params</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+            <span class="c1"># Extrapolate each column</span>
+            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">col_params</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="c1"># Get the index values for NaNs in the column</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">fit_df_original</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">isnull</span><span class="p">(</span><span class="n">fit_df_original</span><span class="p">[</span><span class="n">col</span><span class="p">])]</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+                <span class="c1"># Extrapolate those points with the fitted function</span>
+                <span class="n">fit_df_original</span><span class="p">[</span><span class="n">col</span><span class="p">][</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">*</span><span class="n">col_params</span><span class="p">[</span><span class="n">col</span><span class="p">])</span>
+
+            <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit_df_original</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="normalize_features"><a class="viewcode-back" href="../../nucml.html#nucml.processing.normalize_features">[docs]</a><span class="k">def</span> <span class="nf">normalize_features</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">to_scale</span><span class="p">,</span> <span class="n">scaling_type</span><span class="o">=</span><span class="s2">&quot;standard&quot;</span><span class="p">,</span> <span class="n">scaler_dir</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Applies a transformer or normalizer to a set of specific features in the provided dataframe.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        df (pd.DataFrame): DataFrame to normalize/transform.</span>
+<span class="sd">        to_scale (list): List of columns to apply the normalization to.</span>
+<span class="sd">        scaling_type (str): Scaling or transformer to use. Options include &quot;poweryeo&quot;, &quot;standard&quot;, </span>
+<span class="sd">            &quot;minmax&quot;, &quot;maxabs&quot;, &quot;robust&quot;, and &quot;quantilenormal&quot;. See the scikit-learn documentation </span>
+<span class="sd">            for more information on each of these.</span>
+<span class="sd">        scaler_dir (str): Path-like string to a previously saved scaler. If provided, this overides</span>
+<span class="sd">            any other parameter by loading the scaler from the provided path and using it to </span>
+<span class="sd">            transform the provided dataframe. Defaults to None.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        object: Scikit-learn scaler object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>    
+    <span class="k">if</span> <span class="n">scaler_dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Using previously saved scaler.&quot;</span><span class="p">)</span>
+        <span class="n">scaler_object</span> <span class="o">=</span> <span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">scaler_dir</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Fitting new scaler.&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">scaling_type</span> <span class="o">==</span> <span class="s2">&quot;poweryeo&quot;</span><span class="p">:</span>
+            <span class="n">scaler_object</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">PowerTransformer</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">scaling_type</span> <span class="o">==</span> <span class="s2">&quot;standard&quot;</span><span class="p">:</span>
+            <span class="n">scaler_object</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">scaling_type</span> <span class="o">==</span> <span class="s2">&quot;minmax&quot;</span><span class="p">:</span>
+            <span class="n">scaler_object</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">MinMaxScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">scaling_type</span> <span class="o">==</span> <span class="s2">&quot;maxabs&quot;</span><span class="p">:</span>
+            <span class="n">scaler_object</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">MaxAbsScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">scaling_type</span> <span class="o">==</span> <span class="s1">&#39;robust&#39;</span><span class="p">:</span>
+            <span class="n">scaler_object</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">RobustScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">scaling_type</span> <span class="o">==</span> <span class="s1">&#39;quantilenormal&#39;</span><span class="p">:</span>
+            <span class="n">scaler_object</span> <span class="o">=</span> <span class="n">preprocessing</span><span class="o">.</span><span class="n">QuantileTransformer</span><span class="p">(</span><span class="n">output_distribution</span><span class="o">=</span><span class="s1">&#39;normal&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">to_scale</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">scaler_object</span></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Pedro Jr. Vicente-Valdez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

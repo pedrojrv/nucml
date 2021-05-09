@@ -1,0 +1,818 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>nucml.ensdf package &mdash; NucML 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="nucml.evaluation package" href="nucml.evaluation.html" />
+    <link rel="prev" title="nucml.ame package" href="nucml.ame.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> NucML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">OVERVIEW</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="what-is-nucml.html">What is NucML?</a></li>
+</ul>
+<p><span class="caption-text">GET STARTED</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="basic-walkthrough.html">Basic Walkthrough</a></li>
+</ul>
+<p><span class="caption-text">NAVIGATING THE NDE</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html">Loading Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#modeling-data">Modeling Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
+</ul>
+<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
+</ul>
+<p><span class="caption-text">DOCUMENTATION</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">nucml</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="nucml.html">nucml package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="nucml.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="nucml.ace.html">nucml.ace package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.ame.html">nucml.ame package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">nucml.ensdf package</a><ul>
+<li class="toctree-l5"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-nucml.ensdf.data_utilities">nucml.ensdf.data_utilities module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-nucml.ensdf.parsing">nucml.ensdf.parsing module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-nucml.ensdf.plot">nucml.ensdf.plot module</a></li>
+<li class="toctree-l5"><a class="reference internal" href="#module-nucml.ensdf">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.evaluation.html">nucml.evaluation package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.exfor.html">nucml.exfor package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.model.html">nucml.model package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.objects.html">nucml.objects package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="nucml.plot.html">nucml.plot package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml.config">nucml.config module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml.configure">nucml.configure module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml.datasets">nucml.datasets module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml.general_utilities">nucml.general_utilities module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml.processing">nucml.processing module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="nucml.html#module-nucml">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p><span class="caption-text">FAQ AND CONTACT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contact</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">NucML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="modules.html">nucml</a> &raquo;</li>
+        
+          <li><a href="nucml.html">nucml package</a> &raquo;</li>
+        
+      <li>nucml.ensdf package</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/nucml.ensdf.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="nucml-ensdf-package">
+<h1>nucml.ensdf package<a class="headerlink" href="#nucml-ensdf-package" title="Permalink to this headline">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</section>
+<section id="module-nucml.ensdf.data_utilities">
+<span id="nucml-ensdf-data-utilities-module"></span><h2>nucml.ensdf.data_utilities module<a class="headerlink" href="#module-nucml.ensdf.data_utilities" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="nucml.ensdf.data_utilities.append_ensdf_levels">
+<code class="sig-prename descclassname">nucml.ensdf.data_utilities.</code><code class="sig-name descname">append_ensdf_levels</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tot_num_levels</span></em>, <em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">Z</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">scaler</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">to_scale</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ensdf/data_utilities.html#append_ensdf_levels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ensdf.data_utilities.append_ensdf_levels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expands the energy levels up to “tot_num_levels” for the given ENSDF isotopic sample.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tot_num_levels</strong> (<em>int</em>) – Total number of levels to include (i.e 50 will include levels 1-50).</p></li>
+<li><p><strong>df</strong> (<em>DataFrame</em>) – DataFrame containing an already extracted isotopic sample.</p></li>
+<li><p><strong>Z</strong> (<em>int</em>) – Number of protons.</p></li>
+<li><p><strong>A</strong> (<em>int</em>) – Mass Number.</p></li>
+<li><p><strong>log</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the logarithm will be applied to the Level Number.</p></li>
+<li><p><strong>scale</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the data will be tranform using the provided scaler. Defaults to False.</p></li>
+<li><p><strong>scaler</strong> (<em>object</em><em>, </em><em>optional</em>) – Scikit-Learn trained transformer. Defaults to None.</p></li>
+<li><p><strong>to_scale</strong> (<em>list</em><em>, </em><em>optional</em>) – List of features to be scaled. Defaults to [].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Extracted element sample.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ensdf.data_utilities.append_ensdf_levels_nodata">
+<code class="sig-prename descclassname">nucml.ensdf.data_utilities.</code><code class="sig-name descname">append_ensdf_levels_nodata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tot_num_levels</span></em>, <em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">scaler</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">to_scale</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ensdf/data_utilities.html#append_ensdf_levels_nodata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ensdf.data_utilities.append_ensdf_levels_nodata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expands the energy levels up to “tot_num_levels” for the given ENSDF isotopic sample if no
+Level Energy data is avaliable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tot_num_levels</strong> (<em>int</em>) – Total number of levels to include (i.e 50 will include levels 1-50).</p></li>
+<li><p><strong>df</strong> (<em>DataFrame</em>) – DataFrame containing an already extracted isotopic sample.</p></li>
+<li><p><strong>log</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the logarithm will be applied to the Level Number.</p></li>
+<li><p><strong>scale</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the data will be tranform using the provided scaler. Defaults to False.</p></li>
+<li><p><strong>scaler</strong> (<em>object</em><em>, </em><em>optional</em>) – Scikit-Learn trained transformer. Defaults to None.</p></li>
+<li><p><strong>to_scale</strong> (<em>list</em><em>, </em><em>optional</em>) – List of features to be scaled. Defaults to [].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Extracted element sample.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ensdf.data_utilities.append_ensdf_levels_range">
+<code class="sig-prename descclassname">nucml.ensdf.data_utilities.</code><code class="sig-name descname">append_ensdf_levels_range</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">tot_num_levels</span></em>, <em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">Z</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">steps</span><span class="o">=</span><span class="default_value">1</span></em>, <em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">scaler</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">to_scale</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ensdf/data_utilities.html#append_ensdf_levels_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ensdf.data_utilities.append_ensdf_levels_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Expands the energy levels up to “tot_num_levels” for the given ENSDF isotopic sample using
+a range with n steps rather than linear.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tot_num_levels</strong> (<em>int</em>) – Total number of levels to include (i.e 50 will include levels 1-50).</p></li>
+<li><p><strong>df</strong> (<em>DataFrame</em>) – DataFrame containing an already extracted isotopic sample.</p></li>
+<li><p><strong>Z</strong> (<em>int</em>) – Number of protons.</p></li>
+<li><p><strong>A</strong> (<em>int</em>) – Mass Number.</p></li>
+<li><p><strong>steps</strong> (<em>int</em>) – Number of intermediate steps between 1 and tot_num_levels to create.</p></li>
+<li><p><strong>log</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the logarithm will be applied to the Level Number.</p></li>
+<li><p><strong>scale</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the data will be tranform using the provided scaler. Defaults to False.</p></li>
+<li><p><strong>scaler</strong> (<em>object</em><em>, </em><em>optional</em>) – Scikit-Learn trained transformer. Defaults to None.</p></li>
+<li><p><strong>to_scale</strong> (<em>list</em><em>, </em><em>optional</em>) – List of features to be scaled. Defaults to [].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Extracted element sample.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ensdf.data_utilities.generate_level_density_csv">
+<code class="sig-prename descclassname">nucml.ensdf.data_utilities.</code><code class="sig-name descname">generate_level_density_csv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">Z</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">nodata</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">upper_energy_mev</span><span class="o">=</span><span class="default_value">20</span></em>, <em class="sig-param"><span class="n">get_upper</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">tot_num_levels</span><span class="o">=</span><span class="default_value">0</span></em>, <em class="sig-param"><span class="n">it_limit</span><span class="o">=</span><span class="default_value">500</span></em>, <em class="sig-param"><span class="n">plot</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">saving_dir</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ensdf/data_utilities.html#generate_level_density_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ensdf.data_utilities.generate_level_density_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fits a linear model to the isotopic sample provided, and saves a CSV file with the linear model values for each
+energy level avaliable. If get_upper is True, then a new level number will be appended until the linear model predicts
+a value above the upper_energy_mev value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – DataFrame containing the needed data for isotope Z, A.</p></li>
+<li><p><strong>Z</strong> (<em>int</em>) – Number of protons.</p></li>
+<li><p><strong>A</strong> (<em>int</em>) – Mass number.</p></li>
+<li><p><strong>nodata</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, it assumes there is no avaliable data for the queried isotope. Defaults to False.</p></li>
+<li><p><strong>upper_energy_mev</strong> (<em>int</em><em>, </em><em>optional</em>) – If get_upper is True, the algorithm will iterate until this energy is reached. Defaults to 20 MeV.</p></li>
+<li><p><strong>get_upper</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, more levels will be added until the level energy in the level density reaches the 20 MeV mark. Defaults to False.</p></li>
+<li><p><strong>tot_num_levels</strong> (<em>int</em><em>, </em><em>optional</em>) – If any value other than 0 is given, it will append the remaining energy levels until reaching tot_num_levels. Defaults to 0.</p></li>
+<li><p><strong>it_limit</strong> (<em>int</em><em>, </em><em>optional</em>) – Sets the iteration limits for the linear model to reach the upper_energy_mev value. Defaults to 500.</p></li>
+<li><p><strong>plot</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, a plot of the linear model along the experimental levels will be rendered. Defaults to False.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the resulting DataFrame using the linear model will be saved. Defaults to False.</p></li>
+<li><p><strong>saving_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Path-like string pointing towars the directory where the DataFrame will be saved. Defaults to “”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>New DataFrame with Level Number and Level Energy as predicted by the linear model.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ensdf.data_utilities.get_level_density">
+<code class="sig-prename descclassname">nucml.ensdf.data_utilities.</code><code class="sig-name descname">get_level_density</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">energy_mev</span></em>, <em class="sig-param"><span class="n">df</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ensdf/data_utilities.html#get_level_density"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ensdf.data_utilities.get_level_density" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an energy density DataFrame, the level density at a wanted energy is returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>energy_mev</strong> (<em>float</em>) – Energy point at which the level density is to be returned.</p></li>
+<li><p><strong>df</strong> (<em>DataFrame</em>) – Level Density DataFrame to interpolate at energy_mev.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Level density at “energy_mev”.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ensdf.data_utilities.load_ensdf_element">
+<code class="sig-prename descclassname">nucml.ensdf.data_utilities.</code><code class="sig-name descname">load_ensdf_element</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">Z</span></em>, <em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">scaler</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">to_scale</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ensdf/data_utilities.html#load_ensdf_element"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ensdf.data_utilities.load_ensdf_element" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads ENSDF data for a given element (Z).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – DataFrame containing all necessary information for Z, A.</p></li>
+<li><p><strong>Z</strong> (<em>int</em>) – Number of protons.</p></li>
+<li><p><strong>scale</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the data will be tranform using the provided scaler. Defaults to False.</p></li>
+<li><p><strong>scaler</strong> (<em>object</em><em>, </em><em>optional</em>) – Scikit-Learn trained transformer. Defaults to None.</p></li>
+<li><p><strong>to_scale</strong> (<em>list</em><em>, </em><em>optional</em>) – List of features to be scaled. Defaults to [].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Extracted element sample.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ensdf.data_utilities.load_ensdf_samples">
+<code class="sig-prename descclassname">nucml.ensdf.data_utilities.</code><code class="sig-name descname">load_ensdf_samples</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">Z</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">scale</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">scaler</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">to_scale</span><span class="o">=</span><span class="default_value">[]</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ensdf/data_utilities.html#load_ensdf_samples"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ensdf.data_utilities.load_ensdf_samples" title="Permalink to this definition">¶</a></dt>
+<dd><p>Loads ENSDF data for a particular isotope (Z, A).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – DataFrame containing all necessary information for Z, A.</p></li>
+<li><p><strong>Z</strong> (<em>int</em>) – Number of protons.</p></li>
+<li><p><strong>A</strong> (<em>int</em>) – Mass Number.</p></li>
+<li><p><strong>scale</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the data will be tranform using the provided scaler. Defaults to False.</p></li>
+<li><p><strong>scaler</strong> (<em>object</em><em>, </em><em>optional</em>) – Scikit-Learn trained transformer. Defaults to None.</p></li>
+<li><p><strong>to_scale</strong> (<em>list</em><em>, </em><em>optional</em>) – List of features to be scaled. Defaults to [].</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Extracted isotope sample.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ensdf.data_utilities.make_predictions_from_df">
+<code class="sig-prename descclassname">nucml.ensdf.data_utilities.</code><code class="sig-name descname">make_predictions_from_df</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">Z</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">model_type</span></em>, <em class="sig-param"><span class="n">scaler</span></em>, <em class="sig-param"><span class="n">to_scale</span></em>, <em class="sig-param"><span class="n">log_sqrt</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">plot</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save_dir</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ensdf/data_utilities.html#make_predictions_from_df"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ensdf.data_utilities.make_predictions_from_df" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of ML predictions at all known levels within the passed DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – DataFrame containing all needed information for Z, A.</p></li>
+<li><p><strong>Z</strong> (<em>INT</em>) – Number of protons.</p></li>
+<li><p><strong>A</strong> (<em>int</em>) – Mass Number.</p></li>
+<li><p><strong>model</strong> (<em>object</em>) – Trained machine learning model.</p></li>
+<li><p><strong>model_type</strong> (<em>str</em>) – Type of ML model. Options include “tf”, “xgb”, or “scikit”.</p></li>
+<li><p><strong>scaler</strong> (<em>object</em>) – Trained scikit-learn normalizer/transformer.</p></li>
+<li><p><strong>to_scale</strong> (<em>list</em>) – List of features that are to be subject to transformation by the scaler.</p></li>
+<li><p><strong>log_sqrt</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, it assumes the models where trained on Level Energy data with SQRT applied. Defaults to False.</p></li>
+<li><p><strong>log</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, it assumes the models where trained on Level Energy data with LOG applied. Defaults to False.</p></li>
+<li><p><strong>plot</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the ML predictions will be plotted along the true known values. Defaults to False.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the rendered figure will be saved. Defaults to False.</p></li>
+<li><p><strong>save_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Path-like string indicating directory where the figure will be saved. Defaults to “”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>New DataFrame with ML predictions.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ensdf.data_utilities.make_predictions_w_levels">
+<code class="sig-prename descclassname">nucml.ensdf.data_utilities.</code><code class="sig-name descname">make_predictions_w_levels</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">Z</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">num_levels</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">model_type</span></em>, <em class="sig-param"><span class="n">scaler</span></em>, <em class="sig-param"><span class="n">to_scale</span></em>, <em class="sig-param"><span class="n">inv_transform</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">log_sqrt</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">plot</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save_dir</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ensdf/data_utilities.html#make_predictions_w_levels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ensdf.data_utilities.make_predictions_w_levels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of ML predictions up to num_levels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – DataFrame containing all needed information for Z, A.</p></li>
+<li><p><strong>Z</strong> (<em>INT</em>) – Number of protons.</p></li>
+<li><p><strong>A</strong> (<em>int</em>) – Mass Number.</p></li>
+<li><p><strong>num_levels</strong> (<em>int</em>) – Upper level number for which to predict the level energy.</p></li>
+<li><p><strong>model</strong> (<em>object</em>) – Trained machine learning model.</p></li>
+<li><p><strong>model_type</strong> (<em>str</em>) – Type of ML model. Options include “tf”, “xgb”, or “scikit”.</p></li>
+<li><p><strong>scaler</strong> (<em>object</em>) – Trained scikit-learn normalizer/transformer.</p></li>
+<li><p><strong>to_scale</strong> (<em>list</em>) – List of features that are to be subject to transformation by the scaler.</p></li>
+<li><p><strong>inv_transform</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the returned DataFrame will be in its original ranges. Defaults to False.</p></li>
+<li><p><strong>log_sqrt</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, it assumes the models where trained on Level Energy data with SQRT applied. Defaults to False.</p></li>
+<li><p><strong>log</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, it assumes the models where trained on Level Energy data with LOG applied. Defaults to False.</p></li>
+<li><p><strong>plot</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the ML predictions will be plotted along the true known values. Defaults to False.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the rendered figure will be saved. Defaults to False.</p></li>
+<li><p><strong>save_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Path-like string indicating directory where the figure will be saved. Defaults to “”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>New DataFrame with ML predictions.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ensdf.data_utilities.make_predictions_w_levels_nodata">
+<code class="sig-prename descclassname">nucml.ensdf.data_utilities.</code><code class="sig-name descname">make_predictions_w_levels_nodata</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">num_levels</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">model_type</span></em>, <em class="sig-param"><span class="n">scaler</span></em>, <em class="sig-param"><span class="n">to_scale</span></em>, <em class="sig-param"><span class="n">inv_transform</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">log_sqrt</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">plot</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save_dir</span><span class="o">=</span><span class="default_value">''</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ensdf/data_utilities.html#make_predictions_w_levels_nodata"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ensdf.data_utilities.make_predictions_w_levels_nodata" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns a set of ML predictions up to num_levels for isotopes with no known nuclear structure data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – DataFrame containing all needed information for a given Z, A. Just one row is sufficient.</p></li>
+<li><p><strong>num_levels</strong> (<em>int</em>) – Upper level number for which to predict the level energy.</p></li>
+<li><p><strong>model</strong> (<em>object</em>) – Trained machine learning model.</p></li>
+<li><p><strong>model_type</strong> (<em>str</em>) – Type of ML model. Options include “tf”, “xgb”, or “scikit”.</p></li>
+<li><p><strong>scaler</strong> (<em>object</em>) – Trained scikit-learn normalizer/transformer.</p></li>
+<li><p><strong>to_scale</strong> (<em>list</em>) – List of features that are to be subject to transformation by the scaler.</p></li>
+<li><p><strong>inv_transform</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the returned DataFrame will be in its original ranges. Defaults to False.</p></li>
+<li><p><strong>log_sqrt</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, it assumes the models where trained on Level Energy data with SQRT applied. Defaults to False.</p></li>
+<li><p><strong>log</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, it assumes the models where trained on Level Energy data with LOG applied. Defaults to False.</p></li>
+<li><p><strong>plot</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the ML predictions will be plotted along the true known values. Defaults to False.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the rendered figure will be saved. Defaults to False.</p></li>
+<li><p><strong>save_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Path-like string indicating directory where the figure will be saved. Defaults to “”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>New DataFrame with ML predictions.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ensdf.data_utilities.predicting_nuclear_xs_v2">
+<code class="sig-prename descclassname">nucml.ensdf.data_utilities.</code><code class="sig-name descname">predicting_nuclear_xs_v2</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">df</span></em>, <em class="sig-param"><span class="n">Z</span></em>, <em class="sig-param"><span class="n">A</span></em>, <em class="sig-param"><span class="n">model</span></em>, <em class="sig-param"><span class="n">scaler</span></em>, <em class="sig-param"><span class="n">to_scale</span></em>, <em class="sig-param"><span class="n">num_levels</span><span class="o">=</span><span class="default_value">100</span></em>, <em class="sig-param"><span class="n">log_sqrt</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">model_type</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">plot</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save_dir</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">inv_trans</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ensdf/data_utilities.html#predicting_nuclear_xs_v2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ensdf.data_utilities.predicting_nuclear_xs_v2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots and returns a set of ML predictions at all known levels and up to num_levels in cases where the known levels are fewer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – DataFrame containing all needed information for Z, A.</p></li>
+<li><p><strong>Z</strong> (<em>INT</em>) – Number of protons.</p></li>
+<li><p><strong>A</strong> (<em>int</em>) – Mass Number.</p></li>
+<li><p><strong>model</strong> (<em>object</em>) – Trained machine learning model.</p></li>
+<li><p><strong>scaler</strong> (<em>object</em>) – Trained scikit-learn normalizer/transformer.</p></li>
+<li><p><strong>to_scale</strong> (<em>list</em>) – List of features that are to be subject to transformation by the scaler.</p></li>
+<li><p><strong>num_levels</strong> (<em>int</em>) – Upper level number for which to predict the level energy. Defaults to 100.</p></li>
+<li><p><strong>log_sqrt</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, it assumes the models where trained on Level Energy data with SQRT applied. Defaults to False.</p></li>
+<li><p><strong>model_type</strong> (<em>str</em>) – Type of ML model. Options include “tf”, “xgb”, or “scikit”/None. Defaults to None.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the rendered figure will be saved. Defaults to False.</p></li>
+<li><p><strong>plot</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the ML predictions will be plotted along the true known values. Defaults to False.</p></li>
+<li><p><strong>save_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Path-like string indicating directory where the figure will be saved. Defaults to “”.</p></li>
+<li><p><strong>inv_transform</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the returned DataFrame will be in its original ranges. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>New DataFrame with ML predictions.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>DataFrame</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-nucml.ensdf.parsing">
+<span id="nucml-ensdf-parsing-module"></span><h2>nucml.ensdf.parsing module<a class="headerlink" href="#module-nucml.ensdf.parsing" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="nucml.ensdf.parsing.generate_cutoff_ensdf">
+<code class="sig-prename descclassname">nucml.ensdf.parsing.</code><code class="sig-name descname">generate_cutoff_ensdf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ensdf_directory</span></em>, <em class="sig-param"><span class="n">elemental_directory</span></em>, <em class="sig-param"><span class="n">ripl_directory</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">saving_directory</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ensdf/parsing.html#generate_cutoff_ensdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ensdf.parsing.generate_cutoff_ensdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses the RIPL level parameters cut-off information to generate a new ENSDF CSV file.
+It removes all nuclear level information above the given parameters for each isotope by using
+the CSV file created using the get_level_parameters() function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ensdf_directory</strong> (<em>str</em>) – Path-like string indicating the directory where the ensdf.csv file is stored.</p></li>
+<li><p><strong>elemental_directory</strong> (<em>str</em>) – Path-like string indicating the the Elemental_ENSDF_no_Header_F directory.</p></li>
+<li><p><strong>ripl_directory</strong> (<em>str</em><em>, </em><em>optional</em>) – Path-like string indicating the directory where the ripl_cut_off_energies.csv file is
+stored. If None, it is assumed that the file is located in the ensdf_directory. Defaults to None.</p></li>
+<li><p><strong>saving_directory</strong> (<em>str</em><em>, </em><em>optional</em>) – The resulting file will be saved in this directory. If None,
+the saving_directory will be set to the ensdf_directory. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ensdf.parsing.generate_elemental_ensdf">
+<code class="sig-prename descclassname">nucml.ensdf.parsing.</code><code class="sig-name descname">generate_elemental_ensdf</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dat_list</span></em>, <em class="sig-param"><span class="n">header_directory</span></em>, <em class="sig-param"><span class="n">saving_directory</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ensdf/parsing.html#generate_elemental_ensdf"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ensdf.parsing.generate_elemental_ensdf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a new RIPL/ENSDF file for each element. The original files are organized by proton number.
+This function is useful to organize by element instead. Three directories are created: one for raw elemental files
+with headers, another one without headers, and a third one which is a formatted version of the second one.</p>
+<p>Note: This script will delete all existing header files and create them again if run by a second time using the same directories.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dat_list</strong> (<em>list</em>) – List containing the paths to all .dat files to be processed. Usually generated using the
+get_ripl_dat_paths() function.</p></li>
+<li><p><strong>header_directory</strong> (<em>str</em>) – Path-like string where the all_ensdf_headers_formatted.csv file is located. This file is
+generated using the get_headers() function.</p></li>
+<li><p><strong>saving_directory</strong> (<em>str</em>) – Path-like string where the new directories and ENSDF files will be stored.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ensdf.parsing.generate_ensdf_csv">
+<code class="sig-prename descclassname">nucml.ensdf.parsing.</code><code class="sig-name descname">generate_ensdf_csv</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">header_directory</span></em>, <em class="sig-param"><span class="n">elemental_directory</span></em>, <em class="sig-param"><span class="n">saving_directory</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ensdf/parsing.html#generate_ensdf_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ensdf.parsing.generate_ensdf_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a single CSV file containing information from all isotopes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>header_directory</strong> (<em>str</em>) – Path-like string where the all_ensdf_headers_formatted.csv file is located. This file is
+generated using the get_headers() function.</p></li>
+<li><p><strong>elemental_directory</strong> (<em>str</em>) – Path-like string to directory where the Elemental_ENSDF_no_Header_F directory is located.
+This directory is first created using the generate_elemental_ensdf() function.</p></li>
+<li><p><strong>saving_directory</strong> (<em>str</em>) – Path-like string where the new ENSDF CSV file will be stored. If None,
+it will be saved in the header_directory.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ensdf.parsing.get_headers">
+<code class="sig-prename descclassname">nucml.ensdf.parsing.</code><code class="sig-name descname">get_headers</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dat_list</span></em>, <em class="sig-param"><span class="n">saving_directory</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ensdf/parsing.html#get_headers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ensdf.parsing.get_headers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves the avaliable raw headers for all .dat files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dat_list</strong> (<em>list</em>) – List containing the paths to all .dat files to be processed. Usually generated using the get_ripl_dat_paths() function.</p></li>
+<li><p><strong>saving_directory</strong> (<em>str</em>) – Path-like string to directory for saving the header file.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ensdf.parsing.get_level_parameters">
+<code class="sig-prename descclassname">nucml.ensdf.parsing.</code><code class="sig-name descname">get_level_parameters</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">level_params_directory</span></em>, <em class="sig-param"><span class="n">saving_directory</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ensdf/parsing.html#get_level_parameters"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ensdf.parsing.get_level_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the levels-param.data file from RIPL into a usable CSV file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>level_params_directory</strong> (<em>str</em>) – Path-like string pointing towards the directory where the levels-param.data file is located.</p></li>
+<li><p><strong>saving_directory</strong> (<em>str</em>) – Path-like string pointing towards the directory where the resulting CSV will be stored. If None,
+it will be stored in the level_params_directory.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ensdf.parsing.get_ripl_dat_paths">
+<code class="sig-prename descclassname">nucml.ensdf.parsing.</code><code class="sig-name descname">get_ripl_dat_paths</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dat_directory</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ensdf/parsing.html#get_ripl_dat_paths"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ensdf.parsing.get_ripl_dat_paths" title="Permalink to this definition">¶</a></dt>
+<dd><p>Searches directory for RIPL .dat files and returns a list of relative paths for each one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dat_directory</strong> (<em>str</em>) – Path to the RIPL directory containing all dat files.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Contains relative path to each .dat file found.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ensdf.parsing.get_stable_states">
+<code class="sig-prename descclassname">nucml.ensdf.parsing.</code><code class="sig-name descname">get_stable_states</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">dat_list</span></em>, <em class="sig-param"><span class="n">header_directory</span></em>, <em class="sig-param"><span class="n">saving_directory</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ensdf/parsing.html#get_stable_states"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ensdf.parsing.get_stable_states" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a CSV file containing only stable state information for each isotope.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dat_list</strong> (<em>list</em>) – List containing the paths to all .dat files to be processed. Usually generated using the
+get_ripl_dat_paths() function.</p></li>
+<li><p><strong>header_directory</strong> (<em>str</em>) – Path-like string where the all_ensdf_headers_formatted.csv file is located. This file is
+generated using the get_headers() function.</p></li>
+<li><p><strong>saving_directory</strong> (<em>str</em>) – Path-like string where the resulting CSV file will be saved. If None, files will be
+stored in the same directory as the header_directory.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-nucml.ensdf.plot">
+<span id="nucml-ensdf-plot-module"></span><h2>nucml.ensdf.plot module<a class="headerlink" href="#module-nucml.ensdf.plot" title="Permalink to this headline">¶</a></h2>
+<dl class="py function">
+<dt id="nucml.ensdf.plot.level_density">
+<code class="sig-prename descclassname">nucml.ensdf.plot.</code><code class="sig-name descname">level_density</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">Z</em>, <em class="sig-param">A</em>, <em class="sig-param">df2=Empty DataFrame Columns: [] Index: []</em>, <em class="sig-param">save=False</em>, <em class="sig-param">save_dir=None</em>, <em class="sig-param">label1='Adopted'</em>, <em class="sig-param">label2='Cut-Off'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ensdf/plot.html#level_density"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ensdf.plot.level_density" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots level density for a given isotope.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – DataFrame containing the discrete levels for a given isotope.</p></li>
+<li><p><strong>Z</strong> (<em>int</em>) – Number of protons.</p></li>
+<li><p><strong>A</strong> (<em>int</em>) – Mass number.</p></li>
+<li><p><strong>df2</strong> (<em>DataFrame</em><em>, </em><em>optional</em>) – If passed, this will be plotted alongside the main dataframe. Useful for plotting
+all known levels along the RIPL-cutoff DataFrame. Defaults to an empty DataFrame.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the image will be saved. Defaults to False.</p></li>
+<li><p><strong>save_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Path-like string where the figure will be stored. Defaults to None.</p></li>
+<li><p><strong>label1</strong> (<em>str</em><em>, </em><em>optional</em>) – Label for the first dataframe line in the plot legend. Defaults to “Adopted”.</p></li>
+<li><p><strong>label2</strong> (<em>str</em><em>, </em><em>optional</em>) – Label for the second dataframe line in the plot legend. Defaults to “Cut-Off”.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ensdf.plot.level_density_ml">
+<code class="sig-prename descclassname">nucml.ensdf.plot.</code><code class="sig-name descname">level_density_ml</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">ensdf_df</span></em>, <em class="sig-param"><span class="n">predictions_df</span></em>, <em class="sig-param"><span class="n">log_sqrt</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">log</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save_dir</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ensdf/plot.html#level_density_ml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ensdf.plot.level_density_ml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots the level density based on all known levels and the predicted LD based on model predictions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ensdf_df</strong> (<em>DataFrame</em>) – The original DataFrame containing all known levels. It can also be the ENSDF data filtered using the RIPLE cut-off parameters.</p></li>
+<li><p><strong>predictions_df</strong> (<em>DataFrame</em>) – A DataFrame containing the predictions by any ML model. It must contain both a “Level_Number”, and “Energy” feature.</p></li>
+<li><p><strong>log_sqrt</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, it assumes both DataFrames “Energy” feature are in sqrt(Energy). Defaults to False.</p></li>
+<li><p><strong>log</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, it assumes that both DataFrame’s “Energy” and “Data” features are already in log form. Defaults to False.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the resulting plot will be saved. Defaults to False.</p></li>
+<li><p><strong>save_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Path-like string pointing towards a directory where the image will be saved. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="nucml.ensdf.plot.levels_axh">
+<code class="sig-prename descclassname">nucml.ensdf.plot.</code><code class="sig-name descname">levels_axh</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">protons</span></em>, <em class="sig-param"><span class="n">mass_number</span></em>, <em class="sig-param"><span class="n">ensdf_df</span></em>, <em class="sig-param"><span class="n">save</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">save_dir</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/nucml/ensdf/plot.html#levels_axh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#nucml.ensdf.plot.levels_axh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Experimental. Plots all levels as horizontal lines in a vertical plot.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>protons</strong> (<em>int</em>) – Number of Protons.</p></li>
+<li><p><strong>mass_number</strong> (<em>int</em>) – Mass Number.</p></li>
+<li><p><strong>ensdf_df</strong> (<em>DataFrame</em>) – DataFrame containing the original levles for all isotopes.</p></li>
+<li><p><strong>save</strong> (<em>bool</em><em>, </em><em>optional</em>) – If True, the image will be saved. Defaults to False.</p></li>
+<li><p><strong>save_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Path-like string where the generated image will be saved. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-nucml.ensdf">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-nucml.ensdf" title="Permalink to this headline">¶</a></h2>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="nucml.evaluation.html" class="btn btn-neutral float-right" title="nucml.evaluation package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="nucml.ame.html" class="btn btn-neutral float-left" title="nucml.ame package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Pedro Jr. Vicente-Valdez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

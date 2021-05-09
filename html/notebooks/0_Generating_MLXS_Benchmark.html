@@ -1,0 +1,1327 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Generating Benchmark Files and Serpent Scripts &mdash; NucML 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Analyzing Benchmark Results for Validation" href="1_Gathering_Benchmark_Results_DT.html" />
+    <link rel="prev" title="Reference Input Data Library (RIPL)" href="2_EDA_RIPL.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> NucML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">OVERVIEW</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../what-is-nucml.html">What is NucML?</a></li>
+</ul>
+<p><span class="caption-text">GET STARTED</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic-walkthrough.html">Basic Walkthrough</a></li>
+</ul>
+<p><span class="caption-text">NAVIGATING THE NDE</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html">Loading Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#modeling-data">Modeling Data</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Generating Benchmark Files and Serpent Scripts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Loading-Datasets">Loading Datasets</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Loading-Decision-Tree-Results">Loading Decision Tree Results</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Generating-Benchmark-Files">Generating Benchmark Files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Generating-SERPENT-Bash-Script">Generating SERPENT Bash Script</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#———————————————————-PRIVATE-SECTION">——————————————————— PRIVATE SECTION</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#K-Nearest-Neighbors">K-Nearest-Neighbors</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#XGBoost">XGBoost</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
+</ul>
+<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
+</ul>
+<p><span class="caption-text">DOCUMENTATION</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">nucml</a></li>
+</ul>
+<p><span class="caption-text">FAQ AND CONTACT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NucML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../navigating-the-nde.html">Loading Data</a> &raquo;</li>
+        
+      <li>Generating Benchmark Files and Serpent Scripts</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/notebooks/0_Generating_MLXS_Benchmark.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="Generating-Benchmark-Files-and-Serpent-Scripts">
+<h1>Generating Benchmark Files and Serpent Scripts<a class="headerlink" href="#Generating-Benchmark-Files-and-Serpent-Scripts" title="Permalink to this headline">¶</a></h1>
+<p>It is really important to validate trained models using criticality benchmarks. NucML provides a couple of scripts to aid automate this tedious process.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Prototype</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="c1"># This allows us to import the nucml utilities</span>
+<span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;..&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">()</span>
+<span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">CRITICAL</span><span class="p">)</span>
+
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_rows&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">chained_assignment</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># default=&#39;warn&#39;</span>
+
+<span class="kn">import</span> <span class="nn">nucml.datasets</span> <span class="k">as</span> <span class="nn">nuc_data</span>
+<span class="kn">import</span> <span class="nn">nucml.ace.data_utilities</span> <span class="k">as</span> <span class="nn">ace_utils</span>
+<span class="kn">import</span> <span class="nn">nucml.model.utilities</span> <span class="k">as</span> <span class="nn">model_utils</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">figure_dir</span> <span class="o">=</span> <span class="s2">&quot;Figures/&quot;</span>
+</pre></div>
+</div>
+</div>
+<section id="Loading-Datasets">
+<h2>Loading Datasets<a class="headerlink" href="#Loading-Datasets" title="Permalink to this headline">¶</a></h2>
+<p>In our work, several models were trained with Datasets 0-4. Since the models will be used to query data at the original ACE’s energy grid, we need to load the original data to expand the energy grid for the isotopes of interest (among other processes).</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># LOADING DATASET</span>
+<span class="n">df_b0</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">to_scale_b0</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">nuc_data</span><span class="o">.</span><span class="n">load_exfor</span><span class="p">(</span><span class="n">pedro</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">basic</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">df_b1</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">to_scale_b1</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">nuc_data</span><span class="o">.</span><span class="n">load_exfor</span><span class="p">(</span><span class="n">pedro</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">basic</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">df_b2</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">to_scale_b2</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">nuc_data</span><span class="o">.</span><span class="n">load_exfor</span><span class="p">(</span><span class="n">pedro</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">basic</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">df_b3</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">to_scale_b3</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">nuc_data</span><span class="o">.</span><span class="n">load_exfor</span><span class="p">(</span><span class="n">pedro</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">basic</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">df_b4</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">to_scale_b4</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">nuc_data</span><span class="o">.</span><span class="n">load_exfor</span><span class="p">(</span><span class="n">pedro</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">basic</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">normalize</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Loading-Decision-Tree-Results">
+<h2>Loading Decision Tree Results<a class="headerlink" href="#Loading-Decision-Tree-Results" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">NucML</span></code> will create a directory per model and create subdirectories for every criticality benchmark case. Therefore, we need to specify the directories where the model directories and subdirectories will be stored.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">dt_ml_ace_dir_b0</span> <span class="o">=</span> <span class="s2">&quot;ml/DT_B0/&quot;</span>
+<span class="n">dt_ml_ace_dir_b1</span> <span class="o">=</span> <span class="s2">&quot;ml/DT_B1/&quot;</span>
+<span class="n">dt_ml_ace_dir_b2</span> <span class="o">=</span> <span class="s2">&quot;ml/DT_B2/&quot;</span>
+<span class="n">dt_ml_ace_dir_b3</span> <span class="o">=</span> <span class="s2">&quot;ml/DT_B3/&quot;</span>
+<span class="n">dt_ml_ace_dir_b4</span> <span class="o">=</span> <span class="s2">&quot;ml/DT_B4/&quot;</span>
+</pre></div>
+</div>
+</div>
+<p>Having defined the directories, we can read in the training results. In this example, I read the samples provided with the repository.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># read in the training results</span>
+<span class="n">results_b0</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../ML_EXFOR_neutrons/2_DT/dt_resultsB0.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;max_depth&quot;</span><span class="p">)</span>
+<span class="n">results_b1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../ML_EXFOR_neutrons/2_DT/dt_resultsB1.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;max_depth&quot;</span><span class="p">)</span>
+<span class="n">results_b2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../ML_EXFOR_neutrons/2_DT/dt_resultsB2.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;max_depth&quot;</span><span class="p">)</span>
+<span class="n">results_b3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../ML_EXFOR_neutrons/2_DT/dt_resultsB3.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;max_depth&quot;</span><span class="p">)</span>
+<span class="n">results_b4</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../ML_EXFOR_neutrons/2_DT/dt_resultsB4.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;max_depth&quot;</span><span class="p">)</span>
+
+<span class="n">results_b0</span> <span class="o">=</span> <span class="n">results_b0</span><span class="p">[</span><span class="n">results_b0</span><span class="o">.</span><span class="n">normalizer</span> <span class="o">==</span> <span class="s2">&quot;none&quot;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p>Let us take a look at the columns included in the results:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">results_b0</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Index([&#39;id&#39;, &#39;max_depth&#39;, &#39;mss&#39;, &#39;msl&#39;, &#39;mt_strategy&#39;, &#39;normalizer&#39;,
+       &#39;train_mae&#39;, &#39;train_mse&#39;, &#39;train_evs&#39;, &#39;train_mae_m&#39;, &#39;train_r2&#39;,
+       &#39;val_mae&#39;, &#39;val_mse&#39;, &#39;val_evs&#39;, &#39;val_mae_m&#39;, &#39;val_r2&#39;, &#39;test_mae&#39;,
+       &#39;test_mse&#39;, &#39;test_evs&#39;, &#39;test_mae_m&#39;, &#39;test_r2&#39;, &#39;model_path&#39;,
+       &#39;training_time&#39;, &#39;scaler_path&#39;],
+      dtype=&#39;object&#39;)
+</pre></div></div>
+</div>
+<p>Notice that there are a lot of performance metrics available. You can include more information in your own results files. <strong>THE ONLY CONDITION IS THAT THE RESULTING DATAFRAME CONTAINS THE FOLLOWING COLUMNS:</strong></p>
+<ul class="simple">
+<li><p>model_path</p></li>
+<li><p>scaler_path</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">results_b0</span><span class="p">[[</span><span class="s1">&#39;model_path&#39;</span><span class="p">,</span> <span class="s1">&#39;scaler_path&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>model_path</th>
+      <th>scaler_path</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>52</th>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT60_MSS15_MSL10_none...</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT60_MSS15_MSL10_none...</td>
+    </tr>
+    <tr>
+      <th>47</th>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT60_MSS15_MSL3_none_...</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT60_MSS15_MSL3_none_...</td>
+    </tr>
+    <tr>
+      <th>45</th>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT60_MSS15_MSL1_none_...</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT60_MSS15_MSL1_none_...</td>
+    </tr>
+    <tr>
+      <th>43</th>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT60_MSS10_MSL7_none_...</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT60_MSS10_MSL7_none_...</td>
+    </tr>
+    <tr>
+      <th>41</th>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT60_MSS10_MSL5_none_...</td>
+      <td>E:\ML_Models_EXFOR\DT_B0\DT60_MSS10_MSL5_none_...</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Let us extract a single path:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">example_filename</span> <span class="o">=</span> <span class="n">results_b0</span><span class="o">.</span><span class="n">model_path</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">example_filename</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&#39;E:\\ML_Models_EXFOR\\DT_B0\\DT60_MSS15_MSL10_none_one_hot_B0_v1\\DT60_MSS15_MSL10_none_one_hot_B0_v1.joblib&#39;
+</pre></div></div>
+</div>
+<p>NucML uses the following convention to extract the model’s name:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">example_basename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">example_filename</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;First, extract the model filename: &quot;</span><span class="p">,</span> <span class="n">example_basename</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+First, extract the model filename:  DT60_MSS15_MSL10_none_one_hot_B0_v1.joblib
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Then we split the filename to remove the file extension: &quot;</span><span class="p">,</span> <span class="n">example_basename</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Then we split the filename to remove the file extension:  DT60_MSS15_MSL10_none_one_hot_B0_v1
+</pre></div></div>
+</div>
+<p>It is the <code class="docutils literal notranslate"><span class="pre">DT60_MSS15_MSL10_none_one_hot_B0_v1</span></code> name that will be use to create a directory.</p>
+</section>
+<section id="Generating-Benchmark-Files">
+<h2>Generating Benchmark Files<a class="headerlink" href="#Generating-Benchmark-Files" title="Permalink to this headline">¶</a></h2>
+<p>The next step is to select the benchmark of interest. For information on the benchmarks available and instructions on how to including your own, please read the <code class="docutils literal notranslate"><span class="pre">ML_Nuclear_Data/Benchmarks/inputs/README.md</span></code> file. The included benchmarks are formatted in a specific way for <code class="docutils literal notranslate"><span class="pre">NucML</span></code> to read them.</p>
+<p>In this case, we select the <code class="docutils literal notranslate"><span class="pre">U233_MET_FAST_001</span></code> (U-233 Jezebel Criticality Benchmark). When configuring NucML, the path to the benchmark folder is automatically saved, and therefore, only the name needs to be specified.</p>
+<p>Only those isotopes with a composition higher than 10% per benchmark component are replaced with ML-generated cross sections. There are a lot of assumptions going on in the backend concerning how unitarity is enforced. More information can be found in my Thesis. It is by no means the best nor the worst. It was created as proof-of-concept work. The <code class="docutils literal notranslate"><span class="pre">generate_bench_ml_xs</span></code> is a function that should be lab-specific. In other words, you should create your own processing step if possible.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">BENCHMARK_NAME</span> <span class="o">=</span> <span class="s2">&quot;U233_MET_FAST_001&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b0</span><span class="p">,</span> <span class="n">results_b0</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b0</span><span class="p">,</span> <span class="n">dt_ml_ace_dir_b0</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b1</span><span class="p">,</span> <span class="n">results_b1</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b1</span><span class="p">,</span> <span class="n">dt_ml_ace_dir_b1</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b2</span><span class="p">,</span> <span class="n">results_b2</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b2</span><span class="p">,</span> <span class="n">dt_ml_ace_dir_b2</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b3</span><span class="p">,</span> <span class="n">results_b3</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b3</span><span class="p">,</span> <span class="n">dt_ml_ace_dir_b3</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b4</span><span class="p">,</span> <span class="n">results_b4</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b4</span><span class="p">,</span> <span class="n">dt_ml_ace_dir_b4</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Let us see what directories where created:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">&quot;ml/&quot;</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;DT_B0&#39;, &#39;DT_B1&#39;, &#39;DT_B2&#39;, &#39;DT_B3&#39;, &#39;DT_B4&#39;]
+</pre></div></div>
+</div>
+<p>Indeed, all four Decision Tree directories were created successfully (other models are shown due to previous work). Let us peak at the content of the first and subsequent directories:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">&quot;ml/DT_B0/&quot;</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;DT100_MSS10_MSL1_none_one_hot_B0_v1&#39;,
+ &#39;DT100_MSS10_MSL3_none_one_hot_B0_v1&#39;,
+ &#39;DT100_MSS10_MSL5_none_one_hot_B0_v1&#39;,
+ &#39;DT100_MSS10_MSL7_none_one_hot_B0_v1&#39;,
+ &#39;DT100_MSS15_MSL1_none_one_hot_B0_v1&#39;]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">&quot;ml/DT_B0/DT100_MSS10_MSL1_none_one_hot_B0_v1/&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;U233_MET_FAST_001&#39;, &#39;U233_MET_FAST_002_001&#39;, &#39;U233_MET_FAST_002_002&#39;]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s2">&quot;ml/DT_B0/DT100_MSS10_MSL1_none_one_hot_B0_v1/U233_MET_FAST_001/&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;acelib&#39;,
+ &#39;converter.m&#39;,
+ &#39;input&#39;,
+ &#39;input.out&#39;,
+ &#39;input.seed&#39;,
+ &#39;input_res.m&#39;,
+ &#39;ml_xs_csv&#39;,
+ &#39;results.mat&#39;,
+ &#39;sss_endfb7u.xsdata&#39;]
+</pre></div></div>
+</div>
+</section>
+<section id="Generating-SERPENT-Bash-Script">
+<h2>Generating SERPENT Bash Script<a class="headerlink" href="#Generating-SERPENT-Bash-Script" title="Permalink to this headline">¶</a></h2>
+<p>This is a completely experimental feature. You can pass in the directory for which you want NucML to scan and generate a single bash script to run all cases.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[53]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">dt_ml_ace_dir_b0</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">dt_ml_ace_dir_b1</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">dt_ml_ace_dir_b2</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">dt_ml_ace_dir_b3</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">dt_ml_ace_dir_b4</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;ml/DT_B0/U233_MET_FAST_001.sh&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">myfile</span><span class="p">:</span>
+    <span class="n">head</span> <span class="o">=</span> <span class="p">[</span><span class="nb">next</span><span class="p">(</span><span class="n">myfile</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">)]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">head</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;cd /mnt/c/Users/Pedro/Desktop/ML_Nuclear_Data/Benchmarks/ml/DT_B0/DT100_MSS10_MSL1_none_one_hot_B0_v1/U233_MET_FAST_001/\n&#39;, &#39;sss2 -omp 10 input\n&#39;, &#39;/mnt/c/Program\\ Files/MATLAB/R2019a/bin/matlab.exe -nodisplay -nosplash -nodesktop -r &#34;run(\&#39;converter.m\&#39;);exit;&#34; \n&#39;, &#39;cd /mnt/c/Users/Pedro/Desktop/ML_Nuclear_Data/Benchmarks/ml/DT_B0/DT100_MSS10_MSL3_none_one_hot_B0_v1/U233_MET_FAST_001/\n&#39;, &#39;sss2 -omp 10 input\n&#39;, &#39;/mnt/c/Program\\ Files/MATLAB/R2019a/bin/matlab.exe -nodisplay -nosplash -nodesktop -r &#34;run(\&#39;converter.m\&#39;);exit;&#34; \n&#39;, &#39;cd /mnt/c/Users/Pedro/Desktop/ML_Nuclear_Data/Benchmarks/ml/DT_B0/DT100_MSS10_MSL5_none_one_hot_B0_v1/U233_MET_FAST_001/\n&#39;, &#39;sss2 -omp 10 input\n&#39;, &#39;/mnt/c/Program\\ Files/MATLAB/R2019a/bin/matlab.exe -nodisplay -nosplash -nodesktop -r &#34;run(\&#39;converter.m\&#39;);exit;&#34; \n&#39;, &#39;cd /mnt/c/Users/Pedro/Desktop/ML_Nuclear_Data/Benchmarks/ml/DT_B0/DT100_MSS10_MSL7_none_one_hot_B0_v1/U233_MET_FAST_001/\n&#39;]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;ml/DT_B0/U233_MET_FAST_001.sh&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>  <span class="c1"># the a opens it in append mode</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+        <span class="n">line</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+cd /mnt/c/Users/Pedro/Desktop/ML_Nuclear_Data/Benchmarks/ml/DT_B0/DT100_MSS10_MSL1_none_one_hot_B0_v1/U233_MET_FAST_001/
+
+sss2 -omp 10 input
+
+/mnt/c/Program\ Files/MATLAB/R2019a/bin/matlab.exe -nodisplay -nosplash -nodesktop -r &#34;run(&#39;converter.m&#39;);exit;&#34;
+
+cd /mnt/c/Users/Pedro/Desktop/ML_Nuclear_Data/Benchmarks/ml/DT_B0/DT100_MSS10_MSL3_none_one_hot_B0_v1/U233_MET_FAST_001/
+
+sss2 -omp 10 input
+
+/mnt/c/Program\ Files/MATLAB/R2019a/bin/matlab.exe -nodisplay -nosplash -nodesktop -r &#34;run(&#39;converter.m&#39;);exit;&#34;
+
+cd /mnt/c/Users/Pedro/Desktop/ML_Nuclear_Data/Benchmarks/ml/DT_B0/DT100_MSS10_MSL5_none_one_hot_B0_v1/U233_MET_FAST_001/
+
+sss2 -omp 10 input
+
+/mnt/c/Program\ Files/MATLAB/R2019a/bin/matlab.exe -nodisplay -nosplash -nodesktop -r &#34;run(&#39;converter.m&#39;);exit;&#34;
+
+cd /mnt/c/Users/Pedro/Desktop/ML_Nuclear_Data/Benchmarks/ml/DT_B0/DT100_MSS10_MSL7_none_one_hot_B0_v1/U233_MET_FAST_001/
+
+</pre></div></div>
+</div>
+<p>Notice that the full path to the Matlab executable is defined here. You will probably need to change it by either writing a script or simply using “Replace All” in any code editor. Matlab is used to convert the serpent output into a <code class="docutils literal notranslate"><span class="pre">.mat</span></code> file. This helps analytic tools read easily detector information.</p>
+<p>The next step is to simply run the script and you are Done! See the next notebook for information on how to gather and analyze the results.</p>
+<section id="———————————————————-PRIVATE-SECTION">
+<h3>——————————————————— PRIVATE SECTION<a class="headerlink" href="#———————————————————-PRIVATE-SECTION" title="Permalink to this headline">¶</a></h3>
+<p>Same material for other benchmarks.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">BENCHMARK_NAME</span> <span class="o">=</span> <span class="s2">&quot;U233_MET_FAST_002_001&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b0</span><span class="p">,</span> <span class="n">results_b0</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b0</span><span class="p">,</span> <span class="n">dt_ml_ace_dir_b0</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b1</span><span class="p">,</span> <span class="n">results_b1</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b1</span><span class="p">,</span> <span class="n">dt_ml_ace_dir_b1</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b2</span><span class="p">,</span> <span class="n">results_b2</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b2</span><span class="p">,</span> <span class="n">dt_ml_ace_dir_b2</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b3</span><span class="p">,</span> <span class="n">results_b3</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b3</span><span class="p">,</span> <span class="n">dt_ml_ace_dir_b3</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b4</span><span class="p">,</span> <span class="n">results_b4</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b4</span><span class="p">,</span> <span class="n">dt_ml_ace_dir_b4</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">dt_ml_ace_dir_b0</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">dt_ml_ace_dir_b1</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">dt_ml_ace_dir_b2</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">dt_ml_ace_dir_b3</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">dt_ml_ace_dir_b4</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">BENCHMARK_NAME</span> <span class="o">=</span> <span class="s2">&quot;U233_MET_FAST_002_002&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b0</span><span class="p">,</span> <span class="n">results_b0</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b0</span><span class="p">,</span> <span class="n">dt_ml_ace_dir_b0</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b1</span><span class="p">,</span> <span class="n">results_b1</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b1</span><span class="p">,</span> <span class="n">dt_ml_ace_dir_b1</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b2</span><span class="p">,</span> <span class="n">results_b2</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b2</span><span class="p">,</span> <span class="n">dt_ml_ace_dir_b2</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b3</span><span class="p">,</span> <span class="n">results_b3</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b3</span><span class="p">,</span> <span class="n">dt_ml_ace_dir_b3</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b4</span><span class="p">,</span> <span class="n">results_b4</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b4</span><span class="p">,</span> <span class="n">dt_ml_ace_dir_b4</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">dt_ml_ace_dir_b0</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">dt_ml_ace_dir_b1</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">dt_ml_ace_dir_b2</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">dt_ml_ace_dir_b3</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">dt_ml_ace_dir_b4</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+<section id="K-Nearest-Neighbors">
+<h2>K-Nearest-Neighbors<a class="headerlink" href="#K-Nearest-Neighbors" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[112]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">knn_ml_ace_dir_b0</span> <span class="o">=</span> <span class="s2">&quot;ml/KNN_B0/&quot;</span>
+<span class="n">knn_ml_ace_dir_b1</span> <span class="o">=</span> <span class="s2">&quot;ml/KNN_B1/&quot;</span>
+<span class="n">knn_ml_ace_dir_b2</span> <span class="o">=</span> <span class="s2">&quot;ml/KNN_B2/&quot;</span>
+<span class="n">knn_ml_ace_dir_b3</span> <span class="o">=</span> <span class="s2">&quot;ml/KNN_B3/&quot;</span>
+<span class="n">knn_ml_ace_dir_b4</span> <span class="o">=</span> <span class="s2">&quot;ml/KNN_B4/&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[113]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># results_b0 = pd.read_csv(&quot;../ML_EXFOR_neutrons/1_KNN/knn_results_B0.csv&quot;).sort_values(by=&quot;id&quot;)</span>
+<span class="n">results_b1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../ML_EXFOR_neutrons/1_KNN/knn_results_B1.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+<span class="n">results_b2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../ML_EXFOR_neutrons/1_KNN/knn_results_B2.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+<span class="n">results_b3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../ML_EXFOR_neutrons/1_KNN/knn_results_B3.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+<span class="n">results_b4</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../ML_EXFOR_neutrons/1_KNN/knn_results_B4.csv&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;id&quot;</span><span class="p">)</span>
+
+<span class="c1"># results_b0[&quot;scale_energy&quot;] = results_b0.run_name.apply(lambda x: True if &quot;v2&quot; in x else False)</span>
+<span class="c1"># results_b0[&quot;Model&quot;] = results_b0.model_path.apply(lambda x: os.path.basename(os.path.dirname(x)))</span>
+
+<span class="c1"># results_b0 = results_b0[results_b0.normalizer == &quot;minmax&quot;]</span>
+<span class="c1"># results_b0 = results_b0[results_b0.scale_energy == True]</span>
+<span class="c1"># results_b0 = results_b0[results_b0.distance_metric == &#39;manhattan&#39;]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[114]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">BENCHMARK_NAME</span> <span class="o">=</span> <span class="s2">&quot;U233_MET_FAST_001&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[69]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># ace_utils.generate_bench_ml_xs(df_b0, results_b0, BENCHMARK_NAME, to_scale_b0, knn_ml_ace_dir_b0, reset=True)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b1</span><span class="p">,</span> <span class="n">results_b1</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b1</span><span class="p">,</span> <span class="n">knn_ml_ace_dir_b1</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b2</span><span class="p">,</span> <span class="n">results_b2</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b2</span><span class="p">,</span> <span class="n">knn_ml_ace_dir_b2</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b3</span><span class="p">,</span> <span class="n">results_b3</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b3</span><span class="p">,</span> <span class="n">knn_ml_ace_dir_b3</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b4</span><span class="p">,</span> <span class="n">results_b4</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b4</span><span class="p">,</span> <span class="n">knn_ml_ace_dir_b4</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[71]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># ace_utils.generate_serpent_bash(knn_ml_ace_dir_b0, BENCHMARK_NAME, benchmark=BENCHMARK_NAME)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">knn_ml_ace_dir_b1</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">knn_ml_ace_dir_b2</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">knn_ml_ace_dir_b3</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">knn_ml_ace_dir_b4</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[115]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">BENCHMARK_NAME</span> <span class="o">=</span> <span class="s2">&quot;U233_MET_FAST_002_001&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[116]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># ace_utils.generate_bench_ml_xs(df_b0, results_b0, BENCHMARK_NAME, to_scale_b0, knn_ml_ace_dir_b0, reset=True)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b1</span><span class="p">,</span> <span class="n">results_b1</span><span class="p">[</span><span class="mi">3</span><span class="p">:],</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b1</span><span class="p">,</span> <span class="n">knn_ml_ace_dir_b1</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># ace_utils.generate_bench_ml_xs(df_b2, results_b2, BENCHMARK_NAME, to_scale_b2, knn_ml_ace_dir_b2, reset=True)</span>
+<span class="c1"># ace_utils.generate_bench_ml_xs(df_b3, results_b3, BENCHMARK_NAME, to_scale_b3, knn_ml_ace_dir_b3, reset=True)</span>
+<span class="c1"># ace_utils.generate_bench_ml_xs(df_b4, results_b4, BENCHMARK_NAME, to_scale_b4, knn_ml_ace_dir_b4, reset=True)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[117]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># ace_utils.generate_serpent_bash(knn_ml_ace_dir_b0, BENCHMARK_NAME, benchmark=BENCHMARK_NAME)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">knn_ml_ace_dir_b1</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+<span class="c1"># ace_utils.generate_serpent_bash(knn_ml_ace_dir_b2, BENCHMARK_NAME, benchmark=BENCHMARK_NAME)</span>
+<span class="c1"># ace_utils.generate_serpent_bash(knn_ml_ace_dir_b3, BENCHMARK_NAME, benchmark=BENCHMARK_NAME)</span>
+<span class="c1"># ace_utils.generate_serpent_bash(knn_ml_ace_dir_b4, BENCHMARK_NAME, benchmark=BENCHMARK_NAME)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[118]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">BENCHMARK_NAME</span> <span class="o">=</span> <span class="s2">&quot;U233_MET_FAST_002_002&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[119]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># ace_utils.generate_bench_ml_xs(df_b0, results_b0, BENCHMARK_NAME, to_scale_b0, knn_ml_ace_dir_b0, reset=True)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b1</span><span class="p">,</span> <span class="n">results_b1</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b1</span><span class="p">,</span> <span class="n">knn_ml_ace_dir_b1</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># ace_utils.generate_bench_ml_xs(df_b2, results_b2, BENCHMARK_NAME, to_scale_b2, knn_ml_ace_dir_b2, reset=True)</span>
+<span class="c1"># ace_utils.generate_bench_ml_xs(df_b3, results_b3, BENCHMARK_NAME, to_scale_b3, knn_ml_ace_dir_b3, reset=True)</span>
+<span class="c1"># ace_utils.generate_bench_ml_xs(df_b4, results_b4, BENCHMARK_NAME, to_scale_b4, knn_ml_ace_dir_b4, reset=True)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[120]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># ace_utils.generate_serpent_bash(knn_ml_ace_dir_b0, BENCHMARK_NAME, benchmark=BENCHMARK_NAME)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">knn_ml_ace_dir_b1</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+<span class="c1"># ace_utils.generate_serpent_bash(knn_ml_ace_dir_b2, BENCHMARK_NAME, benchmark=BENCHMARK_NAME)</span>
+<span class="c1"># ace_utils.generate_serpent_bash(knn_ml_ace_dir_b3, BENCHMARK_NAME, benchmark=BENCHMARK_NAME)</span>
+<span class="c1"># ace_utils.generate_serpent_bash(knn_ml_ace_dir_b4, BENCHMARK_NAME, benchmark=BENCHMARK_NAME)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="XGBoost">
+<h2>XGBoost<a class="headerlink" href="#XGBoost" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[121]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">xgb_ml_ace_dir_b0</span> <span class="o">=</span> <span class="s2">&quot;ml/XGB_B0/&quot;</span>
+<span class="n">xgb_ml_ace_dir_b1</span> <span class="o">=</span> <span class="s2">&quot;ml/XGB_B1/&quot;</span>
+<span class="n">xgb_ml_ace_dir_b2</span> <span class="o">=</span> <span class="s2">&quot;ml/XGB_B2/&quot;</span>
+<span class="n">xgb_ml_ace_dir_b3</span> <span class="o">=</span> <span class="s2">&quot;ml/XGB_B3/&quot;</span>
+<span class="n">xgb_ml_ace_dir_b4</span> <span class="o">=</span> <span class="s2">&quot;ml/XGB_B4/&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[122]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">results_b0</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../ML_EXFOR_neutrons/3_XGB/xgb_resultsB0.csv&quot;</span><span class="p">)</span>
+<span class="n">results_b1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../ML_EXFOR_neutrons/3_XGB/xgb_resultsB1.csv&quot;</span><span class="p">)</span>
+<span class="n">results_b2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../ML_EXFOR_neutrons/3_XGB/xgb_resultsB2.csv&quot;</span><span class="p">)</span>
+<span class="n">results_b3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../ML_EXFOR_neutrons/3_XGB/xgb_resultsB3.csv&quot;</span><span class="p">)</span>
+<span class="n">results_b4</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../ML_EXFOR_neutrons/3_XGB/xgb_resultsB4.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[123]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">BENCHMARK_NAME</span> <span class="o">=</span> <span class="s2">&quot;U233_MET_FAST_001&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[124]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b0</span><span class="p">,</span> <span class="n">results_b0</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b0</span><span class="p">,</span> <span class="n">xgb_ml_ace_dir_b0</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># ace_utils.generate_bench_ml_xs(df_b1, results_b1, BENCHMARK_NAME, to_scale_b1, xgb_ml_ace_dir_b1, reset=True)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b2</span><span class="p">,</span> <span class="n">results_b2</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b2</span><span class="p">,</span> <span class="n">xgb_ml_ace_dir_b2</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b3</span><span class="p">,</span> <span class="n">results_b3</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b3</span><span class="p">,</span> <span class="n">xgb_ml_ace_dir_b3</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b4</span><span class="p">,</span> <span class="n">results_b4</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b4</span><span class="p">,</span> <span class="n">xgb_ml_ace_dir_b4</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[125]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">xgb_ml_ace_dir_b0</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+<span class="c1"># ace_utils.generate_serpent_bash(xgb_ml_ace_dir_b1, BENCHMARK_NAME, benchmark=BENCHMARK_NAME)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">xgb_ml_ace_dir_b2</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">xgb_ml_ace_dir_b3</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">xgb_ml_ace_dir_b4</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[126]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">BENCHMARK_NAME</span> <span class="o">=</span> <span class="s2">&quot;U233_MET_FAST_002_001&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[127]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># ace_utils.generate_bench_ml_xs(df_b0, results_b0, BENCHMARK_NAME, to_scale_b0, xgb_ml_ace_dir_b0, reset=True)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b1</span><span class="p">,</span> <span class="n">results_b1</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b1</span><span class="p">,</span> <span class="n">xgb_ml_ace_dir_b1</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># ace_utils.generate_bench_ml_xs(df_b2, results_b2, BENCHMARK_NAME, to_scale_b2, xgb_ml_ace_dir_b2, reset=True)</span>
+<span class="c1"># ace_utils.generate_bench_ml_xs(df_b3, results_b3, BENCHMARK_NAME, to_scale_b3, xgb_ml_ace_dir_b3, reset=True)</span>
+<span class="c1"># ace_utils.generate_bench_ml_xs(df_b4, results_b4, BENCHMARK_NAME, to_scale_b4, xgb_ml_ace_dir_b4, reset=True)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[128]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># ace_utils.generate_serpent_bash(xgb_ml_ace_dir_b0, BENCHMARK_NAME, benchmark=BENCHMARK_NAME)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">xgb_ml_ace_dir_b1</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+<span class="c1"># ace_utils.generate_serpent_bash(xgb_ml_ace_dir_b2, BENCHMARK_NAME, benchmark=BENCHMARK_NAME)</span>
+<span class="c1"># ace_utils.generate_serpent_bash(xgb_ml_ace_dir_b3, BENCHMARK_NAME, benchmark=BENCHMARK_NAME)</span>
+<span class="c1"># ace_utils.generate_serpent_bash(xgb_ml_ace_dir_b4, BENCHMARK_NAME, benchmark=BENCHMARK_NAME)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[129]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">BENCHMARK_NAME</span> <span class="o">=</span> <span class="s2">&quot;U233_MET_FAST_002_002&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[130]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># ace_utils.generate_bench_ml_xs(df_b0, results_b0, BENCHMARK_NAME, to_scale_b0, xgb_ml_ace_dir_b0, reset=True)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_bench_ml_xs</span><span class="p">(</span><span class="n">df_b1</span><span class="p">,</span> <span class="n">results_b1</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">to_scale_b1</span><span class="p">,</span> <span class="n">xgb_ml_ace_dir_b1</span><span class="p">,</span> <span class="n">reset</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># ace_utils.generate_bench_ml_xs(df_b2, results_b2, BENCHMARK_NAME, to_scale_b2, xgb_ml_ace_dir_b2, reset=True)</span>
+<span class="c1"># ace_utils.generate_bench_ml_xs(df_b3, results_b3, BENCHMARK_NAME, to_scale_b3, xgb_ml_ace_dir_b3, reset=True)</span>
+<span class="c1"># ace_utils.generate_bench_ml_xs(df_b4, results_b4, BENCHMARK_NAME, to_scale_b4, xgb_ml_ace_dir_b4, reset=True)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[131]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># ace_utils.generate_serpent_bash(xgb_ml_ace_dir_b0, BENCHMARK_NAME, benchmark=BENCHMARK_NAME)</span>
+<span class="n">ace_utils</span><span class="o">.</span><span class="n">generate_serpent_bash</span><span class="p">(</span><span class="n">xgb_ml_ace_dir_b1</span><span class="p">,</span> <span class="n">BENCHMARK_NAME</span><span class="p">,</span> <span class="n">benchmark</span><span class="o">=</span><span class="n">BENCHMARK_NAME</span><span class="p">)</span>
+<span class="c1"># ace_utils.generate_serpent_bash(xgb_ml_ace_dir_b2, BENCHMARK_NAME, benchmark=BENCHMARK_NAME)</span>
+<span class="c1"># ace_utils.generate_serpent_bash(xgb_ml_ace_dir_b3, BENCHMARK_NAME, benchmark=BENCHMARK_NAME)</span>
+<span class="c1"># ace_utils.generate_serpent_bash(xgb_ml_ace_dir_b4, BENCHMARK_NAME, benchmark=BENCHMARK_NAME)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># all_serpent_files = []</span>
+
+<span class="c1"># for root, _, files in os.walk(&quot;ml/DT_B0&quot;):</span>
+<span class="c1">#     for file in files:</span>
+<span class="c1">#         if &quot;U233_MET_FAST_001_001&quot; in root:</span>
+<span class="c1">#             all_serpent_files.append(os.path.abspath(os.path.join(root, file)))</span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="1_Gathering_Benchmark_Results_DT.html" class="btn btn-neutral float-right" title="Analyzing Benchmark Results for Validation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="2_EDA_RIPL.html" class="btn btn-neutral float-left" title="Reference Input Data Library (RIPL)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Pedro Jr. Vicente-Valdez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

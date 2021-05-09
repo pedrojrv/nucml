@@ -5,9 +5,9 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="nucml", # Replace with your own username
-    version="1.0.0.dev1",
+    version="1.0.5.dev1",
     author="Pedro Jr Vicente Valdez",
-    author_email="vicentepedrojr@gmail.com",
+    author_email="pedro.vicentevz@berkeley.edu",
     description="ML-oriented tools for navingating the nuclear data evaluation pipeline.",
     long_description=long_description,
     long_description_content_type="text/markdown",

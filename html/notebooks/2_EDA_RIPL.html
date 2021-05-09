@@ -1,0 +1,1214 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="Docutils 0.17: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <title>Reference Input Data Library (RIPL) &mdash; NucML 1.0.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+
+  
+  
+
+  
+  
+
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Generating Benchmark Files and Serpent Scripts" href="0_Generating_MLXS_Benchmark.html" />
+    <link rel="prev" title="Visualizing EXFOR Cross Sections" href="3_EDA_Cross_Sections.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> NucML
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p><span class="caption-text">OVERVIEW</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../what-is-nucml.html">What is NucML?</a></li>
+</ul>
+<p><span class="caption-text">GET STARTED</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation-guide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basic-walkthrough.html">Basic Walkthrough</a></li>
+</ul>
+<p><span class="caption-text">NAVIGATING THE NDE</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html">Loading Data</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../navigating-the-nde.html#exploratory-data-analysis">Exploratory Data Analysis</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="2_EDA_AME.html">Atomic Mass Evaluation (2016)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_EDA_EXFOR.html">Experimental Nuclear Reaction Data (EXFOR)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="3_EDA_Cross_Sections.html">Visualizing EXFOR Cross Sections</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Reference Input Data Library (RIPL)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Loading-RIPL/ENSDF-Data">Loading RIPL/ENSDF Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Plotting-Some-Features-Distributions">Plotting Some Features Distributions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Isotope-Energy-Distribution">Isotope Energy Distribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Atomic-Mass-Number-Distribution">Atomic Mass Number Distribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Energy-Distribution">Energy Distribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Level-Number-Distribution">Level Number Distribution</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Uranium-and-Chlorine-Energy-Distribution">Uranium and Chlorine Energy Distribution</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#Energy-vs-Level-Number">Energy vs Level Number</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#NucML-Plotting-Utilities:-Level-and-Level-Density">NucML Plotting Utilities: Level and Level Density</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Statistics-Example---Chlorine-35-and-Uranium-235">Statistics Example - Chlorine-35 and Uranium-235</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#modeling-data">Modeling Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#processing-data-for-monte-carlo">Processing Data for Monte Carlo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../navigating-the-nde.html#validating-using-benchmarks">Validating using Benchmarks</a></li>
+</ul>
+<p><span class="caption-text">OTHER TUTORIALS</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html">Incorrect EXFOR Experimental Campaigns</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ml-based-exfor-outlier-detection">ML-based EXFOR Outlier Detection</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#hybrid-ml-endf-ace-file-creation">Hybrid ML-ENDF ACE File Creation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../other-tutorials.html#ensdf-nld-linear-interpolation">ENSDF NLD Linear Interpolation</a></li>
+</ul>
+<p><span class="caption-text">DOCUMENTATION</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">nucml</a></li>
+</ul>
+<p><span class="caption-text">FAQ AND CONTACT</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contact</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">NucML</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../navigating-the-nde.html">Loading Data</a> &raquo;</li>
+        
+      <li>Reference Input Data Library (RIPL)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/notebooks/2_EDA_RIPL.ipynb.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  
+<style>
+/* CSS for nbsphinx extension */
+
+/* remove conflicting styling from Sphinx themes */
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt *,
+div.nbinput.container div.input_area pre,
+div.nboutput.container div.output_area pre,
+div.nbinput.container div.input_area .highlight,
+div.nboutput.container div.output_area .highlight {
+    border: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+}
+
+div.nbinput.container > div[class*=highlight],
+div.nboutput.container > div[class*=highlight] {
+    margin: 0;
+}
+
+div.nbinput.container div.prompt *,
+div.nboutput.container div.prompt * {
+    background: none;
+}
+
+div.nboutput.container div.output_area .highlight,
+div.nboutput.container div.output_area pre {
+    background: unset;
+}
+
+div.nboutput.container div.output_area div.highlight {
+    color: unset;  /* override Pygments text color */
+}
+
+/* avoid gaps between output lines */
+div.nboutput.container div[class*=highlight] pre {
+    line-height: normal;
+}
+
+/* input/output containers */
+div.nbinput.container,
+div.nboutput.container {
+    display: -webkit-flex;
+    display: flex;
+    align-items: flex-start;
+    margin: 0;
+    width: 100%;
+}
+@media (max-width: 540px) {
+    div.nbinput.container,
+    div.nboutput.container {
+        flex-direction: column;
+    }
+}
+
+/* input container */
+div.nbinput.container {
+    padding-top: 5px;
+}
+
+/* last container */
+div.nblast.container {
+    padding-bottom: 5px;
+}
+
+/* input prompt */
+div.nbinput.container div.prompt pre {
+    color: #307FC1;
+}
+
+/* output prompt */
+div.nboutput.container div.prompt pre {
+    color: #BF5B3D;
+}
+
+/* all prompts */
+div.nbinput.container div.prompt,
+div.nboutput.container div.prompt {
+    width: 4.5ex;
+    padding-top: 5px;
+    position: relative;
+    user-select: none;
+}
+
+div.nbinput.container div.prompt > div,
+div.nboutput.container div.prompt > div {
+    position: absolute;
+    right: 0;
+    margin-right: 0.3ex;
+}
+
+@media (max-width: 540px) {
+    div.nbinput.container div.prompt,
+    div.nboutput.container div.prompt {
+        width: unset;
+        text-align: left;
+        padding: 0.4em;
+    }
+    div.nboutput.container div.prompt.empty {
+        padding: 0;
+    }
+
+    div.nbinput.container div.prompt > div,
+    div.nboutput.container div.prompt > div {
+        position: unset;
+    }
+}
+
+/* disable scrollbars on prompts */
+div.nbinput.container div.prompt pre,
+div.nboutput.container div.prompt pre {
+    overflow: hidden;
+}
+
+/* input/output area */
+div.nbinput.container div.input_area,
+div.nboutput.container div.output_area {
+    -webkit-flex: 1;
+    flex: 1;
+    overflow: auto;
+}
+@media (max-width: 540px) {
+    div.nbinput.container div.input_area,
+    div.nboutput.container div.output_area {
+        width: 100%;
+    }
+}
+
+/* input area */
+div.nbinput.container div.input_area {
+    border: 1px solid #e0e0e0;
+    border-radius: 2px;
+    /*background: #f5f5f5;*/
+}
+
+/* override MathJax center alignment in output cells */
+div.nboutput.container div[class*=MathJax] {
+    text-align: left !important;
+}
+
+/* override sphinx.ext.imgmath center alignment in output cells */
+div.nboutput.container div.math p {
+    text-align: left;
+}
+
+/* standard error */
+div.nboutput.container div.output_area.stderr {
+    background: #fdd;
+}
+
+/* ANSI colors */
+.ansi-black-fg { color: #3E424D; }
+.ansi-black-bg { background-color: #3E424D; }
+.ansi-black-intense-fg { color: #282C36; }
+.ansi-black-intense-bg { background-color: #282C36; }
+.ansi-red-fg { color: #E75C58; }
+.ansi-red-bg { background-color: #E75C58; }
+.ansi-red-intense-fg { color: #B22B31; }
+.ansi-red-intense-bg { background-color: #B22B31; }
+.ansi-green-fg { color: #00A250; }
+.ansi-green-bg { background-color: #00A250; }
+.ansi-green-intense-fg { color: #007427; }
+.ansi-green-intense-bg { background-color: #007427; }
+.ansi-yellow-fg { color: #DDB62B; }
+.ansi-yellow-bg { background-color: #DDB62B; }
+.ansi-yellow-intense-fg { color: #B27D12; }
+.ansi-yellow-intense-bg { background-color: #B27D12; }
+.ansi-blue-fg { color: #208FFB; }
+.ansi-blue-bg { background-color: #208FFB; }
+.ansi-blue-intense-fg { color: #0065CA; }
+.ansi-blue-intense-bg { background-color: #0065CA; }
+.ansi-magenta-fg { color: #D160C4; }
+.ansi-magenta-bg { background-color: #D160C4; }
+.ansi-magenta-intense-fg { color: #A03196; }
+.ansi-magenta-intense-bg { background-color: #A03196; }
+.ansi-cyan-fg { color: #60C6C8; }
+.ansi-cyan-bg { background-color: #60C6C8; }
+.ansi-cyan-intense-fg { color: #258F8F; }
+.ansi-cyan-intense-bg { background-color: #258F8F; }
+.ansi-white-fg { color: #C5C1B4; }
+.ansi-white-bg { background-color: #C5C1B4; }
+.ansi-white-intense-fg { color: #A1A6B2; }
+.ansi-white-intense-bg { background-color: #A1A6B2; }
+
+.ansi-default-inverse-fg { color: #FFFFFF; }
+.ansi-default-inverse-bg { background-color: #000000; }
+
+.ansi-bold { font-weight: bold; }
+.ansi-underline { text-decoration: underline; }
+
+
+div.nbinput.container div.input_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight] > pre,
+div.nboutput.container div.output_area div[class*=highlight].math,
+div.nboutput.container div.output_area.rendered_html,
+div.nboutput.container div.output_area > div.output_javascript,
+div.nboutput.container div.output_area:not(.rendered_html) > img{
+    padding: 5px;
+    margin: 0;
+}
+
+/* fix copybtn overflow problem in chromium (needed for 'sphinx_copybutton') */
+div.nbinput.container div.input_area > div[class^='highlight'],
+div.nboutput.container div.output_area > div[class^='highlight']{
+    overflow-y: hidden;
+}
+
+/* hide copybtn icon on prompts (needed for 'sphinx_copybutton') */
+.prompt a.copybtn {
+    display: none;
+}
+
+/* Some additional styling taken form the Jupyter notebook CSS */
+div.rendered_html table {
+  border: none;
+  border-collapse: collapse;
+  border-spacing: 0;
+  color: black;
+  font-size: 12px;
+  table-layout: fixed;
+}
+div.rendered_html thead {
+  border-bottom: 1px solid black;
+  vertical-align: bottom;
+}
+div.rendered_html tr,
+div.rendered_html th,
+div.rendered_html td {
+  text-align: right;
+  vertical-align: middle;
+  padding: 0.5em 0.5em;
+  line-height: normal;
+  white-space: normal;
+  max-width: none;
+  border: none;
+}
+div.rendered_html th {
+  font-weight: bold;
+}
+div.rendered_html tbody tr:nth-child(odd) {
+  background: #f5f5f5;
+}
+div.rendered_html tbody tr:hover {
+  background: rgba(66, 165, 245, 0.2);
+}
+
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="Reference-Input-Data-Library-(RIPL)">
+<h1>Reference Input Data Library (RIPL)<a class="headerlink" href="#Reference-Input-Data-Library-(RIPL)" title="Permalink to this headline">¶</a></h1>
+<p>In this brief notebook, we use the processed RIPL data to explore and visualize some attributes. Let us start by importing the necessary packages.</p>
+<p><strong>NOTE: This notebook is not meant to be a complete exploration resource. You are responsible for exploring and validating any provided data.</strong></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># # PROTOTYPE</span>
+<span class="c1"># import sys</span>
+<span class="c1"># sys.path.append(&quot;../..&quot;)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_columns&#39;</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">set_option</span><span class="p">(</span><span class="s1">&#39;display.max_rows&#39;</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">nucml.datasets</span> <span class="k">as</span> <span class="nn">nuc_data</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="c1"># Specifying directory to save figures</span>
+<span class="n">figure_dir</span> <span class="o">=</span> <span class="s2">&quot;Figures/&quot;</span>
+</pre></div>
+</div>
+</div>
+<section id="Loading-RIPL/ENSDF-Data">
+<h2>Loading RIPL/ENSDF Data<a class="headerlink" href="#Loading-RIPL/ENSDF-Data" title="Permalink to this headline">¶</a></h2>
+<p>Let us first load both the original and the cut-off RIPL data. Recall that the cut-off version is based on the RIPL cut-off parameters.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ensdf_df</span> <span class="o">=</span> <span class="n">nuc_data</span><span class="o">.</span><span class="n">load_ensdf</span><span class="p">(</span><span class="n">append_ame</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ensdf_cutoff_df</span> <span class="o">=</span> <span class="n">nuc_data</span><span class="o">.</span><span class="n">load_ensdf</span><span class="p">(</span><span class="n">cutoff</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">append_ame</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+INFO:root:Reading data from C:/Users/Pedro/Desktop/ML_Nuclear_Data/ENSDF\CSV_Files/ensdf.csv
+INFO:root:AME: Reading and loading Atomic Mass Evaluation files from:
+ C:/Users/Pedro/Desktop/ML_Nuclear_Data/AME/CSV_Files\AME_all_merged_no_NaN.csv
+INFO:root:Reading data from C:/Users/Pedro/Desktop/ML_Nuclear_Data/ENSDF\CSV_Files/ensdf_cutoff.csv
+INFO:root:AME: Reading and loading Atomic Mass Evaluation files from:
+ C:/Users/Pedro/Desktop/ML_Nuclear_Data/AME/CSV_Files\AME_all_merged_no_NaN.csv
+</pre></div></div>
+</div>
+</section>
+<section id="Plotting-Some-Features-Distributions">
+<h2>Plotting Some Features Distributions<a class="headerlink" href="#Plotting-Some-Features-Distributions" title="Permalink to this headline">¶</a></h2>
+<section id="Isotope-Energy-Distribution">
+<h3>Isotope Energy Distribution<a class="headerlink" href="#Isotope-Energy-Distribution" title="Permalink to this headline">¶</a></h3>
+<p>Let us observe what is the energy distribution as a function of the number of protons for all known levels against the cut-off dataset.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">font_scale</span> <span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;white&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">ensdf_df</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span> <span class="n">ensdf_df</span><span class="o">.</span><span class="n">Energy</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;All Known Levels&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">ensdf_cutoff_df</span><span class="o">.</span><span class="n">Z</span><span class="p">,</span> <span class="n">ensdf_cutoff_df</span><span class="o">.</span><span class="n">Energy</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;RIPL Cut-Off&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Level Energy (MeV)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Protons&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">figure_dir</span><span class="p">,</span> <span class="s1">&#39;ENSDF_Z_E.png&#39;</span><span class="p">),</span> <span class="n">transparent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+C:\Users\Pedro\Anaconda3\envs\nucml\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variables as keyword args: x, y. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  warnings.warn(
+C:\Users\Pedro\Anaconda3\envs\nucml\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variables as keyword args: x, y. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  warnings.warn(
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_2_EDA_RIPL_8_1.png" src="../_images/notebooks_2_EDA_RIPL_8_1.png" />
+</div>
+</div>
+<p>Similarly, for neutrons:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">ensdf_df</span><span class="o">.</span><span class="n">N</span><span class="p">,</span> <span class="n">ensdf_df</span><span class="o">.</span><span class="n">Energy</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;All Known Levels&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">ensdf_cutoff_df</span><span class="o">.</span><span class="n">N</span><span class="p">,</span> <span class="n">ensdf_cutoff_df</span><span class="o">.</span><span class="n">Energy</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;RIPL Cut-Off&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Level Energy (MeV)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Neutrons&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">figure_dir</span><span class="p">,</span> <span class="s1">&#39;ENSDF_N_E.png&#39;</span><span class="p">),</span> <span class="n">transparent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+C:\Users\Pedro\Anaconda3\envs\nucml\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variables as keyword args: x, y. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  warnings.warn(
+C:\Users\Pedro\Anaconda3\envs\nucml\lib\site-packages\seaborn\_decorators.py:36: FutureWarning: Pass the following variables as keyword args: x, y. From version 0.12, the only valid positional argument will be `data`, and passing other arguments without an explicit keyword will result in an error or misinterpretation.
+  warnings.warn(
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_2_EDA_RIPL_10_1.png" src="../_images/notebooks_2_EDA_RIPL_10_1.png" />
+</div>
+</div>
+</section>
+<section id="Atomic-Mass-Number-Distribution">
+<h3>Atomic Mass Number Distribution<a class="headerlink" href="#Atomic-Mass-Number-Distribution" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">ensdf_df</span><span class="o">.</span><span class="n">A</span><span class="p">,</span> <span class="n">shade</span><span class="o">=</span><span class="kc">True</span><span class="p">);</span>
+<span class="n">g</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">xlabel</span><span class="o">=</span><span class="s2">&quot;Atomic Mass Number (A)&quot;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s2">&quot;Fraction&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">figure_dir</span><span class="p">,</span> <span class="s1">&#39;ENSDF_Atomic_Mass_Dist.png&#39;</span><span class="p">),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_2_EDA_RIPL_12_0.png" src="../_images/notebooks_2_EDA_RIPL_12_0.png" />
+</div>
+</div>
+</section>
+<section id="Energy-Distribution">
+<h3>Energy Distribution<a class="headerlink" href="#Energy-Distribution" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">ensdf_df</span><span class="o">.</span><span class="n">Energy</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">shade</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;All Known Levels&quot;</span><span class="p">);</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">ensdf_cutoff_df</span><span class="o">.</span><span class="n">Energy</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">shade</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;RIPL Cut-Off&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Energy [MeV]&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Fraction&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">figure_dir</span><span class="p">,</span> <span class="s1">&#39;ENSDF_E_Dist.png&#39;</span><span class="p">),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_2_EDA_RIPL_14_0.png" src="../_images/notebooks_2_EDA_RIPL_14_0.png" />
+</div>
+</div>
+</section>
+<section id="Level-Number-Distribution">
+<h3>Level Number Distribution<a class="headerlink" href="#Level-Number-Distribution" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span><span class="mi">8</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">ensdf_df</span><span class="o">.</span><span class="n">Level_Number</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">shade</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;All Known Levels&quot;</span><span class="p">);</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">ensdf_cutoff_df</span><span class="o">.</span><span class="n">Level_Number</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">shade</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;RIPL Cut-Off&quot;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Level Number&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Fraction&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">figure_dir</span><span class="p">,</span> <span class="s1">&#39;ENSDF_L_Dist.png&#39;</span><span class="p">),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_2_EDA_RIPL_16_0.png" src="../_images/notebooks_2_EDA_RIPL_16_0.png" />
+</div>
+</div>
+</section>
+<section id="Uranium-and-Chlorine-Energy-Distribution">
+<h3>Uranium and Chlorine Energy Distribution<a class="headerlink" href="#Uranium-and-Chlorine-Energy-Distribution" title="Permalink to this headline">¶</a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">chlorine</span> <span class="o">=</span> <span class="n">ensdf_df</span><span class="p">[</span><span class="n">ensdf_df</span><span class="o">.</span><span class="n">Element_w_A</span> <span class="o">==</span> <span class="s2">&quot;35Cl&quot;</span><span class="p">]</span>
+<span class="n">uranium</span> <span class="o">=</span> <span class="n">ensdf_df</span><span class="p">[</span><span class="n">ensdf_df</span><span class="o">.</span><span class="n">Element_w_A</span> <span class="o">==</span> <span class="s2">&quot;233U&quot;</span><span class="p">]</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">chlorine</span><span class="o">.</span><span class="n">Energy</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">shade</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Chlorine-25&quot;</span><span class="p">);</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">kdeplot</span><span class="p">(</span><span class="n">uranium</span><span class="o">.</span><span class="n">Energy</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">shade</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Uranium-235&#39;</span><span class="p">);</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Energy [MeV]&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Fraction&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">figure_dir</span><span class="p">,</span> <span class="s1">&#39;ENSDF_Cl_U_E_Dist.png&#39;</span><span class="p">),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_2_EDA_RIPL_18_0.png" src="../_images/notebooks_2_EDA_RIPL_18_0.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="Energy-vs-Level-Number">
+<h2>Energy vs Level Number<a class="headerlink" href="#Energy-vs-Level-Number" title="Permalink to this headline">¶</a></h2>
+<p>Ideally, we would like to model the level energy vs level number. It is a difficult challenge as there are collective states and more. Furthemore, when implementing the RIPL cut-off parameters, we lose more than half of the avaliable data for training.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Level_Number&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Energy&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ensdf_df</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;All Known Levels&quot;</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;Level_Number&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;Energy&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">ensdf_cutoff_df</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;RIPL Cut-Off&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Level Number&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Level Energy&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">figure_dir</span><span class="p">,</span> <span class="s1">&#39;ENSDF_E_vs_L.png&#39;</span><span class="p">),</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="s1">&#39;tight&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_2_EDA_RIPL_20_0.png" src="../_images/notebooks_2_EDA_RIPL_20_0.png" />
+</div>
+</div>
+</section>
+<section id="NucML-Plotting-Utilities:-Level-and-Level-Density">
+<h2>NucML Plotting Utilities: Level and Level Density<a class="headerlink" href="#NucML-Plotting-Utilities:-Level-and-Level-Density" title="Permalink to this headline">¶</a></h2>
+<p>For EXFOR, a useful future might be the level density at incident energies. To model RIPL/XUNDL we can take two approaches: (1) model the level energy as a function of the level number with the cut-off dataset or (2) model the level density. We can visualize the level density using <code class="docutils literal notranslate"><span class="pre">NucML</span></code> ensdf plotting utilities. Let us import it.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">nucml.ensdf.plot</span> <span class="k">as</span> <span class="nn">ensdf_plot</span>
+</pre></div>
+</div>
+</div>
+<p>We can plot the level density of both the original and the cut-off dataset. All you need to do is pass both datasets to the <code class="docutils literal notranslate"><span class="pre">level_density()</span></code> function. For example, let us plot it for Chlorine 35:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ensdf_plot</span><span class="o">.</span><span class="n">level_density</span><span class="p">(</span><span class="n">ensdf_df</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">35</span><span class="p">,</span> <span class="n">df2</span><span class="o">=</span><span class="n">ensdf_cutoff_df</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="n">figure_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_2_EDA_RIPL_24_0.png" src="../_images/notebooks_2_EDA_RIPL_24_0.png" />
+</div>
+</div>
+<p>and for Uranium-233:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ensdf_plot</span><span class="o">.</span><span class="n">level_density</span><span class="p">(</span><span class="n">ensdf_df</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">233</span><span class="p">,</span> <span class="n">df2</span><span class="o">=</span><span class="n">ensdf_cutoff_df</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_dir</span><span class="o">=</span><span class="n">figure_dir</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../_images/notebooks_2_EDA_RIPL_26_0.png" src="../_images/notebooks_2_EDA_RIPL_26_0.png" />
+</div>
+</div>
+</section>
+<section id="Statistics-Example---Chlorine-35-and-Uranium-235">
+<h2>Statistics Example - Chlorine-35 and Uranium-235<a class="headerlink" href="#Statistics-Example---Chlorine-35-and-Uranium-235" title="Permalink to this headline">¶</a></h2>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="k">def</span> <span class="nf">pearson_corr</span><span class="p">(</span><span class="n">protons</span><span class="p">,</span> <span class="n">neutrons</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
+    <span class="n">to_plot</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;Z&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">protons</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s2">&quot;N&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">neutrons</span><span class="p">)]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Level_Number&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">pearson_coef</span><span class="p">,</span> <span class="n">p_value</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">pearsonr</span><span class="p">(</span><span class="n">to_plot</span><span class="p">[</span><span class="s1">&#39;Level_Number&#39;</span><span class="p">],</span> <span class="n">to_plot</span><span class="p">[</span><span class="s1">&#39;Energy&#39;</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Results for </span><span class="si">{}</span><span class="s2">:&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">to_plot</span><span class="o">.</span><span class="n">Element_w_A</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The Pearson Correlation Coefficient is&quot;</span><span class="p">,</span> <span class="n">pearson_coef</span><span class="p">,</span> <span class="s2">&quot; with a P-value of P =&quot;</span><span class="p">,</span> <span class="n">p_value</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">chlorine</span> <span class="o">=</span> <span class="n">ensdf_df</span><span class="p">[</span><span class="n">ensdf_df</span><span class="o">.</span><span class="n">Element_w_A</span> <span class="o">==</span> <span class="s2">&quot;35Cl&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Level_Number&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">uranium</span> <span class="o">=</span> <span class="n">ensdf_df</span><span class="p">[</span><span class="n">ensdf_df</span><span class="o">.</span><span class="n">Element_w_A</span> <span class="o">==</span> <span class="s2">&quot;235U&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Level_Number&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">chlorine</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Level_Number</th>
+      <th>Energy</th>
+      <th>Spin</th>
+      <th>Parity</th>
+      <th>Half_Life</th>
+      <th>Gammas</th>
+      <th>Num_Decay_Modes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>352.000000</td>
+      <td>352.000000</td>
+      <td>352.000000</td>
+      <td>352.000000</td>
+      <td>1.020000e+02</td>
+      <td>352.000000</td>
+      <td>352.0</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>176.500000</td>
+      <td>8.579085</td>
+      <td>0.735795</td>
+      <td>0.085227</td>
+      <td>4.559895e-13</td>
+      <td>3.227273</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>101.757883</td>
+      <td>2.029201</td>
+      <td>2.180220</td>
+      <td>0.648125</td>
+      <td>3.147776e-12</td>
+      <td>4.781201</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>-1.000000</td>
+      <td>-1.000000</td>
+      <td>3.740000e-20</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>88.750000</td>
+      <td>7.691525</td>
+      <td>-1.000000</td>
+      <td>0.000000</td>
+      <td>6.124750e-18</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>176.500000</td>
+      <td>8.734000</td>
+      <td>0.500000</td>
+      <td>0.000000</td>
+      <td>1.901000e-16</td>
+      <td>0.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>264.250000</td>
+      <td>9.877750</td>
+      <td>2.500000</td>
+      <td>1.000000</td>
+      <td>1.350000e-14</td>
+      <td>6.000000</td>
+      <td>0.0</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>352.000000</td>
+      <td>13.900000</td>
+      <td>11.500000</td>
+      <td>1.000000</td>
+      <td>3.080000e-11</td>
+      <td>17.000000</td>
+      <td>0.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">chlorine</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="mi">10</span><span class="p">]</span><span class="o">.</span><span class="n">corr</span><span class="p">())</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s1">&#39;Energy&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Level_Number</th>
+      <th>Energy</th>
+      <th>Spin</th>
+      <th>Parity</th>
+      <th>Half_Life</th>
+      <th>Gammas</th>
+      <th>Num_Decay_Modes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Energy</th>
+      <td>0.939196</td>
+      <td>1.000000</td>
+      <td>-0.170705</td>
+      <td>-0.138014</td>
+      <td>-0.199070</td>
+      <td>-0.302143</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Level_Number</th>
+      <td>1.000000</td>
+      <td>0.939196</td>
+      <td>-0.129374</td>
+      <td>-0.080478</td>
+      <td>-0.149506</td>
+      <td>-0.425753</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Parity</th>
+      <td>-0.080478</td>
+      <td>-0.138014</td>
+      <td>0.092596</td>
+      <td>1.000000</td>
+      <td>-0.118308</td>
+      <td>-0.015462</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Spin</th>
+      <td>-0.129374</td>
+      <td>-0.170705</td>
+      <td>1.000000</td>
+      <td>0.092596</td>
+      <td>0.174749</td>
+      <td>0.180695</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>Half_Life</th>
+      <td>-0.149506</td>
+      <td>-0.199070</td>
+      <td>0.174749</td>
+      <td>-0.118308</td>
+      <td>1.000000</td>
+      <td>-0.039308</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">pearson_corr</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">35</span><span class="o">-</span><span class="mi">17</span><span class="p">,</span> <span class="n">ensdf_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Results for 35Cl:
+The Pearson Correlation Coefficient is 0.9391959945279038  with a P-value of P = 1.508712295824325e-164
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">pearson_corr</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">35</span><span class="o">-</span><span class="mi">17</span><span class="p">,</span> <span class="n">ensdf_cutoff_df</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Results for 35Cl:
+The Pearson Correlation Coefficient is 0.9020790472746514  with a P-value of P = 1.0588253532475289e-14
+</pre></div></div>
+</div>
+<p>We can create correlation by using the log on both energy and level number.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ensdf_df_log</span> <span class="o">=</span> <span class="n">ensdf_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">ensdf_cutoff_df_log</span> <span class="o">=</span> <span class="n">ensdf_cutoff_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ensdf_df_log</span><span class="o">.</span><span class="n">Level_Number</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">ensdf_df_log</span><span class="o">.</span><span class="n">Level_Number</span><span class="p">)</span>
+<span class="n">ensdf_df_log</span> <span class="o">=</span> <span class="n">ensdf_df_log</span><span class="p">[</span><span class="n">ensdf_df_log</span><span class="o">.</span><span class="n">Energy</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">ensdf_df_log</span><span class="o">.</span><span class="n">Energy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">ensdf_df_log</span><span class="o">.</span><span class="n">Energy</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">ensdf_cutoff_df_log</span><span class="o">.</span><span class="n">Level_Number</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">ensdf_cutoff_df_log</span><span class="o">.</span><span class="n">Level_Number</span><span class="p">)</span>
+<span class="n">ensdf_cutoff_df_log</span> <span class="o">=</span> <span class="n">ensdf_cutoff_df_log</span><span class="p">[</span><span class="n">ensdf_cutoff_df_log</span><span class="o">.</span><span class="n">Energy</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">ensdf_cutoff_df_log</span><span class="o">.</span><span class="n">Energy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">ensdf_cutoff_df_log</span><span class="o">.</span><span class="n">Energy</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">pearson_corr</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">35</span><span class="o">-</span><span class="mi">17</span><span class="p">,</span> <span class="n">ensdf_df_log</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Results for 35Cl:
+The Pearson Correlation Coefficient is 0.9757198447187734  with a P-value of P = 2.959948935021139e-232
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre>
+<span></span><span class="n">pearson_corr</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">35</span><span class="o">-</span><span class="mi">17</span><span class="p">,</span> <span class="n">ensdf_cutoff_df_log</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Results for 35Cl:
+The Pearson Correlation Coefficient is 0.9635162177216403  with a P-value of P = 1.279072260851587e-21
+</pre></div></div>
+</div>
+<p>In the log scale, the energy is highly correlated. The p-value results in 1% confidence that this correlation is significant. We, therefore, expect that a linear model will work in this data. However is not as simple as that, we know that this dependency might start as linear but start deviating at some point.</p>
+</section>
+</section>
+
+
+           </div>
+           
+          </div>
+          <footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+        <a href="0_Generating_MLXS_Benchmark.html" class="btn btn-neutral float-right" title="Generating Benchmark Files and Serpent Scripts" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="3_EDA_Cross_Sections.html" class="btn btn-neutral float-left" title="Visualizing EXFOR Cross Sections" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &#169; Copyright 2021, Pedro Jr. Vicente-Valdez.
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
