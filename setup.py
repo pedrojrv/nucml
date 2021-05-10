@@ -8,7 +8,7 @@ setuptools.setup(
     version="1.0.5.dev1",
     author="Pedro Jr Vicente Valdez",
     author_email="pedro.vicentevz@berkeley.edu",
-    description="ML-oriented tools for navingating the nuclear data evaluation pipeline.",
+    description="ML-oriented tools for navigating the nuclear data evaluation pipeline.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/pedrojrv/nucml",
