@@ -1,6 +1,8 @@
 .. _navigating-the-nde-label:
 
-All tutorials showed here (and more) can be downloaded from the :code:`ML_Nuclear_Data` repository `here <https://github.com/pedrojrv/ML_Nuclear_Data>`_.
+.. note::
+
+    All tutorials showed here (and more) can be downloaded from the :code:`ML_Nuclear_Data` repository `here <https://github.com/pedrojrv/ML_Nuclear_Data>`_.
 
 Loading Data
 ============

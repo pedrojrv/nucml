@@ -1,8 +1,11 @@
 .. _basic-walkthrough-label:
 
+
 .. Note::
 
-    Documentation in progress. 
+    All tutorials showed here (and more) can be downloaded from the :code:`ML_Nuclear_Data` repository `here <https://github.com/pedrojrv/ML_Nuclear_Data>`_.
+
+
 
 Basic Walkthrough
 =================
