@@ -1,10 +1,16 @@
+"""Setup script for building, distribution and installation of nucml."""
+
 import setuptools
+import pathlib
 
 with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
+HERE = pathlib.Path(__file__).parent
+REQUIREMENTS = [i.strip() for i in open(HERE / "requirements_test.txt").readlines()]
+
 setuptools.setup(
-    name="nucml", # Replace with your own username
+    name="nucml",
     version="1.0.5.dev1",
     author="Pedro Jr Vicente Valdez",
     author_email="pedro.vicentevz@berkeley.edu",
@@ -26,8 +32,6 @@ setuptools.setup(
     },
     license="GNU General Public License v3 or later (GPLv3+)",
     include_package_data=True,
-    install_requires=["natsort", "pandas", "plotly", "matplotlib", "scikit-learn", "seaborn", "imageio", "wandb", "google-cloud-bigquery"], 
+    install_requires=REQUIREMENTS,
     python_requires='>=3.6',
 )
-
-

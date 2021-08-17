@@ -1,0 +1,9 @@
+natsort
+pandas
+plotly
+matplotlib
+scikit-learn
+seaborn
+imageio
+wandb
+google-cloud-bigquery
