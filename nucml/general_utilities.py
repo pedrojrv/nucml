@@ -1,3 +1,5 @@
+"""Contains general utilities related to file querying and manipulation, parsing, and saving and loading objects."""
+
 import os
 import logging
 import glob
@@ -8,7 +10,7 @@ from natsort import natsorted
 
 
 def get_files_w_extension(directory, extension):
-    """Gets a list of relative paths to files that match the given extension in the given directory.
+    """Get a list of relative paths to files that match the given extension in the given directory.
 
     Args:
         directory (str): Path-like string to the directory where the search will be conducted.
@@ -16,15 +18,16 @@ def get_files_w_extension(directory, extension):
 
     Returns:
         list: Contains relative path to each encountered file containing the given extension.
-    """    
+    """
     extension = "*" + extension
     logging.info("GEN_UTILS: Searching for {} files...".format(extension))
     files = glob.glob(os.path.join(directory, extension))
     files = natsorted(files)
     return files
 
+
 def initialize_directories(directory, reset=False):
-    """Creates and/or resets the given directory path.
+    """Create and/or reset the given directory path.
 
     Args:
         directory (str): Path-like string to directory to create and/or reset.
@@ -48,18 +51,19 @@ def initialize_directories(directory, reset=False):
 
 
 def check_if_files_exist(files_list):
-    """Checks if all files in a list of filepaths exists.
+    """Check if all files in a list of filepaths exists.
 
     Args:
         files_list (list): List of relative or absolute path-like strings to check for existence.
 
     Returns:
         bool: True if all exists, False if more than one does not exist.
-    """    
+    """
     if all([os.path.isfile(f) for f in files_list]):
         return True
     else:
         return False
+
 
 def func(x, c, d):
     """Line equation function. Used to interpolate AME features.
@@ -71,13 +75,15 @@ def func(x, c, d):
 
     Returns:
         float: Linear equation result.
-    """    
+    """
     return c * x + d
 
+
 def save_obj(obj, saving_dir, name):
-    """Saves a python object with pickle in the `saving_dir` directory using `name`. Useful to quickly store objects
-    such as lists or numpy arrays. Do not include the extension in the name. The function automatically adds
-    the `.pkl` extension to all saved files.
+    """Save a python object with pickle in the `saving_dir` directory using `name`.
+
+    Useful to quickly store objects such as lists or numpy arrays. Do not include the extension in the name. The
+    function automatically adds the `.pkl` extension to all saved files.
 
     Args:
         obj (object): Object to save. Can be a list, np.array, pd.DataFrame, etc.
@@ -86,37 +92,40 @@ def save_obj(obj, saving_dir, name):
 
     Returns:
         None
-    """    
+    """
     with open(os.path.join(saving_dir, name + '.pkl'), 'wb') as f:
         pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
     return None
 
+
 def load_obj(file_path):
-    """Loads a saved pickle python object. 
+    """Load a saved pickle python object.
 
     Args:
         file_path (str): Path-like string to the object to be loaded.
 
     Returns:
         object
-    """    
+    """
     with open(file_path, 'rb') as f:
         return pickle.load(f)
 
 
 def parse_mt(mt_number, mt_for="ENDF", one_hot=False):
-    """Universal ENDF reaction code parser. This internal function is used to parse and format the reaction
-    integer code for internal functions used by NucML.
+    """Universal ENDF reaction code parser.
+
+    This internal function is used to parse and format the reaction integer code for internal functions used by NucML.
 
     Args:
         mt_number (int): Reaction channel code as defined by ENDF/EXFOR.
-        mt_for (str, optional): What loader object is requesting the parsing. Options include "EXFOR" and "ENDF". Defaults to "ENDF".
-        one_hot (bool, optional): If mt_for="EXFOR", then this argument specifies if the MT code should be formated for one-hot encoded dataframe.
-            is for a one-hot encoded dataframe. Defaults to False.
+        mt_for (str, optional): What loader object is requesting the parsing. Options include "EXFOR" and "ENDF".
+            Defaults to "ENDF".
+        one_hot (bool, optional): If mt_for="EXFOR", then this argument specifies if the MT code should be formated for
+            one-hot encoded dataframe. Defaults to False.
 
     Returns:
         str or int: The formatted reaction channel code.
-    """    
+    """
     mt_number = str(int(mt_number))
     if mt_for.upper() == "ENDF":
         if len(mt_number) != 3:
@@ -134,18 +143,17 @@ def parse_mt(mt_number, mt_for="ENDF", one_hot=False):
             return int(mt_number)
 
 
-        # return mt_number
-    
 def parse_isotope(isotope, parse_for="ENDF"):
-    """This is an internal function that transforms element tags (i.e. U235) into formats appropiate for other internal functions.
+    """Transform element tags (i,e, U235) into formats appropiate for other internal functions.
 
     Args:
-        isotope (str): Isotope to format (i.e. U235, 35cl). 
-        parse_for (str, optional): What loader object is requesting the parsing. Options include "EXFOR" and "ENDF". Defaults to "ENDF".
+        isotope (str): Isotope to format (i.e. U235, 35cl).
+        parse_for (str, optional): What loader object is requesting the parsing. Options include "EXFOR" and "ENDF".
+            Defaults to "ENDF".
 
     Returns:
         str: Formatted isotope identifier.
-    """    
+    """
     element, mass = re.findall(r'[A-Za-z]+|\d+', isotope)
     if element.isdigit():
         mass, element = re.findall(r'[A-Za-z]+|\d+', isotope)

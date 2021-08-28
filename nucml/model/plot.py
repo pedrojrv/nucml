@@ -1,21 +1,14 @@
+"""Plotting utilities for model training and evaluation."""
 import matplotlib.pyplot as plt
 import os
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
-import sys
 from matplotlib.ticker import MaxNLocator
-from matplotlib import cm
 import pandas as pd
 
-# This allows us to import the nucml utilities
-sys.path.append("..")
-sys.path.append("../..")
-
-import nucml.exfor.data_utilities as exfor_utils  # pylint: disable=import-error
-import nucml.plot.utilities as plot_utils  # pylint: disable=import-error
 
 def xgb_training(dictionary, save=False, show=True, title="", save_dir=''):
-    """Plots the Loss vs Number of Estimators resulting from an XGBoost training process.
+    """Plot the Loss vs Number of Estimators resulting from an XGBoost training process.
 
     Args:
         dictionary (dict): dictionary generated from the XGBoost training process.
@@ -26,28 +19,28 @@ def xgb_training(dictionary, save=False, show=True, title="", save_dir=''):
 
     Returns:
         None
-    """    
-    plt.figure(figsize=(14,8))
+    """
+    plt.figure(figsize=(14, 8))
     plt.plot(dictionary["eval"]["rmse"], label="Evaluation")
     plt.plot(dictionary["train"]["rmse"], label="Training")
     plt.legend()
     plt.xlabel("Number of Estimators")
     plt.ylabel("RMSE")
     plt.title(title)
-    if save == True:
+    if save:
         plt.savefig(os.path.join(save_dir, "xgb_training.png"), bbox_inches="tight", dpi=600)
-    if show == False:
+    if not show:
         plt.close()
     return None
 
 
 def train_test(df, x_feature, train_metric, test_metric, save=False, save_dir='', render_browser=False, paper=False):
-    """Plots both the train and test loss as a function of a second feature (i.e. training steps).
+    """Plot both the train and test loss as a function of a second feature (i.e. training steps).
 
     Args:
         df (pd.DataFrame): Pandas DataFrame containing the train and test metric information.
-        x_feature (str): Feature containing the x-axis information. Can contain information such as the training steps 
-            or parameters such as k-number, number of estimators, etc. 
+        x_feature (str): Feature containing the x-axis information. Can contain information such as the training steps
+            or parameters such as k-number, number of estimators, etc.
         train_metric (str): Name of the feature containing the train performance metric.
         test_metric (str): Name of the feature containing the test performance metric.
         save (bool, optional): If True, the figure will be saved. Defaults to False.
@@ -80,13 +73,15 @@ def train_test(df, x_feature, train_metric, test_metric, save=False, save_dir=''
         fig.write_html(os.path.join(save_dir, "model_performance_metric.html"))
     return fig
 
-def knn_training(results_df, x_feature="id", train_metric="train_mae", val_metric="val_mae", test_metric="test_mae", save=False, save_path='', show=True):
-    """Plots both the train, val, and test loss as a function of a given parameter (i.e. number of neighbors).
+
+def knn_training(results_df, x_feature="id", train_metric="train_mae", val_metric="val_mae", test_metric="test_mae",
+                 save=False, save_path='', show=True):
+    """Plot both the train, val, and test loss as a function of a given parameter (i.e. number of neighbors).
 
     Args:
         results_df (pd.DataFrame): Pandas DataFrame containing the train, val, and test metric information.
-        x_feature (str): Feature containing the x-axis information. Can contain information such as the training steps 
-            or parameters such as k-number. 
+        x_feature (str): Feature containing the x-axis information. Can contain information such as the training steps
+            or parameters such as k-number.
         train_metric (str): Name of the feature containing the train performance metric.
         val_metric (str): Name of the feature containing the validation performance metric.
         test_metric (str): Name of the feature containing the test performance metric.
@@ -97,7 +92,7 @@ def knn_training(results_df, x_feature="id", train_metric="train_mae", val_metri
     Returns:
         object: Plotly figure object.
     """
-    fig, ax1 = plt.subplots(figsize=(18,8))
+    fig, ax1 = plt.subplots(figsize=(18, 8))
 
     color = 'tab:orange'
     lns1 = ax1.plot(results_df[x_feature], results_df[train_metric], color=color, marker="o", label="Train MAE")
@@ -106,11 +101,11 @@ def knn_training(results_df, x_feature="id", train_metric="train_mae", val_metri
     ax1.tick_params(axis='y', labelcolor=color)
     # ax1.legend()
 
-
     ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
     color = 'tab:blue'
     lns2 = ax2.plot(results_df[x_feature], results_df[val_metric], color=color, marker="o", label="Val MAE")
-    lns3 = ax2.plot(results_df[x_feature], results_df[test_metric], color=color, marker="x", markersize=10, label="Test MAE")
+    lns3 = ax2.plot(
+        results_df[x_feature], results_df[test_metric], color=color, marker="x", markersize=10, label="Test MAE")
     ax2.set_ylabel('Test and Validation Metric', color=color)  # we already handled the x-label with ax1
     ax2.tick_params(axis='y', labelcolor=color)
     ax2.xaxis.set_major_locator(MaxNLocator(integer=True))
@@ -118,19 +113,21 @@ def knn_training(results_df, x_feature="id", train_metric="train_mae", val_metri
 
     # added these three lines
     lns = lns1+lns2+lns3
-    labs = [l.get_label() for l in lns]
+    labs = [label.get_label() for label in lns]
     ax1.legend(lns, labs, loc=0)
 
     fig.tight_layout()  # otherwise the right y-label is slightly clipped
-    
-    if save == True:
+
+    if save:
         plt.savefig(save_path, bbox_inches="tight", dpi=300)
-    if show == False:
+    if not show:
         plt.close()
     return None
 
-def dt_training(results_df, param_1="max_depth", param_2="msl", train_metric="train_mae", test_metric="test_mae", save=False, save_dir='', show=True):
-    """Plots both the train and test loss as a function of a second feature (i.e. training steps).
+
+def dt_training(results_df, param_1="max_depth", param_2="msl", train_metric="train_mae", test_metric="test_mae",
+                save=False, save_dir='', show=True):
+    """Plot both the train and test loss as a function of a second feature (i.e. training steps).
 
     Args:
         results_df (pd.DataFrame): Pandas DataFrame containing the train and test metric information.
@@ -145,7 +142,7 @@ def dt_training(results_df, param_1="max_depth", param_2="msl", train_metric="tr
     Returns:
         object: Plotly figure object.
     """
-    fig, (ax1, ax3) = plt.subplots(2, figsize=(14,18))
+    fig, (ax1, ax3) = plt.subplots(2, figsize=(14, 18))
 
     color = 'tab:orange'
     ax1.set_xlabel('Train MAE (b)')
@@ -153,13 +150,11 @@ def dt_training(results_df, param_1="max_depth", param_2="msl", train_metric="tr
     ax1.scatter(results_df[train_metric], results_df[param_1], color=color, marker="o")
     ax1.tick_params(axis='y', labelcolor=color)
 
-
     ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
     color = 'tab:blue'
     ax2.set_ylabel('Minimum Samples per Leaf (MSL)', color=color)  # we already handled the x-label with ax1
     ax2.scatter(results_df[train_metric], results_df[param_2], color=color, marker="o")
     ax2.tick_params(axis='y', labelcolor=color)
-
 
     color = 'tab:orange'
     ax3.set_xlabel('Test MAE (b)')
@@ -173,11 +168,10 @@ def dt_training(results_df, param_1="max_depth", param_2="msl", train_metric="tr
     ax4.scatter(results_df[test_metric], results_df[param_2], color=color, marker="o")
     ax4.tick_params(axis='y', labelcolor=color)
 
-
     fig.tight_layout()  # otherwise the right y-label is slightly clipped
-    if save == True:
+    if save:
         plt.savefig(os.path.join(save_dir, "dt_training.png"), bbox_inches="tight", dpi=600)
-    if show == False:
+    if not show:
         plt.close()
     return None
 
@@ -195,9 +189,11 @@ def dt_training(results_df, param_1="max_depth", param_2="msl", train_metric="tr
 #     fig.colorbar(surf, shrink=0.5, aspect=5)
 #     plt.savefig("figures/dt_3d_hyperparams.png", bbox_inches='tight', dpi=300)
 
+
 def xgb_training_w_path(path_to_csv, save=False, saving_path="xgb_training.png"):
+    """Plot XGB retraining given the path to the results."""
     training_progress = pd.read_csv(path_to_csv)
-    plt.figure(figsize=(18,8))
+    plt.figure(figsize=(18, 8))
     plt.plot(training_progress.mae_train, label="Train MAE", marker="x", markersize="20")
     plt.plot(training_progress.mae_test, label="Validation MAE", marker="o", markersize="5")
     plt.xlabel('Number of Trees (Rounds)')

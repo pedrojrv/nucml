@@ -1,26 +1,27 @@
+"""Model building utilities."""
 import os
 import tensorflow as tf
 import tensorflow_docs as tfdocs
 import tensorflow_docs.modeling
-import wandb
 from wandb.keras import WandbCallback
 
 
-
-def get_callbacks(name, logs_dir_name="logs", lr_method="plateau", patience_epochs=10, save_freq=7531*5, append_wandb=False):
-    """Gets a callback list for TensorFlow training.
+def get_callbacks(name, logs_dir_name="logs", lr_method="plateau", patience_epochs=10, save_freq=7531*5,
+                  append_wandb=False):
+    """Get a callback list for TensorFlow training.
 
     Args:
         name (str): Name of the model.
         logs_dir_name (str, optional): Name of the directory where the callback logs will be stored. Defaults to "logs".
         lr_method (str, optional): Learning rate method to implement. Defaults to "plateau".
-        patience_epochs (int, optional): Number of epochs to wait before stopping training due to lack of validation progress. Defaults to 10.
+        patience_epochs (int, optional): Number of epochs to wait before stopping training due to lack of validation
+            progress. Defaults to 10.
         save_freq (int, optional): Determines how many steps are needed to create a checkpoint. Defaults to 7531*5.
         append_wandb (bool, optional): If True, the WANDB callback will be added. Defaults to False.
 
     Returns:
         list: List containing all TensorFlow callbacks.
-    """    
+    """
     logdir = logs_dir_name
     chkpoint_dir = os.path.abspath(os.path.join(logs_dir_name, "checkpoints"))
     csv_logger_dir = os.path.join(logs_dir_name, "training_metrics.csv")
@@ -31,10 +32,10 @@ def get_callbacks(name, logs_dir_name="logs", lr_method="plateau", patience_epoc
     chkpoint_dir = os.path.abspath(os.path.join(logs_dir_name, "checkpoints/best_model.hdf5"))
 
     if lr_method == "plateau":
-        all_callbacks =  [
+        all_callbacks = [
             tfdocs.modeling.EpochDots(),
             tf.keras.callbacks.CSVLogger(csv_logger_dir),
-            tf.keras.callbacks.EarlyStopping(monitor='loss', patience=patience_epochs, restore_best_weights=True), # val_loss
+            tf.keras.callbacks.EarlyStopping(monitor='loss', patience=patience_epochs, restore_best_weights=True),
             tf.keras.callbacks.ModelCheckpoint(chkpoint_dir, monitor='loss', verbose=0,
                                                save_best_only=True, save_weights_only=False,
                                                save_frequency=save_freq),
@@ -46,7 +47,7 @@ def get_callbacks(name, logs_dir_name="logs", lr_method="plateau", patience_epoc
         all_callbacks = [
             tfdocs.modeling.EpochDots(),
             tf.keras.callbacks.CSVLogger(csv_logger_dir),
-            tf.keras.callbacks.EarlyStopping(monitor='loss', patience=patience_epochs, restore_best_weights=True), # val_loss
+            tf.keras.callbacks.EarlyStopping(monitor='loss', patience=patience_epochs, restore_best_weights=True),
             tf.keras.callbacks.ModelCheckpoint(chkpoint_dir, monitor='loss', verbose=0,
                                                save_best_only=True, save_weights_only=False,
                                                save_frequency=save_freq),
@@ -55,7 +56,7 @@ def get_callbacks(name, logs_dir_name="logs", lr_method="plateau", patience_epoc
         all_callbacks = [
             tfdocs.modeling.EpochDots(),
             tf.keras.callbacks.CSVLogger(csv_logger_dir),
-            tf.keras.callbacks.EarlyStopping(monitor='loss', patience=patience_epochs, restore_best_weights=True), # val_loss
+            tf.keras.callbacks.EarlyStopping(monitor='loss', patience=patience_epochs, restore_best_weights=True),
             tf.keras.callbacks.ModelCheckpoint(chkpoint_dir, monitor='loss', verbose=0,
                                                save_best_only=True, save_weights_only=False,
                                                save_frequency=save_freq),
@@ -65,10 +66,10 @@ def get_callbacks(name, logs_dir_name="logs", lr_method="plateau", patience_epoc
     return all_callbacks
 
 
-def compile_and_fit(model, name, x_train, y_train, x_test, y_test, BATCH_SIZE=120, 
+def compile_and_fit(model, name, x_train, y_train, x_test, y_test, BATCH_SIZE=120,
                     max_epochs=5, DECAY_EPOCHS=10, lr_method="plateau", initial_epoch=0,
                     logs_dir_name="logs", append_wandb=False, verbose=0, comet=False, comet_exp=None):
-    """Compiles and fits a TensorFlow model.
+    """Compile and fit a TensorFlow model.
 
     Args:
         model (object): TensorFlow model object.
@@ -90,45 +91,46 @@ def compile_and_fit(model, name, x_train, y_train, x_test, y_test, BATCH_SIZE=12
 
     Returns:
         object: Training history object.
-    """    
+    """
     STEPS_PER_EPOCH = len(x_train) // BATCH_SIZE
-    
+
     if lr_method == "plateau" or lr_method == "normal":
-        model.compile(optimizer=tf.keras.optimizers.Adam(0.005), loss='mse', metrics=['mae', 'mse'])        
+        model.compile(optimizer=tf.keras.optimizers.Adam(0.005), loss='mse', metrics=['mae', 'mse'])
     else:
         model.compile(
             optimizer=tf.keras.optimizers.Adam(tf.keras.optimizers.schedules.InverseTimeDecay(
-                0.005, decay_steps=STEPS_PER_EPOCH*DECAY_EPOCHS, decay_rate=0.5)), 
-            loss='mse', 
+                0.005, decay_steps=STEPS_PER_EPOCH*DECAY_EPOCHS, decay_rate=0.5)),
+            loss='mse',
             metrics=['mae', 'mse'])
     if comet:
         with comet_exp.train():
             history = model.fit(
                 x_train, y_train,
                 batch_size=BATCH_SIZE,
-                steps_per_epoch = STEPS_PER_EPOCH,
+                steps_per_epoch=STEPS_PER_EPOCH,
                 epochs=max_epochs,
                 validation_data=(x_test, y_test),
-                callbacks=get_callbacks(name, logs_dir_name=logs_dir_name, lr_method=lr_method, append_wandb=append_wandb),
-                verbose=verbose, 
-                initial_epoch=initial_epoch)   
+                callbacks=get_callbacks(
+                    name, logs_dir_name=logs_dir_name, lr_method=lr_method, append_wandb=append_wandb),
+                verbose=verbose,
+                initial_epoch=initial_epoch)
         return history
     else:
         history = model.fit(
             x_train, y_train,
             batch_size=BATCH_SIZE,
-            steps_per_epoch = STEPS_PER_EPOCH,
+            steps_per_epoch=STEPS_PER_EPOCH,
             epochs=max_epochs,
             validation_data=(x_test, y_test),
             callbacks=get_callbacks(name, logs_dir_name=logs_dir_name, lr_method=lr_method, append_wandb=append_wandb),
-            verbose=verbose, 
-            initial_epoch=initial_epoch)   
+            verbose=verbose,
+            initial_epoch=initial_epoch)
         return history
 
 
-def compile_and_fit_lw(model, name, x_train, y_train, x_test, y_test, BATCH_SIZE=120, 
-                    max_epochs=5, DECAY_EPOCHS=10, lr_method="plateau", initial_epoch=0):
-    """Compile and fits a TensorFlow model.
+def compile_and_fit_lw(model, name, x_train, y_train, x_test, y_test, BATCH_SIZE=120,
+                       max_epochs=5, DECAY_EPOCHS=10, lr_method="plateau", initial_epoch=0):
+    """Compile and fit a TensorFlow model.
 
     Args:
         model (object): TensorFlow model to fit.
@@ -145,80 +147,81 @@ def compile_and_fit_lw(model, name, x_train, y_train, x_test, y_test, BATCH_SIZE
 
     Returns:
         object: Training history object.
-    """     
+    """
     STEPS_PER_EPOCH = len(x_train) // BATCH_SIZE
-    
+
     if lr_method == "plateau" or lr_method == "normal":
-        model.compile(optimizer=tf.keras.optimizers.Adam(0.001), loss='mse', metrics=['mae', 'mse'])        
+        model.compile(optimizer=tf.keras.optimizers.Adam(0.001), loss='mse', metrics=['mae', 'mse'])
     else:
         model.compile(
             optimizer=tf.keras.optimizers.Adam(tf.keras.optimizers.schedules.InverseTimeDecay(
-                0.001, decay_steps=STEPS_PER_EPOCH*DECAY_EPOCHS, decay_rate=1)), 
-            loss='mse', 
+                0.001, decay_steps=STEPS_PER_EPOCH*DECAY_EPOCHS, decay_rate=1)),
+            loss='mse',
             metrics=['mae', 'mse'])
     # model.summary()
-    
+
     model.load_weights(os.path.join("./model_checkpoints/"))
     history = model.fit(
         x_train, y_train,
         batch_size=BATCH_SIZE,
-        steps_per_epoch = STEPS_PER_EPOCH,
+        steps_per_epoch=STEPS_PER_EPOCH,
         epochs=max_epochs,
         validation_data=(x_test, y_test),
         callbacks=get_callbacks(name, lr_method=lr_method),
-        verbose=1, 
-        initial_epoch=initial_epoch)   
+        verbose=1,
+        initial_epoch=initial_epoch)
     return history
 
 
-def get_xgboost_params(eta=0.5, gamma=0, l2=0, max_depth=30, grow_policy='depthwise', max_bin=256, determ_hist='true', objective="rmse", resume=False, gpu_id=0):
-    objectives = {'rmse':'reg:squarederror', 'huber':'reg:pseudohubererror', 'rmsle':'reg:squaredlogerror'}
-    new_or_resume = {True:'update', False:'default'}
+def get_xgboost_params(eta=0.5, gamma=0, l2=0, max_depth=30, grow_policy='depthwise', max_bin=256, determ_hist='true',
+                       objective="rmse", resume=False, gpu_id=0):
+    """Get a dictionary containing xgboost parameters."""
+    objectives = {'rmse': 'reg:squarederror', 'huber': 'reg:pseudohubererror', 'rmsle': 'reg:squaredlogerror'}
+    new_or_resume = {True: 'update', False: 'default'}
     # specify parameters via map
     params = {
         # GENERAL PARAMETERS
-        "booster":"gbtree", 
-        "verbosity":1, #  0 (silent), 1 (warning), 2 (info), 3 (debug)
+        "booster": "gbtree",
+        "verbosity": 1,  # 0 (silent), 1 (warning), 2 (info), 3 (debug)
         # 'nthread':4,
 
         # TREE BOOSTER PARAMETERS
-        'eta':eta, # learning rate: 0.3
-        'max_depth':max_depth, # max depth: 6, 0 is lossguided avaliable for gpu_hist and hist        
-        "tree_method":"gpu_hist", 
-        'grow_policy': grow_policy, # controls new nodes: 'depthwise', 'lossguide' avaliable (splits with highest loss change)
-        'max_leaves': 0, # when lossguide, max number of nodes to be added: 0
+        'eta': eta,  # learning rate: 0.3
+        'max_depth': max_depth,  # max depth: 6, 0 is lossguided avaliable for gpu_hist and hist
+        "tree_method": "gpu_hist",
+        'grow_policy': grow_policy,  # controls new nodes: 'depthwise', 'lossguide' avaliable
+        'max_leaves': 0,  # when lossguide, max number of nodes to be added: 0
         'max_bin': max_bin,  # max num of discrete bins for continues features: 256
-        'num_parallel_tree':1, # num parallel trees constructed during each iteration: 1 
-        "process_type":new_or_resume[resume],
-        
-        "gamma":gamma, # min loss reduction for partition: 0 - REGULARIZE UP
-        'min_child_weight':1, # min sum of instance weights for child: 1 - REGULARIZE UP
-        "lambda":l2, # l2 reg:1 - REGULARIZE UP
-        'alpha':0, # l1 reg:0 - REGULARIZE UP
-        
+        'num_parallel_tree': 1,  # num parallel trees constructed during each iteration: 1
+        "process_type": new_or_resume[resume],
+
+        "gamma": gamma,  # min loss reduction for partition: 0 - REGULARIZE UP
+        'min_child_weight': 1,  # min sum of instance weights for child: 1 - REGULARIZE UP
+        "lambda": l2,  # l2 reg:1 - REGULARIZE UP
+        'alpha': 0,  # l1 reg:0 - REGULARIZE UP
+
 
         # GPU HIST PARAMETER
-        'deterministic_histogram':determ_hist, # pre-rounding routing leads to lower accuracy: true
-        'gpu_id':gpu_id,
+        'deterministic_histogram': determ_hist,  # pre-rounding routing leads to lower accuracy: true
+        'gpu_id': gpu_id,
 
         # LEARNING TASK PARAMETERS
-        'objective':objectives[objective], # squarederror, pseudohubererror, squaredlogerror
-        'eval_metric':['rmse', 'mae'], # eval metric for validation data
+        'objective': objectives[objective],  # squarederror, pseudohubererror, squaredlogerror
+        'eval_metric': ['rmse', 'mae'],  # eval metric for validation data
     }
-    
+
     return params
 
 
-
-
-
 def tf_dataset_gen(x, y, xt, yt, BUFFER_SIZE, BATCH_SIZE, N_TRAIN, gpu=False, multiplier=2, cache=False):
-    if gpu == True:
+    """Get a tensorflow dataset generator."""
+    if gpu:
         BATCH_SIZE = BATCH_SIZE * multiplier
         print("GPU: ON")
-    train_dataset = tf.data.Dataset.from_tensor_slices((x.values, y.values)).shuffle(BUFFER_SIZE).repeat().batch(BATCH_SIZE)
+    train_dataset = tf.data.Dataset.from_tensor_slices(
+        (x.values, y.values)).shuffle(BUFFER_SIZE).repeat().batch(BATCH_SIZE)
     test_dataset = tf.data.Dataset.from_tensor_slices((xt.values, yt.values)).batch(BATCH_SIZE)
-    if cache == True: # Ensures loader doesnt re-read data at each epoch.
+    if cache:  # Ensures loader doesnt re-read data at each epoch.
         train_dataset = train_dataset.cache()
         test_dataset = test_dataset.cache()
     STEPS_PER_EPOCH = N_TRAIN//BATCH_SIZE
@@ -226,5 +229,7 @@ def tf_dataset_gen(x, y, xt, yt, BUFFER_SIZE, BATCH_SIZE, N_TRAIN, gpu=False, mu
     print("STEPS PER EPOCH: ", STEPS_PER_EPOCH)
     return train_dataset, test_dataset, STEPS_PER_EPOCH, BATCH_SIZE
 
+
 def get_optimizer(lr_schedule):
+    """Return adamn optimizer given a learning rate schedule."""
     return tf.keras.optimizers.Adam(lr_schedule)
