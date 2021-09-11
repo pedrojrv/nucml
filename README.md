@@ -15,19 +15,23 @@ Please refer to the Installation guide in the official documentation here: https
 
 All educational and tutorial material can be found in the `ML_Nuclear_Data` repository here: https://github.com/pedrojrv/ML_Nuclear_Data
 
-<!-- cd C:\Users\Pedro\Desktop\nucml\sphinx
-sphinx-apidoc -f -o source ../nucml/
-sphinx-build source ../html/
-make html -->
-
 # How to Cite 
 
-
-
-If you used `NucML` for your work, feel free to cite us using (use previous resource in the meantime):
+If you used `NucML` for your work, feel free to cite us:
 
 ```
-Vicente-Valdez, P., Bernstein, L., & Fratoni, M. (2020). Application of Machine Learning to Nuclear Data Evaluation. ANS Virtual Winter Meeting, 123, 1287–1290. https://doi.org/10.13182/T123-32998
+@article{VICENTEVALDEZ2021108596,
+title = {Nuclear data evaluation augmented by machine learning},
+journal = {Annals of Nuclear Energy},
+volume = {163},
+pages = {108596},
+year = {2021},
+issn = {0306-4549},
+doi = {https://doi.org/10.1016/j.anucene.2021.108596},
+url = {https://www.sciencedirect.com/science/article/pii/S0306454921004722},
+author = {Pedro Vicente-Valdez and Lee Bernstein and Massimiliano Fratoni},
+keywords = {Machine learning, EXFOR, Uranium benchmark, Cross section evaluation},
+}
 ```
 
 <!-- 
