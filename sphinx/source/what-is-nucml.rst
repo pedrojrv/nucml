@@ -11,7 +11,7 @@ parsing and compilation of reaction data, exploratory data analysis, data manipu
 and validation via criticality benchmarks. All these activities are supported by the various modules and submodules offered through the 
 NucML package.
 
-.. image:: ../images/nucml_submodules.JPG
+.. image:: images/nucml_submodules.JPG
   :alt: NucML Submodules
 
 

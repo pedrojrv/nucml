@@ -78,7 +78,7 @@ options are included. Since these algorithms are not expected to be perfect, Nuc
 hybrid solution. In other words, traditional tools must work together with ML models to create a good evaluation. By default, NucML Ace will 
 stabilize the 1/v region using evaluated library values. 
 
-.. image:: ../images/nucml_benchmark.png
+.. image:: images/nucml_benchmark.png
   :alt: NucML Submodules
 
 The benchmarking utilities provided are built on top of this methodology. Once a series of models are trained there are various steps needed to set up the validation 
