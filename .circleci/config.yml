@@ -35,7 +35,7 @@ jobs:
       #     # maybe one that combines your runtime and test requirements.
       - run:
           name: Install package
-          command: pip install -e .
+          command: pip install -e .[tests]
       - run:
           name: Run tests
           # This assumes pytest is installed via the install-package step above
