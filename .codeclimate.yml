@@ -1,4 +1,8 @@
 version: "2"
+
+exclude_patterns:
+- "nucml/model/"
+
 # checks:
 #   argument-count:
 #     config:

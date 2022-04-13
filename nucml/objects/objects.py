@@ -27,6 +27,14 @@ def load_zan(type="EXFOR"):
     return zan_dict
 
 
+def _get_zan_dict_item(zan_dict, Z, A, N, query_type="Element"):
+    ZAN = str(Z) + str(A) + str(N)
+    if ZAN == "12019":
+        return "Water"
+    else:
+        return zan_dict[ZAN][query_type]
+
+
 def get_element(zan_dict, Z, A, N):
     """Get the element identifier given the number of protons, mass number, and neutrons.
 
@@ -41,11 +49,7 @@ def get_element(zan_dict, Z, A, N):
     Returns:
         str: Element tag.
     """
-    ZAN = str(Z) + str(A) + str(N)
-    if ZAN == "12019":
-        return "Water"
-    else:
-        return zan_dict[ZAN]["Element"]
+    return _get_zan_dict_item(zan_dict, Z, A, N, query_type="Element")
 
 
 def get_isotope(zan_dict, Z, A, N):
@@ -62,8 +66,4 @@ def get_isotope(zan_dict, Z, A, N):
     Returns:
         str: Element tag.
     """
-    ZAN = str(Z) + str(A) + str(N)
-    if ZAN == "12019":
-        return "Water"
-    else:
-        return zan_dict[ZAN]["Isotope"]
+    return _get_zan_dict_item(zan_dict, Z, A, N, query_type="Isotope")

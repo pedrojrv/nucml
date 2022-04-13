@@ -325,7 +325,7 @@ def _plot_save_predictions(plotter, all_dict, order_dict, save, path, show, log,
     return
 
 
-def predicting_nuclear_xs_v2(df, Z, A, MT, model, to_scale, scaler, e_array="ace", log=False,
+def predicting_nuclear_xs_v2(df, Z, A, MT, model, to_scale=None, scaler=None, e_array="ace", log=False,
                              model_type=None, new_data=empty_df, nat_iso="I", get_endf=False, inv_trans=False,
                              show=False, plotter="plotly", save=False, path="", save_both=True, order_dict={}):
     """Predict values for a given isotope-reaction channel pair.
@@ -376,7 +376,9 @@ def predicting_nuclear_xs_v2(df, Z, A, MT, model, to_scale, scaler, e_array="ace
     endf_avaliable = True if endf.shape[0] != 0 else False
     e_array_avaliable = True if e_array.shape[0] != 0 else False
 
-    kwargs = {"nat_iso": nat_iso, "one_hot": True, "scaler": scaler, "to_scale": to_scale}
+    kwargs = {"nat_iso": nat_iso, "one_hot": True}
+    if to_scale is not None:
+        kwargs.update({"scaler": scaler, "to_scale": to_scale})
     to_infer = load_samples(df, Z, A, MT, scale=False, **kwargs)
     to_plot = load_samples(df, Z, A, MT, scale=True, **kwargs)
     to_infer = to_infer.drop(columns=["Data"])
@@ -386,7 +388,8 @@ def predicting_nuclear_xs_v2(df, Z, A, MT, model, to_scale, scaler, e_array="ace
     else:
         to_infer = expanding_dataset_energy(to_infer, -5.00, 7.30, log, 500)
 
-    to_infer[to_scale] = scaler.transform(to_infer[to_scale])
+    if to_scale is not None:
+        to_infer[to_scale] = scaler.transform(to_infer[to_scale])
 
     pred_exfor_expanded = model_utils.make_predictions(to_infer.values, model, model_type)
     pred_exfor_original = model_utils.make_predictions(to_plot.drop(columns=["Data"]).values, model, model_type)
@@ -423,102 +426,6 @@ def predicting_nuclear_xs_v2(df, Z, A, MT, model, to_scale, scaler, e_array="ace
             all_dict.update({"exfor_endf_new": exfor_endf_new_data, "error_metrics": error_df})
 
     _plot_save_predictions(plotter, all_dict, order_dict, save, path, show, log, save_both)
-    return all_dict
-
-
-def predicting_nuclear_xs_v2_no_norm(df, Z, A, MT, model, e_array="ace", log=False,
-                                     model_type=None, new_data=empty_df, nat_iso="I", get_endf=False,
-                                     show=False, plotter="plotly", save=False, path="", save_both=True, order_dict={}):
-    """Predict values for a given isotope-reaction channel pair.
-
-    This all-in-one function allows to not only get predictions
-    but also calculate the errors relative to the EXFOR and ENDF datapoints (if avaliable). In addition, the plotting
-    capabilities allow the user to inspect the predictions in a typical cross section plot. In addition to predicting
-    values at the original exfor datapoint energies, the .ACE energy grid is used for further comparison.
-
-    Args:
-        df (DataFrame): All avaliable experimental datapoints.
-        Z (int): Number of protons.
-        A (int): Atomic mass number.
-        MT (int): Reaction channel (endf-coded).
-        model (object): Trained model object.
-        to_scale (list): List of feature names that are to be scaled.
-        scaler (object): Fitted scaler object.
-        e_array (str, optional): If "ace", the energy grid from the appropiate ACE file is appended. An
-            alternative is to provide a specific energy array. Defaults to "ace".
-        log (bool, optional): If True, it assumes the Energy is already in a log form. Defaults to False.
-        model_type (str): Type of model. Options include None meaning scikit-learn models, "tf", for tensorflow, and
-            "xgb" for gradient boosting machines.
-        html (bool, optional): If True, the plot will be rendered in an interactive browser tab. Defaults to False.
-        new_data (DataFrame, optional): New data for which to make predictions, get errors, and plot. Assumes it has
-            all needed information. Defaults to empty_df.
-        save (bool, optional): If True, the plot will be saved. Defaults to False.
-        show (bool, optional): If True, a plot of the predictions will be rendered. Defaults to False.
-        path (str, optional): Path-like string on which to save the rendered plots. Defaults to "".
-        nat_iso (str, optional): "I" means isotopic while "N" means natural experimental campaigns. Defaults to "I".
-        order_dict (dict, optional): Order in which to plot the different lines. See plotly_ml_results() for more info.
-            Defaults to {}.
-        get_endf (bool, optional): If True, the endf file will be extracted to calculate errors and create plots.
-            Defaults to False.
-        inv_trans (bool, optional): If True, the returned data will be in its original form (not scaled). Defaults to
-            False.
-
-    Returns:
-        dict: contains a variety of information including predictions, errors, and more.
-    """
-    endf = empty_df
-    if get_endf:
-        endf = endf_utils.get_for_exfor(Z, A, MT, log=log)
-    if e_array == "ace":
-        # e_array = ace_utils.get_energies('{:<02d}'.format(Z) + str(A).zfill(3), ev=True, log=log)
-        e_array = ace_utils.get_energies(str(Z) + str(A).zfill(3), ev=True, log=log)
-
-    new_data_avaliable = True if new_data.shape[0] != 0 else False
-    endf_avaliable = True if endf.shape[0] != 0 else False
-    e_array_avaliable = True if e_array.shape[0] != 0 else False
-
-    kwargs = {"nat_iso": nat_iso, "one_hot": True}
-    to_infer = load_samples(df, Z, A, MT, **kwargs)
-    to_plot = load_samples(df, Z, A, MT, **kwargs)
-    to_infer = to_infer.drop(columns=["Data"])
-
-    if e_array_avaliable:
-        to_infer = expanding_dataset_energy(to_infer, 0, 0, log, 0, e_array=e_array)
-    else:
-        to_infer = expanding_dataset_energy(to_infer, -5.00, 7.30, log, 500)
-
-    pred_exfor_expanded = model_utils.make_predictions(to_infer.values, model, model_type)
-    pred_exfor_original = model_utils.make_predictions(to_plot.drop(columns=["Data"]).values, model, model_type)
-
-    all_dict = {"exfor_ml_expanded": {"df": to_infer, "predictions": pred_exfor_expanded},
-                "exfor_ml_original": {"df": to_plot, "predictions": pred_exfor_original}}
-
-    exfor_ml_error = model_utils.regression_error_metrics(to_plot["Data"], pred_exfor_original)
-    error_df = model_utils.create_error_df("EXFOR VS ML", exfor_ml_error)
-    all_dict.update({"error_metrics": error_df})
-
-    if new_data_avaliable:
-        pred_exfor_new = model_utils.make_predictions(new_data.drop(columns=["Data"]).values, model, model_type)
-        all_dict.update({"exfor_ml_new": {"df": new_data, "predictions": pred_exfor_new}})
-
-        exfor_ml_new_error = model_utils.regression_error_metrics(new_data["Data"], pred_exfor_new)
-        error_new_df = model_utils.create_error_df("EXFOR VS ML (NEW DATA)", exfor_ml_new_error)
-        error_df = error_df.append(error_new_df)
-        all_dict.update({"error_metrics": error_df})
-
-    if endf_avaliable:
-        # Gets interpolated endf data with anchor exfor
-        exfor_endf, error_endf = get_error_endf_exfor(endf, to_plot)
-        error_df = error_df.append(error_endf)
-        all_dict.update({"exfor_endf_original": exfor_endf, "error_metrics": error_df, "endf": endf})
-        if new_data_avaliable:
-            # Gets interpolated endf data with anchor new exfor
-            exfor_endf_new_data, error_endf_new = get_error_endf_new(endf, new_data)
-            error_df = error_df.append(error_endf_new)
-            all_dict.update({"exfor_endf_new": exfor_endf_new_data, "error_metrics": error_df})
-
-    if show or save:
-        _plot_save_predictions(plotter, all_dict, order_dict, save, path, show, log, save_both)
     return all_dict
 
 

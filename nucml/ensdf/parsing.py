@@ -101,9 +101,10 @@ def generate_elemental_ensdf(dat_list, header_directory, saving_directory):
                     if line.startswith(str(e)):
                         value1 = ensdf_index[ensdf_index["SYMB"] == e][["Nol"]].values[0][0]
                         for y in range(0, 1 + value1 + ensdf_index[ensdf_index["SYMB"] == e][["Nog"]].values[0][0]):
-                            outfile1.write(lines[z + y])
-                        for y in range(1, 1 + value1 + ensdf_index[ensdf_index["SYMB"] == e][["Nog"]].values[0][0]):
-                            outfile2.write(lines[z + y])
+                            to_write = lines[z + y]
+                            outfile1.write(to_write)
+                            if not y:
+                                outfile2.write(to_write)
 
     ensdf_v3_path = os.path.join(saving_directory, "Elemental_ENSDF_no_Header_F/")
     general_utilities.initialize_directories(ensdf_v3_path, reset=True)
@@ -111,14 +112,19 @@ def generate_elemental_ensdf(dat_list, header_directory, saving_directory):
     for i in element_list_names:
         with open(os.path.join(ensdf_v2_path, i + ".txt")) as infile, open(
              os.path.join(ensdf_v3_path, i + ".txt"), 'w') as outfile:
-            for line in infile:
-                if line.strip():
-                    string = list(line)
-                    for i, j in enumerate([4, 15, 20, 23, 34, 37, 39, 43, 54, 65, 66]):
-                        string.insert(i + j, '|')
-                    outfile.write("".join(string))
+            string = _insert_separator(infile, [4, 15, 20, 23, 34, 37, 39, 43, 54, 65, 66])
+            outfile.write("".join(string))
     logger.info("ENSDF Elemental: Finished formating data.")
     return None
+
+
+def _insert_separator(infile, separation_points, separator="|"):
+    for line in infile:
+        if line.strip():
+            string = list(line)
+            for i, j in enumerate(separation_points):
+                string.insert(i + j, separator)
+    return string
 
 
 def get_stable_states(dat_list, header_directory, saving_directory=None):
@@ -154,13 +160,8 @@ def get_stable_states(dat_list, header_directory, saving_directory=None):
     logger.info("STABLE STATES: Formatting text file...")
     with open(os.path.join(header_directory, "ensdf_stable_state.txt")) as infile, open(
          os.path.join(saving_directory, 'ensdf_stable_state_formatted.csv'), 'w') as outfile:
-
-        for line in infile:
-            if line.strip():
-                string = list(line)
-                for i, j in enumerate([5, 10, 19, 25, 28, 39, 42, 44, 68, 71, 74]):
-                    string.insert(i + j, '|')
-                outfile.write("".join(string))
+        string = _insert_separator(infile, [5, 10, 19, 25, 28, 39, 42, 44, 68, 71, 74])
+        outfile.write("".join(string))
     logger.info("STABLE STATES: Finished.")
     os.remove(os.path.join(header_directory, "ensdf_stable_state.txt"))
     return None

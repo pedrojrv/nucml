@@ -291,10 +291,7 @@ def make_predictions_w_levels(df, Z, A, num_levels, model, model_type, scaler, t
     if plot:
         ensdf_plot.level_density_ml(ensdf, to_infer, log_sqrt=log_sqrt, log=log, save=save, save_dir=save_dir)
     if inv_transform:
-        if log:
-            to_infer["Level_Number"] = 10**to_infer.Level_Number.values
-            to_infer["Energy"] = 10**to_infer.Energy.values
-        to_infer[to_scale] = scaler.inverse_transform(to_infer[to_scale])
+        to_infer = _invert_data_w_scaler(to_infer, to_scale, scaler, log)
     return to_infer
 
 
@@ -330,12 +327,16 @@ def make_predictions_w_levels_nodata(df, num_levels, model, model_type, scaler, 
         ensdf_plot.level_density_ml(
             to_infer.copy(), to_infer.copy(), log_sqrt=log_sqrt, log=log, save=save, save_dir=save_dir)
     if inv_transform:
-        if log:
-            to_infer["Level_Number"] = 10**to_infer.Level_Number.values
-            to_infer["Energy"] = 10**to_infer.Energy.values
-        to_infer[to_scale] = scaler.inverse_transform(to_infer[to_scale])
+        to_infer = _invert_data_w_scaler(to_infer, to_scale, scaler, log)
     return to_infer
 
+
+def _invert_data_w_scaler(to_infer, to_scale, scaler, log):
+    if log:
+        to_infer["Level_Number"] = 10**to_infer.Level_Number.values
+        to_infer["Energy"] = 10**to_infer.Energy.values
+    to_infer[to_scale] = scaler.inverse_transform(to_infer[to_scale])
+    return to_infer
 
 def make_predictions_from_df(df, Z, A, model, model_type, scaler, to_scale, log_sqrt=False, log=False, plot=False,
                              save=False, save_dir=""):
