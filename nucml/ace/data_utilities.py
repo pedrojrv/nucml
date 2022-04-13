@@ -40,17 +40,14 @@ def get_to_skip_lines(isotope, temp="03c"):
     Raises:
         FileNotFoundError: If a given isotope file does not exists, an error will be raised.
     """
-    if isotope == "6012":
-        isotope = "6000"
-    if len(isotope) == 4:
-        line_spaces = 2
-    else:
-        line_spaces = 1
+    # Define isotopes for which to assume natural cross sections
+    isotope = "6000" if isotope == "6012" else isotope
+    line_spaces = 2 if len(isotope) == 4 else 1
+
     path = Path(os.path.join(ace_dir, isotope + "ENDF7.ace"))
     if path.is_file():
         with open(path, "r") as ace_file:
-            points = []
-            indexes = []
+            points, indexes = [], []
             for index, line in enumerate(ace_file):
                 if line.startswith(" "*line_spaces + isotope + "."):
                     points.append(line[:10])
@@ -59,7 +56,6 @@ def get_to_skip_lines(isotope, temp="03c"):
         to_search = " "*line_spaces + isotope + "." + temp
         to_skip = indexes[points.index(to_search)]
         lines = indexes[points.index(to_search) + 1] - to_skip - 12
-
         return path, to_skip, lines
     else:
         raise FileNotFoundError("{} does not exists.".format(path))
@@ -93,7 +89,7 @@ def get_nxs_jxs_xss(isotope, temp="03c", custom_path=None, reduced=False):
         xss = pd.read_csv(
             custom_path, delim_whitespace=True, skiprows=to_skip+12, nrows=lines, header=None).values.flatten()
         return nxs, jxs, xss
-    elif path is not None:
+    else:
         nxs = pd.read_csv(path, delim_whitespace=True, skiprows=to_skip+6, nrows=2, header=None)
         jxs = pd.read_csv(path, delim_whitespace=True, skiprows=to_skip+8, nrows=4, header=None)
         xss = pd.read_csv(path, delim_whitespace=True, skiprows=to_skip+12, nrows=lines, header=None).values.flatten()
@@ -173,7 +169,16 @@ def get_jxs_dictionary(jxs_df):
 def get_pointers(nxs, jxs):
     """Get general information from NXS and JXS needed to start manipulating cross sections.
 
-    This includes several pointers for Energy, MT Array, LSIG, SIG, and Fission.
+    This includes several pointers for Energy, MT Array, LSIG, SIG, and Fission. More specifically, the dictionary
+    contains:
+
+    - "nes": Number of Energy points (3),
+    - "ntr": Number of reaction types excluding elastic scattering MT2 (4)
+    - "energy_pointer": (1) ENERGY TABLE POINTER
+    - "mt_pointer": (3) MT ARRAY POINTER
+    - "xs_pointers": LSIG (6) TABLE OF XS LOCATORS/POINTERS
+    - "xs_table_pointer": SIG (7) CROSS SECTION ARRAY POINTER
+    - "mt_18_pointer": FIS (21) FISSION POINTER
 
     Args:
         nxs (dict): Dictionary obtained using the get_nxs_dictionary().

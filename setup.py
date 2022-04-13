@@ -7,12 +7,11 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 HERE = pathlib.Path(__file__).parent
-REQUIREMENTS = [i.strip() for i in open(HERE / "requirements_test.txt").readlines()]
 
 setuptools.setup(
     name="nucml",
     version="1.0.5.dev1",
-    author="Pedro Jr Vicente Valdez",
+    author="Pedro Junior Vicente Valdez",
     author_email="pedro.vicentevz@berkeley.edu",
     description="ML-oriented tools for navigating the nuclear data evaluation pipeline.",
     long_description=long_description,
@@ -32,6 +31,10 @@ setuptools.setup(
     },
     license="GNU General Public License v3 or later (GPLv3+)",
     include_package_data=True,
-    install_requires=REQUIREMENTS,
-    python_requires='>=3.6',
+    python_requires='>=3.8',
+    entry_points={
+        'console_scripts': [
+            'nucml-configure=nucml.configure:main',
+        ]
+    }
 )

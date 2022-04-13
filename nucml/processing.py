@@ -7,7 +7,7 @@ from joblib import load
 from scipy.optimize import curve_fit
 from sklearn import preprocessing
 
-from nucml.general_utilities import func  # pylint: disable=import-error
+from nucml.general_utilities import func
 
 pd.options.mode.chained_assignment = None  # default='warn'
 

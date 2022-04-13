@@ -306,6 +306,25 @@ def make_predictions_from_df(df, Z, A, MT, model, model_type, scaler, to_scale, 
     return y_hat
 
 
+def _plot_save_predictions(plotter, all_dict, order_dict, save, path, show, log, save_both):
+    if plotter == "plotly":
+        exfor_plot_utils.ml_results(all_dict, save=save, save_dir=path, order_dict=order_dict, show=show)
+    elif plotter == "plt":
+        exfor_plot_utils.ml_results(
+            all_dict, save=save, save_dir=path, order_dict=order_dict, show=show, log=log, plot_type="sns")
+    if save_both:
+        if plotter == "plotly":
+            if len(order_dict) != 0:
+                order_dict = {k: int(v) for k, v in order_dict.items()}
+            exfor_plot_utils.ml_results(
+                all_dict, save=save, save_dir=path, order_dict=order_dict, show=False, log=log, plot_type="sns")
+        elif plotter == "plt":
+            if len(order_dict) != 0:
+                order_dict = {str(v): k for k, v in order_dict.items()}
+            exfor_plot_utils.ml_results(all_dict, save=save, save_dir=path, order_dict=order_dict, show=False)
+    return
+
+
 def predicting_nuclear_xs_v2(df, Z, A, MT, model, to_scale, scaler, e_array="ace", log=False,
                              model_type=None, new_data=empty_df, nat_iso="I", get_endf=False, inv_trans=False,
                              show=False, plotter="plotly", save=False, path="", save_both=True, order_dict={}):
@@ -403,22 +422,7 @@ def predicting_nuclear_xs_v2(df, Z, A, MT, model, to_scale, scaler, e_array="ace
             error_df = error_df.append(error_endf_new)
             all_dict.update({"exfor_endf_new": exfor_endf_new_data, "error_metrics": error_df})
 
-    # if show:
-    if plotter == "plotly":
-        exfor_plot_utils.ml_results(all_dict, save=save, save_dir=path, order_dict=order_dict, show=show)
-    elif plotter == "plt":
-        exfor_plot_utils.ml_results(
-            all_dict, save=save, save_dir=path, order_dict=order_dict, show=show, log=log, plot_type="sns")
-    if save_both:
-        if plotter == "plotly":
-            if len(order_dict) != 0:
-                order_dict = {k: int(v) for k, v in order_dict.items()}
-            exfor_plot_utils.ml_results(
-                all_dict, save=save, save_dir=path, order_dict=order_dict, show=False, log=log, plot_type="sns")
-        elif plotter == "plt":
-            if len(order_dict) != 0:
-                order_dict = {str(v): k for k, v in order_dict.items()}
-            exfor_plot_utils.ml_results(all_dict, save=save, save_dir=path, order_dict=order_dict, show=False)
+    _plot_save_predictions(plotter, all_dict, order_dict, save, path, show, log, save_both)
     return all_dict
 
 
@@ -514,22 +518,7 @@ def predicting_nuclear_xs_v2_no_norm(df, Z, A, MT, model, e_array="ace", log=Fal
             all_dict.update({"exfor_endf_new": exfor_endf_new_data, "error_metrics": error_df})
 
     if show or save:
-
-        if plotter == "plotly":
-            exfor_plot_utils.ml_results(all_dict, save=save, save_dir=path, order_dict=order_dict, show=show)
-        elif plotter == "plt":
-            exfor_plot_utils.ml_results(
-                all_dict, save=save, save_dir=path, order_dict=order_dict, show=show, log=log, plot_type="sns")
-        if save_both:
-            if plotter == "plotly":
-                if len(order_dict) != 0:
-                    order_dict = {k: int(v) for k, v in order_dict.items()}
-                exfor_plot_utils.ml_results(
-                    all_dict, save=save, save_dir=path, order_dict=order_dict, show=False, log=log, plot_type="sns")
-            elif plotter == "plt":
-                if len(order_dict) != 0:
-                    order_dict = {str(v): k for k, v in order_dict.items()}
-                exfor_plot_utils.ml_results(all_dict, save=save, save_dir=path, order_dict=order_dict, show=False)
+        _plot_save_predictions(plotter, all_dict, order_dict, save, path, show, log, save_both)
     return all_dict
 
 

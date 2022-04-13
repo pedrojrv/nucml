@@ -7,6 +7,9 @@ from nucml import general_utilities
 import nucml.datasets as nuc_data
 
 
+logger = logging.getLogger(__name__)
+
+
 def get_ripl_dat_paths(dat_directory):
     """Search directory for RIPL .dat files and returns a list of relative paths for each one.
 
@@ -16,9 +19,9 @@ def get_ripl_dat_paths(dat_directory):
     Returns:
         list: Contains relative path to each .dat file found.
     """
-    logging.info("RIPL: Searching {} directory for .dat files...".format(dat_directory))
+    logger.info("RIPL: Searching {} directory for .dat files...".format(dat_directory))
     names = general_utilities.get_files_w_extension(dat_directory, "*.dat")
-    logging.info("RIPL: Finished. Found {} .dat files.".format(len(names)))
+    logger.info("RIPL: Finished. Found {} .dat files.".format(len(names)))
     return names
 
 
@@ -33,7 +36,7 @@ def get_headers(dat_list, saving_directory):
     Returns:
         None
     """
-    logging.info("ENSDF: Extracting headers ...")
+    logger.info("ENSDF: Extracting headers ...")
     raw_header_file = os.path.join(saving_directory, "all_ensdf_headers.txt")
     for i in dat_list:
         with open(i) as infile, open(raw_header_file, 'a') as outfile:
@@ -51,7 +54,7 @@ def get_headers(dat_list, saving_directory):
                     string.insert(i + j, '|')
                 outfile.write("".join(string))
     os.remove(raw_header_file)
-    logging.info("ENSDF: Finished. Saved to {}".format(header_file))
+    logger.info("ENSDF: Finished. Saved to {}".format(header_file))
     return None
 
 
@@ -83,34 +86,28 @@ def generate_elemental_ensdf(dat_list, header_directory, saving_directory):
     element_list_names = ensdf_index.Text_Filenames.tolist()  # same strings but stripped
 
     ensdf_v1_path = os.path.join(saving_directory, "Elemental_ENSDF_v1/")
+    ensdf_v2_path = os.path.join(saving_directory, "Elemental_ENSDF_no_Header/")
     general_utilities.initialize_directories(ensdf_v1_path, reset=True)
-    logging.info("ENSDF Elemental: Extracting ENSDF data per element with header...")
+    general_utilities.initialize_directories(ensdf_v2_path, reset=True)
+
+    logger.info("Extracting ENSDF data per element...")
     for e in element_list_endf:
         for i in dat_list:
-            with open(i, "r") as infile, open(os.path.join(ensdf_v1_path, str(e).strip() + '.txt'), 'a') as outfile:
+            elem_path_v1 = os.path.join(ensdf_v1_path, str(e).strip() + '.txt')
+            elem_path_v2 = os.path.join(ensdf_v2_path, str(e).strip() + '.txt')
+            with open(i, "r") as infile, open(elem_path_v1, 'a') as outfile1, open(elem_path_v2, 'a') as outfile2:
                 lines = infile.readlines()
                 for z, line in enumerate(lines):
                     if line.startswith(str(e)):
                         value1 = ensdf_index[ensdf_index["SYMB"] == e][["Nol"]].values[0][0]
                         for y in range(0, 1 + value1 + ensdf_index[ensdf_index["SYMB"] == e][["Nog"]].values[0][0]):
-                            outfile.write(lines[z + y])
-
-    ensdf_v2_path = os.path.join(saving_directory, "Elemental_ENSDF_no_Header/")
-    general_utilities.initialize_directories(ensdf_v2_path, reset=True)
-    logging.info("ENSDF Elemental: Removing header from ENSDF elemental files...")
-    for e in element_list_endf:
-        for i in dat_list:
-            with open(i, "r") as infile, open(os.path.join(ensdf_v2_path, str(e).strip() + '.txt'), 'a') as outfile:
-                lines = infile.readlines()
-                for z, line in enumerate(lines):
-                    if line.startswith(str(e)):
-                        value1 = ensdf_index[ensdf_index["SYMB"] == e][["Nol"]].values[0][0]
+                            outfile1.write(lines[z + y])
                         for y in range(1, 1 + value1 + ensdf_index[ensdf_index["SYMB"] == e][["Nog"]].values[0][0]):
-                            outfile.write(lines[z + y])
+                            outfile2.write(lines[z + y])
 
     ensdf_v3_path = os.path.join(saving_directory, "Elemental_ENSDF_no_Header_F/")
     general_utilities.initialize_directories(ensdf_v3_path, reset=True)
-    logging.info("ENSDF Elemental: Formatting files...")
+    logger.info("ENSDF Elemental: Formatting files...")
     for i in element_list_names:
         with open(os.path.join(ensdf_v2_path, i + ".txt")) as infile, open(
              os.path.join(ensdf_v3_path, i + ".txt"), 'w') as outfile:
@@ -120,7 +117,7 @@ def generate_elemental_ensdf(dat_list, header_directory, saving_directory):
                     for i, j in enumerate([4, 15, 20, 23, 34, 37, 39, 43, 54, 65, 66]):
                         string.insert(i + j, '|')
                     outfile.write("".join(string))
-    logging.info("ENSDF Elemental: Finished formating data.")
+    logger.info("ENSDF Elemental: Finished formating data.")
     return None
 
 
@@ -145,7 +142,7 @@ def get_stable_states(dat_list, header_directory, saving_directory=None):
     ensdf_index = pd.read_csv(csv_file, names=ensdf_index_col, sep="|")
     element_list_endf = ensdf_index.SYMB.tolist()  # string that files start with
 
-    logging.info("STABLE STATES: Extracting stable states from .dat files...")
+    logger.info("STABLE STATES: Extracting stable states from .dat files...")
     for e in element_list_endf:
         for i in dat_list:
             with open(i, "r") as infile, open(os.path.join(header_directory, "ensdf_stable_state.txt"), 'a') as outfile:
@@ -154,7 +151,7 @@ def get_stable_states(dat_list, header_directory, saving_directory=None):
                     if line.startswith(str(e)):
                         outfile.write(e + lines[1 + z])
 
-    logging.info("STABLE STATES: Formatting text file...")
+    logger.info("STABLE STATES: Formatting text file...")
     with open(os.path.join(header_directory, "ensdf_stable_state.txt")) as infile, open(
          os.path.join(saving_directory, 'ensdf_stable_state_formatted.csv'), 'w') as outfile:
 
@@ -164,7 +161,7 @@ def get_stable_states(dat_list, header_directory, saving_directory=None):
                 for i, j in enumerate([5, 10, 19, 25, 28, 39, 42, 44, 68, 71, 74]):
                     string.insert(i + j, '|')
                 outfile.write("".join(string))
-    logging.info("STABLE STATES: Finished.")
+    logger.info("STABLE STATES: Finished.")
     os.remove(os.path.join(header_directory, "ensdf_stable_state.txt"))
     return None
 
@@ -191,13 +188,13 @@ def generate_ensdf_csv(header_directory, elemental_directory, saving_directory=N
     ensdf_index["Text_Filenames"] = ensdf_index["SYMB"].apply(lambda x: x.strip())
     element_list_names = ensdf_index.Text_Filenames.tolist()  # same strings but stripped
 
-    logging.info("ENSDF CSV: Creatign DataFrame with Basic ENSDF data ...")
+    logger.info("ENSDF CSV: Creatign DataFrame with Basic ENSDF data ...")
     appended_data = []
     for e in element_list_names:
         element_ensdf = nuc_data.load_ensdf_isotopic(e)
         element_ensdf["Element_w_A"] = e
         appended_data.append(element_ensdf)
-    logging.info("ENSDF CSV: Finished creating list of dataframes.")
+    logger.info("ENSDF CSV: Finished creating list of dataframes.")
 
     appended_data = pd.concat(appended_data)
     appended_data.to_csv(os.path.join(saving_directory, "ensdf.csv"), index=False)
@@ -220,7 +217,7 @@ def get_level_parameters(level_params_directory, saving_directory=None):
         saving_directory = level_params_directory
     data_file = os.path.join(level_params_directory, "levels-param.data")
     # Using the document with all data we insert commas following the EXFOR format
-    logging.info("ENSDF RIPL: Parsing and formatting level parameters...")
+    logger.info("ENSDF RIPL: Parsing and formatting level parameters...")
     save_file = os.path.join(saving_directory, 'ripl_cut_off_energies.csv')
     with open(data_file) as infile, open(save_file, 'w') as outfile:
         for line in infile:
@@ -229,7 +226,7 @@ def get_level_parameters(level_params_directory, saving_directory=None):
                 for i, j in enumerate([4, 8, 11, 21, 31, 41, 51, 55, 59, 63, 67, 76, 85, 96, 98, 100, 104, 116]):
                     string.insert(i + j, ';')
                 outfile.write("".join(string))
-    logging.info("ENSDF RIPL: Finished formating data. Converting to CSV...")
+    logger.info("ENSDF RIPL: Finished formating data. Converting to CSV...")
 
     cut_off_cols = [
         "Z", "A", "Element", "Temperature_MeV", "Temperature_U", "Black_Shift",
@@ -241,7 +238,7 @@ def get_level_parameters(level_params_directory, saving_directory=None):
     cut_off["Element_w_A"] = cut_off["A"].astype(str) + cut_off["Element"]
     cut_off = cut_off[~cut_off.Element.str.contains(r'\d')]
     cut_off.to_csv(save_file, index=False)
-    logging.info("ENSDF RIPL: Finished.")
+    logger.info("ENSDF RIPL: Finished.")
     return None
 
 
@@ -270,7 +267,7 @@ def generate_cutoff_ensdf(ensdf_directory, elemental_directory, ripl_directory=N
     ensdf_path = os.path.join(ensdf_directory, "ensdf.csv")
     cut_off_path = os.path.join(ripl_directory, "ripl_cut_off_energies.csv")
 
-    logging.info("ENSDF CutOff: Loading ENSDF and RIPL parameters...")
+    logger.info("ENSDF CutOff: Loading ENSDF and RIPL parameters...")
     ensdf = pd.read_csv(ensdf_path)
     cut_off = pd.read_csv(cut_off_path)
 
@@ -281,7 +278,7 @@ def generate_cutoff_ensdf(ensdf_directory, elemental_directory, ripl_directory=N
     element_list_names = ensdf.Element_w_A.unique()
 
     appended_data = []
-    logging.info("ENSDF CutOff: Cutting off ENSDF...")
+    logger.info("ENSDF CutOff: Cutting off ENSDF...")
     for e in element_list_names:
         element_ensdf = nuc_data.load_ensdf_isotopic(e)
         element_ensdf["Element_w_A"] = e
@@ -294,5 +291,5 @@ def generate_cutoff_ensdf(ensdf_directory, elemental_directory, ripl_directory=N
 
     appended_data = pd.concat(appended_data)
     appended_data = appended_data.to_csv(os.path.join(saving_directory, "ensdf_cutoff.csv"), index=False)
-    logging.info("ENSDF CutOff: Finished.")
+    logger.info("ENSDF CutOff: Finished.")
     return None
