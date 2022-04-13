@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
+from nucml.ensdf.data_utilities import _filter_df_with_za_and_sort_by_levels
+
 sns.set(font_scale=2)
 sns.set_style("white")
 
@@ -32,13 +34,13 @@ def level_density(df, Z, A, df2=empty_df, save=False, save_dir=None, label1="Ado
     ensdf2 = df2.copy()
     ensdf_cut_df_avaliable = True if ensdf2.shape[0] != 0 else False
 
-    to_plot = ensdf[(ensdf["Z"] == Z) & (ensdf["A"] == A)].sort_values(by='Level_Number', ascending=True)
+    to_plot = _filter_df_with_za_and_sort_by_levels(ensdf, Z, A)
     to_plot["N"] = np.cumsum(to_plot.Level_Number)
 
     plt.figure(figsize=(14, 8))
     plt.plot(to_plot.Energy, to_plot.N, c='blue', label=label1, marker="x")
     if ensdf_cut_df_avaliable:
-        to_plot_2 = ensdf2[(ensdf2["Z"] == Z) & (ensdf2["A"] == A)].sort_values(by='Level_Number', ascending=True)
+        to_plot_2 = _filter_df_with_za_and_sort_by_levels(ensdf2, Z, A)
         to_plot_2["N"] = np.cumsum(to_plot_2.Level_Number)
         plt.plot(to_plot_2.Energy, to_plot_2.N, c='green', label=label2, marker="o")
     plt.yscale('log')
@@ -109,8 +111,7 @@ def levels_axh(protons, mass_number, ensdf_df, save=False, save_dir=None):
     Returns:
         None
     """
-    to_plot = ensdf_df[(ensdf_df["Z"] == protons) & (ensdf_df["A"] == mass_number)].sort_values(
-        by='Level_Number', ascending=True)
+    to_plot = _filter_df_with_za_and_sort_by_levels(ensdf_df, protons, mass_number)
     plt.figure(figsize=(10, 15))
     for i in to_plot["Energy"].values:
         plt.axhline(i, c="r", alpha=0.7)

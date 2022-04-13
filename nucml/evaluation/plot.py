@@ -52,18 +52,17 @@ def plot(isotope, MT, exfor=None, exclude=[], new_data=None, new_data_label="", 
         isotope, MT, mode=mode, library="jeff3.3", mev_to_ev=mev_to_ev, mb_to_b=mb_to_b, log=False)
 
     plt.figure(figsize=(14, 9))
-    if exfor is not None:
-        plt.loglog(exfor.Energy, exfor.Data, label="EXFOR", zorder=z_order_dict["exfor"])
-    if new_data is not None:
-        plt.scatter(new_data.Energy, new_data.Data, label=new_data_label, zorder=z_order_dict["new_data"])
-    if endf is not None and "endf" not in exclude:
-        plt.loglog(endf.Energy, endf.Data, label="ENDF/B-VIII", zorder=z_order_dict["endf"])
-    if tendl is not None and "tendl" not in exclude and "all" not in exclude:
-        plt.loglog(tendl.Energy, tendl.Data, label="TENDL 2019", zorder=z_order_dict["tendl"])
-    if jendl is not None and "jendl" not in exclude and "all" not in exclude:
-        plt.loglog(jendl.Energy, jendl.Data, label="JENDL 4.0", zorder=z_order_dict["jendl"])
-    if jeff is not None and "jeff" not in exclude and "all" not in exclude:
-        plt.loglog(jeff.Energy, jeff.Data, label="JEFF 3.3", zorder=z_order_dict["jeff"])
+    all_not_in_exclude = "all" not in exclude
+    all_dataframes = {'exfor': exfor, 'new_data': new_data, 'endf': endf, 'tendl': tendl, 'jendl': jendl, 'jeff': jeff}
+    plot_labels = {'exfor': 'EXFOR', 'new_data': new_data_label, 'endf': 'ENDF/B-VIII', 'tendl': 'TENDL 2019', 'jendl': 'JENDL 4.0', 'jeff': 'JEFF 3.3'}
+    for key, dataframe in all_dataframes.items():
+        if (dataframe is None) or (all_not_in_exclude and key not in ['exfor', 'new_data']):
+            continue
+        plot_kwargs = {"label": plot_labels[key], "zorder": z_order_dict[key]}
+        if key == "new_data":
+            plt.scatter(dataframe.Energy, dataframe.Data, **plot_kwargs)
+        plt.loglog(dataframe.Energy, dataframe.Data, **plot_kwargs)
+
     plt.xlabel('Energy (eV)')
     plt.ylabel('Cross Section (b)')
     plt.legend()

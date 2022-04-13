@@ -8,7 +8,7 @@ from joblib import dump
 from sklearn import tree
 from sklearn.neighbors import KNeighborsRegressor
 
-import nucml.model.utilities as model_utils  # pylint: disable=import-error
+import nucml.model.utilities as model_utils
 
 
 def train_knn(x_train, y_train, x_test, y_test, k_list, save_models=False, save_dir="."):

@@ -2,7 +2,7 @@
 
 import os
 
-from nucml import general_utilities  # pylint: disable=import-error
+from nucml import general_utilities
 
 dirname = os.path.dirname(__file__)
 

@@ -5,9 +5,9 @@ import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-import nucml.exfor.data_utilities as exfor_utils  # pylint: disable=import-error
-import nucml.datasets as nuc_data  # pylint: disable=import-error
-import nucml.ace.data_utilities as ace_utils  # pylint: disable=import-error
+import nucml.exfor.data_utilities as exfor_utils
+import nucml.datasets as nuc_data
+import nucml.ace.data_utilities as ace_utils
 
 sns.set(style="white", font_scale=2.5)
 
@@ -258,46 +258,28 @@ def make_chlorine_paper_figure(df, dt_model, dt_scaler, knn_model, knn_scaler, t
 
     _, (ax1, ax2) = plt.subplots(2, figsize=(30, 20))
 
-    chlorine_data_ext = exfor_utils.expanding_dataset_energy(chlorine_35_np_dt, 0, 0, False, 0, e_array=ace_cl)
-    chlorine_data_ext = chlorine_data_ext[chlorine_data_ext.Energy > chlorine_35_np_dt.Energy.min()]
+    for np_data, model, plot_axis, label, new_data in zip(
+            [chlorine_35_np_dt, chlorine_35_np_knn], [dt_model, knn_model], [ax1, ax2], ['DT', 'KNN'], [new_cl_data_dt, new_cl_data_knn]):
+        chlorine_data_ext = exfor_utils.expanding_dataset_energy(np_data, 0, 0, False, 0, e_array=ace_cl)
+        chlorine_data_ext = chlorine_data_ext[chlorine_data_ext.Energy > chlorine_35_np_dt.Energy.min()]
 
-    ax1.plot(
-        10**(chlorine_data_ext.Energy),
-        10**(dt_model.predict(chlorine_data_ext.drop(columns=["Data"]))),
-        label="DT", linestyle="dashed", c="firebrick", linewidth=3)
-    ax1.scatter(10**(chlorine_35_np_dt.Energy), 10**(chlorine_35_np_dt.Data), alpha=0.5, c='#1f77b4', label="EXFOR")
-    ax1.scatter(
-        10**(new_cl_data_dt.Energy),
-        10**(new_cl_data_dt.Data), alpha=1, c='#ff7f0e', s=250, marker="x", label="J.C.Batchelder (2019)")
-    ax1.plot(10**(endf_cl.Energy), 10**(endf_cl.Data), alpha=0.5, c="orange", label="ENDF")
-    ax1.legend(loc=3)
+        plot_axis.plot(
+            10**(chlorine_data_ext.Energy),
+            10**(model.predict(chlorine_data_ext.drop(columns=["Data"]))),
+            label=label, linestyle="dashed", c="firebrick", linewidth=3)
+        plot_axis.scatter(10**(np_data.Energy), 10**(np_data.Data), alpha=0.5, c='#1f77b4', label="EXFOR")
+        plot_axis.scatter(
+            10**(new_data.Energy),
+            10**(new_data.Data), alpha=1, c='#ff7f0e', s=250, marker="x", label="J.C.Batchelder (2019)")
+        plot_axis.plot(10**(endf_cl.Energy), 10**(endf_cl.Data), alpha=0.5, c="orange", label="ENDF")
+        plot_axis.legend(loc=3)
 
-    chlorine_data_ext = exfor_utils.expanding_dataset_energy(chlorine_35_np_knn, 0, 0, False, 0, e_array=ace_cl)
-    chlorine_data_ext = chlorine_data_ext[chlorine_data_ext.Energy > chlorine_35_np_knn.Energy.min()]
-
-    ax2.plot(
-        10**(chlorine_data_ext.Energy),
-        10**(knn_model.predict(chlorine_data_ext.drop(columns=["Data"]))),
-        label="KNN", linestyle="dashed", c="firebrick", linewidth=3)
-    ax2.scatter(10**(chlorine_35_np_knn.Energy), 10**(chlorine_35_np_knn.Data), alpha=0.5, c='#1f77b4', label="EXFOR")
-    ax2.scatter(
-        10**(new_cl_data_knn.Energy),
-        10**(new_cl_data_knn.Data), alpha=1, s=250, c='#ff7f0e', marker="x", label="J.C.Batchelder (2019)")
-    ax2.plot(10**(endf_cl.Energy), 10**(endf_cl.Data), alpha=0.5, c="orange", label="ENDF")
-    ax2.legend(loc=3)
-
-    ax1.set(ylabel='Cross Section (b)')
-    ax2.set(ylabel='Cross Section (b)')
-
-    ax1.set(xlabel='Energy (eV)')
-    ax2.set(xlabel='Energy (eV)')
-
-    ax1.set_xscale('log')
-    ax2.set_xscale('log')
-    ax2.set_yscale('log')
-    ax1.set_yscale('log')
-    ax1.set_xlim(10**-2, 10**7.5)
-    ax2.set_xlim(10**-2, 10**7.5)
+    for plot_axis in [ax1, ax2]:
+        plot_axis.set(ylabel='Cross Section (b)')
+        plot_axis.set(xlabel='Energy (eV)')
+        plot_axis.set_xscale('log')
+        plot_axis.set_yscale('log')
+        plot_axis.set_xlim(10**-2, 10**7.5)
 
     if save:
         plt.savefig(os.path.join(saving_dir, "ML_Cl.png"), dpi=600, bbox_inches="tight")

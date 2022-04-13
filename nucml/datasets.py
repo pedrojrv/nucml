@@ -28,6 +28,10 @@ exfor_elements = gen_utils.load_obj(os.path.join(os.path.dirname(__file__), 'obj
 elements_dict = gen_utils.load_obj(os.path.join(os.path.dirname(__file__), 'objects/Element_AAA.pkl'))
 
 
+def _filter_df_with_za(df, Z, A):
+    return df[(df["Z"] == Z) & (df["A"] == A)]
+
+
 def generate_exfor_dataset(user_path, modes=["neutrons", "protons", "alphas", "deuterons", "gammas", "helions"]):
     """Generate all EXFOR datasets for neutron-, proton-, alpha-, deuterons-, gammas-, and helion-induce reactions.
 

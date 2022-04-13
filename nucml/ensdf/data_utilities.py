@@ -6,9 +6,17 @@ from sklearn import linear_model
 import os
 from joblib import dump
 
-import nucml.model.utilities as model_utils   # pylint: disable=import-error
-import nucml.ensdf.plot as ensdf_plot         # pylint: disable=import-error
-import nucml.general_utilities as gen_utils   # pylint: disable=import-error
+import nucml.model.utilities as model_utils
+import nucml.ensdf.plot as ensdf_plot
+import nucml.general_utilities as gen_utils
+
+from nucml.datasets import _filter_df_with_za
+
+
+def _filter_df_with_za_and_sort_by_levels(df, Z, A):
+    filtered = _filter_df_with_za(df, Z, A)
+    filtered = filtered.sort_values(by='Level_Number', ascending=True)
+    return filtered
 
 
 def load_ensdf_samples(df, Z, A, scale=False, scaler=None, to_scale=[]):
@@ -26,7 +34,7 @@ def load_ensdf_samples(df, Z, A, scale=False, scaler=None, to_scale=[]):
         DataFrame: Extracted isotope sample.
     """
     logging.info("Extracting samples from dataframe.")
-    sample = df[(df["Z"] == Z) & (df["A"] == A)].sort_values(by='Level_Number', ascending=True)
+    sample = _filter_df_with_za_and_sort_by_levels(df, Z, A)
     if scale:
         logging.info("Scaling dataset...")
         sample[to_scale] = scaler.transform(sample[to_scale])
