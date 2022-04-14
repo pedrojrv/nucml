@@ -201,27 +201,20 @@ def plot_limits_ref(exfor, endf, new_data):
         None
     """
     # Setting Figure Limits
-    if (new_data.shape[0] != 0 and endf.shape[0] != 0):  # if both
+    num_samples = new_data.shape[0]
+    endf_samples = endf.shape[0]
+    if (num_samples != 0 and endf_samples != 0):  # if both
         all_y = np.concatenate((exfor["Data"], endf["Data"], new_data["Data"]))
-        minimum_y = all_y[all_y > 0].min() - all_y[all_y > 0].min() * 0.05
-        maximum_y = all_y.max() + all_y.max() * 0.05
-        plt.ylim(minimum_y, maximum_y)
-    elif new_data.shape[0] == 0 and endf.shape[0] != 0:  # if ENDF only
+    elif num_samples == 0 and endf_samples != 0:  # if ENDF only
         all_y = np.concatenate((exfor["Data"], endf["Data"]))
-        minimum_y = all_y[all_y > 0].min() - all_y[all_y > 0].min() * 0.05
-        maximum_y = all_y.max() + all_y.max() * 0.05
-        plt.ylim(minimum_y, maximum_y)
-    elif new_data.shape[0] != 0 and endf.shape[0] == 0:  # if ADDITIONAL only
+    elif num_samples != 0 and endf_samples == 0:  # if ADDITIONAL only
         all_y = np.concatenate((exfor["Data"].values, new_data["Data"].values))
-        minimum_y = all_y[all_y > 0].min() - all_y[all_y > 0].min() * 0.05
-        maximum_y = all_y.max() + all_y.max() * 0.05
-        plt.ylim(minimum_y, maximum_y)
     else:  # if no ENDF and Additional
         all_y = exfor["Data"].values
-        minimum_y = all_y[all_y > 0].min() - all_y[all_y > 0].min() * 0.05
-        maximum_y = all_y.max() + all_y.max() * 0.05
-        plt.ylim(minimum_y, maximum_y)
-    return None
+
+    minimum_y = all_y[all_y > 0].min() - all_y[all_y > 0].min() * 0.05
+    maximum_y = all_y.max() + all_y.max() * 0.05
+    plt.ylim(minimum_y, maximum_y)
 
 
 def make_chlorine_paper_figure(df, dt_model, dt_scaler, knn_model, knn_scaler, to_scale, save=False, saving_dir=""):

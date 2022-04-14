@@ -221,6 +221,11 @@ def expanding_dataset_energy(data, E_min, E_max, log, N, e_array=None):
     return data
 
 
+def _plot_with_prediction(df, infer_df, y_hat):
+    plt.plot(df.Energy, df.Data, alpha=0.5, c="g")
+    plt.plot(infer_df.Energy, y_hat)
+
+
 def make_predictions_w_energy(e_array, df, Z, A, MT, model, model_type, scaler, to_scale, one_hot=True, log=False,
                               show=False):
     """Return predictions using a model at the given energy grid for a given isotope.
@@ -251,9 +256,7 @@ def make_predictions_w_energy(e_array, df, Z, A, MT, model, model_type, scaler, 
     exfor = load_samples(df, Z, A, MT, one_hot=one_hot, mt_for="ACE")
     # Make Predictions
     y_hat = model_utils.make_predictions(to_infer.values, model, model_type)
-    if show:
-        plt.plot(exfor.Energy, exfor.Data, alpha=0.5, c="g")
-        plt.plot(to_infer.Energy, y_hat)
+    _plot_with_prediction(exfor, to_infer, y_hat) if show else None
     return y_hat
 
 
@@ -280,9 +283,7 @@ def make_predictions_from_df(df, Z, A, MT, model, model_type, scaler, to_scale, 
     exfor = load_samples(df, Z, A, MT, **kwargs)
     # Make Predictions
     y_hat = model_utils.make_predictions(exfor.drop(columns=["Data"]).values, model, model_type)
-    if show:
-        plt.plot(exfor.Energy, exfor.Data, alpha=0.5, c="g")
-        plt.plot(exfor.Energy, y_hat)
+    _plot_with_prediction(exfor, exfor, y_hat) if show else None
     return y_hat
 
 
@@ -529,6 +530,13 @@ def get_error_endf_exfor(endf, df_sample, filter_energy=True):
     return exfor_endf, error_endf_exfor_df
 
 
+def _get_isotope_df_cols(df, Z, A, scaler, to_scale):
+    kwargs = {"nat_iso": "I", "one_hot": True, "scaler": scaler, "to_scale": to_scale}
+    exfor_isotope = load_isotope(df, Z, A, **kwargs)
+    exfor_isotope_cols = exfor_isotope.loc[:, (exfor_isotope != 0).any(axis=0)][:1]
+    return exfor_isotope_cols
+
+
 def get_mt_errors_exfor_ml(df, Z, A, scaler, to_scale, model):
     """Calculate the error between EXFOR and ML predictions for a given isotope.
 
@@ -543,14 +551,11 @@ def get_mt_errors_exfor_ml(df, Z, A, scaler, to_scale, model):
     Returns:
         DataFrame
     """
-    kwargs = {"nat_iso": "I", "one_hot": True, "scaler": scaler, "to_scale": to_scale}
+    exfor_isotope_cols = _get_isotope_df_cols(df, Z, A, scaler, to_scale)
     error_results = pd.DataFrame(columns=['MT', 'MAE', 'MSE', 'EVS', 'MAE_M', 'R2'])
-    exfor_isotope = load_isotope(df, Z, A, **kwargs)
-    # NEXT WE REMOVE ANY MT COLUMNS THAT ARE FILLED WITH ZEROS
-    exfor_isotope_cols = exfor_isotope.loc[:, (exfor_isotope != 0).any(axis=0)][:1]
     for col in exfor_isotope_cols.columns:
         if "MT" in col:
-            exfor_sample = load_samples(df, Z, A, col, **kwargs)
+            exfor_sample = load_samples(df, Z, A, col, nat_iso="I", one_hot=True, scaler=scaler, to_scale=to_scale)
             error_dict = model_utils.regression_error_metrics(model.predict(exfor_sample.drop(columns=["Data"])),
                                                               exfor_sample.Data)
             error_results = error_results.append(pd.DataFrame({
@@ -575,16 +580,14 @@ def get_mt_error_exfor_endf(df, Z, A, scaler, to_scale):
     """
     # TODO: FIND OUT IF WE NEED SCALER OR TO SCALE
     # We don't care if its scaled or not since we only care abuot the Data feature, but we still need it?
-    kwargs = {"nat_iso": "I", "one_hot": True, "scaler": scaler, "to_scale": to_scale}
+    exfor_isotope_cols = _get_isotope_df_cols(df, Z, A, scaler, to_scale)
     error_results = pd.DataFrame(columns=['id', 'mae', 'mse', 'evs', 'mae_m', 'r2', 'MT'])
-    exfor_isotope = load_isotope(df, Z, A, **kwargs)
-    exfor_isotope_cols = exfor_isotope.loc[:, (exfor_isotope != 0).any(axis=0)][:1]
     for col in exfor_isotope_cols.columns:
         if "MT" in col:
             if col in ["MT_101", "MT_9000"]:
                 continue
             else:
-                exfor_sample = load_samples(df, Z, A, col, **kwargs)
+                exfor_sample = load_samples(df, Z, A, col, nat_iso="I", one_hot=True, scaler=scaler, to_scale=to_scale)
                 endf_data = endf_utils.get_for_exfor(Z, A, col)
                 _, error_exfor_endf = get_error_endf_exfor(endf_data, exfor_sample)
                 error_exfor_endf["MT"] = col
@@ -617,9 +620,7 @@ def get_csv_for_ace(df, Z, A, model, scaler, to_scale, model_type=None, saving_d
     ace_array = ace_utils.get_energies('{:<02d}'.format(Z) + str(A).zfill(3), ev=True, log=True)
     data_ace = pd.DataFrame({"Energy": ace_array})
 
-    kwargs = {"nat_iso": "I", "one_hot": True, "scaler": scaler, "to_scale": to_scale}
-    exfor_isotope = load_isotope(df, Z, A, **kwargs)
-    exfor_isotope_cols = exfor_isotope.loc[:, (exfor_isotope != 0).any(axis=0)][:1]
+    exfor_isotope_cols = _get_isotope_df_cols(df, Z, A, scaler, to_scale)
     for col in exfor_isotope_cols.columns:
         if "MT" in col:
             if col in ["MT_9000"]:

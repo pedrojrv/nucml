@@ -58,6 +58,24 @@ def get_headers(dat_list, saving_directory):
     return None
 
 
+def _strip_and_store(df, column="SYMB", storing_column="Text_Filenames"):
+    df[storing_column] = df[column].apply(lambda x: x.strip())
+    return df
+
+
+def _read_header_file(header_directory):
+    csv_file = os.path.join(header_directory, "all_ensdf_headers_formatted.csv")
+    ensdf_index_col = ["SYMB", "A", "Z", "Nol", "Nog", "Nmax", "Nc", "Sn", "Sp"]
+    ensdf_index = pd.read_csv(csv_file, names=ensdf_index_col, sep="|")
+    ensdf_index = _strip_and_store(ensdf_index)
+
+
+def _write_file_with_separators(open_path, output_path, separator_index):
+    with open(open_path) as infile, open(output_path) as outfile:
+        string = _insert_separator(infile, separator_index)
+        outfile.write("".join(string))
+
+
 def generate_elemental_ensdf(dat_list, header_directory, saving_directory):
     """Generate a new RIPL/ENSDF file for each element.
 
@@ -78,10 +96,7 @@ def generate_elemental_ensdf(dat_list, header_directory, saving_directory):
     Returns:
         None
     """
-    csv_file = os.path.join(header_directory, "all_ensdf_headers_formatted.csv")
-    ensdf_index_col = ["SYMB", "A", "Z", "Nol", "Nog", "Nmax", "Nc", "Sn", "Sp"]
-    ensdf_index = pd.read_csv(csv_file, names=ensdf_index_col, sep="|")
-    ensdf_index["Text_Filenames"] = ensdf_index["SYMB"].apply(lambda x: x.strip())
+    ensdf_index = _read_header_file(header_directory)
     element_list_endf = ensdf_index.SYMB.tolist()  # string that files start with
     element_list_names = ensdf_index.Text_Filenames.tolist()  # same strings but stripped
 
@@ -110,10 +125,11 @@ def generate_elemental_ensdf(dat_list, header_directory, saving_directory):
     general_utilities.initialize_directories(ensdf_v3_path, reset=True)
     logger.info("ENSDF Elemental: Formatting files...")
     for i in element_list_names:
-        with open(os.path.join(ensdf_v2_path, i + ".txt")) as infile, open(
-             os.path.join(ensdf_v3_path, i + ".txt"), 'w') as outfile:
-            string = _insert_separator(infile, [4, 15, 20, 23, 34, 37, 39, 43, 54, 65, 66])
-            outfile.write("".join(string))
+        _write_file_with_separators(
+            os.path.join(ensdf_v2_path, i + ".txt"),
+            os.path.join(ensdf_v3_path, i + ".txt"),
+            [4, 15, 20, 23, 34, 37, 39, 43, 54, 65, 66]
+        )
     logger.info("ENSDF Elemental: Finished formating data.")
     return None
 
@@ -158,10 +174,11 @@ def get_stable_states(dat_list, header_directory, saving_directory=None):
                         outfile.write(e + lines[1 + z])
 
     logger.info("STABLE STATES: Formatting text file...")
-    with open(os.path.join(header_directory, "ensdf_stable_state.txt")) as infile, open(
-         os.path.join(saving_directory, 'ensdf_stable_state_formatted.csv'), 'w') as outfile:
-        string = _insert_separator(infile, [5, 10, 19, 25, 28, 39, 42, 44, 68, 71, 74])
-        outfile.write("".join(string))
+    _write_file_with_separators(
+        os.path.join(header_directory, "ensdf_stable_state.txt"),
+        os.path.join(saving_directory, 'ensdf_stable_state_formatted.csv'),
+        [5, 10, 19, 25, 28, 39, 42, 44, 68, 71, 74]
+    )
     logger.info("STABLE STATES: Finished.")
     os.remove(os.path.join(header_directory, "ensdf_stable_state.txt"))
     return None
@@ -183,10 +200,7 @@ def generate_ensdf_csv(header_directory, elemental_directory, saving_directory=N
     """
     if saving_directory is None:
         saving_directory = header_directory
-    csv_file = os.path.join(header_directory, "all_ensdf_headers_formatted.csv")
-    ensdf_index_col = ["SYMB", "A", "Z", "Nol", "Nog", "Nmax", "Nc", "Sn", "Sp"]
-    ensdf_index = pd.read_csv(csv_file, names=ensdf_index_col, sep="|")
-    ensdf_index["Text_Filenames"] = ensdf_index["SYMB"].apply(lambda x: x.strip())
+    ensdf_index = _read_header_file(header_directory)
     element_list_names = ensdf_index.Text_Filenames.tolist()  # same strings but stripped
 
     logger.info("ENSDF CSV: Creatign DataFrame with Basic ENSDF data ...")
@@ -235,7 +249,7 @@ def get_level_parameters(level_params_directory, saving_directory=None):
         "Num_Lev_Unique_Spin", "E_Max_N_Max", "E_Num_Lev_U_Spin", "Chi", "Fit",
         "Flag", "Nox", "Xm_Ex", "Sigma"]
     cut_off = pd.read_csv(save_file, names=cut_off_cols, skiprows=4, sep=";")
-    cut_off["Element"] = cut_off["Element"].apply(lambda x: x.strip())
+    cut_off = _strip_and_store(cut_off, 'Element', 'Element')
     cut_off["Element_w_A"] = cut_off["A"].astype(str) + cut_off["Element"]
     cut_off = cut_off[~cut_off.Element.str.contains(r'\d')]
     cut_off.to_csv(save_file, index=False)
