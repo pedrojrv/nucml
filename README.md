@@ -7,7 +7,7 @@ NucML is the first and only end-to-end python-based supervised machine learning 
 
 # Installation and Setup
 
-Please refer to the Installation guide in the official documentation here: https://pedrojrv.github.io/nucml/getting-started.html.
+Please refer to the Installation guide in the official documentation here: https://pedrojrv.github.io/nucml/.
 
 All educational and tutorial material can be found in the `ML_Nuclear_Data` repository here: https://github.com/pedrojrv/ML_Nuclear_Data
 
