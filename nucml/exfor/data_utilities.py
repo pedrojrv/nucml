@@ -98,15 +98,12 @@ def load_element(df, Z, nat_iso="I", one_hot=False, scale=False, scaler=None, to
     Returns:
         DataFrame
     """
-    logging.info("Extracting samples from dataframe.")
     if one_hot:
         sample = df[(df["Z"] == Z) & (df["Element_Flag_" + nat_iso] == 1)].sort_values(by='Energy', ascending=True)
     else:
         sample = df[(df["Z"] == Z) & (df["Element_Flag"] == nat_iso)].sort_values(by='Energy', ascending=True)
     if scale:
-        logging.info("Scaling dataset...")
         sample[to_scale] = scaler.transform(sample[to_scale])
-    logging.info("EXFOR extracted DataFrame has shape: {}".format(sample.shape))
     return sample
 
 
@@ -117,7 +114,6 @@ def _copy_over_data_and_scale(main_df, new_data, scaler=None, to_scale=None):
     if "dEnergy" in list(new_data.columns):
         new_data.drop(columns="dEnergy", inplace=True)
     if scaler is not None and to_scale is not None:
-        logging.info("Scaling dataset...")
         new_data[to_scale] = scaler.transform(new_data[to_scale])
 
 
