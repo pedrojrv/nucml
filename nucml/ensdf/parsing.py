@@ -99,8 +99,8 @@ def generate_elemental_ensdf(dat_list, header_directory, saving_directory):
                 lines = infile.readlines()
                 for z, line in enumerate(lines):
                     if line.startswith(str(e)):
-                        value1 = ensdf_index[ensdf_index["SYMB"] == e][["Nol"]].values[0][0]
-                        for y in range(0, 1 + value1 + ensdf_index[ensdf_index["SYMB"] == e][["Nog"]].values[0][0]):
+                        value = ensdf_index[ensdf_index["SYMB"] == e]
+                        for y in range(0, 1 + value[["Nol"]].values[0][0] + value[["Nog"]].values[0][0]):
                             to_write = lines[z + y]
                             outfile1.write(to_write)
                             if not y:

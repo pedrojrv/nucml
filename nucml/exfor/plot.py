@@ -99,16 +99,12 @@ def ml_results(results_dict, order_dict={}, save_dir='', save=False, render_brow
                     label='EXFOR', zorder=order_dict["exfor_ml_original"],
                     s=15, c="tab:green")
 
-        if "exfor_ml_expanded" in results_dict.keys():
-            plt.plot(
-                10**results_dict["exfor_ml_expanded"]['df']["Energy"],
-                10**results_dict["exfor_ml_expanded"]['predictions'].flatten(),
-                label='ML', zorder=order_dict["exfor_ml"], c="tab:orange")
-        else:
-            plt.plot(
-                10**results_dict["exfor_ml_original"]['df']["Energy"],
-                10**results_dict["exfor_ml_original"]['predictions'].flatten(),
-                label='ML', zorder=order_dict["exfor_ml"])
+        exfor_tag = "exfor_ml_expanded" if "exfor_ml_expanded" in results_dict.keys() else "exfor_ml_original"
+        plt.plot(
+            10**results_dict[exfor_tag]['df']["Energy"],
+            10**results_dict[exfor_tag]['predictions'].flatten(),
+            label='ML', zorder=order_dict["exfor_ml"], c="tab:orange")
+
         if "endf" in results_dict.keys():
             plt.plot(
                 10**results_dict["endf"].Energy, 10**results_dict["endf"].Data,
@@ -242,12 +238,12 @@ def make_chlorine_paper_figure(df, dt_model, dt_scaler, knn_model, knn_scaler, t
     Returns:
         None
     """
-    kwargs = {"nat_iso": "I", "one_hot": True, "scale": True, "to_scale": to_scale}
+    kwargs = {"nat_iso": "I", "one_hot": True, "to_scale": to_scale}
     chlorine_35_np_knn = exfor_utils.load_samples(df, 17, 35, "MT_103", scaler=knn_scaler, **kwargs)
     chlorine_35_np_dt = exfor_utils.load_samples(df, 17, 35, "MT_103", scaler=dt_scaler, **kwargs)
 
     new_cl_data_kwargs = {
-        "Z": 17, "A": 35, "MT": "MT_103", "log": True, "scale": True, "to_scale": to_scale, "one_hot": True}
+        "Z": 17, "A": 35, "MT": "MT_103", "log": True, "to_scale": to_scale, "one_hot": True}
     new_cl_data_knn = exfor_utils.load_newdata(
         "../EXFOR/New_Data/Chlorine_Data/new_cl_np.csv", df, scaler=knn_scaler, **new_cl_data_kwargs)
     new_cl_data_dt = exfor_utils.load_newdata(
@@ -259,7 +255,8 @@ def make_chlorine_paper_figure(df, dt_model, dt_scaler, knn_model, knn_scaler, t
     _, (ax1, ax2) = plt.subplots(2, figsize=(30, 20))
 
     for np_data, model, plot_axis, label, new_data in zip(
-            [chlorine_35_np_dt, chlorine_35_np_knn], [dt_model, knn_model], [ax1, ax2], ['DT', 'KNN'], [new_cl_data_dt, new_cl_data_knn]):
+            [chlorine_35_np_dt, chlorine_35_np_knn], [dt_model, knn_model], [ax1, ax2], ['DT', 'KNN'],
+            [new_cl_data_dt, new_cl_data_knn]):
         chlorine_data_ext = exfor_utils.expanding_dataset_energy(np_data, 0, 0, False, 0, e_array=ace_cl)
         chlorine_data_ext = chlorine_data_ext[chlorine_data_ext.Energy > chlorine_35_np_dt.Energy.min()]
 

@@ -5,11 +5,12 @@ import logging
 from sklearn import linear_model
 import os
 from joblib import dump
+from functools import partial
 
 import nucml.model.utilities as model_utils
 import nucml.ensdf.plot as ensdf_plot
 import nucml.general_utilities as gen_utils
-
+from nucml.data_utils import copy_data_from_df_to_df
 from nucml.datasets import _filter_df_with_za
 
 
@@ -82,11 +83,8 @@ def append_ensdf_levels(tot_num_levels, df, Z, A, log=False, scale=False, scaler
     """
     new_data = pd.DataFrame({"Level_Number": np.arange(1, tot_num_levels + 1)})
     isotope_exfor = load_ensdf_samples(df, Z, A)
-    for i in list(isotope_exfor.columns)[2:]:
-        new_data[i] = isotope_exfor[i].values[0]  # changed to 0 from 1
-    logging.info("Expanded Dataset has shape: {}".format(new_data.shape))
+    new_data = copy_data_from_df_to_df(isotope_exfor, new_data, start=2)
     if scale:
-        logging.info("Scaling dataset...")
         new_data[to_scale] = scaler.transform(new_data[to_scale])
     if log:
         new_data["Level_Number"] = np.log10(new_data["Level_Number"])
@@ -111,11 +109,8 @@ def append_ensdf_levels_nodata(tot_num_levels, df, log=False, scale=False, scale
     isotope_exfor = df.copy()
     if "Energy" in isotope_exfor.columns:
         isotope_exfor = isotope_exfor.drop(columns="Energy")
-    for i in list(isotope_exfor.columns)[1:]:
-        new_data[i] = isotope_exfor[i].values[0]  # changed to 0 from 1
-    logging.info("Expanded Dataset has shape: {}".format(new_data.shape))
+    new_data = copy_data_from_df_to_df(isotope_exfor, new_data, start=1)
     if scale:
-        logging.info("Scaling dataset...")
         new_data[to_scale] = scaler.transform(new_data[to_scale])
     if log:
         new_data["Level_Number"] = np.log10(new_data["Level_Number"])
@@ -143,11 +138,8 @@ def append_ensdf_levels_range(tot_num_levels, df, Z, A, steps=1, log=False, scal
     """
     new_data = pd.DataFrame({"Level_Number": np.arange(1, tot_num_levels + 1, steps)})
     isotope_exfor = load_ensdf_samples(df, Z, A)
-    for i in list(isotope_exfor.columns)[2:]:
-        new_data[i] = isotope_exfor[i].values[1]
-    logging.info("Expanded Dataset has shape: {}".format(new_data.shape))
+    new_data = copy_data_from_df_to_df(isotope_exfor, new_data, start=2)
     if scale:
-        logging.info("Scaling dataset...")
         new_data[to_scale] = scaler.transform(new_data[to_scale])
     if log:
         new_data["Level_Number"] = np.log10(new_data["Level_Number"])
@@ -186,19 +178,15 @@ def generate_level_density_csv(df, Z, A, nodata=False, upper_energy_mev=20, get_
     """
     if nodata:
         original = df.copy()
+        append_data_fn = partial(append_ensdf_levels_nodata, df.copy(), log=True, scale=False)
     else:
         original = load_ensdf_samples(df, Z, A)
+        append_data_fn = partial(append_ensdf_levels, df.copy(), Z, A, log=True, scale=False)
 
     element = original.Element_w_A.values[0]
     logging.info("Generating level density for {}".format(element))
 
-    if tot_num_levels != 0:
-        if nodata:
-            simple = append_ensdf_levels_nodata(tot_num_levels, df.copy(), log=True, scale=False)
-        else:
-            simple = append_ensdf_levels(tot_num_levels, df.copy(), Z, A, log=True, scale=False)
-    else:
-        simple = original.copy()
+    simple = append_data_fn(tot_num_levels) if tot_num_levels else original.copy()
 
     original = original[["Level_Number", "Energy"]]
     simple = simple[["Level_Number"]]
@@ -219,10 +207,7 @@ def generate_level_density_csv(df, Z, A, nodata=False, upper_energy_mev=20, get_
 
         while last_energy < upper_limit:
             number_levels = number_levels + 100
-            if nodata:
-                simple = append_ensdf_levels_nodata(number_levels, df.copy(), log=True, scale=False)
-            else:
-                simple = append_ensdf_levels(number_levels, df.copy(), Z, A, log=True, scale=False)
+            simple = append_data_fn(number_levels)
             pred = pd.DataFrame()
             pred["Level_Number"] = simple.Level_Number
             pred["Energy"] = reg.predict(pred)
@@ -345,6 +330,7 @@ def _invert_data_w_scaler(to_infer, to_scale, scaler, log):
         to_infer["Energy"] = 10**to_infer.Energy.values
     to_infer[to_scale] = scaler.inverse_transform(to_infer[to_scale])
     return to_infer
+
 
 def make_predictions_from_df(df, Z, A, model, model_type, scaler, to_scale, log_sqrt=False, log=False, plot=False,
                              save=False, save_dir=""):

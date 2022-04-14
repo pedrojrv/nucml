@@ -1,5 +1,4 @@
 """Data manipulation utilities for ACE datasets."""
-import logging
 import math
 import os
 import shutil
@@ -581,15 +580,8 @@ def modify_xss_w_df(xss, ml_ace_df, mt_array, mt_xs_pointers_array, jxs_df, poin
                 xss[start + 2: end] = ml_ace_df.reset_index(drop=True)[i].iloc[
                     xs_info_dict["energy_start"]: xs_info_dict["energy_end"]].values
 
-    if (len(xss)/4 - len(xss)//4)/0.25 == 0:
-        logging.info("It is wokring")
-    elif 4 - (len(xss)/4 - len(xss)//4)/0.25 == 3:
-        xss = np.append(xss, (np.nan, np.nan, np.nan))
-    elif 4 - (len(xss)/4 - len(xss)//4)/0.25 == 2:
-        xss = np.append(xss, (np.nan, np.nan))
-    elif 4 - (len(xss)/4 - len(xss)//4)/0.25 == 1:
-        xss = np.append(xss, (np.nan))
-
+    np_nan_needed = 4 - (len(xss)/4 - len(xss)//4)/0.25
+    xss = np.append(xss, ([np.nan] * np_nan_needed))
     return xss
 
 
@@ -781,8 +773,7 @@ def generate_bench_ml_xs(df, models_df, bench_name, to_scale, raw_saving_dir, re
             if not os.path.isfile(path_to_ml_csv):
                 if row.normalizer == "none":
                     _ = exfor_utils.get_csv_for_ace(
-                        df, Z, A, model, None, to_scale, saving_dir=ml_xs_saving_dir, saving_filename=filename,
-                        scale=False)
+                        df, Z, A, model, None, to_scale, saving_dir=ml_xs_saving_dir, saving_filename=filename)
                 else:
                     _ = exfor_utils.get_csv_for_ace(
                         df, Z, A, model, scaler, to_scale, saving_dir=ml_xs_saving_dir, saving_filename=filename)
@@ -1018,9 +1009,8 @@ def gather_benchmark_results(searching_directory):
     results_df = pd.DataFrame({
         "Model": names, "Benchmark": benchmark_names, "K_eff_ana": k_results_ana, "Unc_ana": k_unc_ana,
         "K_eff_imp": k_results_imp, "Unc_imp": k_unc_imp})
-    results_df["Deviation_Ana"] = results_df.K_eff_ana.apply(lambda k: abs((k-1)/1))
-    results_df["Deviation_Imp"] = results_df.K_eff_imp.apply(lambda k: abs((k-1)/1))
-
+    for k_type in ['Ana', 'Imp']:
+        results_df[f"Deviation_{k_type}"] = results_df[[f'K_eff_{k_type.lower()}']].apply(lambda k: abs((k-1)/1))
     return results_df
 
 
