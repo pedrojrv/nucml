@@ -403,7 +403,6 @@ def predicting_nuclear_xs_v2(df, Z, A, MT, model, to_scale=None, scaler=None, e_
             exfor_endf_new_data, error_endf_new = get_error_endf_exfor(endf, new_data, filter_energy=False)
             error_df = error_df.append(error_endf_new)
             all_dict.update({"exfor_endf_new": exfor_endf_new_data, "error_metrics": error_df})
-
     _plot_save_predictions(plotter, all_dict, order_dict, save, path, show, log, save_both)
     return all_dict
 

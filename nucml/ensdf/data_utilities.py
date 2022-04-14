@@ -34,10 +34,8 @@ def load_ensdf_samples(df, Z, A, scale=False, scaler=None, to_scale=[]):
     Returns:
         DataFrame: Extracted isotope sample.
     """
-    logging.info("Extracting samples from dataframe.")
     sample = _filter_df_with_za_and_sort_by_levels(df, Z, A)
     if scale:
-        logging.info("Scaling dataset...")
         sample[to_scale] = scaler.transform(sample[to_scale])
     logging.info("ENSDF extracted DataFrame has shape: {}".format(sample.shape))
     return sample
@@ -56,10 +54,8 @@ def load_ensdf_element(df, Z, scale=False, scaler=None, to_scale=[]):
     Returns:
         DataFrame: Extracted element sample.
     """
-    logging.info("Extracting samples from dataframe.")
     sample = df[(df["Z"] == Z)]
     if scale:
-        logging.info("Scaling dataset...")
         sample[to_scale] = scaler.transform(sample[to_scale])
     logging.info("ENSDF extracted DataFrame has shape: {}".format(sample.shape))
     return sample

@@ -29,7 +29,11 @@ elements_dict = gen_utils.load_obj(os.path.join(os.path.dirname(__file__), 'obje
 
 
 def _filter_df_with_za(df, Z, A):
-    return df[(df["Z"] == Z) & (df["A"] == A)]
+    if Z is not None:
+        df = df[(df["Z"] == Z)]
+    if A is not None:
+        df = df[(df["A"] == A)]
+    return df
 
 
 def generate_exfor_dataset(user_path, modes=["neutrons", "protons", "alphas", "deuterons", "gammas", "helions"]):

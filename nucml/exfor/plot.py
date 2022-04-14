@@ -39,16 +39,11 @@ def ml_results(results_dict, order_dict={}, save_dir='', save=False, render_brow
             y=results_dict["exfor_ml_original"]['df']["Data"],
             mode='markers', name='EXFOR')
 
-        if "exfor_ml_expanded" in results_dict.keys():
-            exfor_ml_trace = go.Scattergl(
-                x=results_dict["exfor_ml_expanded"]['df']["Energy"],
-                y=results_dict["exfor_ml_expanded"]['predictions'].flatten(),
-                mode='lines', name='ML')
-        else:
-            exfor_ml_trace = go.Scattergl(
-                x=results_dict["exfor_ml_original"]['df']["Energy"],
-                y=results_dict["exfor_ml_original"]['predictions'].flatten(),
-                mode='lines', name='ML')
+        exfor_tag = "exfor_ml_expanded" if "exfor_ml_expanded" in results_dict.keys() else "exfor_ml_original"
+        exfor_ml_trace = go.Scattergl(
+            x=results_dict[exfor_tag]['df']["Energy"],
+            y=results_dict[exfor_tag]['predictions'].flatten(),
+            mode='lines', name='ML')
 
         if "endf" in results_dict.keys():
             endf_trace = go.Scattergl(

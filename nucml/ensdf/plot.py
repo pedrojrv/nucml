@@ -5,12 +5,15 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import os
 
+from functools import partial
+
 from nucml.ensdf.data_utilities import _filter_df_with_za_and_sort_by_levels
 
 sns.set(font_scale=2)
 sns.set_style("white")
 
 empty_df = pd.DataFrame()
+level_density_plotter_fn = partial(plt.savefig, bbox_inches='tight', dpi=600)
 
 
 def level_density(df, Z, A, df2=empty_df, save=False, save_dir=None, label1="Adopted", label2="Cut-Off"):
@@ -47,10 +50,8 @@ def level_density(df, Z, A, df2=empty_df, save=False, save_dir=None, label1="Ado
     plt.ylabel("Level Density")
     plt.xlabel("Energy (MeV)")
     plt.legend()
-    if save:
-        plt.savefig(os.path.join(save_dir, 'ENSDF_{}_Level_Density.png'.format(to_plot.Element_w_A.iloc[0])),
-                    bbox_inches='tight', dpi=600)
-    return None
+    saving_path = os.path.join(save_dir, 'ENSDF_{}_Level_Density.png'.format(to_plot.Element_w_A.iloc[0]))
+    level_density_plotter_fn(saving_path) if save else None
 
 
 def level_density_ml(ensdf_df, predictions_df, log_sqrt=False, log=False, save=False, save_dir=None):
@@ -92,10 +93,9 @@ def level_density_ml(ensdf_df, predictions_df, log_sqrt=False, log=False, save=F
     plt.ylabel("N (Number of Levels)")
     plt.legend()
     plt.xlabel("Energy (MeV)")
-    if save:
-        plt.savefig(os.path.join(save_dir, 'ENSDF_{}Z_{}A_Level_Density.png'.format(
-            ensdf_df.Z.values[0], ensdf_df.A.values[0])), bbox_inches='tight', dpi=300)
-    return None
+    saving_path = os.path.join(save_dir, 'ENSDF_{}Z_{}A_Level_Density.png'.format(
+        ensdf_df.Z.values[0], ensdf_df.A.values[0]))
+    level_density_plotter_fn(saving_path) if save else None
 
 
 def levels_axh(protons, mass_number, ensdf_df, save=False, save_dir=None):
