@@ -36,18 +36,13 @@ def initialize_directories(directory, reset=False):
     Returns:
         None
     """
-    if os.path.isdir(directory):
-        logging.info("GEN UTILS: Directory already exists.")
-        if reset:
-            logging.info("GEN UTILS: Re-initializing...")
-            shutil.rmtree(directory)
-            os.makedirs(directory)
-            logging.info("GEN UTILS: Directory restarted.")
-    else:
-        logging.info("GEN UTILS: Directory does not exists. Creating...")
-        os.makedirs(directory)
-        logging.info("GEN UTILS: Directory created.")
-    return None
+    if not isinstance(directory, list):
+        directory = [directory]
+
+    for dir in directory:
+        if os.path.isdir(dir) and reset:
+            shutil.rmtree(dir)
+        os.makedirs(dir, exist_ok=True)
 
 
 def check_if_files_exist(files_list):
@@ -164,3 +159,8 @@ def parse_isotope(isotope, parse_for="ENDF"):
         return element + mass
     elif parse_for.upper() == "ENSDF":
         return mass + element
+
+
+def close_open_files(files):
+    for file in files:
+        file.close()

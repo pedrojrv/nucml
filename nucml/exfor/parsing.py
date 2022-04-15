@@ -34,6 +34,88 @@ def get_c4_names(c4_directory):
         return names
 
 
+def _extract_basic_data_from_c4(c4_file, tmp_path, heavy_path):
+    # Extract experimental data, authors, years, institutes, and dates
+    with open(c4_file) as infile, \
+            open(os.path.join(heavy_path, "all_cross_sections.txt"), 'a') as num_data, \
+            open(os.path.join(tmp_path, 'authors.txt'), 'a') as authors, \
+            open(os.path.join(tmp_path, 'years.txt'), 'a') as years, \
+            open(os.path.join(tmp_path, 'institutes.txt'), 'a') as institute, \
+            open(os.path.join(tmp_path, 'entry.txt'), 'a') as entry, \
+            open(os.path.join(tmp_path, 'refcode.txt'), 'a') as refcode, \
+            open(os.path.join(tmp_path, 'dataset_num.txt'), 'a') as dataset_num, \
+            open(os.path.join(tmp_path, 'dates.txt'), 'a') as date:
+        copy = False
+        for line in infile:
+            if line.startswith(r"#AUTHOR1"):
+                copy = False
+                authors.write(line)
+            elif line.startswith(r"#YEAR"):
+                copy = False
+                years.write(line)
+            elif line.startswith(r'#ENTRY'):
+                copy = False
+                entry.write(line)
+            elif line.startswith(r'#REF-CODE'):
+                copy = False
+                refcode.write(line)
+            elif line.startswith(r'#DATASET'):
+                if len(line) > 16:
+                    copy = False
+                    dataset_num.write(line)
+            elif line.startswith(r"#INSTITUTE"):
+                copy = False
+                institute.write(line)
+            elif line.startswith(r"#DATE"):
+                copy = False
+                date.write(line)
+            elif line.startswith(r"#---><---->o<-><-->ooo<-------><-------><-------><-------><-------><-------><-------><-------><-><-----------------------><---><->o"):  # noqa
+                copy = True
+                continue
+            elif line.startswith(r"#/DATA"):
+                copy = False
+                continue
+            elif copy:
+                num_data.write(line)
+
+
+def _write_complex_data(outfile, lines, idx, line):
+    if lines[idx + 2].startswith(r"#+"):
+        if lines[idx + 4].startswith(r"#+"):
+            if lines[idx + 6].startswith(r"#+"):
+                outfile.write(
+                    str(line.strip('\n')) + " " + str(lines[idx+2].strip('#+').strip()) + " "
+                    + str(lines[idx+4].strip('#+').strip()) + " "
+                    + str(lines[idx+6].strip('#+').strip()) + "\n")
+            else:
+                outfile.write(
+                    str(line.strip('\n')) + " " + str(lines[idx+2].strip('#+').strip()) + " "
+                    + str(lines[idx+4].strip('#+').strip()) + "\n")
+        else:
+            outfile.write(str(line.strip('\n')) + " " + str(lines[idx+2].strip('#+').strip()) + "\n")
+    else:
+        outfile.write(line)
+
+
+def _extract_complex_data_from_c4(c4_file, tmp_path):
+    with open(c4_file, "r") as infile, \
+            open(os.path.join(tmp_path, 'titles.txt'), 'a') as titles, \
+            open(os.path.join(tmp_path, 'references.txt'), 'a') as references, \
+            open(os.path.join(tmp_path, 'data_points_per_experiment_refined.txt'), 'a') as data_points, \
+            open(os.path.join(tmp_path, 'reaction_notations.txt'), 'a') as reactions:
+        lines = infile.readlines()
+        for idx, line in enumerate(lines):
+            if line.startswith(r"#TITLE"):
+                _write_complex_data(titles, lines, idx, line)
+            elif line.startswith(r"#REFERENCE"):
+                _write_complex_data(references, lines, idx, line)
+            elif line.startswith(r"#DATA "):
+                _write_complex_data(data_points, lines, idx, line)
+            elif line.startswith(r"#REACTION"):
+                _write_complex_data(reactions, lines, idx, line)
+        reactions.write(line)
+
+
 def get_all(c4_list, heavy_path, tmp_path, mode="neutrons"):
     """Retrieve all avaliable information from all .c4 files.
 
@@ -64,169 +146,37 @@ def get_all(c4_list, heavy_path, tmp_path, mode="neutrons"):
     Raises:
         FileNotFoundError: If no .c4 files are in the provided list, then an error is raised.
     """
-    if len(c4_list) != 0:
-        # This will be appended to the previous directories
-        tmp_path = os.path.join(tmp_path, "Extracted_Text_" + mode + "/")
-        heavy_path = os.path.join(heavy_path, "EXFOR_" + mode + "/")
-        general_utilities.initialize_directories(tmp_path, reset=True)
-        general_utilities.initialize_directories(heavy_path, reset=True)
+    if len(c4_list) == 0:
+        raise FileNotFoundError("No .c4 files found.")
 
-        cross_section_file = os.path.join(heavy_path, "all_cross_sections.txt")
-        if os.path.exists(cross_section_file):
-            os.remove(cross_section_file)
+    # This will be appended to the previous directories
+    tmp_path = os.path.join(tmp_path, "Extracted_Text_" + mode + "/")
+    heavy_path = os.path.join(heavy_path, "EXFOR_" + mode + "/")
+    general_utilities.initialize_directories([tmp_path, heavy_path], reset=True)
 
-        logging.info("EXFOR: Extracting experimental data, authors, years, institutes, and dates...")
-        for i in c4_list:
-            with open(i) as infile, \
-                 open(os.path.join(heavy_path, "all_cross_sections.txt"), 'a') as num_data, \
-                 open(os.path.join(tmp_path, 'authors.txt'), 'a') as authors, \
-                 open(os.path.join(tmp_path, 'years.txt'), 'a') as years, \
-                 open(os.path.join(tmp_path, 'institutes.txt'), 'a') as institute, \
-                 open(os.path.join(tmp_path, 'entry.txt'), 'a') as entry, \
-                 open(os.path.join(tmp_path, 'refcode.txt'), 'a') as refcode, \
-                 open(os.path.join(tmp_path, 'dataset_num.txt'), 'a') as dataset_num, \
-                 open(os.path.join(tmp_path, 'dates.txt'), 'a') as date:
-                copy = False
-                for line in infile:
-                    if line.startswith(r"#AUTHOR1"):
-                        copy = False
-                        authors.write(line)
-                    elif line.startswith(r"#YEAR"):
-                        copy = False
-                        years.write(line)
-                    elif line.startswith(r'#ENTRY'):
-                        copy = False
-                        entry.write(line)
-                    elif line.startswith(r'#REF-CODE'):
-                        copy = False
-                        refcode.write(line)
-                    elif line.startswith(r'#DATASET'):
-                        if len(line) > 16:
-                            copy = False
-                            dataset_num.write(line)
-                    elif line.startswith(r"#INSTITUTE"):
-                        copy = False
-                        institute.write(line)
-                    elif line.startswith(r"#DATE"):
-                        copy = False
-                        date.write(line)
-                    elif line.startswith(r"#---><---->o<-><-->ooo<-------><-------><-------><-------><-------><-------><-------><-------><-><-----------------------><---><->o"):  # noqa
-                        copy = True
-                        continue
-                    elif line.startswith(r"#/DATA"):
-                        copy = False
-                        continue
-                    elif copy:
-                        num_data.write(line)
-                infile.close()
-                authors.close()
-                years.close()
-                institute.close()
-                date.close()
-                num_data.close()
-        logging.info("EXFOR: Finished extracting experimental data, authors, years, institutes, and dates.")
-        logging.info("EXFOR: Extracting titles, references, and number of data points per experiment...")
-        for i in c4_list:
-            with open(i, "r") as infile, \
-                 open(os.path.join(tmp_path, 'titles.txt'), 'a') as titles, \
-                 open(os.path.join(tmp_path, 'references.txt'), 'a') as references, \
-                 open(os.path.join(tmp_path, 'data_points_per_experiment_refined.txt'), 'a') as data_points, \
-                 open(os.path.join(tmp_path, 'reaction_notations.txt'), 'a') as reactions:
-                lines = infile.readlines()
-                for z, line in enumerate(lines):
-                    if line.startswith(r"#TITLE"):
-                        if lines[z + 2].startswith(r"#+"):
-                            if lines[z + 4].startswith(r"#+"):
-                                if lines[z + 6].startswith(r"#+"):
-                                    titles.write(
-                                        str(line.strip('\n')) + " " + str(lines[z+2].strip('#+').strip()) + " "
-                                        + str(lines[z+4].strip('#+').strip()) + " "
-                                        + str(lines[z+6].strip('#+').strip()) + "\n")
-                                else:
-                                    titles.write(
-                                        str(line.strip('\n')) + " " + str(lines[z+2].strip('#+').strip()) + " "
-                                        + str(lines[z+4].strip('#+').strip()) + "\n")
-                            else:
-                                titles.write(str(line.strip('\n')) + " " + str(lines[z+2].strip('#+').strip()) + "\n")
-                        else:
-                            titles.write(line)
-
-                    elif line.startswith(r"#REFERENCE"):
-                        if lines[z + 2].startswith(r"#+"):
-                            if lines[z + 4].startswith(r"#+"):
-                                if lines[z + 6].startswith(r"#+"):
-                                    references.write(
-                                        str(line.strip('\n')) + " " + str(lines[z+2].strip('#+').strip()) + " "
-                                        + str(lines[z+4].strip('#+').strip()) + " "
-                                        + str(lines[z+6].strip('#+').strip()) + "\n")
-                                else:
-                                    references.write(
-                                        str(line.strip('\n')) + " " + str(lines[z+2].strip('#+').strip()) + " "
-                                        + str(lines[z+4].strip('#+').strip()) + "\n")
-                            else:
-                                references.write(
-                                    str(line.strip('\n')) + " " + str(lines[z+2].strip('#+').strip()) + "\n")
-                        else:
-                            references.write(line)
-
-                    elif line.startswith(r"#DATA "):
-                        if lines[z + 2].startswith(r"#+"):
-                            if lines[z + 4].startswith(r"#+"):
-                                if lines[z + 6].startswith(r"#+"):
-                                    data_points.write(
-                                        str(line.strip('\n')) + " " + str(lines[z+2].strip('#+').strip()) + " "
-                                        + str(lines[z+4].strip('#+').strip()) + " "
-                                        + str(lines[z+6].strip('#+').strip()) + "\n")
-                                else:
-                                    data_points.write(
-                                        str(line.strip('\n')) + " " + str(lines[z+2].strip('#+').strip()) + " "
-                                        + str(lines[z+4].strip('#+').strip()) + "\n")
-                            else:
-                                data_points.write(
-                                    str(line.strip('\n')) + " " + str(lines[z+2].strip('#+').strip()) + "\n")
-                        else:
-                            data_points.write(line)
-
-                    elif line.startswith(r"#REACTION"):
-                        if lines[z + 2].startswith(r"#+"):
-                            if lines[z + 4].startswith(r"#+"):
-                                if lines[z + 6].startswith(r"#+"):
-                                    reactions.write(
-                                        str(line.strip('\n')) + " " + str(lines[z+2].strip('#+').strip()) + " "
-                                        + str(lines[z+4].strip('#+').strip()) + " "
-                                        + str(lines[z+6].strip('#+').strip()) + "\n")
-                                else:
-                                    reactions.write(
-                                        str(line.strip('\n')) + " " + str(lines[z+2].strip('#+').strip()) + " "
-                                        + str(lines[z+4].strip('#+').strip()) + "\n")
-                            else:
-                                reactions.write(
-                                    str(line.strip('\n')) + " " + str(lines[z+2].strip('#+').strip()) + "\n")
-                        else:
-                            reactions.write(line)
-                infile.close()
-                titles.close()
-                references.close()
-                data_points.close()
-                reactions.write(line)
-        logging.info("EXFOR: Finished extracting titles, references, and number of data points per experiment.")
-        logging.info("EXFOR: Formatting experimental data...")
-        with open(cross_section_file) as infile, open(
-             os.path.join(heavy_path, "all_cross_sections_v1.txt"), 'w') as outfile:
-            for line in infile:
-                if line.strip():
-                    string = list(line)
-                    # for i, j in enumerate([5, 11, 12, 15, 19, 22, 31, 40, 49, 58, 67, 76, 85, 94, 95, 122, 127]):
-                    values = [5, 11, 12, 15, 19, 20, 21, 22, 31, 40, 49, 58, 67, 76, 85, 94, 97, 122, 127, 130]
-                    for i, j in enumerate(values):
-                        string.insert(i + j, ';')
-                    outfile.write("".join(string))
-        logging.info("EXFOR: Finished formating experimental data.")
+    cross_section_file = os.path.join(heavy_path, "all_cross_sections.txt")
+    if os.path.exists(cross_section_file):
         os.remove(cross_section_file)
-        logging.info("EXFOR: Finished.")
-        return None
-    else:
-        raise FileNotFoundError("No .C4 files passed. Check your list.")
+
+    for c4_file in c4_list:
+        _extract_basic_data_from_c4(c4_file, tmp_path, heavy_path)
+
+    # Extract titles, references, and number of data points per experiment...")
+    for c4_file in c4_list:
+        _extract_complex_data_from_c4(c4_file, tmp_path)
+
+    # Format experimental data
+    with open(cross_section_file) as infile, open(
+            os.path.join(heavy_path, "all_cross_sections_v1.txt"), 'w') as outfile:
+        for line in infile:
+            if line.strip():
+                string = list(line)
+                values = [5, 11, 12, 15, 19, 20, 21, 22, 31, 40, 49, 58, 67, 76, 85, 94, 97, 122, 127, 130]
+                for i, j in enumerate(values):
+                    string.insert(i + j, ';')
+                outfile.write("".join(string))
+    os.remove(cross_section_file)
+    logging.info("EXFOR: Finished.")
 
 
 def csv_creator(heavy_path, tmp_path, mode, append_ame=True):
