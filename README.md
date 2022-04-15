@@ -1,8 +1,6 @@
 # NucML
 
-[![<pedrojrv>](https://circleci.com/gh/pedrojrv/nucml.svg?style=svg)](https://app.circleci.com/pipelines/github/pedrojrv/nucml)
-
-[![Maintainability](https://api.codeclimate.com/v1/badges/d7fcd53a7402cf9351cb/maintainability)](https://codeclimate.com/github/pedrojrv/nucml/maintainability)
+[![<pedrojrv>](https://circleci.com/gh/pedrojrv/nucml.svg?style=svg)](https://app.circleci.com/pipelines/github/pedrojrv/nucml) [![Maintainability](https://api.codeclimate.com/v1/badges/d7fcd53a7402cf9351cb/maintainability)](https://codeclimate.com/github/pedrojrv/nucml/maintainability)
 
 <!-- [![Test Coverage](https://api.codeclimate.com/v1/badges/d7fcd53a7402cf9351cb/test_coverage)](https://codeclimate.com/github/pedrojrv/nucml/test_coverage) -->
 
