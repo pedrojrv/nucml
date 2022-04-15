@@ -147,36 +147,18 @@ def plot_limits(data, endf, new_data, y_hat, y_hat2, y_hat3):
     """
     endf_avaliable = True if endf.shape[0] != 0 else False
     new_data_avaliable = True if new_data.shape[0] != 0 else False
+    plt.legend()
     if (new_data_avaliable and endf_avaliable):  # if both
-        plt.legend()
-        all_y = np.concatenate(
-            (data["Data"].values, y_hat.flatten(), endf["Data"].values, new_data["Data"].values))
-        minimum_y = all_y.min() - all_y.min() * 0.05
-        maximum_y = all_y.max() + all_y.max() * 0.05
-        plt.ylim(minimum_y, maximum_y)
+        all_y = np.concatenate((data["Data"].values, y_hat.flatten(), endf["Data"].values, new_data["Data"].values))
     elif not new_data_avaliable and endf_avaliable:  # if ENDF only
-        # plt.legend((endf_eval, true, pred), ('ENDF', 'EXFOR', "EXFOR Pred"), loc='upper left')
-        plt.legend()
         all_y = np.concatenate((data["Data"].values, y_hat[0].flatten(), y_hat2[0].flatten(), endf["Data"].values))
-        minimum_y = all_y.min() - all_y.min() * 0.05
-        maximum_y = all_y.max() + all_y.max() * 0.05
-        plt.ylim(minimum_y, maximum_y)
     elif new_data_avaliable and not endf_avaliable:  # if ADDITIONAL only
-        # plt.legend((true, unseen, pred, pred_unseen),
-        #            ('EXFOR', "New Measurments", "EXFOR Pred", "New Pred"), loc='upper left')
-        plt.legend()
         all_y = np.concatenate((data["Data"].values, y_hat, y_hat2, new_data["Data"].values))
-        minimum_y = all_y.min() - all_y.min() * 0.05
-        maximum_y = all_y.max() + all_y.max() * 0.05
-        plt.ylim(minimum_y, maximum_y)
     else:  # if no ENDF and Additional
-        # plt.legend((true, pred), ('EXFOR', "EXFOR Pred"), loc='upper left')
-        plt.legend()
         all_y = np.concatenate((data["Data"].values.flatten(), y_hat, y_hat2))
-        minimum_y = all_y.min() - all_y.min() * 0.05
-        maximum_y = all_y.max() + all_y.max() * 0.05
-        plt.ylim(minimum_y, maximum_y)
-    return None
+    minimum_y = all_y.min() - all_y.min() * 0.05
+    maximum_y = all_y.max() + all_y.max() * 0.05
+    plt.ylim(minimum_y, maximum_y)
 
 
 def plot_limits_ref(exfor, endf, new_data):

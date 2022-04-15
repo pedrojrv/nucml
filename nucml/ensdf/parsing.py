@@ -231,17 +231,12 @@ def get_level_parameters(level_params_directory, saving_directory=None):
     if saving_directory is None:
         saving_directory = level_params_directory
     data_file = os.path.join(level_params_directory, "levels-param.data")
-    # Using the document with all data we insert commas following the EXFOR format
-    logger.info("ENSDF RIPL: Parsing and formatting level parameters...")
     save_file = os.path.join(saving_directory, 'ripl_cut_off_energies.csv')
+    # Using the document with all data we insert commas following the EXFOR format
     with open(data_file) as infile, open(save_file, 'w') as outfile:
-        for line in infile:
-            if line.strip():
-                string = list(line)
-                for i, j in enumerate([4, 8, 11, 21, 31, 41, 51, 55, 59, 63, 67, 76, 85, 96, 98, 100, 104, 116]):
-                    string.insert(i + j, ';')
-                outfile.write("".join(string))
-    logger.info("ENSDF RIPL: Finished formating data. Converting to CSV...")
+        separation_points = [4, 8, 11, 21, 31, 41, 51, 55, 59, 63, 67, 76, 85, 96, 98, 100, 104, 116]
+        string = _insert_separator(infile, separation_points, separator=';')
+        outfile.write("".join(string))
 
     cut_off_cols = [
         "Z", "A", "Element", "Temperature_MeV", "Temperature_U", "Black_Shift",
@@ -253,8 +248,6 @@ def get_level_parameters(level_params_directory, saving_directory=None):
     cut_off["Element_w_A"] = cut_off["A"].astype(str) + cut_off["Element"]
     cut_off = cut_off[~cut_off.Element.str.contains(r'\d')]
     cut_off.to_csv(save_file, index=False)
-    logger.info("ENSDF RIPL: Finished.")
-    return None
 
 
 def generate_cutoff_ensdf(ensdf_directory, elemental_directory, ripl_directory=None, saving_directory=None):

@@ -156,9 +156,7 @@ def read_rct(originals_directory, saving_directory, rct_file=1):
         data[col] = data[col].str.replace("#", ".")
 
     for col in list(data.columns):
-        if col == "EL":
-            pass
-        else:
+        if col != "EL":
             data[col] = data[col].astype(float)
 
     data[["A", "Z"]] = data[["A", "Z"]].astype(int)
@@ -168,8 +166,6 @@ def read_rct(originals_directory, saving_directory, rct_file=1):
 
     csv_name = os.path.join(saving_directory, f"AME_rct{rct_file}.csv")
     data.to_csv(csv_name, index=False)
-    logger.info("Formatting done. File saved at {}".format(csv_name))
-    return
 
 
 def merge_mass_rct(directory, create_imputed=True, add_qvalues=True):

@@ -343,7 +343,6 @@ def fill_ml_xs(MT, ml_xs, ace_xs, use_peaks=True):
     """
     if use_peaks:
         fallback = False
-    if use_peaks:
         peaks, properties = find_peaks(ace_xs, prominence=1, width=5)
         if len(peaks) == 0:
             fallback = True
@@ -353,6 +352,7 @@ def fill_ml_xs(MT, ml_xs, ace_xs, use_peaks=True):
             to_append = ace_xs[:peaks[0]]
             new_xs = np.concatenate((to_append, ml_xs[MT][peaks[0]:].values), axis=0)
             ml_xs[MT] = new_xs
+
     if fallback or not use_peaks:
         # FILLS VALUES IN ML DERIVED XS WHERE ALGORITHM IS UNABLE TO PERFORM (1/V AND TAIL)
         # FOR ALL VALUES THE SAME AS THE FIRST AND LAST ONE SUBSTITUTE FOR EQUIVALENT VALUE IN ENERGY IN ACE XS
@@ -981,26 +981,17 @@ def gather_benchmark_results(searching_directory):
     Returns:
         DataFrame: Contains results for all found .mat files.
     """
-    all_results = []
-    names = []
-    benchmark_names = []
-
+    all_results, names, benchmark_names, k_results_ana, k_unc_ana, k_results_imp, k_unc_imp = ([] for i in range(7))
     for root, _, files in os.walk(searching_directory):
-        for file in files:
-            if file.endswith(".mat"):
-                name_to_append = os.path.basename(Path(root).parents[0])
-                names.append(name_to_append)
-                all_results.append(os.path.abspath(os.path.join(root, file)))
-                benchmark_names.append(os.path.basename(os.path.dirname(os.path.abspath(os.path.join(root, file)))))
+        mat_files = [file for file in files if file.endswith(".mat")]
+        for file in mat_files:
+            name_to_append = os.path.basename(Path(root).parents[0])
+            names.append(name_to_append)
+            all_results.append(os.path.abspath(os.path.join(root, file)))
+            benchmark_names.append(os.path.basename(os.path.dirname(os.path.abspath(os.path.join(root, file)))))
 
-    k_results_ana = []
-    k_unc_ana = []
-
-    k_results_imp = []
-    k_unc_imp = []
-
-    for i in all_results:
-        mat = scipy.io.loadmat(i)
+    for mat_file in all_results:
+        mat = scipy.io.loadmat(mat_file)
         k_results_ana.append(mat["ANA_KEFF"][0][0])
         k_unc_ana.append(mat["ANA_KEFF"][0][1])
         k_results_imp.append(mat["IMP_KEFF"][0][0])

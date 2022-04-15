@@ -6,6 +6,7 @@ import glob
 import shutil
 import pickle
 import re
+from sqlite3 import NotSupportedError
 from natsort import natsorted
 
 
@@ -126,16 +127,10 @@ def parse_mt(mt_number, mt_for="ENDF", one_hot=False):
         if len(mt_number) != 3:
             mt_number = mt_number.zfill(3)
         return "MT" + mt_number
-    elif mt_for.upper() == "EXFOR":
-        if one_hot:
-            return "MT_" + mt_number
-        else:
-            return int(mt_number)
-    elif mt_for.upper() == "ACE":
-        if one_hot:
-            return "MT_" + mt_number
-        else:
-            return int(mt_number)
+    elif mt_for.upper() in ["EXFOR", "ACE"]:
+        return "MT_" + mt_number if one_hot else int(mt_number)
+    else:
+        raise NotSupportedError("Only ENDF, EXFOR, or ACE are supported as mt_for.")
 
 
 def parse_isotope(isotope, parse_for="ENDF"):

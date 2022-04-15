@@ -549,14 +549,15 @@ def get_mt_errors_exfor_ml(df, Z, A, scaler, to_scale, model):
     exfor_isotope_cols = _get_isotope_df_cols(df, Z, A, scaler, to_scale)
     error_results = pd.DataFrame(columns=['MT', 'MAE', 'MSE', 'EVS', 'MAE_M', 'R2'])
     for col in exfor_isotope_cols.columns:
-        if "MT" in col:
-            exfor_sample = load_samples(df, Z, A, col, nat_iso="I", one_hot=True, scaler=scaler, to_scale=to_scale)
-            error_dict = model_utils.regression_error_metrics(model.predict(exfor_sample.drop(columns=["Data"])),
-                                                              exfor_sample.Data)
-            error_results = error_results.append(pd.DataFrame({
-                "MT": [col], "MAE": [error_dict["mae"]],
-                "MSE": [error_dict["mse"]], "EVS": [error_dict["evs"]],
-                "MAE_M": [error_dict["mae_m"]], "R2": [error_dict["r2"]]}))
+        if "MT" not in col:
+            continue
+        exfor_sample = load_samples(df, Z, A, col, nat_iso="I", one_hot=True, scaler=scaler, to_scale=to_scale)
+        error_dict = model_utils.regression_error_metrics(
+            model.predict(exfor_sample.drop(columns=["Data"])), exfor_sample.Data)
+        error_results = error_results.append(pd.DataFrame({
+            "MT": [col], "MAE": [error_dict["mae"]],
+            "MSE": [error_dict["mse"]], "EVS": [error_dict["evs"]],
+            "MAE_M": [error_dict["mae_m"]], "R2": [error_dict["r2"]]}))
     return error_results
 
 
