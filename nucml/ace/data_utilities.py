@@ -44,20 +44,21 @@ def get_to_skip_lines(isotope, temp="03c"):
     line_spaces = 2 if len(isotope) == 4 else 1
 
     path = Path(os.path.join(ace_dir, isotope + "ENDF7.ace"))
-    if path.is_file():
-        with open(path, "r") as ace_file:
-            points, indexes = [], []
-            for index, line in enumerate(ace_file):
-                if line.startswith(" "*line_spaces + isotope + "."):
-                    points.append(line[:10])
-                    indexes.append(index)
-
-        to_search = " "*line_spaces + isotope + "." + temp
-        to_skip = indexes[points.index(to_search)]
-        lines = indexes[points.index(to_search) + 1] - to_skip - 12
-        return path, to_skip, lines
-    else:
+    if not path.is_file():
         raise FileNotFoundError("{} does not exists.".format(path))
+
+    points, indexes = [], []
+    ace_file = open(path, "r")
+    for index, line in enumerate(ace_file):
+        if line.startswith(" "*line_spaces + isotope + "."):
+            points.append(line[:10])
+            indexes.append(index)
+
+    ace_file.close()
+    to_search = " "*line_spaces + isotope + "." + temp
+    to_skip = indexes[points.index(to_search)]
+    lines = indexes[points.index(to_search) + 1] - to_skip - 12
+    return path, to_skip, lines
 
 
 def get_nxs_jxs_xss(isotope, temp="03c", custom_path=None, reduced=False):
@@ -649,8 +650,6 @@ def create_new_ace(xss, ZZAAA, saving_dir=""):
 
     os.remove(tmp_file)
     os.remove(tmp_file_2)
-
-    return None
 
 
 def create_new_ace_w_df(ZZAAA, path_to_ml_csv, saving_dir=None, ignore_basename=False):

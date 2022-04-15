@@ -579,15 +579,13 @@ def get_mt_error_exfor_endf(df, Z, A, scaler, to_scale):
     exfor_isotope_cols = _get_isotope_df_cols(df, Z, A, scaler, to_scale)
     error_results = pd.DataFrame(columns=['id', 'mae', 'mse', 'evs', 'mae_m', 'r2', 'MT'])
     for col in exfor_isotope_cols.columns:
-        if "MT" in col:
-            if col in ["MT_101", "MT_9000"]:
-                continue
-            else:
-                exfor_sample = load_samples(df, Z, A, col, nat_iso="I", one_hot=True, scaler=scaler, to_scale=to_scale)
-                endf_data = endf_utils.get_for_exfor(Z, A, col)
-                _, error_exfor_endf = get_error_endf_exfor(endf_data, exfor_sample)
-                error_exfor_endf["MT"] = col
-                error_results = error_results.append(error_exfor_endf)
+        if "MT" not in col or col in ["MT_101", "MT_9000"]:
+            continue
+        exfor_sample = load_samples(df, Z, A, col, nat_iso="I", one_hot=True, scaler=scaler, to_scale=to_scale)
+        endf_data = endf_utils.get_for_exfor(Z, A, col)
+        _, error_exfor_endf = get_error_endf_exfor(endf_data, exfor_sample)
+        error_exfor_endf["MT"] = col
+        error_results = error_results.append(error_exfor_endf)
     return error_results
 
 
@@ -618,19 +616,16 @@ def get_csv_for_ace(df, Z, A, model, scaler, to_scale, model_type=None, saving_d
 
     exfor_isotope_cols = _get_isotope_df_cols(df, Z, A, scaler, to_scale)
     for col in exfor_isotope_cols.columns:
-        if "MT" in col:
-            if col in ["MT_9000"]:
-                continue
-            else:
-                mt_num = col.split("_")[1]
-                logging.info(col)
-                predictions = make_predictions_w_energy(
-                    ace_array, df, Z, A, mt_num, model,
-                    model_type, scaler, to_scale, log=False, show=False)
-                data_ace[col] = predictions
+        if "MT" not in col or col in ["MT_9000"]:
+            continue
+        mt_num = col.split("_")[1]
+        predictions = make_predictions_w_energy(
+            ace_array, df, Z, A, mt_num, model,
+            model_type, scaler, to_scale, log=False, show=False)
+        data_ace[col] = predictions
 
     data_ace = 10**data_ace
-    if saving_dir is not None:
+    if saving_dir:
         data_ace.to_csv(os.path.join(saving_dir, saving_filename), index=False)
     return data_ace
 

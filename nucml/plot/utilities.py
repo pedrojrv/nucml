@@ -65,7 +65,6 @@ def kdeplot(x, labels=[''], xlabel='', ylabel='', title='', figsize=(15, 10), sa
         plt.title(title)
     if save:
         plt.savefig(path, bbox_inches='tight')
-    return None
 
 
 def cat_plot(features, df, groupby, top=10, reverse=False, save=False, path=''):
