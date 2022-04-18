@@ -28,29 +28,26 @@ def dt_dual_keff_plot(dt_df, train_mae, val_mae, hyperparameter, keff_metric, sa
     if keff_metric == "Deviation_Ana":
         label = label + " Error"
 
-    color = 'tab:orange'
+    orange_color, blue_color = 'tab:orange', 'tab:blue'
     ax1.set_xlabel('Train MAE (b)')
-    ax1.set_ylabel('Max Depth', color=color)
-    ax1.scatter(dt_df[train_mae], dt_df[hyperparameter], color=color, marker="o")
-    ax1.tick_params(axis='y', labelcolor=color)
+    ax1.set_ylabel('Max Depth', color=orange_color)
+    ax1.scatter(dt_df[train_mae], dt_df[hyperparameter], color=orange_color, marker="o")
+    ax1.tick_params(axis='y', labelcolor=orange_color)
 
     ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
-    color = 'tab:blue'
-    ax2.set_ylabel(label, color=color)  # we already handled the x-label with ax1
-    ax2.scatter(dt_df[train_mae], dt_df[keff_metric], color=color, marker="o")
-    ax2.tick_params(axis='y', labelcolor=color)
+    ax2.set_ylabel(label, color=blue_color)  # we already handled the x-label with ax1
+    ax2.scatter(dt_df[train_mae], dt_df[keff_metric], color=blue_color, marker="o")
+    ax2.tick_params(axis='y', labelcolor=blue_color)
 
-    color = 'tab:orange'
     ax3.set_xlabel('Validation MAE (b)')
-    ax3.set_ylabel('Max Depth', color=color)
-    ax3.scatter(dt_df[val_mae], dt_df[hyperparameter], color=color, marker="o")
-    ax3.tick_params(axis='y', labelcolor=color)
+    ax3.set_ylabel('Max Depth', color=orange_color)
+    ax3.scatter(dt_df[val_mae], dt_df[hyperparameter], color=orange_color, marker="o")
+    ax3.tick_params(axis='y', labelcolor=orange_color)
 
     ax4 = ax3.twinx()  # instantiate a second axes that shares the same x-axis
-    color = 'tab:blue'
-    ax4.set_ylabel(label, color=color)  # we already handled the x-label with ax1
-    ax4.scatter(dt_df[val_mae], dt_df[keff_metric], color=color, marker="o")
-    ax4.tick_params(axis='y', labelcolor=color)
+    ax4.set_ylabel(label, color=blue_color)  # we already handled the x-label with ax1
+    ax4.scatter(dt_df[val_mae], dt_df[keff_metric], color=blue_color, marker="o")
+    ax4.tick_params(axis='y', labelcolor=blue_color)
 
     fig.tight_layout()  # otherwise the right y-label is slightly clipped
     if save:
