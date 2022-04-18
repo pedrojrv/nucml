@@ -67,7 +67,7 @@ def kdeplot(x, labels=[''], xlabel='', ylabel='', title='', figsize=(15, 10), sa
         plt.savefig(path, bbox_inches='tight')
 
 
-def cat_plot(features, df, groupby, top=10, reverse=False, save=False, path=''):
+def cat_plot(features, df, groupby, top=10, reverse=False, save=False):
     """Plot a categorical bar plot.
 
     Args:
@@ -97,11 +97,8 @@ def cat_plot(features, df, groupby, top=10, reverse=False, save=False, path=''):
                 palette="GnBu_r", height=15, aspect=2)
         plt.title("{} Distribution".format(i))
         if save:
-            if reverse:
-                plt.savefig(path + '_{}_reverse.svg'.format(i), bbox_inches='tight')
-            else:
-                plt.savefig(path + '_{}.svg'.format(i), bbox_inches='tight')
-    return None
+            saving_path = save + '_{}_reverse.svg'.format(i) if reverse else save + '_{}.svg'.format(i)
+            plt.savefig(saving_path, bbox_inches='tight')
 
 
 def plotly_converter(plotly_object, convert_to="pil"):

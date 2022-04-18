@@ -99,7 +99,7 @@ def dt_keff_plot(dt_df, mae, hyperparameter, keff_metric, save=False):
     plt.show()
 
 
-def knn_dual_plot(knn_df, hyperparameter, train_mae, val_mae, keff_metric, save=False, saving_dir=""):
+def knn_dual_plot(knn_df, hyperparameter, train_mae, val_mae, keff_metric, save=False):
     """Create a two figure plot comparing k-eff and MAE model performance for KNN models.
 
     Creates a two figure plot containing both performance metrics (i.e. Train MAE and Val MAE), the
@@ -152,12 +152,11 @@ def knn_dual_plot(knn_df, hyperparameter, train_mae, val_mae, keff_metric, save=
 
     fig.tight_layout()  # otherwise the right y-label is slightly clipped
     if save:
-        plt.savefig(os.path.join(saving_dir, "knn_train_val_mae_keff.png"), bbox_inches="tight", dpi=600)
+        plt.savefig(os.path.join(save, "knn_train_val_mae_keff.png"), bbox_inches="tight", dpi=600)
     plt.show()
-    return None
 
 
-def knn_keff_plot(knn_df, hyperparameter, mae, keff_metric, save=False, saving_dir=""):
+def knn_keff_plot(knn_df, hyperparameter, mae, keff_metric, save=False):
     """Compare a hyperparameter and a performance metric for KNN models.
 
     Args:
@@ -194,6 +193,5 @@ def knn_keff_plot(knn_df, hyperparameter, mae, keff_metric, save=False, saving_d
 
     fig.tight_layout()  # otherwise the right y-label is slightly clipped
     if save:
-        plt.savefig(os.path.join(saving_dir, "knn_val_keff.png"), bbox_inches="tight", dpi=600)
+        plt.savefig(os.path.join(save, "knn_val_keff.png"), bbox_inches="tight", dpi=600)
     plt.show()
-    return None

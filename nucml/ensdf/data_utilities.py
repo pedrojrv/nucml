@@ -87,7 +87,7 @@ def append_ensdf_levels(tot_num_levels, df, Z, A, log=False, scale=False, scaler
     return new_data
 
 
-def append_ensdf_levels_nodata(tot_num_levels, df, log=False, scale=False, scaler=None, to_scale=[]):
+def append_ensdf_levels_nodata(tot_num_levels, df, log=False, scaler=None, to_scale=[]):
     """Expand the energy levels up to "tot_num_levels" for the given ENSDF isotopic sample.
 
     Args:
@@ -106,7 +106,7 @@ def append_ensdf_levels_nodata(tot_num_levels, df, log=False, scale=False, scale
     if "Energy" in isotope_exfor.columns:
         isotope_exfor = isotope_exfor.drop(columns="Energy")
     new_data = copy_data_from_df_to_df(isotope_exfor, new_data, start=1)
-    if scale:
+    if scaler is not None:
         new_data[to_scale] = scaler.transform(new_data[to_scale])
     if log:
         new_data["Level_Number"] = np.log10(new_data["Level_Number"])
@@ -174,10 +174,10 @@ def generate_level_density_csv(df, Z, A, nodata=False, upper_energy_mev=20, get_
     """
     if nodata:
         original = df.copy()
-        append_data_fn = partial(append_ensdf_levels_nodata, df.copy(), log=True, scale=False)
+        append_data_fn = partial(append_ensdf_levels_nodata, df.copy(), log=True)
     else:
         original = load_ensdf_samples(df, Z, A)
-        append_data_fn = partial(append_ensdf_levels, df.copy(), Z, A, log=True, scale=False)
+        append_data_fn = partial(append_ensdf_levels, df.copy(), Z, A, log=True)
 
     element = original.Element_w_A.values[0]
     logging.info("Generating level density for {}".format(element))
@@ -309,7 +309,7 @@ def make_predictions_w_levels_nodata(df, num_levels, model, model_type, scaler, 
     Returns:
         DataFrame: New DataFrame with ML predictions.
     """
-    data_kwargs = {"log": log, "scale": True, "scaler": scaler, "to_scale": to_scale}
+    data_kwargs = {"log": log, "scaler": scaler, "to_scale": to_scale}
     to_infer = append_ensdf_levels_nodata(num_levels, df, **data_kwargs)
     to_infer["Energy"] = model_utils.make_predictions(to_infer.values, model, model_type)
     if plot:

@@ -62,17 +62,17 @@ def ml_results(results_dict, order_dict={}, save_dir='', save=False, render_brow
         )
         for i in np.arange(1, len(order_dict) + 1):
             for plot_order, name in order_dict.items():
-                if plot_order == str(i):
-                    if name == "endf":
-                        if "endf" in results_dict.keys():
-                            fig.add_trace(endf_trace)
-                    elif name == "exfor_ml_original":
-                        fig.add_trace(exfor_original_trace)
-                    elif name == "exfor_ml":
-                        fig.add_trace(exfor_ml_trace)
-                    elif name == "exfor_new":
-                        if "exfor_ml_new" in results_dict.keys():
-                            fig.add_trace(exfor_ml_new_trace)
+                if plot_order != str(i):
+                    continue
+
+                if name == "endf" and "endf" in results_dict.keys():
+                    fig.add_trace(endf_trace)
+                elif name == "exfor_ml_original":
+                    fig.add_trace(exfor_original_trace)
+                elif name == "exfor_ml":
+                    fig.add_trace(exfor_ml_trace)
+                elif name == "exfor_new" and "exfor_ml_new" in results_dict.keys():
+                    fig.add_trace(exfor_ml_new_trace)
         fig.update_layout(template="simple_white")
         if paper:
             fig.update_layout(height=600, width=700)
@@ -122,7 +122,7 @@ def ml_results(results_dict, order_dict={}, save_dir='', save=False, render_brow
             plt.close()
 
 
-def plot_limits(data, endf, new_data, y_hat, y_hat2, y_hat3):
+def plot_limits(data, endf, new_data, y_hat, y_hat2):  # y_hat3
     """Set new plot limits based on plotted data.
 
     It is a known issue that matplotlib "looses" the limits when thousand of scatter points are plotted. In these cases
@@ -225,7 +225,7 @@ def make_chlorine_paper_figure(df, dt_model, dt_scaler, knn_model, knn_scaler, t
     for np_data, model, plot_axis, label, new_data in zip(
             [chlorine_35_np_dt, chlorine_35_np_knn], [dt_model, knn_model], [ax1, ax2], ['DT', 'KNN'],
             [new_cl_data_dt, new_cl_data_knn]):
-        chlorine_data_ext = exfor_utils.expanding_dataset_energy(np_data, 0, 0, False, 0, e_array=ace_cl)
+        chlorine_data_ext = exfor_utils.expanding_dataset_energy(np_data, (0, 0), False, 0, e_array=ace_cl)
         chlorine_data_ext = chlorine_data_ext[chlorine_data_ext.Energy > chlorine_35_np_dt.Energy.min()]
 
         plot_axis.plot(

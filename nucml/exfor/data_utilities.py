@@ -188,7 +188,7 @@ def append_energy(e_array, df, Z, A, MT, nat_iso="I", one_hot=False, log=False, 
     return new_data
 
 
-def expanding_dataset_energy(data, E_min, E_max, log, N, e_array=None):
+def expanding_dataset_energy(data, e_min_max, log, N, e_array=None):
     """Expand a given DataFrames energy points by a given number of energy points between E_min and E_max.
 
     Args:
@@ -203,6 +203,7 @@ def expanding_dataset_energy(data, E_min, E_max, log, N, e_array=None):
     Returns:
         DataFrame
     """
+    E_min, E_max = e_min_max
     e_array_avaliable = True if not None else False
     if e_array_avaliable:
         energy_to_add = pd.DataFrame({"Energy": e_array})
@@ -359,9 +360,9 @@ def predicting_nuclear_xs_v2(df, Z, A, MT, model, to_scale=None, scaler=None, e_
     to_infer = to_infer.drop(columns=["Data"])
 
     if e_array_avaliable:
-        to_infer = expanding_dataset_energy(to_infer, 0, 0, log, 0, e_array=e_array)
+        to_infer = expanding_dataset_energy(to_infer, (0, 0), log, 0, e_array=e_array)
     else:
-        to_infer = expanding_dataset_energy(to_infer, -5.00, 7.30, log, 500)
+        to_infer = expanding_dataset_energy(to_infer, (-5.00, 7.30), log, 500)
 
     if to_scale is not None:
         to_infer[to_scale] = scaler.transform(to_infer[to_scale])

@@ -1,6 +1,5 @@
 """Utility functions for processing nucml's various datasets."""
 
-import logging
 import numpy as np
 import pandas as pd
 from joblib import load
@@ -55,6 +54,16 @@ def impute_values(df):
     return df
 
 
+scalers = {
+    "poweryeo": preprocessing.PowerTransformer().fit,
+    "standard": preprocessing.StandardScaler().fit,
+    "minmax": preprocessing.MinMaxScaler().fit,
+    "maxabs": preprocessing.MaxAbsScaler().fit,
+    'robust': preprocessing.RobustScaler().fit,
+    'quantilenormal': preprocessing.QuantileTransformer(output_distribution='normal').fit
+}
+
+
 def normalize_features(df, to_scale, scaling_type="standard", scaler_dir=None):
     """Apply a transformer or normalizer to a set of specific features in the provided dataframe.
 
@@ -71,21 +80,19 @@ def normalize_features(df, to_scale, scaling_type="standard", scaler_dir=None):
     Returns:
         object: Scikit-learn scaler object.
     """
+    scalers = {
+        "poweryeo": preprocessing.PowerTransformer(),
+        "standard": preprocessing.StandardScaler(),
+        "minmax": preprocessing.MinMaxScaler(),
+        "maxabs": preprocessing.MaxAbsScaler(),
+        'robust': preprocessing.RobustScaler(),
+        'quantilenormal': preprocessing.QuantileTransformer(output_distribution='normal'),
+    }
     if scaler_dir is not None:
-        logging.info("Using previously saved scaler.")
         scaler_object = load(open(scaler_dir, 'rb'))
     else:
-        logging.info("Fitting new scaler.")
-        if scaling_type == "poweryeo":
-            scaler_object = preprocessing.PowerTransformer().fit(df[to_scale])
-        elif scaling_type == "standard":
-            scaler_object = preprocessing.StandardScaler().fit(df[to_scale])
-        elif scaling_type == "minmax":
-            scaler_object = preprocessing.MinMaxScaler().fit(df[to_scale])
-        elif scaling_type == "maxabs":
-            scaler_object = preprocessing.MaxAbsScaler().fit(df[to_scale])
-        elif scaling_type == 'robust':
-            scaler_object = preprocessing.RobustScaler().fit(df[to_scale])
-        elif scaling_type == 'quantilenormal':
-            scaler_object = preprocessing.QuantileTransformer(output_distribution='normal').fit(df[to_scale])
+        if scaling_type not in scalers.keys():
+            raise ValueError(f"Scaling type not supported. Only {list(scalers.keys())} are supported.")
+        scaler_fn = scalers[scaling_type]
+        scaler_object = scaler_fn.fit(df[to_scale])
     return scaler_object

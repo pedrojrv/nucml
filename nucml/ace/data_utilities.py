@@ -542,7 +542,7 @@ def get_final_ml_ace_df(energies, mt_array, mt_xs_pointers_array, pointers, jxs_
     return Energy_Grid
 
 
-def modify_xss_w_df(xss, ml_ace_df, mt_array, mt_xs_pointers_array, jxs_df, pointers):
+def modify_xss_w_df(xss, ml_ace_df, jxs_df, pointers):
     """Return a modified XSS array. It substitutes the MT reactions in ml_list in the original ACE xss array.
 
     The resulting xss can then be used to create a new .ace file for use in monte carlo or deterministic codes.
@@ -561,23 +561,24 @@ def modify_xss_w_df(xss, ml_ace_df, mt_array, mt_xs_pointers_array, jxs_df, poin
         np.array: Modified xss array.
     """
     nes = pointers["nes"]
+    mt_xs_pointers_array = get_mt_xs_pointers_array(xss, pointers)
 
     # for i in ml_list:
     for i in ml_ace_df.columns:
         mt_value = int(i.split("_")[1])
+        mt_array = get_mt_array(xss, pointers)
         if mt_value == 1:
             xss[nes:nes*2] = ml_ace_df[i].values
         elif mt_value == 2:
             xss[nes*3:nes*4] = ml_ace_df[i].values
         elif mt_value == 101:
             xss[nes*2:nes*3] = ml_ace_df[i].values
-        else:
-            if mt_value in mt_array:
-                xs_info_dict = get_xs_for_mt(mt_value, mt_array, mt_xs_pointers_array, jxs_df, xss, pointers)
-                start = xs_info_dict["xss_start"]
-                end = xs_info_dict["xss_end"]
-                xss[start + 2: end] = ml_ace_df.reset_index(drop=True)[i].iloc[
-                    xs_info_dict["energy_start"]: xs_info_dict["energy_end"]].values
+        elif mt_value in mt_array:
+            xs_info_dict = get_xs_for_mt(mt_value, mt_array, mt_xs_pointers_array, jxs_df, xss, pointers)
+            start = xs_info_dict["xss_start"]
+            end = xs_info_dict["xss_end"]
+            xss[start + 2: end] = ml_ace_df.reset_index(drop=True)[i].iloc[
+                xs_info_dict["energy_start"]: xs_info_dict["energy_end"]].values
 
     np_nan_needed = 4 - (len(xss)/4 - len(xss)//4)/0.25
     xss = np.append(xss, ([np.nan] * np_nan_needed))
@@ -599,6 +600,19 @@ def parsing_datatypes(x):
         return "{:20}".format(int(x))
     else:
         return "{:20.11E}".format(x)
+
+
+def _format_ml_ace_file_and_data(ace, new_ace, new_data, to_skip, line_count):
+    ace_lines = ace.readlines()
+    new_lines = new_data.readlines()
+    for i, line in enumerate(ace_lines):
+        if (i < to_skip + 12):
+            new_ace.write(line)
+    for i, line in enumerate(new_lines):
+        new_ace.write(line)
+    for i, line in enumerate(ace_lines):
+        if (i > to_skip + line_count + 12 - 1):
+            new_ace.write(line)
 
 
 def create_new_ace(xss, ZZAAA, saving_dir=""):
@@ -633,16 +647,7 @@ def create_new_ace(xss, ZZAAA, saving_dir=""):
     path, to_skip, line_count = get_to_skip_lines(ZZAAA)
 
     with open(path, 'r') as ace, open(ml_ace_filename, 'w') as new_ace, open(tmp_file_2, 'r') as new_data:
-        ace_lines = ace.readlines()
-        new_lines = new_data.readlines()
-        for i, line in enumerate(ace_lines):
-            if (i < to_skip + 12):
-                new_ace.write(line)
-        for i, line in enumerate(new_lines):
-            new_ace.write(line)
-        for i, line in enumerate(ace_lines):
-            if (i > to_skip + line_count + 12 - 1):
-                new_ace.write(line)
+        _format_ml_ace_file_and_data(ace, new_ace, new_data, to_skip, line_count)
 
     convert_dos_to_unix(ml_ace_filename)
 
@@ -687,7 +692,7 @@ def create_new_ace_w_df(ZZAAA, path_to_ml_csv, saving_dir=None, ignore_basename=
 
         Energy_Grid = get_final_ml_ace_df(energies, mt_array, mt_xs_pointers_array, pointers_info, jxs, xss, ml_df_mod)
 
-        xss = modify_xss_w_df(xss, Energy_Grid, mt_array, mt_xs_pointers_array, jxs, pointers_info)
+        xss = modify_xss_w_df(xss, Energy_Grid, jxs, pointers_info)
 
         create_new_ace(xss, ZZAAA, saving_dir=saving_dir_2)
 
@@ -939,14 +944,15 @@ def generate_serpent_bash(searching_directory, script_name, benchmark="all", omp
     all_serpent_files = []
     all_serpent_files_linux = []
 
-    for root, _, files in os.walk(searching_directory):
-        for file in files:
-            if file.endswith("input"):
-                if benchmark == "all":
-                    all_serpent_files.append(os.path.abspath(os.path.join(root, file)))
-                else:
-                    if benchmark in root:
-                        all_serpent_files.append(os.path.abspath(os.path.join(root, file)))
+    root, _, files = os.walk(searching_directory)
+    for file in files:
+        if not file.endswith("input"):
+            continue
+
+        if benchmark == "all":
+            all_serpent_files.append(os.path.abspath(os.path.join(root, file)))
+        elif benchmark in root:
+            all_serpent_files.append(os.path.abspath(os.path.join(root, file)))
 
     for i in all_serpent_files:
         new = i.replace("C:\\", "/mnt/c/").replace("\\", "/")
@@ -965,8 +971,6 @@ def generate_serpent_bash(searching_directory, script_name, benchmark="all", omp
             f.write("%s\n" % item)
 
     convert_dos_to_unix(script_path)
-
-    return None
 
 
 def gather_benchmark_results(searching_directory):

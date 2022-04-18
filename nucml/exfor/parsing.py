@@ -80,21 +80,36 @@ def _extract_basic_data_from_c4(c4_file, tmp_path, heavy_path):
 
 
 def _write_complex_data(outfile, lines, idx, line):
-    if lines[idx + 2].startswith(r"#+"):
-        if lines[idx + 4].startswith(r"#+"):
-            if lines[idx + 6].startswith(r"#+"):
-                outfile.write(
-                    str(line.strip('\n')) + " " + str(lines[idx+2].strip('#+').strip()) + " "
-                    + str(lines[idx+4].strip('#+').strip()) + " "
-                    + str(lines[idx+6].strip('#+').strip()) + "\n")
-            else:
-                outfile.write(
-                    str(line.strip('\n')) + " " + str(lines[idx+2].strip('#+').strip()) + " "
-                    + str(lines[idx+4].strip('#+').strip()) + "\n")
-        else:
-            outfile.write(str(line.strip('\n')) + " " + str(lines[idx+2].strip('#+').strip()) + "\n")
-    else:
+    detection_point = r"#+"
+    if not lines[idx + 2].startswith(detection_point):
         outfile.write(line)
+        return
+
+    to_write = str(line.strip('\n')) + " " + str(lines[idx+2].strip('#+').strip())
+    if lines[idx + 4].startswith(detection_point):
+        to_write += " " + str(lines[idx+4].strip('#+').strip())
+        if lines[idx + 6].startswith(detection_point):
+            to_write += " " + str(lines[idx+6].strip('#+').strip())
+
+    to_write += "\n"
+    outfile.write(to_write)
+
+    # Original
+    # if lines[idx + 2].startswith(r"#+"):
+    #     if lines[idx + 4].startswith(r"#+"):
+    #         if lines[idx + 6].startswith(r"#+"):
+    #             outfile.write(
+    #                 str(line.strip('\n')) + " " + str(lines[idx+2].strip('#+').strip()) + " "
+    #                 + str(lines[idx+4].strip('#+').strip()) + " "
+    #                 + str(lines[idx+6].strip('#+').strip()) + "\n")
+    #         else:
+    #             outfile.write(
+    #                 str(line.strip('\n')) + " " + str(lines[idx+2].strip('#+').strip()) + " "
+    #                 + str(lines[idx+4].strip('#+').strip()) + "\n")
+    #     else:
+    #         outfile.write(str(line.strip('\n')) + " " + str(lines[idx+2].strip('#+').strip()) + "\n")
+    # else:
+    #     outfile.write(line)
 
 
 def _extract_complex_data_from_c4(c4_file, tmp_path):
