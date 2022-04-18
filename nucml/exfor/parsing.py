@@ -170,8 +170,7 @@ def get_all(c4_list, heavy_path, tmp_path, mode="neutrons"):
     general_utilities.initialize_directories([tmp_path, heavy_path], reset=True)
 
     cross_section_file = os.path.join(heavy_path, "all_cross_sections.txt")
-    if os.path.exists(cross_section_file):
-        os.remove(cross_section_file)
+    general_utilities.remove_file(cross_section_file)
 
     for c4_file in c4_list:
         _extract_basic_data_from_c4(c4_file, tmp_path, heavy_path)
@@ -181,17 +180,10 @@ def get_all(c4_list, heavy_path, tmp_path, mode="neutrons"):
         _extract_complex_data_from_c4(c4_file, tmp_path)
 
     # Format experimental data
-    with open(cross_section_file) as infile, open(
-            os.path.join(heavy_path, "all_cross_sections_v1.txt"), 'w') as outfile:
-        for line in infile:
-            if line.strip():
-                string = list(line)
-                values = [5, 11, 12, 15, 19, 20, 21, 22, 31, 40, 49, 58, 67, 76, 85, 94, 97, 122, 127, 130]
-                for i, j in enumerate(values):
-                    string.insert(i + j, ';')
-                outfile.write("".join(string))
+    output_path = os.path.join(heavy_path, "all_cross_sections_v1.txt")
+    indexex = [5, 11, 12, 15, 19, 20, 21, 22, 31, 40, 49, 58, 67, 76, 85, 94, 97, 122, 127, 130]
+    general_utilities._write_file_with_separators(cross_section_file, output_path, indexex, ";")
     os.remove(cross_section_file)
-    logging.info("EXFOR: Finished.")
 
 
 def csv_creator(heavy_path, tmp_path, mode, append_ame=True):

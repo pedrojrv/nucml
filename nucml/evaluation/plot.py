@@ -13,7 +13,19 @@ sns.set_style('white')
 z_order_dict = {"endf": 1, "new_data": 2, "exfor": 3, "tendl": 4, "jendl": 5, "jeff": 6}
 
 
-def plot(isotope, MT, exfor=None, exclude=[], new_data=None, new_data_label="", save=False, save_dir="",
+def _load_all_evaluations(isotope, MT, mode, mev_to_ev, mb_to_b):
+    endf = nuc_data.load_evaluation(
+        isotope, MT, mode=mode, library="endfb8.0", mev_to_ev=mev_to_ev, mb_to_b=mb_to_b, log=False)
+    tendl = nuc_data.load_evaluation(
+        isotope, MT, mode=mode, library="tendl.2019", mev_to_ev=mev_to_ev, mb_to_b=mb_to_b, log=False)
+    jendl = nuc_data.load_evaluation(
+        isotope, MT, mode=mode, library="jendl4.0", mev_to_ev=mev_to_ev, mb_to_b=mb_to_b, log=False)
+    jeff = nuc_data.load_evaluation(
+        isotope, MT, mode=mode, library="jeff3.3", mev_to_ev=mev_to_ev, mb_to_b=mb_to_b, log=False)
+    return endf, tendl, jendl, jeff
+
+
+def plot(isotope, MT, exfor=None, exclude=[], new_data=None, new_data_label="", save=False,
          z_order_dict=z_order_dict, mode="neutrons", mev_to_ev=True, mb_to_b=True):
     """Plot all evaluations for a specific reaction and a given isotope.
 
@@ -42,14 +54,7 @@ def plot(isotope, MT, exfor=None, exclude=[], new_data=None, new_data_label="", 
     Returns:
         None
     """
-    endf = nuc_data.load_evaluation(
-        isotope, MT, mode=mode, library="endfb8.0", mev_to_ev=mev_to_ev, mb_to_b=mb_to_b, log=False)
-    tendl = nuc_data.load_evaluation(
-        isotope, MT, mode=mode, library="tendl.2019", mev_to_ev=mev_to_ev, mb_to_b=mb_to_b, log=False)
-    jendl = nuc_data.load_evaluation(
-        isotope, MT, mode=mode, library="jendl4.0", mev_to_ev=mev_to_ev, mb_to_b=mb_to_b, log=False)
-    jeff = nuc_data.load_evaluation(
-        isotope, MT, mode=mode, library="jeff3.3", mev_to_ev=mev_to_ev, mb_to_b=mb_to_b, log=False)
+    endf, tendl, jendl, jeff = _load_all_evaluations(isotope, MT, mode, mev_to_ev, mb_to_b)
 
     plt.figure(figsize=(14, 9))
     all_not_in_exclude = "all" not in exclude
@@ -57,6 +62,7 @@ def plot(isotope, MT, exfor=None, exclude=[], new_data=None, new_data_label="", 
     plot_labels = {
         'exfor': 'EXFOR', 'new_data': new_data_label, 'endf': 'ENDF/B-VIII', 'tendl': 'TENDL 2019',
         'jendl': 'JENDL 4.0', 'jeff': 'JEFF 3.3'}
+
     for key, dataframe in all_dataframes.items():
         if (dataframe is None) or (all_not_in_exclude and key not in ['exfor', 'new_data']):
             continue
@@ -69,9 +75,5 @@ def plot(isotope, MT, exfor=None, exclude=[], new_data=None, new_data_label="", 
     plt.ylabel('Cross Section (b)')
     plt.legend()
     if save:
-        if exfor is not None:
-            save_name = "{}_{}_Evaluated_XS_w_EXFOR.png".format(isotope, MT)
-        else:
-            save_name = "{}_{}_Evaluated_XS.png".format(isotope, MT)
-        plt.savefig(os.path.join(save_dir, save_name), bbox_inches='tight', dpi=600)
-    return None
+        save_name = "{}_{}_Evaluated_XS{}.png".format(isotope, MT, "_w_EXFOR" if exfor else "")
+        plt.savefig(os.path.join(save, save_name), bbox_inches='tight', dpi=600)

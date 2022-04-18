@@ -16,7 +16,7 @@ empty_df = pd.DataFrame()
 level_density_plotter_fn = partial(plt.savefig, bbox_inches='tight', dpi=600)
 
 
-def level_density(df, Z, A, df2=empty_df, save=False, save_dir=None, label1="Adopted", label2="Cut-Off"):
+def level_density(df, Z, A, df2=empty_df, save=False, label1="Adopted", label2="Cut-Off"):
     """Plot level density for a given isotope.
 
     Args:
@@ -50,8 +50,9 @@ def level_density(df, Z, A, df2=empty_df, save=False, save_dir=None, label1="Ado
     plt.ylabel("Level Density")
     plt.xlabel("Energy (MeV)")
     plt.legend()
-    saving_path = os.path.join(save_dir, 'ENSDF_{}_Level_Density.png'.format(to_plot.Element_w_A.iloc[0]))
-    level_density_plotter_fn(saving_path) if save else None
+    if save:
+        saving_path = os.path.join(save, 'ENSDF_{}_Level_Density.png'.format(to_plot.Element_w_A.iloc[0]))
+        level_density_plotter_fn(saving_path) if save else None
 
 
 def level_density_ml(ensdf_df, predictions_df, log_sqrt=False, log=False, save=False):

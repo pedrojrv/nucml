@@ -362,7 +362,7 @@ def fill_ml_xs(MT, ml_xs, ace_xs, use_peaks=True):
     return ml_xs
 
 
-def get_hybrid_ml_xs(ml_df, basic_mt_dict, mt_array, mt_xs_pointers_array, pointers, jxs_df, xss, use_peaks=True):
+def get_hybrid_ml_xs(ml_df, pointers, jxs_df, xss, use_peaks=True):
     """Substitutes the ACE MT values in a machine learning generate dataframe containing a set of reaction channels.
 
     For MT1, MT2, and MT3 we fix the 1/v and tail region of each cross section.
@@ -381,6 +381,9 @@ def get_hybrid_ml_xs(ml_df, basic_mt_dict, mt_array, mt_xs_pointers_array, point
     Returns:
         DataFrame: Merged DataFrame containing all ML and ACE reaction values.
     """
+    basic_mt_dict = get_basic_mts(xss, pointers)
+    mt_array = get_mt_array(xss, pointers)
+    mt_xs_pointers_array = get_mt_xs_pointers_array(xss, pointers)
     # Previously get_merged_df()
     for i in list(ml_df.columns):
         if i == "Energy":
@@ -490,7 +493,7 @@ def enforce_unitarity(ml_ace_df):
     return ml_ace_df
 
 
-def get_final_ml_ace_df(energies, mt_array, mt_xs_pointers_array, pointers, jxs_df, xss, ml_df,
+def get_final_ml_ace_df(energies, pointers, jxs_df, xss, ml_df,
                         ml_list=["MT_1", "MT_2", "MT_3", "MT_18", "MT_101", "MT_102"]):
     """Given a set of ML generated XS (adjusted), fill in other reaction channels not included by the ML predictions.
 
@@ -520,6 +523,8 @@ def get_final_ml_ace_df(energies, mt_array, mt_xs_pointers_array, pointers, jxs_
     Energy_Grid = pd.DataFrame({"Energy": energies})
     Energy_Grid = Energy_Grid.set_index("Energy")
 
+    mt_array = get_mt_array(xss, pointers)
+    mt_xs_pointers_array = get_mt_xs_pointers_array(xss, pointers)
     for i in mt_array:
         # we get the ace cross sections and add them to our main dataframe some are not going to have the
         # same energy grid as mt1 so we fill missing values with 0
@@ -606,13 +611,12 @@ def _format_ml_ace_file_and_data(ace, new_ace, new_data, to_skip, line_count):
     ace_lines = ace.readlines()
     new_lines = new_data.readlines()
     for i, line in enumerate(ace_lines):
-        if (i < to_skip + 12):
-            new_ace.write(line)
+        new_ace.write(line) if i < to_skip + 12 else None
     for i, line in enumerate(new_lines):
         new_ace.write(line)
     for i, line in enumerate(ace_lines):
-        if (i > to_skip + line_count + 12 - 1):
-            new_ace.write(line)
+        condition = i > to_skip + line_count + 12 - 1
+        new_ace.write(line) if condition else None
 
 
 def create_new_ace(xss, ZZAAA, saving_dir=""):
@@ -775,10 +779,10 @@ def generate_bench_ml_xs(df, models_df, bench_name, to_scale, raw_saving_dir, re
             if not os.path.isfile(path_to_ml_csv):
                 if row.normalizer == "none":
                     _ = exfor_utils.get_csv_for_ace(
-                        df, Z, A, model, None, to_scale, saving_dir=ml_xs_saving_dir, saving_filename=filename)
+                        df, Z, A, model, None, to_scale, save=path_to_ml_csv)
                 else:
                     _ = exfor_utils.get_csv_for_ace(
-                        df, Z, A, model, scaler, to_scale, saving_dir=ml_xs_saving_dir, saving_filename=filename)
+                        df, Z, A, model, scaler, to_scale, save=path_to_ml_csv)
 
             create_new_ace_w_df(
                 str(Z) + str(A).zfill(3), path_to_ml_csv, saving_dir=acelib_saving_dir, ignore_basename=True)

@@ -7,6 +7,7 @@ import os
 import imageio
 import io
 from PIL import Image
+from functools import partial
 
 
 def create_gif(directory, extension, name, duration=2):
@@ -31,7 +32,7 @@ def create_gif(directory, extension, name, duration=2):
     return None
 
 
-def kdeplot(x, labels=[''], xlabel='', ylabel='', title='', figsize=(15, 10), save=False, path=''):
+def kdeplot(x, labels=[''], xlabel='', ylabel='', title='', figsize=(15, 10), save=False):
     """Create a KDE plot for a given array.
 
     Args:
@@ -64,7 +65,7 @@ def kdeplot(x, labels=[''], xlabel='', ylabel='', title='', figsize=(15, 10), sa
     if len(title) > 0:
         plt.title(title)
     if save:
-        plt.savefig(path, bbox_inches='tight')
+        plt.savefig(save, bbox_inches='tight')
 
 
 def cat_plot(features, df, groupby, top=10, reverse=False, save=False):
@@ -84,17 +85,11 @@ def cat_plot(features, df, groupby, top=10, reverse=False, save=False):
     Returns:
         None
     """
-    cat_cols_plot = features
-    for i in cat_cols_plot:
+    catplot_fn = partial(sns.catplot, kind="count", palette="GnBu_r", height=15, aspect=2)
+    for i in features:
         for_plotting = df[[i, groupby]].drop_duplicates()
-        if reverse:
-            sns.catplot(
-                x=i, kind="count", data=for_plotting, order=for_plotting[i].value_counts().iloc[-top:].index,
-                palette="GnBu_r", height=15, aspect=2)
-        else:
-            sns.catplot(
-                x=i, kind="count", data=for_plotting, order=for_plotting[i].value_counts().iloc[:top].index,
-                palette="GnBu_r", height=15, aspect=2)
+        vc = for_plotting[i].value_counts()
+        catplot_fn(x=i, data=for_plotting, order=vc.iloc[-top:].index if reverse else vc.iloc[:top].index)
         plt.title("{} Distribution".format(i))
         if save:
             saving_path = save + '_{}_reverse.svg'.format(i) if reverse else save + '_{}.svg'.format(i)

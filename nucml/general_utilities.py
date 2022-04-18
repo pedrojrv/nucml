@@ -46,6 +46,11 @@ def initialize_directories(directory, reset=False):
         os.makedirs(dir, exist_ok=True)
 
 
+def remove_file(file):
+    if os.path.exists(file):
+        os.remove(file)
+
+
 def check_if_files_exist(files_list):
     """Check if all files in a list of filepaths exists.
 
@@ -159,3 +164,18 @@ def parse_isotope(isotope, parse_for="ENDF"):
 def close_open_files(files):
     for file in files:
         file.close()
+
+
+def _insert_separator(infile, separation_points, separator="|"):
+    for line in infile:
+        if line.strip():
+            string = list(line)
+            for i, j in enumerate(separation_points):
+                string.insert(i + j, separator)
+    return string
+
+
+def _write_file_with_separators(open_path, output_path, separator_index, separator="|"):
+    with open(open_path) as infile, open(output_path, 'w') as outfile:
+        string = _insert_separator(infile, separator_index, separator=separator)
+        outfile.write("".join(string))

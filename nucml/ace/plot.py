@@ -24,10 +24,9 @@ def dt_dual_keff_plot(dt_df, train_mae, val_mae, hyperparameter, keff_metric, sa
     """
     fig, (ax1, ax3) = plt.subplots(2, figsize=(14, 18))
 
+    label = "Multiplication Factor (K-eff)"
     if keff_metric == "Deviation_Ana":
-        label = "Multiplication Factor (K-eff) Error"
-    else:
-        label = "Multiplication Factor (K-eff)"
+        label = label + " Error"
 
     color = 'tab:orange'
     ax1.set_xlabel('Train MAE (b)')

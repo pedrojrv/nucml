@@ -50,7 +50,7 @@ def get_headers(dat_list, saving_directory):
             _filter_lines_with_exfor_elements(infile, outfile)
 
     header_file = os.path.join(saving_directory, 'all_ensdf_headers_formatted.csv')
-    _write_file_with_separators(raw_header_file, header_file, [5, 10, 15, 20, 25, 30, 35, 47])
+    general_utilities._write_file_with_separators(raw_header_file, header_file, [5, 10, 15, 20, 25, 30, 35, 47])
     os.remove(raw_header_file)
 
 
@@ -64,12 +64,6 @@ def _read_header_file(header_directory):
     ensdf_index_col = ["SYMB", "A", "Z", "Nol", "Nog", "Nmax", "Nc", "Sn", "Sp"]
     ensdf_index = pd.read_csv(csv_file, names=ensdf_index_col, sep="|")
     ensdf_index = _strip_and_store(ensdf_index)
-
-
-def _write_file_with_separators(open_path, output_path, separator_index):
-    with open(open_path) as infile, open(output_path, 'w') as outfile:
-        string = _insert_separator(infile, separator_index)
-        outfile.write("".join(string))
 
 
 def generate_elemental_ensdf(dat_list, header_directory, saving_directory):
@@ -125,20 +119,11 @@ def generate_elemental_ensdf(dat_list, header_directory, saving_directory):
     ensdf_v3_path = os.path.join(saving_directory, "Elemental_ENSDF_no_Header_F/")
     general_utilities.initialize_directories(ensdf_v3_path, reset=True)
     for i in element_list_names:
-        _write_file_with_separators(
+        general_utilities._write_file_with_separators(
             os.path.join(ensdf_v2_path, i + ".txt"),
             os.path.join(ensdf_v3_path, i + ".txt"),
             [4, 15, 20, 23, 34, 37, 39, 43, 54, 65, 66]
         )
-
-
-def _insert_separator(infile, separation_points, separator="|"):
-    for line in infile:
-        if line.strip():
-            string = list(line)
-            for i, j in enumerate(separation_points):
-                string.insert(i + j, separator)
-    return string
 
 
 def get_stable_states(dat_list, header_directory, saving_directory=None):
@@ -170,7 +155,7 @@ def get_stable_states(dat_list, header_directory, saving_directory=None):
                 outfile.write(e + lines[1 + z])
 
     logger.info("STABLE STATES: Formatting text file...")
-    _write_file_with_separators(
+    general_utilities._write_file_with_separators(
         os.path.join(header_directory, "ensdf_stable_state.txt"),
         os.path.join(saving_directory, 'ensdf_stable_state_formatted.csv'),
         [5, 10, 19, 25, 28, 39, 42, 44, 68, 71, 74]
@@ -229,16 +214,16 @@ def get_level_parameters(level_params_directory, saving_directory=None):
     data_file = os.path.join(level_params_directory, "levels-param.data")
     save_file = os.path.join(saving_directory, 'ripl_cut_off_energies.csv')
     # Using the document with all data we insert commas following the EXFOR format
-    with open(data_file) as infile, open(save_file, 'w') as outfile:
-        separation_points = [4, 8, 11, 21, 31, 41, 51, 55, 59, 63, 67, 76, 85, 96, 98, 100, 104, 116]
-        string = _insert_separator(infile, separation_points, separator=';')
-        outfile.write("".join(string))
+    indexes = [4, 8, 11, 21, 31, 41, 51, 55, 59, 63, 67, 76, 85, 96, 98, 100, 104, 116]
+    general_utilities._write_file_with_separators(data_file, save_file, indexes, ";")
 
     cut_off_cols = [
         "Z", "A", "Element", "Temperature_MeV", "Temperature_U", "Black_Shift",
         "Black_Shift_U", "N_Lev_ENSDF", "N_Max_Lev_Complete", "Min_Lev_Complete",
         "Num_Lev_Unique_Spin", "E_Max_N_Max", "E_Num_Lev_U_Spin", "Chi", "Fit",
-        "Flag", "Nox", "Xm_Ex", "Sigma"]
+        "Flag", "Nox", "Xm_Ex", "Sigma"
+    ]
+
     cut_off = pd.read_csv(save_file, names=cut_off_cols, skiprows=4, sep=";")
     cut_off = _strip_and_store(cut_off, 'Element', 'Element')
     cut_off["Element_w_A"] = cut_off["A"].astype(str) + cut_off["Element"]

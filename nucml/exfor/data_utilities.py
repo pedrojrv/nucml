@@ -1,4 +1,5 @@
 """Data manipulation utilities for the EXFOR dataset."""
+from functools import partial
 import os
 import logging
 
@@ -284,28 +285,28 @@ def make_predictions_from_df(df, Z, A, MT, model, model_type, scaler, to_scale, 
     return y_hat
 
 
-def _plot_save_predictions(plotter, all_dict, order_dict, save, path, show, log, save_both):
-    if plotter == "plotly":
-        exfor_plot_utils.ml_results(all_dict, save=save, save_dir=path, order_dict=order_dict, show=show)
-    elif plotter == "plt":
-        exfor_plot_utils.ml_results(
-            all_dict, save=save, save_dir=path, order_dict=order_dict, show=show, log=log, plot_type="sns")
-    if save_both:
-        if plotter == "plotly":
-            if len(order_dict) != 0:
-                order_dict = {k: int(v) for k, v in order_dict.items()}
-            exfor_plot_utils.ml_results(
-                all_dict, save=save, save_dir=path, order_dict=order_dict, show=False, log=log, plot_type="sns")
-        elif plotter == "plt":
-            if len(order_dict) != 0:
-                order_dict = {str(v): k for k, v in order_dict.items()}
-            exfor_plot_utils.ml_results(all_dict, save=save, save_dir=path, order_dict=order_dict, show=False)
-    return
+def _plot_save_predictions(plotter, all_dict, order_dict, save, show):  # , path, show, log, save_both):
+    plotly_plot = partial(
+        exfor_plot_utils.ml_results_plotly, results_dict=all_dict, order_dict=order_dict, save=save, show=show)
+    sns_plot = partial(
+        exfor_plot_utils.ml_results_plotly, results_dict=all_dict, order_dict=order_dict, save=save, show=show)
+    plotter = plotly_plot if plotter == "plotly" else sns_plot
+    plotter()
+    # if save_both:
+    #     if plotter == "plotly":
+    #         if len(order_dict) != 0:
+    #             order_dict = {k: int(v) for k, v in order_dict.items()}
+    #         exfor_plot_utils.ml_results(
+    #             all_dict, save=save, save_dir=path, order_dict=order_dict, show=False, log=log, plot_type="sns")
+    #     elif plotter == "plt":
+    #         if len(order_dict) != 0:
+    #             order_dict = {str(v): k for k, v in order_dict.items()}
+    #         exfor_plot_utils.ml_results(all_dict, save=save, save_dir=path, order_dict=order_dict, show=False)
 
 
 def predicting_nuclear_xs_v2(df, Z, A, MT, model, to_scale=None, scaler=None, e_array="ace", log=False,
                              model_type=None, new_data=empty_df, nat_iso="I", get_endf=False, inv_trans=False,
-                             show=False, plotter="plotly", save=False, path="", save_both=True, order_dict={}):
+                             show=False, plotter="plotly", save=False, save_both=True, order_dict={}):
     """Predict values for a given isotope-reaction channel pair.
 
     This all-in-one function allows to not only get predictions
@@ -400,7 +401,8 @@ def predicting_nuclear_xs_v2(df, Z, A, MT, model, to_scale=None, scaler=None, e_
             exfor_endf_new_data, error_endf_new = get_error_endf_exfor(endf, new_data, filter_energy=False)
             error_df = error_df.append(error_endf_new)
             all_dict.update({"exfor_endf_new": exfor_endf_new_data, "error_metrics": error_df})
-    _plot_save_predictions(plotter, all_dict, order_dict, save, path, show, log, save_both)
+
+    _plot_save_predictions(plotter, all_dict, order_dict, save, show)
     return all_dict
 
 
@@ -590,7 +592,7 @@ def get_mt_error_exfor_endf(df, Z, A, scaler, to_scale):
     return error_results
 
 
-def get_csv_for_ace(df, Z, A, model, scaler, to_scale, model_type=None, saving_dir=None, saving_filename=None):
+def get_csv_for_ace(df, Z, A, model, scaler, to_scale, model_type=None, save=False):
     """Create a CSV with the model predictions for a particular isotope in the appropiate format for the ACE utilities.
 
     The function returns a DataFrame which can then be saved as a CSV. The saving_dir argument provides a direct method
@@ -626,8 +628,8 @@ def get_csv_for_ace(df, Z, A, model, scaler, to_scale, model_type=None, saving_d
         data_ace[col] = predictions
 
     data_ace = 10**data_ace
-    if saving_dir:
-        data_ace.to_csv(os.path.join(saving_dir, saving_filename), index=False)
+    if save:
+        data_ace.to_csv(save, index=False)
     return data_ace
 
 

@@ -142,6 +142,27 @@ def append_ensdf_levels_range(tot_num_levels, df, Z, A, steps=1, log=False, scal
     return new_data
 
 
+def _extrapolate_to_upper_level(model, append_data_fn, pred, tot_num_levels, upper_energy_mev, it_limit):
+    last_energy = pred.Energy.values[-1]
+    number_levels = tot_num_levels
+    upper_limit = np.log10(upper_energy_mev)
+    x = 0
+
+    while last_energy < upper_limit:
+        number_levels = number_levels + 100
+        simple = append_data_fn(number_levels)
+        pred = pd.DataFrame()
+        pred["Level_Number"] = simple.Level_Number
+        pred["Energy"] = model.predict(pred)
+        last_energy = pred.Energy.values[-1]
+        x = x + 1
+        if x == it_limit:
+            logging.info("Iteration limit reached. Target energy not reached.")
+            break
+
+    return pred
+
+
 def generate_level_density_csv(df, Z, A, nodata=False, upper_energy_mev=20, get_upper=False, tot_num_levels=0,
                                it_limit=500, plot=False, save=False, saving_dir=""):
     """Fit a linear model to the isotopic sample provided.
@@ -172,16 +193,13 @@ def generate_level_density_csv(df, Z, A, nodata=False, upper_energy_mev=20, get_
     Returns:
         DataFrame: New DataFrame with Level Number and Level Energy as predicted by the linear model.
     """
+    original = df.copy() if nodata else load_ensdf_samples(df, Z, A)
     if nodata:
-        original = df.copy()
         append_data_fn = partial(append_ensdf_levels_nodata, df.copy(), log=True)
     else:
-        original = load_ensdf_samples(df, Z, A)
         append_data_fn = partial(append_ensdf_levels, df.copy(), Z, A, log=True)
 
     element = original.Element_w_A.values[0]
-    logging.info("Generating level density for {}".format(element))
-
     simple = append_data_fn(tot_num_levels) if tot_num_levels else original.copy()
 
     original = original[["Level_Number", "Energy"]]
@@ -195,25 +213,11 @@ def generate_level_density_csv(df, Z, A, nodata=False, upper_energy_mev=20, get_
     pred["Energy"] = reg.predict(pred)
 
     if get_upper:
-        logging.info("Initalizing starting variables for NLD extrapolation...")
-        last_energy = pred.Energy.values[-1]
-        number_levels = tot_num_levels
-        upper_limit = np.log10(upper_energy_mev)
-        x = 0
+        _extrapolate_to_upper_level(reg, append_data_fn, pred, tot_num_levels, upper_energy_mev, it_limit)
 
-        while last_energy < upper_limit:
-            number_levels = number_levels + 100
-            simple = append_data_fn(number_levels)
-            pred = pd.DataFrame()
-            pred["Level_Number"] = simple.Level_Number
-            pred["Energy"] = reg.predict(pred)
-            last_energy = pred.Energy.values[-1]
-            x = x + 1
-            if x == it_limit:
-                logging.info("Iteration limit reached. Target energy not reached.")
-                break
     if plot:
         ensdf_plot.level_density_ml(original, pred, log_sqrt=False, log=True)
+
     if save:
         pred["A"] = A
         pred["Z"] = Z
