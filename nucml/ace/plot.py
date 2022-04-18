@@ -4,7 +4,7 @@ import os
 from matplotlib.ticker import MaxNLocator
 
 
-def dt_dual_keff_plot(dt_df, train_mae, val_mae, hyperparameter, keff_metric, save=False, saving_dir=""):
+def dt_dual_keff_plot(dt_df, train_mae, val_mae, hyperparameter, keff_metric, save=False):
     """Create a two figure plot comparing k-eff, MAE (train/val), and model hyperparameters for DT models.
 
     Contains both the performance metric (i.e. MAE) and the criticality calculation (i.e K-eff) vs two model
@@ -55,9 +55,8 @@ def dt_dual_keff_plot(dt_df, train_mae, val_mae, hyperparameter, keff_metric, sa
 
     fig.tight_layout()  # otherwise the right y-label is slightly clipped
     if save:
-        plt.savefig(os.path.join(saving_dir, "dt_mae_keff.png"), bbox_inches="tight", dpi=600)
+        plt.savefig(os.path.join(save, "dt_mae_keff.png"), bbox_inches="tight", dpi=600)
     plt.show()
-    return None
 
 
 def dt_keff_plot(dt_df, mae, hyperparameter, keff_metric, save=False):
