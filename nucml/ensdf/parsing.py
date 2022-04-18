@@ -2,6 +2,7 @@
 import os
 import logging
 import pandas as pd
+import itertools
 
 from nucml import general_utilities
 import nucml.datasets as nuc_data
@@ -25,6 +26,13 @@ def get_ripl_dat_paths(dat_directory):
     return names
 
 
+def _filter_lines_with_exfor_elements(infile, outfile):
+    for line in infile:
+        for z in nuc_data.exfor_elements:
+            if z in line.split():
+                outfile.write(line)
+
+
 def get_headers(dat_list, saving_directory):
     """Retrieve the avaliable raw headers for all .dat files.
 
@@ -36,26 +44,14 @@ def get_headers(dat_list, saving_directory):
     Returns:
         None
     """
-    logger.info("ENSDF: Extracting headers ...")
     raw_header_file = os.path.join(saving_directory, "all_ensdf_headers.txt")
-    for i in dat_list:
-        with open(i) as infile, open(raw_header_file, 'a') as outfile:
-            for line in infile:
-                for z in nuc_data.exfor_elements:
-                    if z in line.split():
-                        outfile.write(line)
+    for dat in dat_list:
+        with open(dat) as infile, open(raw_header_file, 'a') as outfile:
+            _filter_lines_with_exfor_elements(infile, outfile)
 
     header_file = os.path.join(saving_directory, 'all_ensdf_headers_formatted.csv')
-    with open(raw_header_file) as infile, open(header_file, 'w') as outfile:
-        for line in infile:
-            if line.strip():
-                string = list(line)
-                for i, j in enumerate([5, 10, 15, 20, 25, 30, 35, 47]):
-                    string.insert(i + j, '|')
-                outfile.write("".join(string))
+    _write_file_with_separators(raw_header_file, header_file, [5, 10, 15, 20, 25, 30, 35, 47])
     os.remove(raw_header_file)
-    logger.info("ENSDF: Finished. Saved to {}".format(header_file))
-    return None
 
 
 def _strip_and_store(df, column="SYMB", storing_column="Text_Filenames"):
@@ -71,7 +67,7 @@ def _read_header_file(header_directory):
 
 
 def _write_file_with_separators(open_path, output_path, separator_index):
-    with open(open_path) as infile, open(output_path) as outfile:
+    with open(open_path) as infile, open(output_path, 'w') as outfile:
         string = _insert_separator(infile, separator_index)
         outfile.write("".join(string))
 
@@ -105,33 +101,35 @@ def generate_elemental_ensdf(dat_list, header_directory, saving_directory):
     general_utilities.initialize_directories(ensdf_v1_path, reset=True)
     general_utilities.initialize_directories(ensdf_v2_path, reset=True)
 
-    logger.info("Extracting ENSDF data per element...")
-    for e in element_list_endf:
-        for i in dat_list:
-            elem_path_v1 = os.path.join(ensdf_v1_path, str(e).strip() + '.txt')
-            elem_path_v2 = os.path.join(ensdf_v2_path, str(e).strip() + '.txt')
-            with open(i, "r") as infile, open(elem_path_v1, 'a') as outfile1, open(elem_path_v2, 'a') as outfile2:
-                lines = infile.readlines()
-                for z, line in enumerate(lines):
-                    if line.startswith(str(e)):
-                        value = ensdf_index[ensdf_index["SYMB"] == e]
-                        for y in range(0, 1 + value[["Nol"]].values[0][0] + value[["Nog"]].values[0][0]):
-                            to_write = lines[z + y]
-                            outfile1.write(to_write)
-                            if not y:
-                                outfile2.write(to_write)
+    element_dat_it = itertools.product(element_list_endf, dat_list)
+    for e, i in element_dat_it:
+        # for e in element_list_endf:
+        # for i in dat_list:
+        elem_path_v1 = os.path.join(ensdf_v1_path, str(e).strip() + '.txt')
+        elem_path_v2 = os.path.join(ensdf_v2_path, str(e).strip() + '.txt')
+        infile = open(i, "r")
+        outfile1 = open(elem_path_v1, 'a')
+        outfile2 = open(elem_path_v2, 'a')
+        lines = infile.readlines()
+        for z in [z for z, line in enumerate(lines) if line.startswith(e)]:
+            # for z, line in enumerate(lines):
+            # if line.startswith(str(e)):
+            value = ensdf_index[ensdf_index["SYMB"] == e]
+            for y in range(0, 1 + value[["Nol"]].values[0][0] + value[["Nog"]].values[0][0]):
+                to_write = lines[z + y]
+                outfile1.write(to_write)
+                outfile2.write(to_write) if not y else None
+
+        general_utilities.close_open_files([infile, outfile1, outfile1])
 
     ensdf_v3_path = os.path.join(saving_directory, "Elemental_ENSDF_no_Header_F/")
     general_utilities.initialize_directories(ensdf_v3_path, reset=True)
-    logger.info("ENSDF Elemental: Formatting files...")
     for i in element_list_names:
         _write_file_with_separators(
             os.path.join(ensdf_v2_path, i + ".txt"),
             os.path.join(ensdf_v3_path, i + ".txt"),
             [4, 15, 20, 23, 34, 37, 39, 43, 54, 65, 66]
         )
-    logger.info("ENSDF Elemental: Finished formating data.")
-    return None
 
 
 def _insert_separator(infile, separation_points, separator="|"):
@@ -164,14 +162,12 @@ def get_stable_states(dat_list, header_directory, saving_directory=None):
     ensdf_index = pd.read_csv(csv_file, names=ensdf_index_col, sep="|")
     element_list_endf = ensdf_index.SYMB.tolist()  # string that files start with
 
-    logger.info("STABLE STATES: Extracting stable states from .dat files...")
-    for e in element_list_endf:
-        for i in dat_list:
-            with open(i, "r") as infile, open(os.path.join(header_directory, "ensdf_stable_state.txt"), 'a') as outfile:
-                lines = infile.readlines()
-                for z, line in enumerate(lines):
-                    if line.startswith(str(e)):
-                        outfile.write(e + lines[1 + z])
+    element_dat_it = itertools.product(element_list_endf, dat_list)
+    for e, i in element_dat_it:
+        with open(i, "r") as infile, open(os.path.join(header_directory, "ensdf_stable_state.txt"), 'a') as outfile:
+            lines = infile.readlines()
+            for z in [z for z, line in enumerate(lines) if line.startswith(e)]:
+                outfile.write(e + lines[1 + z])
 
     logger.info("STABLE STATES: Formatting text file...")
     _write_file_with_separators(

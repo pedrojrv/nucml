@@ -285,7 +285,7 @@ def get_basic_mts(xss, pointer_dict):
     return mt_data
 
 
-def get_xs_for_mt(MT, mt_array, mt_xs_pointers_array, jxs_df, xss, pointers):
+def get_xs_for_mt(MT, jxs_df, xss, pointers):
     """Return cross section and energy points and data needed to index the xss array.
 
     It also contains the indexes corresponding to the starting and end point in the xss array for a given reaction
@@ -293,16 +293,14 @@ def get_xs_for_mt(MT, mt_array, mt_xs_pointers_array, jxs_df, xss, pointers):
 
     Args:
         MT (int): MT number for the reaction to extract.
-        mt_array (np.array): Array containing the MT reactions. Usually obtained by the get_mt_array() function.
-        mt_xs_pointers_array (np.array): Array containing the XS pointers obtained through the
-            get_mt_xs_pointers_array() function.
-        jxs_df (DataFrame): DataFrame containing the JXS values.
-        xss (np.array): The XSS array obtained through the get_nxs_jxs_xss() function.
-        verbose (bool, optional): To or not to print statements througout the process. Defaults to True.
+        jxs_df (pandas.DataFrame): DataFrame containing the JXS values.
+        xss (numpyp.array): The XSS array obtained through the get_nxs_jxs_xss() function.
 
     Returns:
         dict: Contains cross section values and metadata for a given reaction channel.
     """
+    mt_array = get_mt_array(xss, pointers)
+    mt_xs_pointers_array = get_mt_xs_pointers_array(xss, pointers)
     mt_index = np.where(mt_array == MT)[0][0]                               # GET INDEX FOR REACTION TYPE MT
     if MT == mt_array[-1]:                                                  # IF REQUESTED MT IS THE LAST ONE ON TABLE
         # TABLE BEGINS + NUMBER OF ITEMS ACCORDING TO LSIG

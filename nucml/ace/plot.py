@@ -60,7 +60,7 @@ def dt_dual_keff_plot(dt_df, train_mae, val_mae, hyperparameter, keff_metric, sa
     return None
 
 
-def dt_keff_plot(dt_df, mae, hyperparameter, keff_metric, save=False, saving_dir=""):
+def dt_keff_plot(dt_df, mae, hyperparameter, keff_metric, save=False):
     """Create a figure comparing k-eff and MAE model and a single hyperparameter for DT models.
 
     The decision tree hyperparameteres are usually the Max Depth and the Minimum Numbers for Split.
@@ -77,11 +77,9 @@ def dt_keff_plot(dt_df, mae, hyperparameter, keff_metric, save=False, saving_dir
         None
     """
     fig, ax1 = plt.subplots(figsize=(18, 10))
-
+    label = "Multiplication Factor (K-eff)"
     if keff_metric == "Deviation_Ana":
-        label = "Multiplication Factor (K-eff) Error"
-    else:
-        label = "Multiplication Factor (K-eff)"
+        label = label + " Error"
 
     color = 'tab:orange'
     ax1.set_xlabel('Validation MAE (b)')
@@ -97,10 +95,9 @@ def dt_keff_plot(dt_df, mae, hyperparameter, keff_metric, save=False, saving_dir
     ax2.tick_params(axis='y', labelcolor=color)
 
     fig.tight_layout()  # otherwise the right y-label is slightly clipped
-    if save:
-        plt.savefig(os.path.join(saving_dir, "dt_single_mae_keff.png"), bbox_inches="tight", dpi=600)
+    # dt_single_mae_keff.png
+    plt.savefig(save, bbox_inches="tight", dpi=600)
     plt.show()
-    return None
 
 
 def knn_dual_plot(knn_df, hyperparameter, train_mae, val_mae, keff_metric, save=False, saving_dir=""):

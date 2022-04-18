@@ -121,8 +121,6 @@ def ml_results(results_dict, order_dict={}, save_dir='', save=False, render_brow
         if not show:
             plt.close()
 
-        return None
-
 
 def plot_limits(data, endf, new_data, y_hat, y_hat2, y_hat3):
     """Set new plot limits based on plotted data.
