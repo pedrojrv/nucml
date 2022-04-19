@@ -186,7 +186,7 @@ the resulting `.m` file into a `.mat` file.
 
 .. code-block:: python
 
-    ace_utils.generate_serpent_bash(dt_ml_ace_dir)
+    serpent_utils.generate_serpent_bash(dt_ml_ace_dir)
 
 The generated bash script will be saved in the same directory (dt_ml_ace_dir).
 

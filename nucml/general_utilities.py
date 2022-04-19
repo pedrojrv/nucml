@@ -169,6 +169,7 @@ def parse_isotope(isotope, parse_for="ENDF"):
 
 
 def close_open_files(files):
+    """Close open files."""
     for file in files:
         file.close()
 
