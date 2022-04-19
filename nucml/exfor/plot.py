@@ -7,7 +7,7 @@ import seaborn as sns
 
 import nucml.exfor.data_utilities as exfor_utils
 import nucml.datasets as nuc_data
-import nucml.ace.data_utilities as ace_utils
+import nucml.ace.querying_utils as query_utils
 
 sns.set(style="white", font_scale=2.5)
 
@@ -231,7 +231,7 @@ def make_chlorine_paper_figure(df, dt_model, dt_scaler, knn_model, knn_scaler, t
         "../EXFOR/New_Data/Chlorine_Data/new_cl_np.csv", df, scaler=dt_scaler, **new_cl_data_kwargs)
 
     endf_cl = nuc_data.load_evaluation("Cl035", 103, log=True)
-    ace_cl = ace_utils.get_energies("17035", ev=True, log=True)
+    ace_cl = query_utils.get_energies("17035", ev=True, log=True)
 
     _, (ax1, ax2) = plt.subplots(2, figsize=(30, 20))
 

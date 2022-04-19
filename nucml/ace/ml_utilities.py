@@ -9,6 +9,7 @@ import nucml.model.utilities as model_utils
 import nucml.exfor.data_utilities as exfor_utils
 import nucml.ace.serpent_utilities as serpent_utils
 import nucml.ace.data_utilities as ace_utils
+import nucml.ace.querying_utils as query_utils
 import nucml.general_utilities as gen_utils
 
 template_path = config.bench_template_path
@@ -65,9 +66,9 @@ def get_hybrid_ml_xs(ml_df, pointers, jxs_df, xss, use_peaks=True):
     Returns:
         DataFrame: Merged DataFrame containing all ML and ACE reaction values.
     """
-    basic_mt_dict = ace_utils.get_basic_mts(xss, pointers)
-    mt_array = ace_utils.get_mt_array(xss, pointers)
-    mt_xs_pointers_array = ace_utils.get_mt_xs_pointers_array(xss, pointers)
+    basic_mt_dict = query_utils.get_basic_mts(xss, pointers)
+    mt_array = query_utils.get_mt_array(xss, pointers)
+    mt_xs_pointers_array = query_utils.get_mt_xs_pointers_array(xss, pointers)
 
     for i in list(ml_df.columns):
         if i == "Energy":
@@ -76,12 +77,12 @@ def get_hybrid_ml_xs(ml_df, pointers, jxs_df, xss, use_peaks=True):
             ml_df = fill_ml_xs(i, ml_df, basic_mt_dict[i], use_peaks=use_peaks)
         elif i in ["MT_18", "MT_102"]:
             MT = i.split("_")[1]
-            mt_info = ace_utils.get_xs_for_mt(int(MT), mt_array, mt_xs_pointers_array, jxs_df, xss, pointers)
+            mt_info = query_utils.get_xs_for_mt(int(MT), mt_array, mt_xs_pointers_array, jxs_df, xss, pointers)
             ml_df = fill_ml_xs(i, ml_df, mt_info["xs"], use_peaks=use_peaks)
         else:
             MT = i.split("_")[1]
             if int(MT) in mt_array:
-                mt_info = ace_utils.get_xs_for_mt(int(MT), mt_array, mt_xs_pointers_array, jxs_df, xss, pointers)
+                mt_info = query_utils.get_xs_for_mt(int(MT), mt_array, mt_xs_pointers_array, jxs_df, xss, pointers)
                 new_xs = np.concatenate((np.zeros(mt_info["energy_start"]), mt_info["xs"]), axis=0)
                 ml_df[i] = new_xs
     return ml_df
@@ -116,12 +117,12 @@ def get_final_ml_ace_df(energies, pointers, jxs_df, xss, ml_df,
     """
     Energy_Grid = pd.DataFrame({"Energy": energies}).set_index("Energy")
 
-    mt_array = ace_utils.get_mt_array(xss, pointers)
-    mt_xs_pointers_array = ace_utils.get_mt_xs_pointers_array(xss, pointers)
+    mt_array = query_utils.get_mt_array(xss, pointers)
+    mt_xs_pointers_array = query_utils.get_mt_xs_pointers_array(xss, pointers)
     for i in mt_array:
         # we get the ace cross sections and add them to our main dataframe some are not going to have the
         # same energy grid as mt1 so we fill missing values with 0
-        mt_info = ace_utils.get_xs_for_mt(i, mt_array, mt_xs_pointers_array, jxs_df, xss, pointers)
+        mt_info = query_utils.get_xs_for_mt(i, mt_array, mt_xs_pointers_array, jxs_df, xss, pointers)
         to_add = pd.DataFrame({"Energy": mt_info["energy"], "MT_" + str(int(i)): mt_info["xs"]}).set_index("Energy")
         Energy_Grid = pd.merge(Energy_Grid, to_add, left_index=True, right_index=True, how="outer")
     Energy_Grid = Energy_Grid.fillna(value=0)

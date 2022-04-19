@@ -7,8 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-
-import nucml.ace.data_utilities as ace_utils
+import nucml.ace.querying_utils as query_utils
 import nucml.evaluation.data_utilities as endf_utils
 import nucml.datasets as nuc_data
 import nucml.model.utilities as model_utils
@@ -348,8 +347,8 @@ def predicting_nuclear_xs_v2(df, Z, A, MT, model, to_scale=None, scaler=None, e_
     if get_endf:
         endf = endf_utils.get_for_exfor(Z, A, MT, log=log)
     if e_array == "ace":
-        # e_array = ace_utils.get_energies('{:<02d}'.format(Z) + str(A).zfill(3), ev=True, log=log)
-        e_array = ace_utils.get_energies(str(Z) + str(A).zfill(3), ev=True, log=log)
+        # e_array = query_utils.get_energies('{:<02d}'.format(Z) + str(A).zfill(3), ev=True, log=log)
+        e_array = query_utils.get_energies(str(Z) + str(A).zfill(3), ev=True, log=log)
 
     new_data_avaliable = True if new_data.shape[0] != 0 else False
     endf_avaliable = True if endf.shape[0] != 0 else False
@@ -614,7 +613,7 @@ def get_csv_for_ace(df, Z, A, model, scaler, to_scale, model_type=None, save=Fal
     Returns:
         DataFrame
     """
-    ace_array = ace_utils.get_energies('{:<02d}'.format(Z) + str(A).zfill(3), ev=True, log=True)
+    ace_array = query_utils.get_energies('{:<02d}'.format(Z) + str(A).zfill(3), ev=True, log=True)
     data_ace = pd.DataFrame({"Energy": ace_array})
 
     exfor_isotope_cols = _get_isotope_df_cols(df, Z, A, scaler, to_scale)

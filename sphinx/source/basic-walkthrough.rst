@@ -158,12 +158,13 @@ criticality benchmark.
     # import the ace utilities
     import nucml.ace.data_utilities as ace_utils
     import nucml.ace.serpent_utilities as serpent_utils
+    import nucml.ace.ml_utilities as ml_utils
 
     # 1) specify directory where all benchmark files will be created
     dt_ml_ace_dir = "DT_B0/"
 
     # 2) Use the dt_results dataframe to generate benchmark files
-    ace_utils.generate_bench_ml_xs(data, dt_results, "U233_MET_FAST_001", to_scale, dt_ml_ace_dir)
+    ml_utils.generate_bench_ml_xs(data, dt_results, "U233_MET_FAST_001", to_scale, dt_ml_ace_dir)
 
 
 Under the hood, the ace utilities performs several things:
