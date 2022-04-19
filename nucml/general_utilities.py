@@ -47,8 +47,15 @@ def initialize_directories(directory, reset=False):
 
 
 def remove_file(file):
+    """Remove file if it exists."""
     if os.path.exists(file):
         os.remove(file)
+
+
+def remove_files(files):
+    """Remove all files."""
+    for file in files:
+        remove_file(file)
 
 
 def check_if_files_exist(files_list):
@@ -179,3 +186,26 @@ def _write_file_with_separators(open_path, output_path, separator_index, separat
     with open(open_path) as infile, open(output_path, 'w') as outfile:
         string = _insert_separator(infile, separator_index, separator=separator)
         outfile.write("".join(string))
+
+
+def convert_dos_to_unix(file_path):
+    """Convert a given file from DOS to UNIX.
+
+    Args:
+        file_path (str): Path to file to convert.
+
+    Returns:
+        None
+    """
+    # replacement strings
+    WINDOWS_LINE_ENDING = b'\r\n'
+    UNIX_LINE_ENDING = b'\n'
+
+    # relative or absolute file path, e.g.:
+    with open(file_path, 'rb') as open_file:
+        content = open_file.read()
+
+    content = content.replace(WINDOWS_LINE_ENDING, UNIX_LINE_ENDING)
+
+    with open(file_path, 'wb') as open_file:
+        open_file.write(content)

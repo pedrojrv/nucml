@@ -10,13 +10,13 @@
 Basic Walkthrough
 =================
 
-The cloned repository does not only contain the information necessary to start generating the datasets but also a variety of 
-tutorial notebooks that demonstrate the capabilities of NucML. Be sure to check them out. For more information in the contents please 
-refer to the repository README file in GitHub. If you haven't installed NucmL yet, please follow the instructions in 
+The cloned repository does not only contain the information necessary to start generating the datasets but also a variety of
+tutorial notebooks that demonstrate the capabilities of NucML. Be sure to check them out. For more information in the contents please
+refer to the repository README file in GitHub. If you haven't installed NucmL yet, please follow the instructions in
 the :ref:`Installation Guide<installation-guide-label>`.
 
-In this section we summarize the main pipeline steps for a complete nuclear data neutron-induce cross section evaluation including 
-loading the data, modeling, and validating using criticality benchmarks. 
+In this section we summarize the main pipeline steps for a complete nuclear data neutron-induce cross section evaluation including
+loading the data, modeling, and validating using criticality benchmarks.
 
 
 
@@ -24,28 +24,28 @@ loading the data, modeling, and validating using criticality benchmarks.
 -------------------------------
 
 The `nucml.datasets` module offers the capability of loading various datasets from AME, ENSDF, ENDF, and EXFOR easily. In this example
-we load the EXFOR/AME dataset for neutron-induce reactions. 
+we load the EXFOR/AME dataset for neutron-induce reactions.
 
 .. code-block:: python
-    
+
     # first we import the datasets module
     import nucml.datasets as nuc_data
 
     # We can then load the EXFOR data.
     data, x_train, x_test, y_train, y_test, to_scale, scaler = nuc_data.load_exfor(mode="neutrons", log=True, low_en=True, max_en=2.0E7, num=True, basic=0, normalize=True)
 
-There are a couple of things going on when loading the data. It starts by setting `mode="neutrons"` meaning we only want 
-datapoints for neutron-induce reactions.  The `log` arguments specifies that we want the Cross 
+There are a couple of things going on when loading the data. It starts by setting `mode="neutrons"` meaning we only want
+datapoints for neutron-induce reactions.  The `log` arguments specifies that we want the Cross
 Section and Incident Energy data in log form. These are highly skewed features that benefit from this transformation.
-The `low_en` arguments tells the loading function that we only want low energy points (up to 2.0E7 eV). 
+The `low_en` arguments tells the loading function that we only want low energy points (up to 2.0E7 eV).
 
-The EXFOR dataset contains a lot of information including Author, Institutions, Dates, and more. This is generally 
-not useful for a ML model. We tell the loader function by setting `num=True` that we only want useful numerical 
+The EXFOR dataset contains a lot of information including Author, Institutions, Dates, and more. This is generally
+not useful for a ML model. We tell the loader function by setting `num=True` that we only want useful numerical
 and categorical data. This will automatically one-hot encode categorical variables. The `normalize=True` makes sure
-that the data is normalized using a standard scaler. There are other transformers avaliable. 
+that the data is normalized using a standard scaler. There are other transformers avaliable.
 
-The `basic` argument specifies the complexity of the dataset in terms of features included. See the documentation 
-for more information. In this example `basic=0` means that we only want the most basic features 
+The `basic` argument specifies the complexity of the dataset in terms of features included. See the documentation
+for more information. In this example `basic=0` means that we only want the most basic features
 (Energy, Data, Z, N, A, MT, Center of Mass Flag, Target Flag).
 
 The loader returns eight objects:
@@ -54,11 +54,11 @@ The loader returns eight objects:
 - x_train and y_train: The trainining data and labels.
 - x_test and y_test: The testing data and labels.
 - to_scale: A list of the features subject to normalization by the scaler.
-- scaler: A scikit-learn scaler object. This is the transformer used to normalized the data. 
+- scaler: A scikit-learn scaler object. This is the transformer used to normalized the data.
 
 
 
-2. Building the ML Models 
+2. Building the ML Models
 -------------------------
 
 Building the model is user dependent. There are a variety of models and an infinite number of hyperparameter combinations. Tuning
@@ -92,7 +92,7 @@ all performance metrics easily.
     train_error_metrics = model_utils.regression_error_metrics(y_hat_train, y_train)
     test_error_metrics = model_utils.regression_error_metrics(y_hat_test, y_test)
 
-After training the model make sure to save it for later use in the validation phase. Remember to also save the scaler. 
+After training the model make sure to save it for later use in the validation phase. Remember to also save the scaler.
 This latter object is often forgotted but is needed to tranform the same or new data in later work. Make sure the model
 name is unique since it is probable you will train various models of the same type.
 
@@ -113,7 +113,7 @@ name is unique since it is probable you will train various models of the same ty
     scaler_saving_path = os.path.join(model_saving_directory, 'scaler.pkl')
 
     # save the models and scaler
-    dump(dt_model, model_saving_path) 
+    dump(dt_model, model_saving_path)
     dump(scaler, open(scaler_saving_path, 'wb'))
 
 In the next section we need to present a `DataFrame` to the ACE utilities to create model dependent benchmark files. The ACE module
@@ -127,7 +127,7 @@ but in reality will include many more models.
     # transform the obtained error metrics using the model utilities
     dt_results = model_utils.create_train_test_error_df(0, train_error_metrics, test_error_metrics)
 
-    # adding the paths to dt_results 
+    # adding the paths to dt_results
     dt_results["model_path"] = os.path.abspath(model_saving_path)
     dt_results["scaler_path"] = os.path.abspath(scaler_saving_path)
 
@@ -149,14 +149,15 @@ code automate more of these tasks.
 4. Generating Benchmark Files
 -----------------------------
 
-While the benchmark library is small, NucML allows the user to add more benchmark files by following a set of instructions. It 
-is best practice to create benchmark files for all avaliable benchmarks. For demonstration we use only the U-233 Jezzebel 
+While the benchmark library is small, NucML allows the user to add more benchmark files by following a set of instructions. It
+is best practice to create benchmark files for all avaliable benchmarks. For demonstration we use only the U-233 Jezzebel
 criticality benchmark.
 
 .. code-block:: python
 
     # import the ace utilities
     import nucml.ace.data_utilities as ace_utils
+    import nucml.ace.serpent_utilities as serpent_utils
 
     # 1) specify directory where all benchmark files will be created
     dt_ml_ace_dir = "DT_B0/"
@@ -167,7 +168,7 @@ criticality benchmark.
 
 Under the hood, the ace utilities performs several things:
 
-0. Creates a new directory with the `model_name` as the name within `dt_ml_ace_dir` 
+0. Creates a new directory with the `model_name` as the name within `dt_ml_ace_dir`
 1. Search for the queried benchmark template
 2. Reads the composition and extracts isotopes for which ML cross sections are needed
 3. Loads the model and scaler using the paths in the `dt_results`
@@ -177,11 +178,11 @@ Under the hood, the ace utilities performs several things:
 
 ..	note::
 
-	The benchmark name is based on the Benchmark Catalog. If a benchmark of choice is not incldued you can include your own by following the instructions in the Benchmarks documentation. 
+	The benchmark name is based on the Benchmark Catalog. If a benchmark of choice is not incldued you can include your own by following the instructions in the Benchmarks documentation.
 
 
-Next, we can generate a `bash` script that will allow us to run all benchmark input files (in this case is just one) and transform 
-the resulting `.m` file into a `.mat` file. 
+Next, we can generate a `bash` script that will allow us to run all benchmark input files (in this case is just one) and transform
+the resulting `.m` file into a `.mat` file.
 
 .. code-block:: python
 
@@ -214,7 +215,7 @@ Once finished, you can gather all results using a simple `ace_utils` method.
 .. code-block:: python
 
     # gather results
-    dt_jezebel_results = ace_utils.gather_benchmark_results(dt_ml_ace_dir)
+    dt_jezebel_results = serpent_utils.gather_benchmark_results(dt_ml_ace_dir)
 
 
 The resulting `DataFrame` contains the model name, benchmark name, the multiplication factor, and the error.
@@ -224,5 +225,5 @@ The resulting `DataFrame` contains the model name, benchmark name, the multiplic
 -------------
 
 Congratulations, you have performed an end-to-end ML-enhanced nuclear data evaluation using the U-233 Jezebel Benchmark. These are just some of
-the general submodules that NucML offers to help you navigate through the evaluation pipeline. Try going through the 
-:ref:`Navigating the NDE<navigating-the-nde-label>` section for more information and tutorials. 
+the general submodules that NucML offers to help you navigate through the evaluation pipeline. Try going through the
+:ref:`Navigating the NDE<navigating-the-nde-label>` section for more information and tutorials.

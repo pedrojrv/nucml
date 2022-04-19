@@ -7,7 +7,7 @@ import tensorflow as tf
 import xgboost as xgb
 from sklearn.metrics import mean_absolute_error, mean_squared_error, explained_variance_score
 from sklearn.metrics import median_absolute_error, r2_score
-import nucml.ace.data_utilities as ace_utils
+import nucml.ace.serpent_utilities as serpent_utils
 
 
 def regression_error_metrics(v1, v2):
@@ -239,7 +239,7 @@ def remove_unused_models(model_results_path, acedate_directory):
     model_results_df["main_directory"] = model_results_df.model_path.apply(lambda x: os.path.dirname(x) + "\\")
     model_results_df = model_results_df[["Model", "train_mae", "val_mae", "test_mae", "main_directory"]]
 
-    benchmark_results = ace_utils.gather_benchmark_results(acedate_directory)
+    benchmark_results = serpent_utils.gather_benchmark_results(acedate_directory)
     model_results_df = model_results_df.merge(benchmark_results, on="Model")
 
     # KEEP BEST TRAIN VAL TEST

@@ -5,7 +5,6 @@ import shutil
 from pathlib import Path
 import numpy as np
 import pandas as pd
-import scipy.io
 from scipy.signal import find_peaks
 
 
@@ -13,11 +12,11 @@ import nucml.general_utilities as gen_utils
 import nucml.model.utilities as model_utils
 import nucml.exfor.data_utilities as exfor_utils
 import nucml.config as config
+import nucml.ace.serpent_utilities as serpent_utils
 
 empty_df = pd.DataFrame()
 ace_dir = config.ace_path
 template_path = config.bench_template_path
-matlab_path = config.matlab_path
 
 
 def get_to_skip_lines(isotope, temp="03c"):
@@ -80,20 +79,14 @@ def get_nxs_jxs_xss(isotope, temp="03c", custom_path=None, reduced=False):
             xss (np.array)
     """
     path, to_skip, lines = get_to_skip_lines(isotope, temp=temp)
-    if (path is not None) and (custom_path is not None):
-        if reduced:
-            to_skip = 0
+    if custom_path is not None:
+        to_skip = 0 if reduced else to_skip
+        path = custom_path
 
-        nxs = pd.read_csv(custom_path, delim_whitespace=True, skiprows=to_skip+6, nrows=2, header=None)
-        jxs = pd.read_csv(custom_path, delim_whitespace=True, skiprows=to_skip+8, nrows=4, header=None)
-        xss = pd.read_csv(
-            custom_path, delim_whitespace=True, skiprows=to_skip+12, nrows=lines, header=None).values.flatten()
-        return nxs, jxs, xss
-    else:
-        nxs = pd.read_csv(path, delim_whitespace=True, skiprows=to_skip+6, nrows=2, header=None)
-        jxs = pd.read_csv(path, delim_whitespace=True, skiprows=to_skip+8, nrows=4, header=None)
-        xss = pd.read_csv(path, delim_whitespace=True, skiprows=to_skip+12, nrows=lines, header=None).values.flatten()
-        return nxs, jxs, xss
+    nxs = pd.read_csv(path, delim_whitespace=True, skiprows=to_skip+6, nrows=2, header=None)
+    jxs = pd.read_csv(path, delim_whitespace=True, skiprows=to_skip+8, nrows=4, header=None)
+    xss = pd.read_csv(path, delim_whitespace=True, skiprows=to_skip+12, nrows=lines, header=None).values.flatten()
+    return nxs, jxs, xss
 
 
 def get_nxs_dictionary(nxs_df):
@@ -240,9 +233,8 @@ def get_mt_xs_pointers_array(xss, pointer_dict):
     Returns:
         np.array: Numpy array containing the XS pointers grid values.
     """
-    mt_xs_pointers_array = xss[
-        pointer_dict["xs_pointers"]: pointer_dict["xs_pointers"] + pointer_dict["ntr"]].astype(int)
-    return mt_xs_pointers_array
+    mt_xs_pointers_array = xss[pointer_dict["xs_pointers"]: pointer_dict["xs_pointers"] + pointer_dict["ntr"]]
+    return mt_xs_pointers_array.astype(int)
 
 
 def get_mt_array_w_pointers(mt_array, mt_xs_pointers_array):
@@ -302,15 +294,13 @@ def get_xs_for_mt(MT, jxs_df, xss, pointers):
     mt_array = get_mt_array(xss, pointers)
     mt_xs_pointers_array = get_mt_xs_pointers_array(xss, pointers)
     mt_index = np.where(mt_array == MT)[0][0]                               # GET INDEX FOR REACTION TYPE MT
+    start_index = pointers["xs_table_pointer"] + mt_xs_pointers_array[mt_index] - 1
     if MT == mt_array[-1]:                                                  # IF REQUESTED MT IS THE LAST ONE ON TABLE
         # TABLE BEGINS + NUMBER OF ITEMS ACCORDING TO LSIG
-        start_index = pointers["xs_table_pointer"] + mt_xs_pointers_array[mt_index] - 1
         end_index = jxs_df.iloc[0, 7] - 1                                    # ENDING INDEX
-        mt_data = xss[start_index: end_index]
     else:
-        start_index = pointers["xs_table_pointer"] + mt_xs_pointers_array[mt_index] - 1
         end_index = pointers["xs_table_pointer"] + mt_xs_pointers_array[mt_index + 1] - 1
-        mt_data = xss[start_index: end_index]
+    mt_data = xss[start_index: end_index]
 
     # THE FIRST AND SECOND VALUE CORRESPOND TO ENERGY INDEX AND POINTS
     energy_index = int(mt_data[0])   # START INDEX IN ENERGY ARRAY FOR MT REACTION
@@ -345,7 +335,6 @@ def fill_ml_xs(MT, ml_xs, ace_xs, use_peaks=True):
         peaks, properties = find_peaks(ace_xs, prominence=1, width=5)
         if len(peaks) == 0:
             fallback = True
-            pass
         else:
             properties["prominences"], properties["widths"]
             to_append = ace_xs[:peaks[0]]
@@ -384,29 +373,22 @@ def get_hybrid_ml_xs(ml_df, pointers, jxs_df, xss, use_peaks=True):
     basic_mt_dict = get_basic_mts(xss, pointers)
     mt_array = get_mt_array(xss, pointers)
     mt_xs_pointers_array = get_mt_xs_pointers_array(xss, pointers)
-    # Previously get_merged_df()
+
     for i in list(ml_df.columns):
         if i == "Energy":
             continue
-        elif i == "MT_1":
-            ml_df = fill_ml_xs(i, ml_df, basic_mt_dict["MT_1"], use_peaks=use_peaks)
-        elif i == "MT_2":
-            ml_df = fill_ml_xs(i, ml_df, basic_mt_dict["MT_2"], use_peaks=use_peaks)
-        elif i == "MT_3":
-            ml_df = fill_ml_xs(i, ml_df, basic_mt_dict["MT_3"], use_peaks=use_peaks)
-        elif i == "MT_101":
-            ml_df = fill_ml_xs(i, ml_df, basic_mt_dict["MT_101"], use_peaks=use_peaks)
+        elif i in ["MT_1", "MT_2", "MT_3", "MT_101"]:
+            ml_df = fill_ml_xs(i, ml_df, basic_mt_dict[i], use_peaks=use_peaks)
+        elif i in ["MT_18", "MT_102"]:
+            MT = i.split("_")[1]
+            mt_info = get_xs_for_mt(int(MT), mt_array, mt_xs_pointers_array, jxs_df, xss, pointers)
+            ml_df = fill_ml_xs(i, ml_df, mt_info["xs"], use_peaks=use_peaks)
         else:
-            if (i in ["MT_18", "MT_102"]):
-                MT = i.split("_")[1]
+            MT = i.split("_")[1]
+            if int(MT) in mt_array:
                 mt_info = get_xs_for_mt(int(MT), mt_array, mt_xs_pointers_array, jxs_df, xss, pointers)
-                ml_df = fill_ml_xs(i, ml_df, mt_info["xs"], use_peaks=use_peaks)
-            else:
-                MT = i.split("_")[1]
-                if int(MT) in mt_array:
-                    mt_info = get_xs_for_mt(int(MT), mt_array, mt_xs_pointers_array, jxs_df, xss, pointers)
-                    new_xs = np.concatenate((np.zeros(mt_info["energy_start"]), mt_info["xs"]), axis=0)
-                    ml_df[i] = new_xs
+                new_xs = np.concatenate((np.zeros(mt_info["energy_start"]), mt_info["xs"]), axis=0)
+                ml_df[i] = new_xs
     return ml_df
 
 
@@ -520,8 +502,7 @@ def get_final_ml_ace_df(energies, pointers, jxs_df, xss, ml_df,
     Returns:
         DataFrame: DataFrame containing the resulting cross sections from both ML and ACE.
     """
-    Energy_Grid = pd.DataFrame({"Energy": energies})
-    Energy_Grid = Energy_Grid.set_index("Energy")
+    Energy_Grid = pd.DataFrame({"Energy": energies}).set_index("Energy")
 
     mt_array = get_mt_array(xss, pointers)
     mt_xs_pointers_array = get_mt_xs_pointers_array(xss, pointers)
@@ -529,8 +510,7 @@ def get_final_ml_ace_df(energies, pointers, jxs_df, xss, ml_df,
         # we get the ace cross sections and add them to our main dataframe some are not going to have the
         # same energy grid as mt1 so we fill missing values with 0
         mt_info = get_xs_for_mt(i, mt_array, mt_xs_pointers_array, jxs_df, xss, pointers)
-        to_add = pd.DataFrame({"Energy": mt_info["energy"], "MT_" + str(int(i)): mt_info["xs"]})
-        to_add = to_add.set_index("Energy")
+        to_add = pd.DataFrame({"Energy": mt_info["energy"], "MT_" + str(int(i)): mt_info["xs"]}).set_index("Energy")
         Energy_Grid = pd.merge(Energy_Grid, to_add, left_index=True, right_index=True, how="outer")
     Energy_Grid = Energy_Grid.fillna(value=0)
 
@@ -580,8 +560,7 @@ def modify_xss_w_df(xss, ml_ace_df, jxs_df, pointers):
             xss[nes*2:nes*3] = ml_ace_df[i].values
         elif mt_value in mt_array:
             xs_info_dict = get_xs_for_mt(mt_value, mt_array, mt_xs_pointers_array, jxs_df, xss, pointers)
-            start = xs_info_dict["xss_start"]
-            end = xs_info_dict["xss_end"]
+            start, end = xs_info_dict["xss_start"], xs_info_dict["xss_end"]
             xss[start + 2: end] = ml_ace_df.reset_index(drop=True)[i].iloc[
                 xs_info_dict["energy_start"]: xs_info_dict["energy_end"]].values
 
@@ -633,10 +612,8 @@ def create_new_ace(xss, ZZAAA, saving_dir=""):
         None
     """
     # ACE FILES ARE IN FOUR COLUMNS SO WE RESHAPE OUR XSS ARRAY
-    to_write = pd.DataFrame(xss.reshape((-1, 4)))
-    to_write.columns = ["column_1", "column_2", "column_3", "column_4"]
-    to_write = to_write.astype("object")
-    to_write = to_write.applymap(parsing_datatypes)
+    to_write = pd.DataFrame(xss.reshape((-1, 4)), columns=["column_1", "column_2", "column_3", "column_4"])
+    to_write = to_write.astype("object").applymap(parsing_datatypes)
 
     ace_name = ZZAAA + "ENDF7"
     tmp_file = os.path.join(saving_dir, ace_name + "_TMP.txt")
@@ -653,10 +630,8 @@ def create_new_ace(xss, ZZAAA, saving_dir=""):
     with open(path, 'r') as ace, open(ml_ace_filename, 'w') as new_ace, open(tmp_file_2, 'r') as new_data:
         _format_ml_ace_file_and_data(ace, new_ace, new_data, to_skip, line_count)
 
-    convert_dos_to_unix(ml_ace_filename)
-
-    os.remove(tmp_file)
-    os.remove(tmp_file_2)
+    gen_utils.convert_dos_to_unix(ml_ace_filename)
+    gen_utils.remove_files([tmp_file, tmp_file_2])
 
 
 def create_new_ace_w_df(ZZAAA, path_to_ml_csv, saving_dir=None, ignore_basename=False):
@@ -678,9 +653,8 @@ def create_new_ace_w_df(ZZAAA, path_to_ml_csv, saving_dir=None, ignore_basename=
     mt_array = get_mt_array(xss, pointers_info)
     mt_xs_pointers_array = get_mt_xs_pointers_array(xss, pointers_info)  # lsig
     mt_data = get_basic_mts(xss, pointers_info)
+    path_to_ml_csv = path_to_ml_csv if isinstance(path_to_ml_csv, list) else [path_to_ml_csv]
 
-    if type(path_to_ml_csv) is not list:
-        path_to_ml_csv = [path_to_ml_csv]
     for i in list(path_to_ml_csv):
         if ignore_basename:
             saving_dir_2 = saving_dir
@@ -693,40 +667,9 @@ def create_new_ace_w_df(ZZAAA, path_to_ml_csv, saving_dir=None, ignore_basename=
         ml_df["Energy"] = ml_df["Energy"] / 1E6
 
         ml_df_mod = get_hybrid_ml_xs(ml_df, mt_data, mt_array, mt_xs_pointers_array, pointers_info, jxs, xss)
-
         Energy_Grid = get_final_ml_ace_df(energies, mt_array, mt_xs_pointers_array, pointers_info, jxs, xss, ml_df_mod)
-
         xss = modify_xss_w_df(xss, Energy_Grid, jxs, pointers_info)
-
         create_new_ace(xss, ZZAAA, saving_dir=saving_dir_2)
-
-    return None
-
-
-def convert_dos_to_unix(file_path):
-    """Convert a given file from DOS to UNIX.
-
-    Args:
-        file_path (str): Path to file to convert.
-
-    Returns:
-        None
-    """
-    # replacement strings
-    WINDOWS_LINE_ENDING = b'\r\n'
-    UNIX_LINE_ENDING = b'\n'
-
-    # relative or absolute file path, e.g.:
-
-    with open(file_path, 'rb') as open_file:
-        content = open_file.read()
-
-    content = content.replace(WINDOWS_LINE_ENDING, UNIX_LINE_ENDING)
-
-    with open(file_path, 'wb') as open_file:
-        open_file.write(content)
-
-    return None
 
 
 def generate_bench_ml_xs(df, models_df, bench_name, to_scale, raw_saving_dir, reset=False, template_dir=template_path,
@@ -750,15 +693,11 @@ def generate_bench_ml_xs(df, models_df, bench_name, to_scale, raw_saving_dir, re
         bench_saving_dir = os.path.abspath(os.path.join(raw_saving_dir, run_name + "/" + bench_name + "/"))
         ml_xs_saving_dir = os.path.join(bench_saving_dir, "ml_xs_csv")
         acelib_saving_dir = os.path.join(bench_saving_dir, "acelib")
-        if (os.path.isdir(bench_saving_dir)) and not reset:
+        if os.path.isdir(bench_saving_dir) and not reset:
             continue
-        if (os.path.isdir(bench_saving_dir)) and reset:
-            gen_utils.initialize_directories(bench_saving_dir, reset=True)
-            gen_utils.initialize_directories(ml_xs_saving_dir, reset=True)
-            gen_utils.initialize_directories(acelib_saving_dir, reset=True)
-        else:
-            gen_utils.initialize_directories(ml_xs_saving_dir, reset=False)
-            gen_utils.initialize_directories(acelib_saving_dir, reset=False)
+
+        gen_utils.initialize_directories(bench_saving_dir, reset=reset)
+        gen_utils.initialize_directories([ml_xs_saving_dir, acelib_saving_dir], reset=True)
 
         if row.normalizer == "none":
             model = model_utils.load_model_and_scaler(
@@ -767,37 +706,31 @@ def generate_bench_ml_xs(df, models_df, bench_name, to_scale, raw_saving_dir, re
             model, scaler = model_utils.load_model_and_scaler(
                 {"model_path": row.model_path, "scaler_path": row.scaler_path}, df=False)
 
-        if scale_energy_col:
-            if row.scale_energy:
-                to_scale = ["Energy"] + to_scale
+        if scale_energy_col and row.scale_energy:
+            to_scale = ["Energy"] + to_scale
 
         for _, comp_row in bench_composition_ml.iterrows():
-            Z = int(comp_row.Z)
-            A = int(comp_row.A)
+            Z, A = int(comp_row.Z), int(comp_row.A)
             filename = "{}{}_ml.csv".format(Z, A)
             path_to_ml_csv = os.path.join(ml_xs_saving_dir, filename)
-            if not os.path.isfile(path_to_ml_csv):
-                if row.normalizer == "none":
-                    _ = exfor_utils.get_csv_for_ace(
-                        df, Z, A, model, None, to_scale, save=path_to_ml_csv)
-                else:
-                    _ = exfor_utils.get_csv_for_ace(
-                        df, Z, A, model, scaler, to_scale, save=path_to_ml_csv)
+            if os.path.isfile(path_to_ml_csv):
+                continue
+
+            scaling = None if row.normalizer == "none" else scaler
+            _ = exfor_utils.get_csv_for_ace(df, Z, A, model, scaling, to_scale, save=path_to_ml_csv)
 
             create_new_ace_w_df(
                 str(Z) + str(A).zfill(3), path_to_ml_csv, saving_dir=acelib_saving_dir, ignore_basename=True)
 
         bench_composition_nonml["ZA"] = bench_composition_nonml.Z.astype(str) + bench_composition_nonml.A.astype(str)
         for _, comp_row in bench_composition_nonml.iterrows():
-
             copy_ace_w_name(comp_row.ZA, acelib_saving_dir)
 
         generate_sss_xsdata(bench_saving_dir)
-        copy_benchmark_files(bench_name, bench_saving_dir)
+        serpent_utils.copy_benchmark_files(bench_name, bench_saving_dir)
 
         if reduce_ace_size:
             reduce_ace_filesize(bench_saving_dir)
-    return None
 
 
 def copy_ace_w_name(ZAAA, saving_dir):
@@ -810,14 +743,10 @@ def copy_ace_w_name(ZAAA, saving_dir):
     Returns:
         None
     """
-    files = os.listdir(ace_dir)
+    files = filter(lambda x: True if x.startswith(ZAAA) else False, os.listdir(ace_dir))
     for i in files:
-        if i.startswith(ZAAA):
-            shutil.copyfile(os.path.join(ace_dir, i), os.path.join(saving_dir, i))
-            convert_dos_to_unix(os.path.join(saving_dir, i))
-        else:
-            continue
-    return None
+        shutil.copyfile(os.path.join(ace_dir, i), os.path.join(saving_dir, i))
+        gen_utils.convert_dos_to_unix(os.path.join(saving_dir, i))
 
 
 def reduce_ace_filesize(directory, keep="03c"):
@@ -835,41 +764,17 @@ def reduce_ace_filesize(directory, keep="03c"):
     all_ace_files = []
 
     for root, _, files in os.walk(directory):
-        for file in files:
-            if file.endswith(".ace"):
-                all_ace_files.append(os.path.abspath(os.path.join(root, file)))
+        filtered_files = filter(lambda x: True if x.endswith(".ace") else False, files)
+        for file in filtered_files:
+            all_ace_files.append(os.path.abspath(os.path.join(root, file)))
 
     for i in all_ace_files:
-        tags = []
-        final_tags = []
-        new_file_lines = []
+        with open(i) as infile, open(i, "w") as outfile:
+            lines = infile.readlines()
+            filtered_lines = [line for line in lines if line[:10].endswith(keep)]
+            outfile.writelines(filtered_lines)
 
-        with open(i) as infile:
-            for line in infile:
-                if line[9] == "c":
-                    tags.append(line[:10])
-
-        for t in tags:
-            if t.endswith(keep):
-                continue
-            else:
-                final_tags.append(t)
-
-        with open(i, 'r') as infile:
-            flag = False
-            for line in infile:
-                if line[7:10] == keep:
-                    flag = True
-                if flag:
-                    new_file_lines.append(line)
-                if line in final_tags:
-                    flag = False
-
-        with open(i, "w") as outfile:
-            outfile.writelines(new_file_lines)
-
-        convert_dos_to_unix(i)
-    return None
+        gen_utils.convert_dos_to_unix(i)
 
 
 def generate_sss_xsdata(saving_dir):
@@ -883,131 +788,15 @@ def generate_sss_xsdata(saving_dir):
     """
     xsdata_filepath = os.path.join(template_path, "sss_endfb7u.xsdata")
     new_file_path = os.path.join(saving_dir, "sss_endfb7u.xsdata")
-
-    file = open(xsdata_filepath, "rt")
-    new_file = open(new_file_path, "wt")
-
     to_replace = "to_replace/"
-    to_insert = os.path.abspath(os.path.join(saving_dir, "acelib/")).replace("C:\\", "/mnt/c/").replace("\\", "/") + "/"
+    with open(xsdata_filepath, "rt") as file, open(new_file_path, "wt") as new_file:
+        to_insert = os.path.abspath(os.path.join(saving_dir, "acelib/"))
+        to_insert = to_insert.replace("C:\\", "/mnt/c/").replace("\\", "/") + "/"
 
-    for line in file:
-        new_file.write(line.replace(to_replace, to_insert))
+        for line in file:
+            new_file.write(line.replace(to_replace, to_insert))
 
-    file.close()
-    new_file.close()
-
-    convert_dos_to_unix(new_file_path)
-    return None
-
-
-def copy_benchmark_files(benchmark_name, saving_dir):
-    """Copy all files for a given benchmark from the benchmark repository to a given directory.
-
-    Args:
-        benchmark_name (str): Benchmark name. Check repository for valid names.
-        saving_dir (str): Path-like string where the new benchmark files will be saved to.
-
-    Returns:
-        None
-    """
-    to_replace = "to_replace"
-    new_file_path = os.path.join(saving_dir, "sss_endfb7u.xsdata")
-    to_insert = os.path.abspath(new_file_path).replace("C:\\", "/mnt/c/").replace("\\", "/")
-
-    benchmark_path = os.path.join(template_path, benchmark_name + "/input")
-    new_benchmark_path = os.path.join(saving_dir, "input")
-
-    benchmark_file = open(benchmark_path, "rt")
-    new_benchmark_file = open(new_benchmark_path, "wt")
-
-    for line in benchmark_file:
-        new_benchmark_file.write(line.replace(to_replace, to_insert))
-
-    benchmark_file.close()
-    new_benchmark_file.close()
-
-    convert_dos_to_unix(new_benchmark_path)
-
-    shutil.copyfile(os.path.join(template_path, "converter.m"), os.path.join(saving_dir, "converter.m"))
-
-    return None
-
-
-def generate_serpent_bash(searching_directory, script_name, benchmark="all", omp=10):
-    """Generate bash script to run all experiments.
-
-    Gather the path to all "input" benchmark files and returns a single bash script to run all
-    Serpent simulations and convert the resulting matlab file into .mat files for later reading.
-
-    Args:
-        searching_directory (str): Top level directory that will be searched for "input" files.
-
-    Returns:
-        None
-    """
-    all_serpent_files = []
-    all_serpent_files_linux = []
-
-    root, _, files = os.walk(searching_directory)
-    for file in files:
-        if not file.endswith("input"):
-            continue
-
-        if benchmark == "all":
-            all_serpent_files.append(os.path.abspath(os.path.join(root, file)))
-        elif benchmark in root:
-            all_serpent_files.append(os.path.abspath(os.path.join(root, file)))
-
-    for i in all_serpent_files:
-        new = i.replace("C:\\", "/mnt/c/").replace("\\", "/")
-        if "template" in new:
-            continue
-        else:
-            all_serpent_files_linux.append("cd {}".format(os.path.dirname(new)) + "/")
-            all_serpent_files_linux.append("sss2 -omp {} ".format(omp) + os.path.basename(new))
-            all_serpent_files_linux.append(
-                matlab_path + " -nodisplay -nosplash -nodesktop -r \"run('converter.m');exit;\" ".replace("\\", ""))
-
-    script_path = os.path.join(searching_directory, '{}.sh'.format(script_name))
-
-    with open(script_path, 'w') as f:
-        for item in all_serpent_files_linux:
-            f.write("%s\n" % item)
-
-    convert_dos_to_unix(script_path)
-
-
-def gather_benchmark_results(searching_directory):
-    """Gathers all benchmark results from the resulting .mat files in the searching_directory and all subdirectories.
-
-    Args:
-        searching_directory (str): Path to directory to search for .mat files.
-
-    Returns:
-        DataFrame: Contains results for all found .mat files.
-    """
-    all_results, names, benchmark_names, k_results_ana, k_unc_ana, k_results_imp, k_unc_imp = ([] for i in range(7))
-    for root, _, files in os.walk(searching_directory):
-        mat_files = [file for file in files if file.endswith(".mat")]
-        for file in mat_files:
-            name_to_append = os.path.basename(Path(root).parents[0])
-            names.append(name_to_append)
-            all_results.append(os.path.abspath(os.path.join(root, file)))
-            benchmark_names.append(os.path.basename(os.path.dirname(os.path.abspath(os.path.join(root, file)))))
-
-    for mat_file in all_results:
-        mat = scipy.io.loadmat(mat_file)
-        k_results_ana.append(mat["ANA_KEFF"][0][0])
-        k_unc_ana.append(mat["ANA_KEFF"][0][1])
-        k_results_imp.append(mat["IMP_KEFF"][0][0])
-        k_unc_imp.append(mat["IMP_KEFF"][0][1])
-
-    results_df = pd.DataFrame({
-        "Model": names, "Benchmark": benchmark_names, "K_eff_ana": k_results_ana, "Unc_ana": k_unc_ana,
-        "K_eff_imp": k_results_imp, "Unc_imp": k_unc_imp})
-    for k_type in ['Ana', 'Imp']:
-        results_df[f"Deviation_{k_type}"] = results_df[[f'K_eff_{k_type.lower()}']].apply(lambda k: abs((k-1)/1))
-    return results_df
+    gen_utils.convert_dos_to_unix(new_file_path)
 
 
 def get_energies(isotope, temp="03c", ev=False, log=False):
