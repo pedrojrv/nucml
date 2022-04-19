@@ -1,5 +1,4 @@
 """Data manipulation utilities for the EXFOR dataset."""
-from functools import partial
 import os
 import logging
 
@@ -7,12 +6,14 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-import nucml.ace.querying_utils as query_utils
+import nucml.ace.querying_utils as ace_query_utils
 import nucml.evaluation.data_utilities as endf_utils
 import nucml.datasets as nuc_data
 import nucml.model.utilities as model_utils
 import nucml.general_utilities as gen_utils
 import nucml.exfor.plot as exfor_plot_utils
+import nucml.exfor.querying_utils as query_utils
+import nucml.exfor.ml_utilities as ml_utils
 import nucml.config as config
 
 from nucml.data_utils import copy_data_from_df_to_df
@@ -24,89 +25,6 @@ elements_dict = nuc_data.elements_dict
 empty_df = pd.DataFrame()
 
 
-def _filter_and_scale_by_ZA_MT(df, one_hot, Z, A, nat_iso, MT=None, scaler=None, to_scale=[]):
-    if one_hot:
-        sample = df[(df["Z"] == Z) & (df["A"] == A) & (df["Element_Flag_" + nat_iso] == 1)]
-    else:
-        sample = df[(df["Z"] == Z) & (df["A"] == A) & (df["Element_Flag"] == nat_iso)]
-
-    if MT is not None:
-        sample = sample[sample[MT] == 1] if one_hot else sample[sample["MT"] == MT]
-    if scaler:
-        sample[to_scale] = scaler.transform(sample[to_scale])
-    return sample.sort_values(by='Energy', ascending=True)
-
-
-def load_samples(df, Z, A, MT, nat_iso="I", one_hot=False, scaler=None, to_scale=[], mt_for="EXFOR"):
-    """Extract datapoints belonging to a particular isotope-reaction channel pair.
-
-    Args:
-        df (DataFrame): DataFrame containing all avaliable datapoints from where to extract the information.
-        Z (int): Number of protons.
-        A (int): Atomic mass number.
-        MT (int): Reaction channel (ENDF-coded).
-        nat_iso (str, optional): "I" means isotopic while "N" means natural experimental campaigns. Defaults to "I".
-        one_hot (bool, optional): If True, the script assumes that the reaction channel is one-hot encoded. Defaults to
-            False.
-        scale (bool, optional): If True, the scaler object passed will be use to normalize the extracted information.
-            Defaults to False.
-        scaler (object, optional): Fitted scaler object. Defaults to None.
-        to_scale (list, optional): List of feature names that are to be scaled. Defaults to [].
-
-    Returns:
-        DataFrame
-    """
-    MT = gen_utils.parse_mt(MT, mt_for=mt_for, one_hot=one_hot)
-    return _filter_and_scale_by_ZA_MT(df, one_hot, Z, A, nat_iso, MT=MT, scaler=scaler, to_scale=to_scale)
-
-
-def load_isotope(df, Z, A, nat_iso="I", one_hot=False, scaler=None, to_scale=[]):
-    """Load all datapoints avaliable for a particular isotope.
-
-    Args:
-        df (DataFrame): All avaliable experimental datapoints.
-        Z (int): Number of protons.
-        A (int): Atomic mass number.
-        nat_iso (str, optional): "I" means isotopic while "N" means natural experimental campaigns. Defaults to "I".
-        one_hot (bool, optional): If True, the script assumes that the reaction channel is one-hot encoded. Defaults to
-            False.
-        scale (bool, optional): If True, the scaler object passed will be use to normalize the extracted information.
-            Defaults to False.
-        scaler (object, optional): Fitted scaler object. Defaults to None.
-        to_scale (list, optional): List of feature names that are to be scaled. Defaults to [].
-
-    Returns:
-        DataFrame
-    """
-    return _filter_and_scale_by_ZA_MT(df, one_hot, Z, A, nat_iso, scaler=scaler, to_scale=to_scale)
-
-
-def load_element(df, Z, nat_iso="I", one_hot=False, scale=False, scaler=None, to_scale=[]):
-    """Load all datapoints avaliable for a particular element.
-
-    Args:
-        df (DataFrame): All avaliable experimental datapoints.
-        Z (int): Number of protons.
-        nat_iso (str, optional): "I" means isotopic while "N" means natural experimental campaigns. Defaults to "I".
-        one_hot (bool, optional): If True, the script assumes that the reaction channel is one-hot encoded. Defaults to
-            False.
-        scale (bool, optional): If True, the scaler object passed will be use to normalize the extracted information.
-            Defaults to False.
-        scaler (object, optional): Fitted scaler object. Defaults to None.
-        to_scale (list, optional): List of feature names that are to be scaled. Defaults to [].
-
-    Returns:
-        DataFrame
-    """
-    if one_hot:
-        sample = df[(df["Z"] == Z) & (df["Element_Flag_" + nat_iso] == 1)].sort_values(by='Energy', ascending=True)
-    else:
-        sample = df[(df["Z"] == Z) & (df["Element_Flag"] == nat_iso)].sort_values(by='Energy', ascending=True)
-    if scale:
-        sample[to_scale] = scaler.transform(sample[to_scale])
-    return sample
-
-
 def _copy_over_data_and_scale(main_df, new_data, scaler=None, to_scale=None):
     new_data = copy_data_from_df_to_df(main_df, new_data, ignore_cols=['Energy', 'Data'])
     if "dData" in list(new_data.columns):
@@ -115,39 +33,6 @@ def _copy_over_data_and_scale(main_df, new_data, scaler=None, to_scale=None):
         new_data.drop(columns="dEnergy", inplace=True)
     if scaler is not None and to_scale is not None:
         new_data[to_scale] = scaler.transform(new_data[to_scale])
-
-
-def load_newdata(datapath, df, Z, A, MT, nat_iso="I", one_hot=False, log=False, scaler=None, to_scale=[]):
-    """Load new measurments and appends the appropiate EXFOR isotopic data.
-
-    Assumes new data only have two columns: Energy and Data.
-
-    Args:
-        datapath (str): Path-like string of the new data file.
-        df (DataFrame): All avaliable experimental datapoints.
-        Z (int): Number of protons.
-        A (int): Atomic mass number.
-        MT (int): Reaction channel (endf-coded).
-        nat_iso (str, optional): "I" means isotopic while "N" means natural experimental campaigns. Defaults to "I".
-        one_hot (bool, optional): If True, the script assumes that the reaction channel is one-hot encoded. Defaults to
-            False.
-        log (bool, optional): If True, the log of both the Energy and Data features will be taken.
-        scale (bool, optional): If True, the scaler object passed will be use to normalize the extracted information.
-            Defaults to False.
-        scaler (object, optional): Fitted scaler object. Defaults to None.
-        to_scale (list, optional): List of feature names that are to be scaled. Defaults to [].
-
-    Returns:
-        DataFrame
-    """
-    new_data = pd.read_csv(datapath)
-    if log:
-        new_data["Energy"] = np.log10(new_data["Energy"])
-        new_data["Data"] = np.log10(new_data["Data"])
-    isotope_exfor = load_samples(df, Z, A, MT, nat_iso=nat_iso, one_hot=one_hot)
-    new_data = _copy_over_data_and_scale(isotope_exfor, new_data, scaler, to_scale)
-    logging.info("EXFOR extracted DataFrame has shape: {}".format(new_data.shape))
-    return new_data
 
 
 def append_energy(e_array, df, Z, A, MT, nat_iso="I", one_hot=False, log=False, scaler=None, to_scale=[],
@@ -178,12 +63,12 @@ def append_energy(e_array, df, Z, A, MT, nat_iso="I", one_hot=False, log=False, 
     if log:
         new_data["Energy"] = np.log10(new_data["Energy"])
     if ignore_MT:
-        isotope_exfor = load_samples(df, Z, A, 1, nat_iso=nat_iso, one_hot=one_hot, mt_for="ACE")
+        isotope_exfor = query_utils.load_samples(df, Z, A, 1, nat_iso=nat_iso, one_hot=one_hot, mt_for="ACE")
         isotope_exfor.MT_1 = 0
         MT = gen_utils.parse_mt(MT, mt_for="ACE", one_hot=one_hot)
         isotope_exfor[MT] = 1
     else:
-        isotope_exfor = load_samples(df, Z, A, MT, nat_iso=nat_iso, one_hot=one_hot)
+        isotope_exfor = query_utils.load_samples(df, Z, A, MT, nat_iso=nat_iso, one_hot=one_hot)
     new_data = _copy_over_data_and_scale(isotope_exfor, new_data, scaler, to_scale)
     return new_data
 
@@ -216,193 +101,6 @@ def expanding_dataset_energy(data, e_min_max, log, N, e_array=None):
     energy_to_add = copy_data_from_df_to_df(data, energy_to_add, start=2)
     data = data.append(energy_to_add, ignore_index=True).sort_values(by='Energy', ascending=True)
     return data
-
-
-def _plot_with_prediction(df, infer_df, y_hat):
-    plt.plot(df.Energy, df.Data, alpha=0.5, c="g")
-    plt.plot(infer_df.Energy, y_hat)
-
-
-def make_predictions_w_energy(e_array, df, Z, A, MT, model, model_type, scaler, to_scale, one_hot=True, log=False,
-                              show=False):
-    """Return predictions using a model at the given energy grid for a given isotope.
-
-    Args:
-        e_array (np.array): Numpy array representing energy points at which inferences will be made.
-        df (DataFrame): All avaliable experimental datapoints.
-        Z (int): Number of protons.
-        A (int): Atomic mass number.
-        MT (int): Reaction channel (endf-coded).
-        model (object): Trained model object.
-        model_type (str): Type of model. Options include None meaning scikit-learn models, "tf", for tensorflow, and
-            "xgb" for gradient boosting machines.
-        scaler (object): Fitted scaler object.
-        to_scale (list): List of feature names that are to be scaled.
-        one_hot (bool, optional): If True, the script assumes that the reaction channel is one-hot encoded. Defaults to
-            False.
-        log (bool, optional): If True, the log of both the Energy and Data features will be taken.
-        show (bool, optional): If True, a plot of the predictions will be rendered. Defaults to False.
-
-    Returns:
-        np.array
-    """
-    data_kwargs = {
-        "Z": Z, "A": A, "MT": MT, "log": log, "scaler": scaler, "to_scale": to_scale, "one_hot": True,
-        "ignore_MT": True}
-    to_infer = append_energy(e_array, df, **data_kwargs)
-    exfor = load_samples(df, Z, A, MT, one_hot=one_hot, mt_for="ACE")
-    # Make Predictions
-    y_hat = model_utils.make_predictions(to_infer.values, model, model_type)
-    _plot_with_prediction(exfor, to_infer, y_hat) if show else None
-    return y_hat
-
-
-def make_predictions_from_df(df, Z, A, MT, model, model_type, scaler, to_scale, log=False, show=False):
-    """Return predictions for all avaliable datapoints for a particular isotope-reaction channel pair.
-
-    Args:
-        df (DataFrame): All avaliable experimental datapoints.
-        Z (int): Number of protons.
-        A (int): Atomic mass number.
-        MT (int): Reaction channel (endf-coded).
-        model (object): Trained model object.
-        model_type (str): Type of model. Options include None meaning scikit-learn models, "tf", for tensorflow, and
-            "xgb" for gradient boosting machines.
-        scaler (object): Fitted scaler object.
-        to_scale (list): List of feature names that are to be scaled.
-        log (bool, optional): If True, the log of both the Energy and Data features will be taken.
-        show (bool, optional): If True, a plot of the predictions will be rendered. Defaults to False.
-
-    Returns:
-        np.array
-    """
-    kwargs = {"nat_iso": "I", "one_hot": True, "scaler": scaler, "to_scale": to_scale}
-    exfor = load_samples(df, Z, A, MT, **kwargs)
-    # Make Predictions
-    y_hat = model_utils.make_predictions(exfor.drop(columns=["Data"]).values, model, model_type)
-    _plot_with_prediction(exfor, exfor, y_hat) if show else None
-    return y_hat
-
-
-def _plot_save_predictions(plotter, all_dict, order_dict, save, show):  # , path, show, log, save_both):
-    plotly_plot = partial(
-        exfor_plot_utils.ml_results_plotly, results_dict=all_dict, order_dict=order_dict, save=save, show=show)
-    sns_plot = partial(
-        exfor_plot_utils.ml_results_plotly, results_dict=all_dict, order_dict=order_dict, save=save, show=show)
-    plotter = plotly_plot if plotter == "plotly" else sns_plot
-    plotter()
-    # if save_both:
-    #     if plotter == "plotly":
-    #         if len(order_dict) != 0:
-    #             order_dict = {k: int(v) for k, v in order_dict.items()}
-    #         exfor_plot_utils.ml_results(
-    #             all_dict, save=save, save_dir=path, order_dict=order_dict, show=False, log=log, plot_type="sns")
-    #     elif plotter == "plt":
-    #         if len(order_dict) != 0:
-    #             order_dict = {str(v): k for k, v in order_dict.items()}
-    #         exfor_plot_utils.ml_results(all_dict, save=save, save_dir=path, order_dict=order_dict, show=False)
-
-
-def predicting_nuclear_xs_v2(df, Z, A, MT, model, to_scale=None, scaler=None, e_array="ace", log=False,
-                             model_type=None, new_data=empty_df, nat_iso="I", get_endf=False, inv_trans=False,
-                             show=False, plotter="plotly", save=False, save_both=True, order_dict={}):
-    """Predict values for a given isotope-reaction channel pair.
-
-    This all-in-one function allows to not only get predictions
-    but also calculate the errors relative to the EXFOR and ENDF datapoints (if avaliable). In addition, the plotting
-    capabilities allow the user to inspect the predictions in a typical cross section plot. In addition to predicting
-    values at the original exfor datapoint energies, the .ACE energy grid is used for further comparison.
-
-    Args:
-        df (DataFrame): All avaliable experimental datapoints.
-        Z (int): Number of protons.
-        A (int): Atomic mass number.
-        MT (int): Reaction channel (endf-coded).
-        model (object): Trained model object.
-        to_scale (list): List of feature names that are to be scaled.
-        scaler (object): Fitted scaler object.
-        e_array (str, optional): If "ace", the energy grid from the appropiate ACE file is appended. An
-            alternative is to provide a specific energy array. Defaults to "ace".
-        log (bool, optional): If True, it assumes the Energy is already in a log form. Defaults to False.
-        model_type (str): Type of model. Options include None meaning scikit-learn models, "tf", for tensorflow, and
-            "xgb" for gradient boosting machines.
-        html (bool, optional): If True, the plot will be rendered in an interactive browser tab. Defaults to False.
-        new_data (DataFrame, optional): New data for which to make predictions, get errors, and plot. Assumes it has
-            all needed information. Defaults to empty_df.
-        save (bool, optional): If True, the plot will be saved. Defaults to False.
-        show (bool, optional): If True, a plot of the predictions will be rendered. Defaults to False.
-        path (str, optional): Path-like string on which to save the rendered plots. Defaults to "".
-        nat_iso (str, optional): "I" means isotopic while "N" means natural experimental campaigns. Defaults to "I".
-        order_dict (dict, optional): Order in which to plot the different lines. See plotly_ml_results() for more info.
-            Defaults to {}.
-        get_endf (bool, optional): If True, the endf file will be extracted to calculate errors and create plots.
-            Defaults to False.
-        inv_trans (bool, optional): If True, the returned data will be in its original form (not scaled). Defaults to
-            False.
-
-    Returns:
-        dict: contains a variety of information including predictions, errors, and more.
-    """
-    endf = empty_df
-    if get_endf:
-        endf = endf_utils.get_for_exfor(Z, A, MT, log=log)
-    if e_array == "ace":
-        # e_array = query_utils.get_energies('{:<02d}'.format(Z) + str(A).zfill(3), ev=True, log=log)
-        e_array = query_utils.get_energies(str(Z) + str(A).zfill(3), ev=True, log=log)
-
-    new_data_avaliable = True if new_data.shape[0] != 0 else False
-    endf_avaliable = True if endf.shape[0] != 0 else False
-    e_array_avaliable = True if e_array.shape[0] != 0 else False
-
-    kwargs = {"nat_iso": nat_iso, "one_hot": True}
-    to_infer = load_samples(df, Z, A, MT, **kwargs)
-    to_plot = load_samples(df, Z, A, MT, scaler=scaler, to_scale=to_scale, **kwargs)
-    to_infer = to_infer.drop(columns=["Data"])
-
-    if e_array_avaliable:
-        to_infer = expanding_dataset_energy(to_infer, (0, 0), log, 0, e_array=e_array)
-    else:
-        to_infer = expanding_dataset_energy(to_infer, (-5.00, 7.30), log, 500)
-
-    if to_scale is not None:
-        to_infer[to_scale] = scaler.transform(to_infer[to_scale])
-
-    pred_exfor_expanded = model_utils.make_predictions(to_infer.values, model, model_type)
-    pred_exfor_original = model_utils.make_predictions(to_plot.drop(columns=["Data"]).values, model, model_type)
-
-    if inv_trans:
-        to_infer[to_scale] = scaler.inverse_transform(to_infer[to_scale])
-        to_plot[to_scale] = scaler.inverse_transform(to_plot[to_scale])
-
-    all_dict = {"exfor_ml_expanded": {"df": to_infer, "predictions": pred_exfor_expanded},
-                "exfor_ml_original": {"df": to_plot, "predictions": pred_exfor_original}}
-
-    exfor_ml_error = model_utils.regression_error_metrics(to_plot["Data"], pred_exfor_original)
-    error_df = model_utils.create_error_df("EXFOR VS ML", exfor_ml_error)
-    all_dict.update({"error_metrics": error_df})
-
-    if new_data_avaliable:
-        pred_exfor_new = model_utils.make_predictions(new_data.drop(columns=["Data"]).values, model, model_type)
-        all_dict.update({"exfor_ml_new": {"df": new_data, "predictions": pred_exfor_new}})
-
-        exfor_ml_new_error = model_utils.regression_error_metrics(new_data["Data"], pred_exfor_new)
-        error_new_df = model_utils.create_error_df("EXFOR VS ML (NEW DATA)", exfor_ml_new_error)
-        error_df = error_df.append(error_new_df)
-        all_dict.update({"error_metrics": error_df})
-
-    if endf_avaliable:
-        # Gets interpolated endf data with anchor exfor
-        exfor_endf, error_endf = get_error_endf_exfor(endf, to_plot)
-        error_df = error_df.append(error_endf)
-        all_dict.update({"exfor_endf_original": exfor_endf, "error_metrics": error_df, "endf": endf})
-        if new_data_avaliable:
-            # Gets interpolated endf data with anchor new exfor
-            exfor_endf_new_data, error_endf_new = get_error_endf_exfor(endf, new_data, filter_energy=False)
-            error_df = error_df.append(error_endf_new)
-            all_dict.update({"exfor_endf_new": exfor_endf_new_data, "error_metrics": error_df})
-
-    _plot_save_predictions(plotter, all_dict, order_dict, save, show)
-    return all_dict
 
 
 def plot_exfor_w_references(df, Z, A, MT, nat_iso="I", new_data=empty_df, endf=empty_df, error=False, get_endf=True,
@@ -449,7 +147,7 @@ def plot_exfor_w_references(df, Z, A, MT, nat_iso="I", new_data=empty_df, endf=e
     if get_endf:
         endf = endf_utils.get_for_exfor(Z, A, MT, log=False)
     # Extracting dataframe to make predictions and creating copy for evaluation
-    exfor_sample = load_samples(df, Z, A, MT, nat_iso=nat_iso, one_hot=one_hot)
+    exfor_sample = query_utils.load_samples(df, Z, A, MT, nat_iso=nat_iso, one_hot=one_hot)
 
     # Initializing Figure and Plotting
     plt.figure(figsize=figure_size)
@@ -529,7 +227,7 @@ def get_error_endf_exfor(endf, df_sample, filter_energy=True):
 
 def _get_isotope_df_cols(df, Z, A, scaler, to_scale):
     kwargs = {"nat_iso": "I", "one_hot": True, "scaler": scaler, "to_scale": to_scale}
-    exfor_isotope = load_isotope(df, Z, A, **kwargs)
+    exfor_isotope = query_utils.load_isotope(df, Z, A, **kwargs)
     exfor_isotope_cols = exfor_isotope.loc[:, (exfor_isotope != 0).any(axis=0)][:1]
     return exfor_isotope_cols
 
@@ -553,7 +251,8 @@ def get_mt_errors_exfor_ml(df, Z, A, scaler, to_scale, model):
     for col in exfor_isotope_cols.columns:
         if "MT" not in col:
             continue
-        exfor_sample = load_samples(df, Z, A, col, nat_iso="I", one_hot=True, scaler=scaler, to_scale=to_scale)
+        exfor_sample = query_utils.load_samples(
+            df, Z, A, col, nat_iso="I", one_hot=True, scaler=scaler, to_scale=to_scale)
         error_dict = model_utils.regression_error_metrics(
             model.predict(exfor_sample.drop(columns=["Data"])), exfor_sample.Data)
         error_results = error_results.append(pd.DataFrame({
@@ -583,7 +282,8 @@ def get_mt_error_exfor_endf(df, Z, A, scaler, to_scale):
     for col in exfor_isotope_cols.columns:
         if "MT" not in col or col in ["MT_101", "MT_9000"]:
             continue
-        exfor_sample = load_samples(df, Z, A, col, nat_iso="I", one_hot=True, scaler=scaler, to_scale=to_scale)
+        exfor_sample = query_utils.load_samples(
+            df, Z, A, col, nat_iso="I", one_hot=True, scaler=scaler, to_scale=to_scale)
         endf_data = endf_utils.get_for_exfor(Z, A, col)
         _, error_exfor_endf = get_error_endf_exfor(endf_data, exfor_sample)
         error_exfor_endf["MT"] = col
@@ -613,7 +313,7 @@ def get_csv_for_ace(df, Z, A, model, scaler, to_scale, model_type=None, save=Fal
     Returns:
         DataFrame
     """
-    ace_array = query_utils.get_energies('{:<02d}'.format(Z) + str(A).zfill(3), ev=True, log=True)
+    ace_array = ace_query_utils.get_energies('{:<02d}'.format(Z) + str(A).zfill(3), ev=True, log=True)
     data_ace = pd.DataFrame({"Energy": ace_array})
 
     exfor_isotope_cols = _get_isotope_df_cols(df, Z, A, scaler, to_scale)
@@ -621,7 +321,7 @@ def get_csv_for_ace(df, Z, A, model, scaler, to_scale, model_type=None, save=Fal
         if "MT" not in col or col in ["MT_9000"]:
             continue
         mt_num = col.split("_")[1]
-        predictions = make_predictions_w_energy(
+        predictions = ml_utils.make_predictions_w_energy(
             ace_array, df, Z, A, mt_num, model,
             model_type, scaler, to_scale, log=False, show=False)
         data_ace[col] = predictions
