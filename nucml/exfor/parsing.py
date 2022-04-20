@@ -29,9 +29,7 @@ def get_c4_names(c4_directory):
     names = natsorted(general_utilities.get_files_w_extension(c4_directory, ".c4"))
     if len(names) == 0:
         raise FileNotFoundError("No .C4 files found. Check your provided path.")
-    else:
-        logging.info("C4: Finished. Found {} .c4 files.".format(len(names)))
-        return names
+    return names
 
 
 def _extract_basic_data_from_c4(c4_file, tmp_path, heavy_path):
@@ -489,7 +487,6 @@ def impute_original_exfor(heavy_path, tmp_path, mode, append_ame=True, MF_number
     """
     heavy_path = os.path.join(heavy_path, "EXFOR_{}".format(mode))
     tmp_path = os.path.join(tmp_path, "Extracted_Text_{}".format(mode))
-
     csv_name = os.path.join(heavy_path, "EXFOR_{}_ORIGINAL.csv".format(mode))
     df = pd.read_csv(csv_name)
 

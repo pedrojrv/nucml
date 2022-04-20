@@ -14,7 +14,6 @@ from sklearn.model_selection import train_test_split
 import nucml.config as config
 import nucml.general_utilities as gen_utils
 import nucml.processing as nuc_proc
-import nucml.exfor.parsing as exfor_parsing
 
 logging.basicConfig(level=logging.INFO)
 
@@ -26,64 +25,6 @@ exfor_path = config.exfor_path
 dtype_exfor = gen_utils.load_obj(os.path.join(os.path.dirname(__file__), 'objects/EXFOR_AME_dtypes.pkl'))
 exfor_elements = gen_utils.load_obj(os.path.join(os.path.dirname(__file__), 'objects/exfor_elements_list.pkl'))
 elements_dict = gen_utils.load_obj(os.path.join(os.path.dirname(__file__), 'objects/Element_AAA.pkl'))
-
-
-def _filter_df_with_za(df, Z, A):
-    if Z is not None:
-        df = df[(df["Z"] == Z)]
-    if A is not None:
-        df = df[(df["A"] == A)]
-    return df
-
-
-def generate_exfor_dataset(user_path, modes=["neutrons", "protons", "alphas", "deuterons", "gammas", "helions"]):
-    """Generate all EXFOR datasets for neutron-, proton-, alpha-, deuterons-, gammas-, and helion-induce reactions.
-
-    Beware, NucML configuration needs to be performed first. See nucml.configure. The `modes` argument can be modified
-    for the function to generate only user-defined datasets.
-
-    Args:
-        user_path (str): path-like string where all information including the datasets will be stored.
-        modes (list, optional): Type of projectile for which to generate the datasets.
-            Defaults to ["neutrons", "protons", "alphas", "deuterons", "gammas", "helions"].
-
-    Returns:
-        None
-    """
-    user_abs_path = os.path.abspath(user_path)
-    tmp_dir = os.path.join(user_abs_path, "EXFOR/tmp/")
-    heavy_dir = os.path.join(user_abs_path, "EXFOR/CSV_Files/")
-    for mode in modes:
-        tmp_dir = os.path.join(user_abs_path, "EXFOR/tmp/")
-        heavy_dir = os.path.join(user_abs_path, "EXFOR/CSV_Files/")
-        exfor_directory = os.path.join(user_abs_path, "EXFOR/C4_Files/{}".format(mode))
-
-        exfor_parsing.get_all(exfor_parsing.get_c4_names(exfor_directory), heavy_dir, tmp_dir, mode=mode)
-        exfor_parsing.csv_creator(heavy_dir, tmp_dir, mode, append_ame=True)
-        exfor_parsing.impute_original_exfor(heavy_dir, tmp_dir, mode)
-    return None
-
-
-def generate_bigquery_csv():
-    """Create a single EXFOR data file to update Google BigQuery database.
-
-    Returns:
-        None
-    """
-    alphas = pd.read_csv(os.path.join(exfor_path, "EXFOR_alphas/EXFOR_alphas_ORIGINAL.csv"))
-    deuterons = pd.read_csv(os.path.join(exfor_path, "EXFOR_deuterons/EXFOR_deuterons_ORIGINAL.csv"))
-    gammas = pd.read_csv(os.path.join(exfor_path, "EXFOR_gammas/EXFOR_gammas_ORIGINAL.csv"))
-    helions = pd.read_csv(os.path.join(exfor_path, "EXFOR_helions/EXFOR_helions_ORIGINAL.csv"))
-    neutrons = pd.read_csv(os.path.join(exfor_path, "EXFOR_neutrons/EXFOR_neutrons_ORIGINAL.csv"))
-    protons = pd.read_csv(os.path.join(exfor_path, "EXFOR_protons/EXFOR_protons_ORIGINAL.csv"))
-
-    final = alphas.append(deuterons).append(gammas).append(helions).append(neutrons).append(protons)
-
-    NEW_NAMES = {"Cos/LO": "Cos_LO", "dCos/LO": "dCos_LO", "ELV/HL": "ELV_HL", "dELV/HL": "dELV_HL"}
-    final = final.rename(NEW_NAMES, axis=1)
-
-    final.to_csv(os.path.join(exfor_path, "EXFOR_original.csv"), index=False)
-    return None
 
 
 def load_ame(natural=False, imputed_nan=False, file="merged"):
@@ -105,6 +46,7 @@ def load_ame(natural=False, imputed_nan=False, file="merged"):
         imputed_nan (bool): If True, the dataset loaded will not contain any missing values (imputed version will be
             loaded).
         file (str): Dataset to extract. Options include 'merged', 'mass16', 'rct1', and 'rct2'.
+
     Returns:
         DataFrame: a pandas dataframe cantaining the queried AME data.
     """
@@ -147,6 +89,7 @@ def load_evaluation(isotope, MT, mode="neutrons", library="endfb8.0", mev_to_ev=
         mb_to_b (bool): If True, it converts the cross sections from millibarns to barns.
         log (bool): If True, it applies the log10 to both the Energy and the Cross Section.
         drop_u (bool): Sometimes, evaluation files contain uncertainty values. If True, these features are removed.
+
     Returns:
         evaluation (DataFrame): pandas DataFrame containing the ENDF datapoints.
     """

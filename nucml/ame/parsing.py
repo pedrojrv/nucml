@@ -22,14 +22,12 @@ def get_ame_originals(originals_directory):
     Returns:
         None
     """
-    logger.info("AME: Requesting data text files.")
     # periodic_table = requests.get(
     # 'https://raw.githubusercontent.com/pedrojrv/ML_Nuclear_Data/master/AME/Originals/periodic_table.csv').content
     mass16_txt = requests.get('https://www-nds.iaea.org/amdc/ame2016/mass16.txt').content
     rct1_txt = requests.get('https://www-nds.iaea.org/amdc/ame2016/rct1-16.txt').content
     rct2_txt = requests.get('https://www-nds.iaea.org/amdc/ame2016/rct2-16.txt').content
 
-    logger.info('AME: Saving text files in provided directory.')
     # with open(os.path.join(originals_directory, 'periodic_table.csv'), 'wb') as f:
     #     f.write(periodic_table)
     with open(os.path.join(originals_directory, 'mass16.txt'), 'wb') as f:
