@@ -32,4 +32,3 @@ def generate_exfor_dataset(user_path, modes=["neutrons", "protons", "alphas", "d
         exfor_parsing.get_all(exfor_parsing.get_c4_names(exfor_directory), heavy_dir, tmp_dir, mode=mode)
         exfor_parsing.csv_creator(heavy_dir, tmp_dir, mode, append_ame=True)
         exfor_parsing.impute_original_exfor(heavy_dir, tmp_dir, mode)
-    return None
