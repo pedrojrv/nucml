@@ -43,24 +43,16 @@ def _extract_basic_data_from_c4(c4_file, tmp_path, heavy_path):
             open(os.path.join(tmp_path, 'refcode.txt'), 'a') as refcode, \
             open(os.path.join(tmp_path, 'dataset_num.txt'), 'a') as dataset_num, \
             open(os.path.join(tmp_path, 'dates.txt'), 'a') as date:
+        tag_writers = {'#AUTHOR1': authors, '#YEAR': years, '#ENTRY': entry, '#REF-CODE': refcode}
         copy = False
         for line in infile:
-            if line.startswith(r"#AUTHOR1"):
+            matched = [match for match in tag_writers.keys() if line.startswith(match)]
+            if matched:
                 copy = False
-                authors.write(line)
-            elif line.startswith(r"#YEAR"):
+                tag_writers[matched[0]].write(line)
+            elif line.startswith(r'#DATASET') and len(line) > 16:
                 copy = False
-                years.write(line)
-            elif line.startswith(r'#ENTRY'):
-                copy = False
-                entry.write(line)
-            elif line.startswith(r'#REF-CODE'):
-                copy = False
-                refcode.write(line)
-            elif line.startswith(r'#DATASET'):
-                if len(line) > 16:
-                    copy = False
-                    dataset_num.write(line)
+                dataset_num.write(line)
             elif line.startswith(r"#INSTITUTE"):
                 copy = False
                 institute.write(line)
@@ -69,10 +61,8 @@ def _extract_basic_data_from_c4(c4_file, tmp_path, heavy_path):
                 date.write(line)
             elif line.startswith(r"#---><---->o<-><-->ooo<-------><-------><-------><-------><-------><-------><-------><-------><-><-----------------------><---><->o"):  # noqa
                 copy = True
-                continue
             elif line.startswith(r"#/DATA"):
                 copy = False
-                continue
             elif copy:
                 num_data.write(line)
 
@@ -92,23 +82,6 @@ def _write_complex_data(outfile, lines, idx, line):
     to_write += "\n"
     outfile.write(to_write)
 
-    # Original
-    # if lines[idx + 2].startswith(r"#+"):
-    #     if lines[idx + 4].startswith(r"#+"):
-    #         if lines[idx + 6].startswith(r"#+"):
-    #             outfile.write(
-    #                 str(line.strip('\n')) + " " + str(lines[idx+2].strip('#+').strip()) + " "
-    #                 + str(lines[idx+4].strip('#+').strip()) + " "
-    #                 + str(lines[idx+6].strip('#+').strip()) + "\n")
-    #         else:
-    #             outfile.write(
-    #                 str(line.strip('\n')) + " " + str(lines[idx+2].strip('#+').strip()) + " "
-    #                 + str(lines[idx+4].strip('#+').strip()) + "\n")
-    #     else:
-    #         outfile.write(str(line.strip('\n')) + " " + str(lines[idx+2].strip('#+').strip()) + "\n")
-    # else:
-    #     outfile.write(line)
-
 
 def _extract_complex_data_from_c4(c4_file, tmp_path):
     with open(c4_file, "r") as infile, \
@@ -117,15 +90,11 @@ def _extract_complex_data_from_c4(c4_file, tmp_path):
             open(os.path.join(tmp_path, 'data_points_per_experiment_refined.txt'), 'a') as data_points, \
             open(os.path.join(tmp_path, 'reaction_notations.txt'), 'a') as reactions:
         lines = infile.readlines()
+        writers = {'#TITLE': titles, '#REFERENCE': references, '#DATA': data_points, '#REACTION': reactions}
         for idx, line in enumerate(lines):
-            if line.startswith(r"#TITLE"):
-                _write_complex_data(titles, lines, idx, line)
-            elif line.startswith(r"#REFERENCE"):
-                _write_complex_data(references, lines, idx, line)
-            elif line.startswith(r"#DATA "):
-                _write_complex_data(data_points, lines, idx, line)
-            elif line.startswith(r"#REACTION"):
-                _write_complex_data(reactions, lines, idx, line)
+            matched = [match for match in writers.keys() if line.startswith(match)]
+            if matched:
+                _write_complex_data(matched[0], lines, idx, line)
         reactions.write(line)
 
 
@@ -210,7 +179,6 @@ def csv_creator(heavy_path, tmp_path, mode, append_ame=True):
     heavy_path = os.path.join(heavy_path, "EXFOR_{}".format(mode))
     tmp_path = os.path.join(tmp_path, "Extracted_Text_{}".format(mode))
 
-    logging.info(f"EXFOR CSV: Reading data points from {heavy_path}/all_cross_sections_v1.txt file into a DataFrame...")
     colnames = [
         "Projectile", "Target_ZA", "Target_Metastable_State", "MF", "MT", "Product_Metastable_State",
         "EXFOR_Status", "Center_of_Mass_Flag", "Energy", "dEnergy", "Data", "dData", "Cos/LO", "dCos/LO",
@@ -239,16 +207,14 @@ def csv_creator(heavy_path, tmp_path, mode, append_ame=True):
     df['N'] = df['A'] - df["Z"]
 
     metastate_dict = {
-        " ": "All_or_Total", "G": "Ground", "1": "M1", "2": "M2", "3": "M3", "4": "M4",
-        "5": "M5", "?": "Unknown", "+": "More_than_1", "T": "All_or_Total"}
-    df = df.replace({"Target_Metastable_State": metastate_dict, "Product_Metastable_State": metastate_dict})
-
+        " ": "All_or_Total", "G": "Ground", "1": "M1", "2": "M2", "3": "M3", "4": "M4", "5": "M5", "?": "Unknown",
+        "+": "More_than_1", "T": "All_or_Total"}
     exfor_status_dict = {
-        "U": "Un_normalized", "A": "Approved_by_Author", "C": "Correlated", "D": "Dependent",
-        "O": "Outdated", "P": "Preliminary", "R": "Re_normalized", "S": "Superseded", " ": "Other"}
-    df = df.replace({"EXFOR_Status": exfor_status_dict})
-
-    df = df.replace({"Center_of_Mass_Flag": {"C": "Center_of_Mass", " ": "Lab"}})
+        "U": "Un_normalized", "A": "Approved_by_Author", "C": "Correlated", "D": "Dependent", "O": "Outdated",
+        "P": "Preliminary", "R": "Re_normalized", "S": "Superseded", " ": "Other"}
+    df = df.replace({
+        "Target_Metastable_State": metastate_dict, "Product_Metastable_State": metastate_dict,
+        "EXFOR_Status": exfor_status_dict, "Center_of_Mass_Flag": {"C": "Center_of_Mass", " ": "Lab"}})
 
     # #######################################################################################################
     # ################################## FORMATTING NUMERICAL DATA ##########################################
@@ -256,14 +222,12 @@ def csv_creator(heavy_path, tmp_path, mode, append_ame=True):
     # Defining Numerical Columns to Fix and casting them as strings
     cols = ["Energy", "dEnergy", "Data", "dData", "Cos/LO", "dCos/LO", "ELV/HL", "dELV/HL"]
     df[cols] = df[cols].astype(str)
-
     # df[cols] = df[cols].replace(to_replace="         ", value="0.0000000")
     df[cols] = df[cols].replace(to_replace="         ", value=np.nan)
 
     # We now strip values that may contain quatation marks and starting and trailing spaces
     for col in cols:
-        df[col] = df[col].str.strip("\"")
-        df[col] = df[col].str.strip()
+        df[col] = df[col].str.strip("\"").strip()
 
     # df[cols] = df[cols].replace(to_replace="", value="0.0000000")
     df[cols] = df[cols].replace(to_replace="", value=np.nan)
@@ -281,19 +245,11 @@ def csv_creator(heavy_path, tmp_path, mode, append_ame=True):
         for x in values:
             if pd.isnull(x):
                 new_col.append(x)
-            elif "+" == x[7]:
+            elif "+" == x[7] or "-" == x[7]:
                 y = x[0:7]
                 z = x[7:]
                 new_col.append(y + "E" + z)
-            elif "+" == x[6]:
-                y = x[0:6]
-                z = x[6:]
-                new_col.append(y + "E" + z)
-            elif "-" == x[7]:
-                y = x[0:7]
-                z = x[7:]
-                new_col.append(y + "E" + z)
-            elif "-" == x[6]:
+            elif "+" == x[6] or "-" == x[6]:
                 y = x[0:6]
                 z = x[6:]
                 new_col.append(y + "E" + z)
@@ -311,8 +267,7 @@ def csv_creator(heavy_path, tmp_path, mode, append_ame=True):
     # Convering all columns to strings and stripping whitespace
     for col in cat_cols:
         df[col] = df[col].astype(str)
-        df[col] = df[col].str.strip("\"")
-        df[col] = df[col].str.strip()
+        df[col] = df[col].str.strip("\"").strip()
 
     # Replace empty values in I78 for L representing Low
     df = df.replace({"I78": {
@@ -327,50 +282,58 @@ def csv_creator(heavy_path, tmp_path, mode, append_ame=True):
     # #######################################################################################################
 
     logging.info("EXFOR CSV: Reading .txt files from {} into DataFrames...".format(tmp_path))
+    common_kwargs = {'header': None, }
     # Reading experiments reaction notation
-    df1 = pd.read_csv(os.path.join(tmp_path, "reaction_notations.txt"), delim_whitespace=True, header=None)
-    df1.columns = ["Reaction", "Reaction_Notation"]
+    df1 = pd.read_csv(
+        os.path.join(tmp_path, "reaction_notations.txt"), delim_whitespace=True, header=None,
+        names=["Reaction", "Reaction_Notation"])
 
     # Reading Experiment Titles
-    df2 = pd.read_csv(os.path.join(tmp_path, "titles.txt"), sep="#TITLE      ", header=None, engine="python")
-    df2.columns = ["Keyword", "Title"]
+    df2 = pd.read_csv(
+        os.path.join(tmp_path, "titles.txt"), sep="#TITLE      ", header=None, engine="python",
+        names=["Keyword", "Title"])
 
     # Reading Data Points per Experiment
     df3 = pd.read_csv(
-        os.path.join(tmp_path, "data_points_per_experiment_refined.txt"), delim_whitespace=True, header=None)
-    df3.columns = ["Data", "Multiple"]
+        os.path.join(tmp_path, "data_points_per_experiment_refined.txt"), delim_whitespace=True, header=None,
+        names=["Data", "Multiple"])
 
     # Reading Experiment Year
-    df4 = pd.read_csv(os.path.join(tmp_path, "years.txt"), delim_whitespace=True, header=None)
-    df4.columns = ["Keyword", "Year"]
+    df4 = pd.read_csv(
+        os.path.join(tmp_path, "years.txt"), delim_whitespace=True, header=None, names=["Keyword", "Year"])
 
     # Reading Experiment Date
-    df5 = pd.read_csv(os.path.join(tmp_path, "authors.txt"), sep="    ", header=None, engine="python")
-    df5.columns = ["Keyword", "Author"]
+    df5 = pd.read_csv(
+        os.path.join(tmp_path, "authors.txt"), sep="    ", header=None, engine="python", names=["Keyword", "Author"])
 
     # Reading Experiment Institute
-    df6 = pd.read_csv(os.path.join(tmp_path, "institutes.txt"), sep="  ", header=None, engine="python")
-    df6.columns = ["Keyword", "Institute"]
+    df6 = pd.read_csv(
+        os.path.join(tmp_path, "institutes.txt"), sep="  ", header=None, engine="python",
+        names=["Keyword", "Institute"])
 
     # Reading Experiment Year
-    df7 = pd.read_csv(os.path.join(tmp_path, "dates.txt"), delim_whitespace=True, header=None)
-    df7.columns = ["Keyword", "Date"]
+    df7 = pd.read_csv(
+        os.path.join(tmp_path, "dates.txt"), delim_whitespace=True, header=None, names=["Keyword", "Date"])
 
     # Reading Experiment Refere
-    df8 = pd.read_csv(os.path.join(tmp_path, "references.txt"), sep="#REFERENCE  ", header=None, engine="python")
-    df8.columns = ["Keyword", "Reference"]
+    df8 = pd.read_csv(
+        os.path.join(tmp_path, "references.txt"), sep="#REFERENCE  ", header=None, engine="python",
+        names=["Keyword", "Reference"])
 
     # Reading Dataset Number
-    df9 = pd.read_csv(os.path.join(tmp_path, "dataset_num.txt"), sep="#DATASET    ", header=None, engine="python")
-    df9.columns = ["Keyword", "Dataset_Number"]
+    df9 = pd.read_csv(
+        os.path.join(tmp_path, "dataset_num.txt"), sep="#DATASET    ", header=None, engine="python",
+        names=["Keyword", "Dataset_Number"])
 
     # Reading EXFOR entry number
-    df10 = pd.read_csv(os.path.join(tmp_path, "entry.txt"), sep="#ENTRY      ", header=None, engine="python")
-    df10.columns = ["Keyword", "EXFOR_Entry"]
+    df10 = pd.read_csv(
+        os.path.join(tmp_path, "entry.txt"), sep="#ENTRY      ", header=None, engine="python",
+        names=["Keyword", "EXFOR_Entry"])
 
     # Reading reference code
-    df11 = pd.read_csv(os.path.join(tmp_path, "refcode.txt"), sep="#REF-CODE   ", header=None, engine="python")
-    df11.columns = ["Keyword", "Reference_Code"]
+    df11 = pd.read_csv(
+        os.path.join(tmp_path, "refcode.txt"), sep="#REF-CODE   ", header=None, engine="python",
+        names=["Keyword", "Reference_Code"])
 
     # Merging Datapoints, notation and titles and expanding based on datapoints
     logging.info("EXFOR CSV: Expanding information based on the number of datapoints per experimental campaign...")
@@ -389,23 +352,17 @@ def csv_creator(heavy_path, tmp_path, mode, append_ame=True):
 
     logging.info("EXFOR CSV: Appending information to main DataFrame...")
     # Assign newly extracted data to main dataframe
-    df["Reaction_Notation"] = final["Reaction_Notation"]
-    df["Title"] = final["Title"]
-    df["Year"] = final["Year"]
-    df["Author"] = final["Author"]
-    df["Institute"] = final["Institute"]
-    df["Date"] = final["Date"]
-    df["Reference"] = final["Reference"]
-    df["Dataset_Number"] = final["Dataset_Number"]
-    df["EXFOR_Entry"] = final["EXFOR_Entry"]
-    df["Reference_Code"] = final["Reference_Code"]
-
-    df.Title = df.Title.fillna("No Title Found. Check EXFOR.")
-    df.Reference = df.Reference.fillna("No Reference Found. Check EXFOR.")
-    df.Short_Reference = df.Short_Reference.fillna("No Reference Found. Check EXFOR.")
-    df.Reference_Code = df.Reference_Code.fillna("No Reference Code Found. Check EXFOR.")
-    df.Author = df.Author.fillna("No Author Found. Check EXFOR.")
-    df.EXFOR_Pointer = df.EXFOR_Pointer.fillna("No Pointer")
+    fillna_defaults = {
+        'Title': "No Title Found. Check EXFOR.",
+        'Reference': "No Reference Found. Check EXFOR.",
+        'Short_Reference': "No Reference Found. Check EXFOR.",
+        'Author': "No Author Found. Check EXFOR.",
+        'EXFOR_Pointer': "No Pointer"
+    }
+    for name in [
+            'Reaction_Notation', 'Title', 'Year', 'Author', 'Institute', 'Date', 'Reference', 'Dataset_Number',
+            'EXFOR_Entry', 'Reference_Code']:
+        df[name] = final[name].fillna(fillna_defaults[name])
 
     df.EXFOR_Pointer = df.EXFOR_Pointer.apply(lambda x: str(int(x)) if isinstance(x, numbers.Number) else x)
     df.Date = df.Date.apply(lambda x: str(x)[:4] + "/" + str(x)[4:6] + "/" + str(x)[6:])
@@ -510,12 +467,7 @@ def impute_original_exfor(heavy_path, tmp_path, mode, append_ame=True, MF_number
     df.MT = df.MT.astype(str)
     df = df[df["MF"] == MF_number]
 
-    # We get rid of heavy water measurments
-    if MF_number == "3":
-        logging.info("...")
-
-    columns_drop = ["MF", "Cos/LO", "dCos/LO"]
-    df = df.drop(columns=columns_drop)
+    df = df.drop(columns=["MF", "Cos/LO", "dCos/LO"])
 
     logging.info("EXFOR CSV: Filling dEnergy, dData, and dELV by reaction channel...")
     df["Uncertainty_E"] = df["dEnergy"]/df["Energy"]
@@ -564,15 +516,7 @@ def impute_original_exfor(heavy_path, tmp_path, mode, append_ame=True, MF_number
     new_order.extend(nuclear_data_target)
 
     df = df[new_order]
-
     df = df.drop(columns=["Uncertainty_D", "Uncertainty_E", "Uncertainty_ELV"])
-
-    logging.info("EXFOR CSV: Dropping RAW experimental datapoints...")
     df = df[~df.Reaction_Notation.str.contains("RAW")]
-
     df = df[~(df.Data < 0)]
-
-    logging.info("EXFOR CSV: Saving MF3 NaN Imputed RAW Free EXFOR CSV...")
     df.to_csv(os.path.join(heavy_path, "EXFOR_" + mode + "_MF3_AME_no_RawNaN.csv"), index=False)
-    logging.info("Finished")
-    return None
