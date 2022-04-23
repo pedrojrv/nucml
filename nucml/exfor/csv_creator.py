@@ -11,6 +11,113 @@ import nucml.config as config
 ame_dir_path = config.ame_dir_path
 
 
+def _get_additional_features(tmp_path):
+    logging.info("EXFOR CSV: Reading .txt files from {} into DataFrames...".format(tmp_path))
+    # Reading experiments reaction notation
+    df1 = pd.read_csv(
+        os.path.join(tmp_path, "reaction_notations.txt"), delim_whitespace=True, header=None,
+        names=["Reaction", "Reaction_Notation"])
+
+    # Reading Experiment Titles
+    df2 = pd.read_csv(
+        os.path.join(tmp_path, "titles.txt"), sep="#TITLE      ", header=None, engine="python",
+        names=["Keyword", "Title"])
+
+    # Reading Data Points per Experiment
+    df3 = pd.read_csv(
+        os.path.join(tmp_path, "data_points_per_experiment_refined.txt"), delim_whitespace=True, header=None,
+        names=["Data", "Multiple"])
+
+    # Reading Experiment Year
+    df4 = pd.read_csv(
+        os.path.join(tmp_path, "years.txt"), delim_whitespace=True, header=None, names=["Keyword", "Year"])
+
+    # Reading Experiment Date
+    df5 = pd.read_csv(
+        os.path.join(tmp_path, "authors.txt"), sep="    ", header=None, engine="python", names=["Keyword", "Author"])
+
+    # Reading Experiment Institute
+    df6 = pd.read_csv(
+        os.path.join(tmp_path, "institutes.txt"), sep="  ", header=None, engine="python",
+        names=["Keyword", "Institute"])
+
+    # Reading Experiment Year
+    df7 = pd.read_csv(
+        os.path.join(tmp_path, "dates.txt"), delim_whitespace=True, header=None, names=["Keyword", "Date"])
+
+    # Reading Experiment Refere
+    df8 = pd.read_csv(
+        os.path.join(tmp_path, "references.txt"), sep="#REFERENCE  ", header=None, engine="python",
+        names=["Keyword", "Reference"])
+
+    # Reading Dataset Number
+    df9 = pd.read_csv(
+        os.path.join(tmp_path, "dataset_num.txt"), sep="#DATASET    ", header=None, engine="python",
+        names=["Keyword", "Dataset_Number"])
+
+    # Reading EXFOR entry number
+    df10 = pd.read_csv(
+        os.path.join(tmp_path, "entry.txt"), sep="#ENTRY      ", header=None, engine="python",
+        names=["Keyword", "EXFOR_Entry"])
+
+    # Reading reference code
+    df11 = pd.read_csv(
+        os.path.join(tmp_path, "refcode.txt"), sep="#REF-CODE   ", header=None, engine="python",
+        names=["Keyword", "Reference_Code"])
+
+    # Merging Datapoints, notation and titles and expanding based on datapoints
+    logging.info("EXFOR CSV: Expanding information based on the number of datapoints per experimental campaign...")
+    pre_final = pd.concat([df3, df1, df2, df4, df5, df6, df7, df8, df9, df10, df11], axis=1)
+    final = pre_final.reindex(pre_final.index.repeat(pre_final.Multiple))
+    final['position'] = final.groupby(level=0).cumcount() + 1
+
+    # Indexing only required information and saving file
+    final = final[[
+        "Reaction_Notation", "Title", "Year", "Author", "Institute", "Date", "Reference",
+        "Dataset_Number", "EXFOR_Entry", "Reference_Code"]]
+    final = final.reset_index(drop=True)
+    return final
+
+
+def _format_projectiles(df):
+    df = df.replace({
+        'Projectile': {1: "neutron", 1001: "proton", 2003: "helion", 0: "gamma", 1002: "deuteron", 2004: "alpha"}})
+
+    if df.Projectile.unique()[0] == "neutron":
+        Projectile_Z, Projectile_A, Projectile_N = 0, 1, 1
+    elif df.Projectile.unique()[0] == "proton":
+        Projectile_Z, Projectile_A, Projectile_N = 1, 1, 0
+    elif df.Projectile.unique()[0] == "helion":
+        Projectile_Z, Projectile_A, Projectile_N = 2, 3, 1
+    elif df.Projectile.unique()[0] == "gamma":
+        Projectile_Z, Projectile_A, Projectile_N = 0, 0, 0
+    elif df.Projectile.unique()[0] == "deuteron":
+        Projectile_Z, Projectile_A, Projectile_N = 1, 2, 1
+    elif df.Projectile.unique()[0] == "alpha":
+        Projectile_Z, Projectile_A, Projectile_N = 2, 4, 2
+    df["Projectile_Z"] = Projectile_Z
+    df["Projectile_A"] = Projectile_A
+    df["Projectile_N"] = Projectile_N
+    return df
+
+
+def _append_ame(df_workxs, heavy_path, mode):
+    logging.info("EXFOR CSV: Reading AME file...")
+    # df_workxs = df.copy()
+    masses = pd.read_csv(os.path.join(ame_dir_path, "AME_Natural_Properties_w_NaN.csv")).rename(
+        columns={'N': 'Neutrons', 'A': 'Mass_Number', 'Neutrons': 'N', 'Mass_Number': 'A', 'Flag': 'Element_Flag'})
+    df_workxs = df_workxs.reset_index(drop=True)
+    masses = masses.reset_index(drop=True)
+    logging.info("EXFOR CSV: Appending AME data to EXFOR File...")
+    df = df_workxs.merge(masses, on=['N', 'Z'], how='left')
+    df = df.drop(columns=["A_x", "A_y", "N", "EL"]).rename(columns={'Neutrons': 'N', 'Mass_Number': 'A'})
+    df = df[~df['N'].isnull()]
+    df[["N", "A"]] = df[["N", "A"]].astype(int)
+    csv_name = os.path.join(heavy_path, "EXFOR_" + mode + "_ORIGINAL_w_AME.csv")
+    logging.info("EXFOR CSV: Saving EXFOR CSV file to {}...".format(csv_name))
+    df.to_csv(csv_name, index=False)
+
+
 def csv_creator(heavy_path, tmp_path, mode, append_ame=True):
     """Create various CSV files from the information extracted using the get_all() function.
 
@@ -138,74 +245,10 @@ def csv_creator(heavy_path, tmp_path, mode, append_ame=True):
     # #######################################################################################################
     # ################################ APPENDING OTHER INFORMATION ##########################################
     # #######################################################################################################
-
-    logging.info("EXFOR CSV: Reading .txt files from {} into DataFrames...".format(tmp_path))
-    # Reading experiments reaction notation
-    df1 = pd.read_csv(
-        os.path.join(tmp_path, "reaction_notations.txt"), delim_whitespace=True, header=None,
-        names=["Reaction", "Reaction_Notation"])
-
-    # Reading Experiment Titles
-    df2 = pd.read_csv(
-        os.path.join(tmp_path, "titles.txt"), sep="#TITLE      ", header=None, engine="python",
-        names=["Keyword", "Title"])
-
-    # Reading Data Points per Experiment
-    df3 = pd.read_csv(
-        os.path.join(tmp_path, "data_points_per_experiment_refined.txt"), delim_whitespace=True, header=None,
-        names=["Data", "Multiple"])
-
-    # Reading Experiment Year
-    df4 = pd.read_csv(
-        os.path.join(tmp_path, "years.txt"), delim_whitespace=True, header=None, names=["Keyword", "Year"])
-
-    # Reading Experiment Date
-    df5 = pd.read_csv(
-        os.path.join(tmp_path, "authors.txt"), sep="    ", header=None, engine="python", names=["Keyword", "Author"])
-
-    # Reading Experiment Institute
-    df6 = pd.read_csv(
-        os.path.join(tmp_path, "institutes.txt"), sep="  ", header=None, engine="python",
-        names=["Keyword", "Institute"])
-
-    # Reading Experiment Year
-    df7 = pd.read_csv(
-        os.path.join(tmp_path, "dates.txt"), delim_whitespace=True, header=None, names=["Keyword", "Date"])
-
-    # Reading Experiment Refere
-    df8 = pd.read_csv(
-        os.path.join(tmp_path, "references.txt"), sep="#REFERENCE  ", header=None, engine="python",
-        names=["Keyword", "Reference"])
-
-    # Reading Dataset Number
-    df9 = pd.read_csv(
-        os.path.join(tmp_path, "dataset_num.txt"), sep="#DATASET    ", header=None, engine="python",
-        names=["Keyword", "Dataset_Number"])
-
-    # Reading EXFOR entry number
-    df10 = pd.read_csv(
-        os.path.join(tmp_path, "entry.txt"), sep="#ENTRY      ", header=None, engine="python",
-        names=["Keyword", "EXFOR_Entry"])
-
-    # Reading reference code
-    df11 = pd.read_csv(
-        os.path.join(tmp_path, "refcode.txt"), sep="#REF-CODE   ", header=None, engine="python",
-        names=["Keyword", "Reference_Code"])
-
-    # Merging Datapoints, notation and titles and expanding based on datapoints
-    logging.info("EXFOR CSV: Expanding information based on the number of datapoints per experimental campaign...")
-    pre_final = pd.concat([df3, df1, df2, df4, df5, df6, df7, df8, df9, df10, df11], axis=1)
-    final = pre_final.reindex(pre_final.index.repeat(pre_final.Multiple))
-    final['position'] = final.groupby(level=0).cumcount() + 1
-
-    # Indexing only required information and saving file
-    final = final[[
-        "Reaction_Notation", "Title", "Year", "Author", "Institute", "Date", "Reference",
-        "Dataset_Number", "EXFOR_Entry", "Reference_Code"]]
+    final = _get_additional_features(tmp_path)
 
     # Reset Indexes to make copying faster
     df = df.reset_index(drop=True)
-    final = final.reset_index(drop=True)
 
     logging.info("EXFOR CSV: Appending information to main DataFrame...")
     # Assign newly extracted data to main dataframe
@@ -226,24 +269,7 @@ def csv_creator(heavy_path, tmp_path, mode, append_ame=True):
     df.EXFOR_SubAccession_Number = df.EXFOR_SubAccession_Number.astype(int)
     df.Institute = df.Institute.apply(lambda x: x.replace("(", "").replace(")", ""))
 
-    df = df.replace({
-        'Projectile': {1: "neutron", 1001: "proton", 2003: "helion", 0: "gamma", 1002: "deuteron", 2004: "alpha"}})
-
-    if df.Projectile.unique()[0] == "neutron":
-        Projectile_Z, Projectile_A, Projectile_N = 0, 1, 1
-    elif df.Projectile.unique()[0] == "proton":
-        Projectile_Z, Projectile_A, Projectile_N = 1, 1, 0
-    elif df.Projectile.unique()[0] == "helion":
-        Projectile_Z, Projectile_A, Projectile_N = 2, 3, 1
-    elif df.Projectile.unique()[0] == "gamma":
-        Projectile_Z, Projectile_A, Projectile_N = 0, 0, 0
-    elif df.Projectile.unique()[0] == "deuteron":
-        Projectile_Z, Projectile_A, Projectile_N = 1, 2, 1
-    elif df.Projectile.unique()[0] == "alpha":
-        Projectile_Z, Projectile_A, Projectile_N = 2, 4, 2
-    df["Projectile_Z"] = Projectile_Z
-    df["Projectile_A"] = Projectile_A
-    df["Projectile_N"] = Projectile_N
+    df = _format_projectiles(df)
 
     element_w_a = objects.load_zan()
     element_w_a = pd.DataFrame.from_dict(element_w_a, orient='index')
@@ -259,17 +285,4 @@ def csv_creator(heavy_path, tmp_path, mode, append_ame=True):
     df.to_csv(csv_name, index=False)
 
     if append_ame:
-        logging.info("EXFOR CSV: Reading AME file...")
-        df_workxs = df.copy()
-        masses = pd.read_csv(os.path.join(ame_dir_path, "AME_Natural_Properties_w_NaN.csv")).rename(
-            columns={'N': 'Neutrons', 'A': 'Mass_Number', 'Neutrons': 'N', 'Mass_Number': 'A', 'Flag': 'Element_Flag'})
-        df_workxs = df_workxs.reset_index(drop=True)
-        masses = masses.reset_index(drop=True)
-        logging.info("EXFOR CSV: Appending AME data to EXFOR File...")
-        df = df_workxs.merge(masses, on=['N', 'Z'], how='left')
-        df = df.drop(columns=["A_x", "A_y", "N", "EL"]).rename(columns={'Neutrons': 'N', 'Mass_Number': 'A'})
-        df = df[~df['N'].isnull()]
-        df[["N", "A"]] = df[["N", "A"]].astype(int)
-        csv_name = os.path.join(heavy_path, "EXFOR_" + mode + "_ORIGINAL_w_AME.csv")
-        logging.info("EXFOR CSV: Saving EXFOR CSV file to {}...".format(csv_name))
-        df.to_csv(csv_name, index=False)
+        _append_ame(df, heavy_path, mode)
