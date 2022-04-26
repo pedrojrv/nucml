@@ -71,20 +71,18 @@ def get_hybrid_ml_xs(ml_df, pointers, jxs_df, xss, use_peaks=True):
     mt_xs_pointers_array = query_utils.get_mt_xs_pointers_array(xss, pointers)
 
     for i in list(ml_df.columns):
+        MT = i.split("_")[1]
         if i == "Energy":
             continue
         elif i in ["MT_1", "MT_2", "MT_3", "MT_101"]:
             ml_df = fill_ml_xs(i, ml_df, basic_mt_dict[i], use_peaks=use_peaks)
         elif i in ["MT_18", "MT_102"]:
-            MT = i.split("_")[1]
             mt_info = query_utils.get_xs_for_mt(int(MT), mt_array, mt_xs_pointers_array, jxs_df, xss, pointers)
             ml_df = fill_ml_xs(i, ml_df, mt_info["xs"], use_peaks=use_peaks)
-        else:
-            MT = i.split("_")[1]
-            if int(MT) in mt_array:
-                mt_info = query_utils.get_xs_for_mt(int(MT), mt_array, mt_xs_pointers_array, jxs_df, xss, pointers)
-                new_xs = np.concatenate((np.zeros(mt_info["energy_start"]), mt_info["xs"]), axis=0)
-                ml_df[i] = new_xs
+        elif MT in mt_array:
+            mt_info = query_utils.get_xs_for_mt(int(MT), mt_array, mt_xs_pointers_array, jxs_df, xss, pointers)
+            new_xs = np.concatenate((np.zeros(mt_info["energy_start"]), mt_info["xs"]), axis=0)
+            ml_df[i] = new_xs
     return ml_df
 
 

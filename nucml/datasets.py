@@ -95,44 +95,33 @@ def load_evaluation(isotope, MT, mode="neutrons", library="endfb8.0", mev_to_ev=
     """
     MT = gen_utils.parse_mt(MT)
     isotope = gen_utils.parse_isotope(isotope, parse_for='endf')
-
-    if mode == "protons":
-        projectile = 'p'
-    elif mode == "neutrons":
-        projectile = 'n'
+    projectile_dict = {'protons': 'p', 'neutrons': 'p'}
+    projectile = projectile_dict[mode]
 
     path = os.path.join(evaluations_path, f'{mode}/{isotope}/{library}/tables/xs/{projectile}-{isotope}-{MT}.{library}')
 
     file = Path(path)
-    if file.is_file():
-        logging.info("EVALUATION: Extracting data from {}".format(path))
-        evaluation = pd.read_csv(
-            path, skiprows=5, header=None, names=["Energy", "Data", "dDataLow", "dDataUpp"],
-            delim_whitespace=True)
-        if mev_to_ev:
-            logging.info("EVALUATION: Converting MeV to eV...")
-            evaluation["Energy"] = evaluation["Energy"]*1E6
-        if mb_to_b:
-            logging.info("EVALUATION: Converting mb to b...")
-            evaluation["Data"] = evaluation["Data"]*0.001
-        if log:
-            evaluation["Energy"] = np.log10(evaluation["Energy"])
-            evaluation["Data"] = np.log10(evaluation["Data"])
-            evaluation["dDataLow"] = np.log10(evaluation["dDataLow"])
-            evaluation["dDataUpp"] = np.log10(evaluation["dDataUpp"])
-        if drop_u:
-            if "dData" in list(evaluation.columns):
-                evaluation = evaluation.drop(columns=["dDataLow"])
-            if "dData2" in list(evaluation.columns):
-                evaluation = evaluation.drop(columns=["dDataUpp"])
-            if "dDataLow" in list(evaluation.columns):
-                evaluation = evaluation.drop(columns=["dDataLow"])
-            if "dDataUpp" in list(evaluation.columns):
-                evaluation = evaluation.drop(columns=["dDataUpp"])
-        logging.info("EVALUATION: Finished. ENDF data contains {} datapoints.".format(evaluation.shape[0]))
-        return evaluation
-    else:
+    if not file.is_file():
         raise FileNotFoundError('Evaluation file does not exists at {}'.format(path))
+    logging.debug("EVALUATION: Extracting data from {}".format(path))
+    evaluation = pd.read_csv(
+        path, skiprows=5, header=None, names=["Energy", "Data", "dDataLow", "dDataUpp"],
+        delim_whitespace=True)
+    if mev_to_ev:
+        logging.info("EVALUATION: Converting MeV to eV...")
+        evaluation["Energy"] = evaluation["Energy"]*1E6
+    if mb_to_b:
+        logging.info("EVALUATION: Converting mb to b...")
+        evaluation["Data"] = evaluation["Data"]*0.001
+    if log:
+        evaluation["Energy"] = np.log10(evaluation["Energy"])
+        evaluation["Data"] = np.log10(evaluation["Data"])
+        evaluation["dDataLow"] = np.log10(evaluation["dDataLow"])
+        evaluation["dDataUpp"] = np.log10(evaluation["dDataUpp"])
+    if drop_u:
+        evaluation = evaluation.drop(columns=["dDataLow", "dDataUpp", "dDataLow", "dDataUpp"], errors='ignore')
+    logging.info("EVALUATION: Finished. ENDF data contains {} datapoints.".format(evaluation.shape[0]))
+    return evaluation
 
 
 def load_ensdf_headers():
