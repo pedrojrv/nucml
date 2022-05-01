@@ -39,12 +39,11 @@ def get_to_skip_lines(isotope, temp="03c"):
     points, indexes = [], []
     ace_file = open(path, "r")
     for index, line in enumerate(ace_file):
-        if line.startswith(" "*line_spaces + isotope + "."):
+        if line.startswith(" " * line_spaces + isotope + "."):
             points.append(line[:10])
             indexes.append(index)
 
-    ace_file.close()
-    to_search = " "*line_spaces + isotope + "." + temp
+    to_search = " " * line_spaces + isotope + "." + temp
     to_skip = indexes[points.index(to_search)]
     lines = indexes[points.index(to_search) + 1] - to_skip - 12
     return path, to_skip, lines
@@ -238,9 +237,7 @@ def get_mt_array_w_pointers(mt_array, mt_xs_pointers_array):
     Returns:
         dict: Dictionary containing the mt_array:xs_pointer key:value pairs.
     """
-    mt_pointer_dict = {}
-    for A, B in zip(mt_array, mt_xs_pointers_array):
-        mt_pointer_dict[A] = B
+    mt_pointer_dict = {MT: pointer for MT, pointer in zip(mt_array, mt_xs_pointers_array)}
     return mt_pointer_dict
 
 

@@ -138,6 +138,17 @@ def get_final_ml_ace_df(energies, pointers, jxs_df, xss, ml_df,
     return Energy_Grid
 
 
+def _get_model_and_scaler(normalizer, model_path, scaler_path):
+    if normalizer == "none":
+        model = model_utils.load_model_and_scaler(
+            {"model_path": model_path, "scaler_path": scaler_path}, df=False, model_only=True)
+        scaler = None
+    else:
+        model, scaler = model_utils.load_model_and_scaler(
+            {"model_path": model_path, "scaler_path": scaler_path}, df=False)
+    return model, scaler
+
+
 def generate_bench_ml_xs(df, models_df, bench_name, to_scale, raw_saving_dir, reset=False, template_dir=template_path,
                          comp_threshold=0.10, reduce_ace_size=True):
     """Generate cross section files using ML-generated values."""
@@ -165,12 +176,7 @@ def generate_bench_ml_xs(df, models_df, bench_name, to_scale, raw_saving_dir, re
         gen_utils.initialize_directories(bench_saving_dir, reset=reset)
         gen_utils.initialize_directories([ml_xs_saving_dir, acelib_saving_dir], reset=True)
 
-        if row.normalizer == "none":
-            model = model_utils.load_model_and_scaler(
-                {"model_path": row.model_path, "scaler_path": row.scaler_path}, df=False, model_only=True)
-        else:
-            model, scaler = model_utils.load_model_and_scaler(
-                {"model_path": row.model_path, "scaler_path": row.scaler_path}, df=False)
+        model, scaler = _get_model_and_scaler(row.normalizer, row.model_path, row.scaler_path)
 
         if scale_energy_col and row.scale_energy:
             to_scale = ["Energy"] + to_scale
@@ -182,8 +188,7 @@ def generate_bench_ml_xs(df, models_df, bench_name, to_scale, raw_saving_dir, re
             if os.path.isfile(path_to_ml_csv):
                 continue
 
-            scaling = None if row.normalizer == "none" else scaler
-            _ = exfor_utils.get_csv_for_ace(df, Z, A, model, scaling, to_scale, save=path_to_ml_csv)
+            _ = exfor_utils.get_csv_for_ace(df, Z, A, model, scaler, to_scale, save=path_to_ml_csv)
 
             ace_utils.create_new_ace_w_df(
                 str(Z) + str(A).zfill(3), path_to_ml_csv, saving_dir=acelib_saving_dir, ignore_basename=True)

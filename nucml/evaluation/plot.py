@@ -61,10 +61,11 @@ def plot(isotope, MT, exfor=None, exclude=[], new_data=None, new_data_label="", 
     all_dataframes = {'exfor': exfor, 'new_data': new_data, 'endf': endf, 'tendl': tendl, 'jendl': jendl, 'jeff': jeff}
     plot_labels = {
         'exfor': 'EXFOR', 'new_data': new_data_label, 'endf': 'ENDF/B-VIII', 'tendl': 'TENDL 2019',
-        'jendl': 'JENDL 4.0', 'jeff': 'JEFF 3.3'}
+        'jendl': 'JENDL 4.0', 'jeff': 'JEFF 3.3'
+    }
 
     for key, dataframe in all_dataframes.items():
-        if (dataframe is None) or (all_not_in_exclude and key not in ['exfor', 'new_data']):
+        if dataframe is None or (all_not_in_exclude and key not in ['exfor', 'new_data']):
             continue
         plot_kwargs = {"label": plot_labels[key], "zorder": z_order_dict[key]}
         if key == "new_data":
