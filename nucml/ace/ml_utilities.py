@@ -188,7 +188,8 @@ def generate_bench_ml_xs(df, models_df, bench_name, to_scale, raw_saving_dir, re
             if os.path.isfile(path_to_ml_csv):
                 continue
 
-            _ = exfor_utils.get_csv_for_ace(df, Z, A, model, scaler, to_scale, save=path_to_ml_csv)
+            data_ace = exfor_utils.get_csv_for_ace(df, Z, A, model, scaler, to_scale)
+            data_ace.to_Csv(path_to_ml_csv)
 
             ace_utils.create_new_ace_w_df(
                 str(Z) + str(A).zfill(3), path_to_ml_csv, saving_dir=acelib_saving_dir, ignore_basename=True)

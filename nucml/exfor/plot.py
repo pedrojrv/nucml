@@ -1,6 +1,5 @@
 """Plotting utilities for the EXFOR dataset."""
 import numpy as np
-import os
 import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -206,7 +205,7 @@ def plot_limits_ref(exfor, endf, new_data):
     plt.ylim(minimum_y, maximum_y)
 
 
-def make_chlorine_paper_figure(df, dt_model, dt_scaler, knn_model, knn_scaler, to_scale, save=False):
+def make_chlorine_paper_figure(df, dt_model, dt_scaler, knn_model, knn_scaler, to_scale):
     """Personal function used to create the Chlorine figure used in a conference summary.
 
     Args:
@@ -234,7 +233,7 @@ def make_chlorine_paper_figure(df, dt_model, dt_scaler, knn_model, knn_scaler, t
     endf_cl = nuc_data.load_evaluation("Cl035", 103, log=True)
     ace_cl = get_energies("17035", ev=True, log=True)
 
-    _, (ax1, ax2) = plt.subplots(2, figsize=(30, 20))
+    fig, (ax1, ax2) = plt.subplots(2, figsize=(30, 20))
 
     for np_data, model, plot_axis, label, new_data in zip(
             [chlorine_35_np_dt, chlorine_35_np_knn], [dt_model, knn_model], [ax1, ax2], ['DT', 'KNN'],
@@ -260,4 +259,4 @@ def make_chlorine_paper_figure(df, dt_model, dt_scaler, knn_model, knn_scaler, t
         plot_axis.set_yscale('log')
         plot_axis.set_xlim(10**-2, 10**7.5)
 
-    plt.savefig(os.path.join(save, "ML_Cl.png"), dpi=600, bbox_inches="tight") if save else None
+    return fig

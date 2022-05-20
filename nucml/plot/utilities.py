@@ -32,7 +32,7 @@ def create_gif(directory, extension, name, duration=2):
     return None
 
 
-def kdeplot(x, labels=[''], xlabel='', ylabel='', title='', figsize=(15, 10), save=False):
+def kdeplot(x, labels=[''], xlabel='', ylabel='', title='', figsize=(15, 10)):
     """Create a KDE plot for a given array.
 
     Args:
@@ -50,7 +50,7 @@ def kdeplot(x, labels=[''], xlabel='', ylabel='', title='', figsize=(15, 10), sa
     Returns:
         None
     """
-    plt.figure(figsize=figsize)
+    fig = plt.figure(figsize=figsize)
     if isinstance(x, list):
         z = 0
         for i in x:
@@ -64,8 +64,7 @@ def kdeplot(x, labels=[''], xlabel='', ylabel='', title='', figsize=(15, 10), sa
         g.set(ylabel=ylabel)
     if len(title) > 0:
         plt.title(title)
-    if save:
-        plt.savefig(save, bbox_inches='tight')
+    return fig
 
 
 def cat_plot(features, df, groupby, top=10, reverse=False, save=False):

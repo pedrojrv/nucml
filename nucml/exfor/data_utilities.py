@@ -201,7 +201,7 @@ def _get_isotope_df_cols(df, Z, A, scaler, to_scale):
     return exfor_isotope_cols
 
 
-def get_csv_for_ace(df, Z, A, model, scaler, to_scale, model_type=None, save=False):
+def get_csv_for_ace(df, Z, A, model, scaler, to_scale, model_type=None):
     """Create a CSV with the model predictions for a particular isotope in the appropiate format for the ACE utilities.
 
     The function returns a DataFrame which can then be saved as a CSV. The saving_dir argument provides a direct method
@@ -237,8 +237,6 @@ def get_csv_for_ace(df, Z, A, model, scaler, to_scale, model_type=None, save=Fal
         data_ace[col] = predictions
 
     data_ace = 10**data_ace
-    if save:
-        data_ace.to_csv(save, index=False)
     return data_ace
 
 
