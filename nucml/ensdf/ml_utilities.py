@@ -110,9 +110,8 @@ def make_predictions_from_df(df, Z, A, model, model_type, scaler, to_scale, log_
     Returns:
         DataFrame: New DataFrame with ML predictions.
     """
-    kwargs = {"scale": True, "scaler": scaler, "to_scale": to_scale}
     ensdf = ensdf_utils.load_ensdf_samples(df, Z, A)
-    to_infer = ensdf_utils.load_ensdf_samples(df, Z, A, **kwargs)
+    to_infer = ensdf_utils.load_ensdf_samples(df, Z, A, scaler=scaler, to_scale=to_scale)
     to_infer["Energy"] = model_utils.make_predictions(
         to_infer.drop(columns=["Energy"]).values, model, model_type)
     if plot:
@@ -147,7 +146,7 @@ def predicting_nuclear_xs_v2(df, Z, A, model, scaler, to_scale, num_levels=100, 
     """
     expand_levels = True if num_levels != 0 else False
 
-    to_plot = ensdf_utils.load_ensdf_samples(df, Z, A, scale=True, scaler=scaler, to_scale=to_scale)
+    to_plot = ensdf_utils.load_ensdf_samples(df, Z, A, scaler=scaler, to_scale=to_scale)
 
     if expand_levels:
         data_kwargs = {"Z": Z, "A": A, "log": log_sqrt, "scale": True, "scaler": scaler, "to_scale": to_scale}

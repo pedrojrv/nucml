@@ -19,7 +19,7 @@ def _filter_df_with_za_and_sort_by_levels(df, Z, A):
     return filtered
 
 
-def load_ensdf_samples(df, Z, A, scale=False, scaler=None, to_scale=[]):
+def load_ensdf_samples(df, Z, A, scaler=None, to_scale=[]):
     """Load ENSDF data for a particular isotope (Z, A).
 
     Args:
@@ -34,7 +34,7 @@ def load_ensdf_samples(df, Z, A, scale=False, scaler=None, to_scale=[]):
         DataFrame: Extracted isotope sample.
     """
     sample = _filter_df_with_za_and_sort_by_levels(df, Z, A)
-    if scale:
+    if scaler:
         sample[to_scale] = scaler.transform(sample[to_scale])
     logging.info("ENSDF extracted DataFrame has shape: {}".format(sample.shape))
     return sample

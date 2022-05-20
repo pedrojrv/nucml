@@ -64,7 +64,7 @@ def load_isotope(df, Z, A, nat_iso="I", one_hot=False, scaler=None, to_scale=[])
     return _filter_and_scale_by_ZA_MT(df, one_hot, Z, A, nat_iso, scaler=scaler, to_scale=to_scale)
 
 
-def load_element(df, Z, nat_iso="I", one_hot=False, scale=False, scaler=None, to_scale=[]):
+def load_element(df, Z, nat_iso="I", one_hot=False, scaler=None, to_scale=[]):
     """Load all datapoints avaliable for a particular element.
 
     Args:
@@ -85,7 +85,7 @@ def load_element(df, Z, nat_iso="I", one_hot=False, scale=False, scaler=None, to
         sample = df[(df["Z"] == Z) & (df["Element_Flag_" + nat_iso] == 1)].sort_values(by='Energy', ascending=True)
     else:
         sample = df[(df["Z"] == Z) & (df["Element_Flag"] == nat_iso)].sort_values(by='Energy', ascending=True)
-    if scale:
+    if scaler:
         sample[to_scale] = scaler.transform(sample[to_scale])
     return sample
 

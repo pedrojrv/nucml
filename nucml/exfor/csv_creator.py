@@ -4,6 +4,7 @@ import logging
 import numbers
 import numpy as np
 import pandas as pd
+from functools import partial
 
 import nucml.objects.objects as objects
 import nucml.config as config
@@ -12,58 +13,31 @@ ame_dir_path = config.ame_dir_path
 
 
 def _get_additional_features(tmp_path):
-    logging.info("EXFOR CSV: Reading .txt files from {} into DataFrames...".format(tmp_path))
+    ws_csv_reader = partial(pd.read_csv, delim_whitespace=True, header=None)
+    py_reader = partial(pd.read_csv, header=None, engine="python")
+
     # Reading experiments reaction notation
-    df1 = pd.read_csv(
-        os.path.join(tmp_path, "reaction_notations.txt"), delim_whitespace=True, header=None,
-        names=["Reaction", "Reaction_Notation"])
-
+    df1 = ws_csv_reader(os.path.join(tmp_path, "reaction_notations.txt"), names=["Reaction", "Reaction_Notation"])
     # Reading Experiment Titles
-    df2 = pd.read_csv(
-        os.path.join(tmp_path, "titles.txt"), sep="#TITLE      ", header=None, engine="python",
-        names=["Keyword", "Title"])
-
+    df2 = py_reader(os.path.join(tmp_path, "titles.txt"), sep="#TITLE      ", names=["Keyword", "Title"])
     # Reading Data Points per Experiment
-    df3 = pd.read_csv(
-        os.path.join(tmp_path, "data_points_per_experiment_refined.txt"), delim_whitespace=True, header=None,
-        names=["Data", "Multiple"])
-
+    df3 = ws_csv_reader(os.path.join(tmp_path, "data_points_per_experiment_refined.txt"), names=["Data", "Multiple"])
     # Reading Experiment Year
-    df4 = pd.read_csv(
-        os.path.join(tmp_path, "years.txt"), delim_whitespace=True, header=None, names=["Keyword", "Year"])
-
+    df4 = ws_csv_reader(os.path.join(tmp_path, "years.txt"), names=["Keyword", "Year"])
     # Reading Experiment Date
-    df5 = pd.read_csv(
-        os.path.join(tmp_path, "authors.txt"), sep="    ", header=None, engine="python", names=["Keyword", "Author"])
-
+    df5 = py_reader(os.path.join(tmp_path, "authors.txt"), sep="    ", names=["Keyword", "Author"])
     # Reading Experiment Institute
-    df6 = pd.read_csv(
-        os.path.join(tmp_path, "institutes.txt"), sep="  ", header=None, engine="python",
-        names=["Keyword", "Institute"])
-
+    df6 = py_reader(os.path.join(tmp_path, "institutes.txt"), sep="  ", names=["Keyword", "Institute"])
     # Reading Experiment Year
-    df7 = pd.read_csv(
-        os.path.join(tmp_path, "dates.txt"), delim_whitespace=True, header=None, names=["Keyword", "Date"])
-
+    df7 = ws_csv_reader(os.path.join(tmp_path, "dates.txt"), names=["Keyword", "Date"])
     # Reading Experiment Refere
-    df8 = pd.read_csv(
-        os.path.join(tmp_path, "references.txt"), sep="#REFERENCE  ", header=None, engine="python",
-        names=["Keyword", "Reference"])
-
+    df8 = py_reader(os.path.join(tmp_path, "references.txt"), sep="#REFERENCE  ", names=["Keyword", "Reference"])
     # Reading Dataset Number
-    df9 = pd.read_csv(
-        os.path.join(tmp_path, "dataset_num.txt"), sep="#DATASET    ", header=None, engine="python",
-        names=["Keyword", "Dataset_Number"])
-
+    df9 = py_reader(os.path.join(tmp_path, "dataset_num.txt"), sep="#DATASET    ", names=["Keyword", "Dataset_Number"])
     # Reading EXFOR entry number
-    df10 = pd.read_csv(
-        os.path.join(tmp_path, "entry.txt"), sep="#ENTRY      ", header=None, engine="python",
-        names=["Keyword", "EXFOR_Entry"])
-
+    df10 = py_reader(os.path.join(tmp_path, "entry.txt"), sep="#ENTRY      ", names=["Keyword", "EXFOR_Entry"])
     # Reading reference code
-    df11 = pd.read_csv(
-        os.path.join(tmp_path, "refcode.txt"), sep="#REF-CODE   ", header=None, engine="python",
-        names=["Keyword", "Reference_Code"])
+    df11 = py_reader(os.path.join(tmp_path, "refcode.txt"), sep="#REF-CODE   ", names=["Keyword", "Reference_Code"])
 
     # Merging Datapoints, notation and titles and expanding based on datapoints
     logging.info("EXFOR CSV: Expanding information based on the number of datapoints per experimental campaign...")
