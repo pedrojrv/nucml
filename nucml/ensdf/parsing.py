@@ -97,8 +97,6 @@ def generate_elemental_ensdf(dat_list, header_directory, saving_directory):
 
     element_dat_it = itertools.product(element_list_endf, dat_list)
     for e, i in element_dat_it:
-        # for e in element_list_endf:
-        # for i in dat_list:
         elem_path_v1 = os.path.join(ensdf_v1_path, str(e).strip() + '.txt')
         elem_path_v2 = os.path.join(ensdf_v2_path, str(e).strip() + '.txt')
         infile = open(i, "r")
@@ -106,8 +104,6 @@ def generate_elemental_ensdf(dat_list, header_directory, saving_directory):
         outfile2 = open(elem_path_v2, 'a')
         lines = infile.readlines()
         for z in [z for z, line in enumerate(lines) if line.startswith(e)]:
-            # for z, line in enumerate(lines):
-            # if line.startswith(str(e)):
             value = ensdf_index[ensdf_index["SYMB"] == e]
             for y in range(0, 1 + value[["Nol"]].values[0][0] + value[["Nog"]].values[0][0]):
                 to_write = lines[z + y]

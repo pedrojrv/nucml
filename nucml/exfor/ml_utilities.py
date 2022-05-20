@@ -2,6 +2,7 @@
 import pandas as pd
 from functools import partial
 import matplotlib.pyplot as plt
+from nucml.exfor import error_metrics
 
 import nucml.exfor.plot as exfor_plot_utils
 import nucml.evaluation.data_utilities as endf_utils
@@ -33,7 +34,7 @@ def _plot_save_predictions(plotter, all_dict, order_dict, save, show):  # , path
 
 def predicting_nuclear_xs_v2(df, Z, A, MT, model, scaler=None, e_array="ace", log=False,
                              model_type=None, new_data=empty_df, nat_iso="I", get_endf=False, inv_trans=False,
-                             show=False, plotter="plotly", save=False, save_both=True, order_dict={}):
+                             show=False, plotter="plotly", save=False, order_dict={}):
     """Predict values for a given isotope-reaction channel pair.
 
     This all-in-one function allows to not only get predictions
@@ -120,12 +121,13 @@ def predicting_nuclear_xs_v2(df, Z, A, MT, model, scaler=None, e_array="ace", lo
 
     if endf_avaliable:
         # Gets interpolated endf data with anchor exfor
-        exfor_endf, error_endf = data_utils.get_error_endf_exfor(endf, to_plot)
+        exfor_endf, error_endf = error_metrics.get_error_endf_exfor(endf, to_plot)
         error_df = error_df.append(error_endf)
         all_dict.update({"exfor_endf_original": exfor_endf, "error_metrics": error_df, "endf": endf})
         if new_data_avaliable:
             # Gets interpolated endf data with anchor new exfor
-            exfor_endf_new_data, error_endf_new = data_utils.get_error_endf_exfor(endf, new_data, filter_energy=False)
+            exfor_endf_new_data, error_endf_new = error_metrics.get_error_endf_exfor(
+                endf, new_data, filter_energy=False)
             error_df = error_df.append(error_endf_new)
             all_dict.update({"exfor_endf_new": exfor_endf_new_data, "error_metrics": error_df})
 
@@ -138,7 +140,7 @@ def _plot_with_prediction(df, infer_df, y_hat):
     plt.plot(infer_df.Energy, y_hat)
 
 
-def make_predictions_w_energy(e_array, df, Z, A, MT, model, model_type, scaler, to_scale, one_hot=True, log=False,
+def make_predictions_w_energy(e_array, df, Z, A, MT, model, model_type, scaler, one_hot=True, log=False,
                               show=False):
     """Return predictions using a model at the given energy grid for a given isotope.
 
@@ -162,7 +164,7 @@ def make_predictions_w_energy(e_array, df, Z, A, MT, model, model_type, scaler, 
         np.array
     """
     data_kwargs = {
-        "Z": Z, "A": A, "MT": MT, "log": log, "scaler": scaler, "to_scale": to_scale, "one_hot": True,
+        "Z": Z, "A": A, "MT": MT, "log": log, "scaler": scaler, "one_hot": True,
         "ignore_MT": True}
     to_infer = data_utils.append_energy(e_array, df, **data_kwargs)
     exfor = query_utils.load_samples(df, Z, A, MT, one_hot=one_hot, mt_for="ACE")
@@ -172,7 +174,7 @@ def make_predictions_w_energy(e_array, df, Z, A, MT, model, model_type, scaler, 
     return y_hat
 
 
-def make_predictions_from_df(df, Z, A, MT, model, model_type, scaler, to_scale, log=False, show=False):
+def make_predictions_from_df(df, Z, A, MT, model, model_type, scaler):
     """Return predictions for all avaliable datapoints for a particular isotope-reaction channel pair.
 
     Args:
@@ -191,9 +193,9 @@ def make_predictions_from_df(df, Z, A, MT, model, model_type, scaler, to_scale, 
     Returns:
         np.array
     """
-    kwargs = {"nat_iso": "I", "one_hot": True, "scaler": scaler, "to_scale": to_scale}
+    kwargs = {"nat_iso": "I", "one_hot": True, "scaler": scaler}
     exfor = query_utils.load_samples(df, Z, A, MT, **kwargs)
     # Make Predictions
     y_hat = model_utils.make_predictions(exfor.drop(columns=["Data"]).values, model, model_type)
-    _plot_with_prediction(exfor, exfor, y_hat) if show else None
+    # _plot_with_prediction(exfor, exfor, y_hat) if show else None
     return y_hat

@@ -153,34 +153,31 @@ def load_ensdf_isotopic(isotope, filetype="levels"):
     elemental[0] = pd.to_numeric(elemental[0].astype(str).str.strip())
 
     if filetype.lower() == "levels":
-        elemental_level_records = elemental[elemental[0].notna()]
-        elemental_level_records = elemental_level_records.reset_index(drop=True).drop(columns=[7, 8])
-        elemental_level_records.columns = [
+        elemental_records = elemental[elemental[0].notna()]
+        elemental_records = elemental_records.reset_index(drop=True).drop(columns=[7, 8])
+        elemental_records.columns = [
             "Level_Number", "Energy", "Spin", "Parity", "Half_Life", "Gammas", "Flag", "ENSDF_Spin", "Num_Decay_Modes",
             "Decay_Info"]
-        elemental_level_records.Num_Decay_Modes = elemental_level_records.Num_Decay_Modes.replace("0+#", -1)
+        elemental_records.Num_Decay_Modes = elemental_records.Num_Decay_Modes.replace("0+#", -1)
 
-        for col in elemental_level_records.columns:
-            elemental_level_records[col] = elemental_level_records[col].astype(str).str.strip()
-
-        for col in elemental_level_records.columns:
+        for col in elemental_records.columns:
+            elemental_records[col] = elemental_records[col].astype(str).str.strip()
             if col not in ["Flag", "ENSDF_Spin", "Decay_Info"]:
-                elemental_level_records[col] = pd.to_numeric(elemental_level_records[col])
+                elemental_records[col] = pd.to_numeric(elemental_records[col])
 
-        return elemental_level_records
     elif filetype.lower() == "gammas":
         elemental[0] = elemental[0].fillna(method='ffill')
         elemental[1] = pd.to_numeric(elemental[1].str.strip())
-        elemental_gamma_records = elemental[~elemental[1].notna()]
-        new_columns = elemental_gamma_records[11].str.split(expand=True)
-        elemental_gamma_records = elemental_gamma_records.drop(columns=[1, 2, 3, 4, 5, 6, 10, 11])
-        elemental_gamma_records = pd.concat([elemental_gamma_records, new_columns], axis=1)
-        elemental_gamma_records.columns = [
+        elemental_records = elemental[~elemental[1].notna()]
+        new_columns = elemental_records[11].str.split(expand=True)
+        elemental_records = elemental_records.drop(columns=[1, 2, 3, 4, 5, 6, 10, 11])
+        elemental_records = pd.concat([elemental_records, new_columns], axis=1)
+        elemental_records.columns = [
             "Level_Record", "Final_State", "Energy", "Gamma_Decay_Prob", "Electromag_Decay_Prob", "ICC"
         ]
-        for col in elemental_gamma_records.columns:
-            elemental_gamma_records[col] = pd.to_numeric(elemental_gamma_records[col])
-        return elemental_gamma_records
+        elemental_records = pd.to_numeric(elemental_records)
+
+    return elemental_records
 
 
 def load_ensdf_ground_states():

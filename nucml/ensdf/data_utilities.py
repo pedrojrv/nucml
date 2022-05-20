@@ -112,7 +112,7 @@ def append_ensdf_levels_nodata(tot_num_levels, df, log=False, scaler=None):
     return new_data
 
 
-def append_ensdf_levels_range(tot_num_levels, df, Z, A, steps=1, log=False, scale=False, scaler=None):
+def append_ensdf_levels_range(tot_num_levels, df, Z, A, steps=1, log=False, scaler=None):
     """Expand the energy levels up to "tot_num_levels" for the given ENSDF isotopic sample.
 
     It uses a range with n steps rather than linear.
@@ -134,7 +134,7 @@ def append_ensdf_levels_range(tot_num_levels, df, Z, A, steps=1, log=False, scal
     new_data = pd.DataFrame({"Level_Number": np.arange(1, tot_num_levels + 1, steps)})
     isotope_exfor = load_ensdf_samples(df, Z, A)
     new_data = copy_data_from_df_to_df(isotope_exfor, new_data, start=2)
-    if scale:
+    if scaler:
         new_data = scaler.transform(new_data)
     if log:
         new_data["Level_Number"] = np.log10(new_data["Level_Number"])
