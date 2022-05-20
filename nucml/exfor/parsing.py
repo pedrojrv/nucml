@@ -206,23 +206,10 @@ def impute_original_exfor(heavy_path, tmp_path, mode, append_ame=True, MF_number
     df["Uncertainty_D"] = df["dData"]/df["Data"]
     df["Uncertainty_ELV"] = df["dELV/HL"]/df["ELV/HL"]
 
-    df["Uncertainty_E"] = df[["MT", "Uncertainty_E"]].groupby("MT").transform(lambda x: x.fillna(x.mean()))
-    df["Uncertainty_D"] = df[["MT", "Uncertainty_D"]].groupby("MT").transform(lambda x: x.fillna(x.mean()))
-    df["Uncertainty_ELV"] = df[["MT", "Uncertainty_ELV"]].groupby("MT").transform(lambda x: x.fillna(x.mean()))
-
-    logging.info("EXFOR CSV: Filling dEnergy, dData, and dELV by Institute...")
-    df["Uncertainty_E"] = df[["Institute", "Uncertainty_E"]].groupby(
-        "Institute").transform(lambda x: x.fillna(x.mean()))
-    df["Uncertainty_D"] = df[["Institute", "Uncertainty_D"]].groupby(
-        "Institute").transform(lambda x: x.fillna(x.mean()))
-    df["Uncertainty_ELV"] = df[["Institute", "Uncertainty_ELV"]].groupby(
-        "Institute").transform(lambda x: x.fillna(x.mean()))
-
-    logging.info("EXFOR CSV: Filling dEnergy, dData, and dELV by Isotope...")
-    df["Uncertainty_E"] = df[["Isotope", "Uncertainty_E"]].groupby("Isotope").transform(lambda x: x.fillna(x.mean()))
-    df["Uncertainty_D"] = df[["Isotope", "Uncertainty_D"]].groupby("Isotope").transform(lambda x: x.fillna(x.mean()))
-    df["Uncertainty_ELV"] = df[["Isotope", "Uncertainty_ELV"]].groupby(
-        "Isotope").transform(lambda x: x.fillna(x.mean()))
+    for uncertainty_col in ['Uncertainty_E', 'Uncertainty_D', 'Uncertainty_ELV']:
+        for interpolation_col in ['MT', 'Institute', 'Isotope']:
+            df[uncertainty_col] = df[[interpolation_col, uncertainty_col]].groupby(
+                interpolation_col).transform(lambda x: x.fillna(x.mean()))
 
     df["Uncertainty_ELV"] = df[["I78", "Uncertainty_ELV"]].groupby("I78").transform(lambda x: x.fillna(x.mean()))
 
@@ -232,8 +219,7 @@ def impute_original_exfor(heavy_path, tmp_path, mode, append_ame=True, MF_number
 
     df.Uncertainty_D = df.Uncertainty_D.replace(to_replace=np.inf, value=0)
     df.dData = df.dData.replace(to_replace=np.nan, value=0)
-    df["dELV/HL"] = df["dELV/HL"].replace(to_replace=np.nan, value=0)
-    df["ELV/HL"] = df["ELV/HL"].replace(to_replace=np.nan, value=0)
+    df[["dELV/HL", 'ELV']] = df[["dELV/HL", 'ELV']].replace(to_replace=np.nan, value=0)
 
     df.fillna(value=0, inplace=True)
 
