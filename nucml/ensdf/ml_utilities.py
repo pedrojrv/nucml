@@ -86,7 +86,7 @@ def _invert_data_w_scaler(to_infer, to_scale, scaler, log):
     return to_infer
 
 
-def make_predictions_from_df(df, Z, A, model, model_type, scaler, to_scale, log_sqrt=False, log=False, plot=False,
+def make_predictions_from_df(df, Z, A, model, model_type, scaler, log_sqrt=False, log=False, plot=False,
                              save=False, save_dir=""):
     """Return a set of ML predictions at all known levels within the passed DataFrame.
 
@@ -111,7 +111,7 @@ def make_predictions_from_df(df, Z, A, model, model_type, scaler, to_scale, log_
         DataFrame: New DataFrame with ML predictions.
     """
     ensdf = ensdf_utils.load_ensdf_samples(df, Z, A)
-    to_infer = ensdf_utils.load_ensdf_samples(df, Z, A, scaler=scaler, to_scale=to_scale)
+    to_infer = ensdf_utils.load_ensdf_samples(df, Z, A, scaler=scaler)
     to_infer["Energy"] = model_utils.make_predictions(
         to_infer.drop(columns=["Energy"]).values, model, model_type)
     if plot:
@@ -119,7 +119,7 @@ def make_predictions_from_df(df, Z, A, model, model_type, scaler, to_scale, log_
     return ensdf, to_infer
 
 
-def predicting_nuclear_xs_v2(df, Z, A, model, scaler, to_scale, num_levels=100, log_sqrt=False, model_type=None,
+def predicting_nuclear_xs_v2(df, Z, A, model, scaler, num_levels=100, log_sqrt=False, model_type=None,
                              save=False, plot=False, save_dir="", inv_trans=False):
     """Plot and return a set of ML predictions at all known levels and up to num_levels.
 
@@ -146,10 +146,10 @@ def predicting_nuclear_xs_v2(df, Z, A, model, scaler, to_scale, num_levels=100, 
     """
     expand_levels = True if num_levels != 0 else False
 
-    to_plot = ensdf_utils.load_ensdf_samples(df, Z, A, scaler=scaler, to_scale=to_scale)
+    to_plot = ensdf_utils.load_ensdf_samples(df, Z, A, scaler=scaler)
 
     if expand_levels:
-        data_kwargs = {"Z": Z, "A": A, "log": log_sqrt, "scaler": scaler, "to_scale": to_scale}
+        data_kwargs = {"Z": Z, "A": A, "log": log_sqrt, "scaler": scaler}
         to_infer = ensdf_utils.append_ensdf_levels(num_levels, df, **data_kwargs)
     else:
         to_infer = to_plot.drop(columns=["Energy"])
@@ -160,8 +160,8 @@ def predicting_nuclear_xs_v2(df, Z, A, model, scaler, to_scale, num_levels=100, 
 
     if inv_trans:
         # De-Transforming Scaled Data
-        to_infer[to_scale] = scaler.inverse_transform(to_infer[to_scale])
-        to_plot[to_scale] = scaler.inverse_transform(to_plot[to_scale])
+        to_infer = scaler.inverse_transform(to_infer)
+        to_plot = scaler.inverse_transform(to_plot)
 
     all_dict = {"expanded": {"df": to_infer, "predictions": pred_expanded},
                 "original": {"df": to_plot, "predictions": pred_original}}

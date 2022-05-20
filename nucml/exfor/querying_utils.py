@@ -7,7 +7,7 @@ import nucml.general_utilities as gen_utils
 from nucml.exfor.data_utilities import _copy_over_data_and_scale
 
 
-def _filter_and_scale_by_ZA_MT(df, one_hot, Z, A, nat_iso, MT=None, scaler=None, to_scale=[]):
+def _filter_and_scale_by_ZA_MT(df, one_hot, Z, A, nat_iso, MT=None, scaler=None):
     if one_hot:
         sample = df[(df["Z"] == Z) & (df["A"] == A) & (df["Element_Flag_" + nat_iso] == 1)]
     else:
@@ -16,11 +16,11 @@ def _filter_and_scale_by_ZA_MT(df, one_hot, Z, A, nat_iso, MT=None, scaler=None,
     if MT is not None:
         sample = sample[sample[MT] == 1] if one_hot else sample[sample["MT"] == MT]
     if scaler:
-        sample[to_scale] = scaler.transform(sample[to_scale])
+        sample = scaler.transform(sample)
     return sample.sort_values(by='Energy', ascending=True)
 
 
-def load_samples(df, Z, A, MT, nat_iso="I", one_hot=False, scaler=None, to_scale=[], mt_for="EXFOR"):
+def load_samples(df, Z, A, MT, nat_iso="I", one_hot=False, scaler=None, mt_for="EXFOR"):
     """Extract datapoints belonging to a particular isotope-reaction channel pair.
 
     Args:
@@ -40,10 +40,10 @@ def load_samples(df, Z, A, MT, nat_iso="I", one_hot=False, scaler=None, to_scale
         DataFrame
     """
     MT = gen_utils.parse_mt(MT, mt_for=mt_for, one_hot=one_hot)
-    return _filter_and_scale_by_ZA_MT(df, one_hot, Z, A, nat_iso, MT=MT, scaler=scaler, to_scale=to_scale)
+    return _filter_and_scale_by_ZA_MT(df, one_hot, Z, A, nat_iso, MT=MT, scaler=scaler)
 
 
-def load_isotope(df, Z, A, nat_iso="I", one_hot=False, scaler=None, to_scale=[]):
+def load_isotope(df, Z, A, nat_iso="I", one_hot=False, scaler=None):
     """Load all datapoints avaliable for a particular isotope.
 
     Args:
@@ -61,10 +61,10 @@ def load_isotope(df, Z, A, nat_iso="I", one_hot=False, scaler=None, to_scale=[])
     Returns:
         DataFrame
     """
-    return _filter_and_scale_by_ZA_MT(df, one_hot, Z, A, nat_iso, scaler=scaler, to_scale=to_scale)
+    return _filter_and_scale_by_ZA_MT(df, one_hot, Z, A, nat_iso, scaler=scaler)
 
 
-def load_element(df, Z, nat_iso="I", one_hot=False, scaler=None, to_scale=[]):
+def load_element(df, Z, nat_iso="I", one_hot=False, scaler=None):
     """Load all datapoints avaliable for a particular element.
 
     Args:
@@ -86,11 +86,11 @@ def load_element(df, Z, nat_iso="I", one_hot=False, scaler=None, to_scale=[]):
     else:
         sample = df[(df["Z"] == Z) & (df["Element_Flag"] == nat_iso)].sort_values(by='Energy', ascending=True)
     if scaler:
-        sample[to_scale] = scaler.transform(sample[to_scale])
+        sample = scaler.transform(sample)
     return sample
 
 
-def load_newdata(datapath, df, Z, A, MT, nat_iso="I", one_hot=False, log=False, scaler=None, to_scale=[]):
+def load_newdata(datapath, df, Z, A, MT, nat_iso="I", one_hot=False, log=False, scaler=None):
     """Load new measurments and appends the appropiate EXFOR isotopic data.
 
     Assumes new data only have two columns: Energy and Data.
@@ -118,6 +118,6 @@ def load_newdata(datapath, df, Z, A, MT, nat_iso="I", one_hot=False, log=False, 
         new_data["Energy"] = np.log10(new_data["Energy"])
         new_data["Data"] = np.log10(new_data["Data"])
     isotope_exfor = load_samples(df, Z, A, MT, nat_iso=nat_iso, one_hot=one_hot)
-    new_data = _copy_over_data_and_scale(isotope_exfor, new_data, scaler, to_scale)
+    new_data = _copy_over_data_and_scale(isotope_exfor, new_data, scaler)
     logging.info("EXFOR extracted DataFrame has shape: {}".format(new_data.shape))
     return new_data

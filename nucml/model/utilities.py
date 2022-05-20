@@ -272,3 +272,22 @@ def get_parameters_from_line(results_df, model="knn"):
         normalizer = results_df.normalizer.values[0]
         param_dict = {"distance_metric": distance_metric, "mt_strategy": mt_strategy, "normalizer": normalizer}
     return param_dict
+
+
+class DataScaler():
+    """Store a preprocessing scaler and the explicit columns for scaling."""
+
+    def __init__(self, scaler=None, scaling_cols=[]) -> None:
+        """Initialize object.
+
+        Args:
+            scaler (object, optional): A scaler object (e.g. a scikit-learn standard scaler object). Defaults to None.
+            scaling_cols (list, optional): Columns relevant to the scaler. Defaults to [].
+        """
+        self.scaler = scaler
+        self.scaling_cols = scaling_cols
+
+    def transform(self, data):
+        """Scale data using fitted scaler."""
+        data[self.scaling_cols] = self.scaler.transform(data[self.scaling_cols])
+        return data

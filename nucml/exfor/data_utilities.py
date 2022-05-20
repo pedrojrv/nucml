@@ -25,18 +25,17 @@ elements_dict = nuc_data.elements_dict
 empty_df = pd.DataFrame()
 
 
-def _copy_over_data_and_scale(main_df, new_data, scaler=None, to_scale=None):
+def _copy_over_data_and_scale(main_df, new_data, scaler=None):
     new_data = copy_data_from_df_to_df(main_df, new_data, ignore_cols=['Energy', 'Data'])
     if "dData" in list(new_data.columns):
         new_data.drop(columns="dData", inplace=True)
     if "dEnergy" in list(new_data.columns):
         new_data.drop(columns="dEnergy", inplace=True)
-    if scaler is not None and to_scale is not None:
-        new_data[to_scale] = scaler.transform(new_data[to_scale])
+    if scaler:
+        new_data = scaler.transform(new_data)
 
 
-def append_energy(e_array, df, Z, A, MT, nat_iso="I", one_hot=False, log=False, scaler=None, to_scale=[],
-                  ignore_MT=False):
+def append_energy(e_array, df, Z, A, MT, nat_iso="I", one_hot=False, log=False, scaler=None, ignore_MT=False):
     """Append the given energy array to the passed DataFrame and feature values are coppied to these new rows.
 
     Args:
@@ -69,7 +68,7 @@ def append_energy(e_array, df, Z, A, MT, nat_iso="I", one_hot=False, log=False, 
         isotope_exfor[MT] = 1
     else:
         isotope_exfor = query_utils.load_samples(df, Z, A, MT, nat_iso=nat_iso, one_hot=one_hot)
-    new_data = _copy_over_data_and_scale(isotope_exfor, new_data, scaler, to_scale)
+    new_data = _copy_over_data_and_scale(isotope_exfor, new_data, scaler)
     return new_data
 
 

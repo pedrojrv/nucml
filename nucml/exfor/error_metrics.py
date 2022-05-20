@@ -7,7 +7,7 @@ import nucml.model.utilities as model_utils
 from nucml.evaluation.data_utilities import get_for_exfor
 
 
-def get_mt_errors_exfor_ml(df, Z, A, scaler, to_scale, model):
+def get_mt_errors_exfor_ml(df, Z, A, scaler, model):
     """Calculate the error between EXFOR and ML predictions for a given isotope.
 
     Args:
@@ -21,13 +21,12 @@ def get_mt_errors_exfor_ml(df, Z, A, scaler, to_scale, model):
     Returns:
         DataFrame
     """
-    exfor_isotope_cols = data_utilities._get_isotope_df_cols(df, Z, A, scaler, to_scale)
+    exfor_isotope_cols = data_utilities._get_isotope_df_cols(df, Z, A, scaler)
     error_results = pd.DataFrame(columns=['MT', 'MAE', 'MSE', 'EVS', 'MAE_M', 'R2'])
     for col in exfor_isotope_cols.columns:
         if "MT" not in col:
             continue
-        exfor_sample = querying_utils.load_samples(
-            df, Z, A, col, nat_iso="I", one_hot=True, scaler=scaler, to_scale=to_scale)
+        exfor_sample = querying_utils.load_samples(df, Z, A, col, nat_iso="I", one_hot=True, scaler=scaler)
         error_dict = model_utils.regression_error_metrics(
             model.predict(exfor_sample.drop(columns=["Data"])), exfor_sample.Data)
         error_results = error_results.append(pd.DataFrame({
@@ -37,7 +36,7 @@ def get_mt_errors_exfor_ml(df, Z, A, scaler, to_scale, model):
     return error_results
 
 
-def get_mt_error_exfor_endf(df, Z, A, scaler, to_scale):
+def get_mt_error_exfor_endf(df, Z, A, scaler):
     """Calculate the error between EXFOR and ENDF for a given isotope.
 
     Args:
@@ -52,13 +51,13 @@ def get_mt_error_exfor_endf(df, Z, A, scaler, to_scale):
     """
     # TODO: FIND OUT IF WE NEED SCALER OR TO SCALE
     # We don't care if its scaled or not since we only care abuot the Data feature, but we still need it?
-    exfor_isotope_cols = data_utilities._get_isotope_df_cols(df, Z, A, scaler, to_scale)
+    exfor_isotope_cols = data_utilities._get_isotope_df_cols(df, Z, A, scaler)
     error_results = pd.DataFrame(columns=['id', 'mae', 'mse', 'evs', 'mae_m', 'r2', 'MT'])
     for col in exfor_isotope_cols.columns:
         if "MT" not in col or col in ["MT_101", "MT_9000"]:
             continue
         exfor_sample = querying_utils.load_samples(
-            df, Z, A, col, nat_iso="I", one_hot=True, scaler=scaler, to_scale=to_scale)
+            df, Z, A, col, nat_iso="I", one_hot=True, scaler=scaler)
         endf_data = get_for_exfor(Z, A, col)
         _, error_exfor_endf = get_error_endf_exfor(endf_data, exfor_sample)
         error_exfor_endf["MT"] = col

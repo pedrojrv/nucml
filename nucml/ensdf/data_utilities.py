@@ -19,7 +19,7 @@ def _filter_df_with_za_and_sort_by_levels(df, Z, A):
     return filtered
 
 
-def load_ensdf_samples(df, Z, A, scaler=None, to_scale=[]):
+def load_ensdf_samples(df, Z, A, scaler=None):
     """Load ENSDF data for a particular isotope (Z, A).
 
     Args:
@@ -35,12 +35,12 @@ def load_ensdf_samples(df, Z, A, scaler=None, to_scale=[]):
     """
     sample = _filter_df_with_za_and_sort_by_levels(df, Z, A)
     if scaler:
-        sample[to_scale] = scaler.transform(sample[to_scale])
+        sample = scaler.transform(sample)
     logging.info("ENSDF extracted DataFrame has shape: {}".format(sample.shape))
     return sample
 
 
-def load_ensdf_element(df, Z, scale=False, scaler=None, to_scale=[]):
+def load_ensdf_element(df, Z, scale=False, scaler=None):
     """Load ENSDF data for a given element (Z).
 
     Args:
@@ -55,12 +55,12 @@ def load_ensdf_element(df, Z, scale=False, scaler=None, to_scale=[]):
     """
     sample = df[(df["Z"] == Z)]
     if scale:
-        sample[to_scale] = scaler.transform(sample[to_scale])
+        sample = scaler.transform(sample)
     logging.info("ENSDF extracted DataFrame has shape: {}".format(sample.shape))
     return sample
 
 
-def append_ensdf_levels(tot_num_levels, df, Z, A, log=False, scaler=None, to_scale=[]):
+def append_ensdf_levels(tot_num_levels, df, Z, A, log=False, scaler=None):
     """Expand the energy levels up to "tot_num_levels" for the given ENSDF isotopic sample.
 
     Args:
@@ -80,13 +80,13 @@ def append_ensdf_levels(tot_num_levels, df, Z, A, log=False, scaler=None, to_sca
     isotope_exfor = load_ensdf_samples(df, Z, A)
     new_data = copy_data_from_df_to_df(isotope_exfor, new_data, start=2)
     if scaler:
-        new_data[to_scale] = scaler.transform(new_data[to_scale])
+        new_data = scaler.transform(new_data)
     if log:
         new_data["Level_Number"] = np.log10(new_data["Level_Number"])
     return new_data
 
 
-def append_ensdf_levels_nodata(tot_num_levels, df, log=False, scaler=None, to_scale=[]):
+def append_ensdf_levels_nodata(tot_num_levels, df, log=False, scaler=None):
     """Expand the energy levels up to "tot_num_levels" for the given ENSDF isotopic sample.
 
     Args:
@@ -105,14 +105,14 @@ def append_ensdf_levels_nodata(tot_num_levels, df, log=False, scaler=None, to_sc
     if "Energy" in isotope_exfor.columns:
         isotope_exfor = isotope_exfor.drop(columns="Energy")
     new_data = copy_data_from_df_to_df(isotope_exfor, new_data, start=1)
-    if scaler is not None:
-        new_data[to_scale] = scaler.transform(new_data[to_scale])
+    if scaler:
+        new_data = scaler.transform(new_data)
     if log:
         new_data["Level_Number"] = np.log10(new_data["Level_Number"])
     return new_data
 
 
-def append_ensdf_levels_range(tot_num_levels, df, Z, A, steps=1, log=False, scale=False, scaler=None, to_scale=[]):
+def append_ensdf_levels_range(tot_num_levels, df, Z, A, steps=1, log=False, scale=False, scaler=None):
     """Expand the energy levels up to "tot_num_levels" for the given ENSDF isotopic sample.
 
     It uses a range with n steps rather than linear.
@@ -135,7 +135,7 @@ def append_ensdf_levels_range(tot_num_levels, df, Z, A, steps=1, log=False, scal
     isotope_exfor = load_ensdf_samples(df, Z, A)
     new_data = copy_data_from_df_to_df(isotope_exfor, new_data, start=2)
     if scale:
-        new_data[to_scale] = scaler.transform(new_data[to_scale])
+        new_data = scaler.transform(new_data)
     if log:
         new_data["Level_Number"] = np.log10(new_data["Level_Number"])
     return new_data

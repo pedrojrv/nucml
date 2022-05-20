@@ -31,7 +31,7 @@ def _plot_save_predictions(plotter, all_dict, order_dict, save, show):  # , path
     #         exfor_plot_utils.ml_results(all_dict, save=save, save_dir=path, order_dict=order_dict, show=False)
 
 
-def predicting_nuclear_xs_v2(df, Z, A, MT, model, to_scale=None, scaler=None, e_array="ace", log=False,
+def predicting_nuclear_xs_v2(df, Z, A, MT, model, scaler=None, e_array="ace", log=False,
                              model_type=None, new_data=empty_df, nat_iso="I", get_endf=False, inv_trans=False,
                              show=False, plotter="plotly", save=False, save_both=True, order_dict={}):
     """Predict values for a given isotope-reaction channel pair.
@@ -84,7 +84,7 @@ def predicting_nuclear_xs_v2(df, Z, A, MT, model, to_scale=None, scaler=None, e_
 
     kwargs = {"nat_iso": nat_iso, "one_hot": True}
     to_infer = query_utils.load_samples(df, Z, A, MT, **kwargs)
-    to_plot = query_utils.load_samples(df, Z, A, MT, scaler=scaler, to_scale=to_scale, **kwargs)
+    to_plot = query_utils.load_samples(df, Z, A, MT, scaler=scaler, **kwargs)
     to_infer = to_infer.drop(columns=["Data"])
 
     if e_array_avaliable:
@@ -92,15 +92,15 @@ def predicting_nuclear_xs_v2(df, Z, A, MT, model, to_scale=None, scaler=None, e_
     else:
         to_infer = data_utils.expanding_dataset_energy(to_infer, (-5.00, 7.30), log, 500)
 
-    if to_scale is not None:
-        to_infer[to_scale] = scaler.transform(to_infer[to_scale])
+    if scaler:
+        to_infer = scaler.transform(to_infer)
 
     pred_exfor_expanded = model_utils.make_predictions(to_infer.values, model, model_type)
     pred_exfor_original = model_utils.make_predictions(to_plot.drop(columns=["Data"]).values, model, model_type)
 
     if inv_trans:
-        to_infer[to_scale] = scaler.inverse_transform(to_infer[to_scale])
-        to_plot[to_scale] = scaler.inverse_transform(to_plot[to_scale])
+        to_infer = scaler.inverse_transform(to_infer)
+        to_plot = scaler.inverse_transform(to_plot)
 
     all_dict = {"exfor_ml_expanded": {"df": to_infer, "predictions": pred_exfor_expanded},
                 "exfor_ml_original": {"df": to_plot, "predictions": pred_exfor_original}}
