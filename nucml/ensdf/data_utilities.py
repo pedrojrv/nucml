@@ -7,7 +7,6 @@ import os
 from joblib import dump
 from functools import partial
 
-import nucml.ensdf.plot as ensdf_plot
 import nucml.general_utilities as gen_utils
 from nucml.data_utils import copy_data_from_df_to_df
 from nucml.data_utils import _filter_df_with_za
@@ -162,8 +161,8 @@ def _extrapolate_to_upper_level(model, append_data_fn, pred, tot_num_levels, upp
     return pred
 
 
-def generate_level_density_csv(df, Z, A, nodata=False, upper_energy_mev=20, get_upper=False, tot_num_levels=0,
-                               it_limit=500, plot=False, save=False, saving_dir=""):
+def generate_level_density_csv(df, Z, A, nodata=False, upper_energy_mev=None, tot_num_levels=0, it_limit=500,
+                               saving_dir=None):
     """Fit a linear model to the isotopic sample provided.
 
     It can save a CSV file with the linear model values for each energy level avaliable. If get_upper is True, then a
@@ -211,13 +210,10 @@ def generate_level_density_csv(df, Z, A, nodata=False, upper_energy_mev=20, get_
     pred["Level_Number"] = simple.Level_Number
     pred["Energy"] = reg.predict(pred)
 
-    if get_upper:
+    if upper_energy_mev:
         _extrapolate_to_upper_level(reg, append_data_fn, pred, tot_num_levels, upper_energy_mev, it_limit)
 
-    if plot:
-        ensdf_plot.level_density_ml(original, pred, log_sqrt=False, log=True)
-
-    if save:
+    if saving_dir:
         pred["A"] = A
         pred["Z"] = Z
         pred["Element_w_A"] = element

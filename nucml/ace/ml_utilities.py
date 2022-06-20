@@ -149,8 +149,8 @@ def _get_model_and_scaler(normalizer, model_path, scaler_path):
     return model, scaler
 
 
-def generate_bench_ml_xs(df, models_df, bench_name, to_scale, raw_saving_dir, reset=False, template_dir=template_path,
-                         comp_threshold=0.10, reduce_ace_size=True):
+def generate_bench_ml_xs(df, models_df, bench_name, to_scale, raw_saving_dir, template_dir=template_path,
+                         comp_threshold=0.10):
     """Generate cross section files using ML-generated values."""
     to_scale_copy = to_scale.copy()
     results_df = models_df.copy()
@@ -170,10 +170,8 @@ def generate_bench_ml_xs(df, models_df, bench_name, to_scale, raw_saving_dir, re
         bench_saving_dir = os.path.abspath(os.path.join(raw_saving_dir, run_name + "/" + bench_name + "/"))
         ml_xs_saving_dir = os.path.join(bench_saving_dir, "ml_xs_csv")
         acelib_saving_dir = os.path.join(bench_saving_dir, "acelib")
-        if os.path.isdir(bench_saving_dir) and not reset:
-            continue
 
-        gen_utils.initialize_directories(bench_saving_dir, reset=reset)
+        gen_utils.initialize_directories(bench_saving_dir, reset=True)
         gen_utils.initialize_directories([ml_xs_saving_dir, acelib_saving_dir], reset=True)
 
         model, scaler = _get_model_and_scaler(row.normalizer, row.model_path, row.scaler_path)
@@ -189,7 +187,7 @@ def generate_bench_ml_xs(df, models_df, bench_name, to_scale, raw_saving_dir, re
                 continue
 
             data_ace = exfor_utils.get_csv_for_ace(df, Z, A, model, scaler, to_scale)
-            data_ace.to_Csv(path_to_ml_csv)
+            data_ace.to_csv(path_to_ml_csv)
 
             ace_utils.create_new_ace_w_df(
                 str(Z) + str(A).zfill(3), path_to_ml_csv, saving_dir=acelib_saving_dir, ignore_basename=True)
@@ -200,6 +198,4 @@ def generate_bench_ml_xs(df, models_df, bench_name, to_scale, raw_saving_dir, re
 
         ace_utils.generate_sss_xsdata(bench_saving_dir)
         serpent_utils.copy_benchmark_files(bench_name, bench_saving_dir)
-
-        if reduce_ace_size:
-            ace_utils.reduce_ace_filesize(bench_saving_dir)
+        ace_utils.reduce_ace_filesize(bench_saving_dir)

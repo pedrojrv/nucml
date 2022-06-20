@@ -2,6 +2,7 @@
 import pandas as pd
 import logging
 
+from nucml import general_utilities
 import nucml.datasets as nuc_data
 
 elements_dict = nuc_data.elements_dict
@@ -27,7 +28,7 @@ def load_new(datapath, mev_to_ev=False):
     return endf
 
 
-def get_for_exfor(Z, A, MT, mode="neutrons", library="endfb8.0", mev_to_ev=True, mb_to_b=True, log=True, drop_u=True):
+def get_for_exfor(ZZZAAA, MT, mode="neutrons", library="endfb8.0", mev_to_ev=True, mb_to_b=True, log=True):
     """Get the queried ENDF data for EXFOR functions.
 
     Note: Internal Function.
@@ -45,7 +46,8 @@ def get_for_exfor(Z, A, MT, mode="neutrons", library="endfb8.0", mev_to_ev=True,
     Returns:
         DataFrame: Contains the evaluation dataframe.
     """
+    Z, A = general_utilities.parse_zzzaaa(ZZZAAA)
     element_for_endf = list(elements_dict.keys())[list(elements_dict.values()).index(Z)] + str(A).zfill(3)
     endf = nuc_data.load_evaluation(
-        element_for_endf, MT, mode=mode, library=library, mev_to_ev=mev_to_ev, mb_to_b=mb_to_b, log=log, drop_u=drop_u)
+        element_for_endf, MT, mode=mode, library=library, mev_to_ev=mev_to_ev, mb_to_b=mb_to_b, log=log, drop_u=True)
     return endf

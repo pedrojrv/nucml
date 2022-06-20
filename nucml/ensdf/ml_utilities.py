@@ -1,11 +1,12 @@
 """ML-related data utilities."""
+import warnings
+
 import nucml.model.utilities as model_utils
 import nucml.ensdf.plot as ensdf_plot
 import nucml.ensdf.data_utilities as ensdf_utils
 
 
-def make_predictions_w_levels(df, Z, A, num_levels, model, model_type, scaler, inv_transform=False,
-                              log_sqrt=False, log=False, plot=False, save=False, save_dir=""):
+def get_inference_ready_sample(df, Z, A, num_levels, scaler, log=False):
     """Return a set of ML predictions up to num_levels.
 
     Args:
@@ -31,19 +32,44 @@ def make_predictions_w_levels(df, Z, A, num_levels, model, model_type, scaler, i
     Returns:
         DataFrame: New DataFrame with ML predictions.
     """
-    ensdf = ensdf_utils.load_ensdf_samples(df, Z, A)
     data_kwargs = {"Z": Z, "A": A, "log": log, "scaler": scaler}
     to_infer = ensdf_utils.append_ensdf_levels(num_levels, df, **data_kwargs)
-    to_infer["Energy"] = model_utils.make_predictions(to_infer.values, model, model_type)
-    if plot:
-        ensdf_plot.level_density_ml(ensdf, to_infer, log_sqrt=log_sqrt, log=log, save=save, save_dir=save_dir)
-    if inv_transform:
-        to_infer = _invert_data_w_scaler(to_infer, scaler, log)
     return to_infer
 
 
-def make_predictions_w_levels_nodata(df, num_levels, model, model_type, scaler, inv_transform=False,
-                                     log_sqrt=False, log=False, plot=False, save=False, save_dir=""):
+def make_predictions_w_levels(inference_df, model, model_type, scaler, inv_transform=False, log=False):
+    """Return a set of ML predictions up to num_levels.
+
+    Args:
+        df (DataFrame): DataFrame containing all needed information for Z, A.
+        Z (INT): Number of protons.
+        A (int): Mass Number.
+        num_levels (int): Upper level number for which to predict the level energy.
+        model (object): Trained machine learning model.
+        model_type (str): Type of ML model. Options include "tf", "xgb", or "scikit".
+        scaler (object): Trained scikit-learn normalizer/transformer.
+        to_scale (list): List of features that are to be subject to transformation by the scaler.
+        inv_transform (bool, optional): If True, the returned DataFrame will be in its original ranges.
+            Defaults to False.
+        log_sqrt (bool, optional): If True, it assumes the models where trained on Level Energy data with SQRT applied.
+            Defaults to False.
+        log (bool, optional): If True, it assumes the models where trained on Level Energy data with LOG applied.
+            Defaults to False.
+        plot (bool, optional): If True, the ML predictions will be plotted along the true known values. Defaults to
+            False.
+        save (bool, optional): If True, the rendered figure will be saved. Defaults to False.
+        save_dir (str, optional): Path-like string indicating directory where the figure will be saved. Defaults to "".
+
+    Returns:
+        DataFrame: New DataFrame with ML predictions.
+    """
+    inference_df["Energy"] = model_utils.make_predictions(inference_df.values, model, model_type)
+    if inv_transform:
+        inference_df = _invert_data_w_scaler(inference_df, scaler, log)
+    return inference_df
+
+
+def make_predictions_w_levels_nodata(df, num_levels, model, model_type, scaler, inv_transform=False, log=False):
     """Return a set of ML predictions up to num_levels for isotopes with no known nuclear structure data.
 
     Args:
@@ -70,9 +96,6 @@ def make_predictions_w_levels_nodata(df, num_levels, model, model_type, scaler, 
     data_kwargs = {"log": log, "scaler": scaler}
     to_infer = ensdf_utils.append_ensdf_levels_nodata(num_levels, df, **data_kwargs)
     to_infer["Energy"] = model_utils.make_predictions(to_infer.values, model, model_type)
-    if plot:
-        ensdf_plot.level_density_ml(
-            to_infer.copy(), to_infer.copy(), log_sqrt=log_sqrt, log=log, save=save, save_dir=save_dir)
     if inv_transform:
         to_infer = _invert_data_w_scaler(to_infer, scaler, log)
     return to_infer
@@ -86,8 +109,7 @@ def _invert_data_w_scaler(to_infer, to_scale, scaler, log):
     return to_infer
 
 
-def make_predictions_from_df(df, Z, A, model, model_type, scaler, log_sqrt=False, log=False, plot=False,
-                             save=False, save_dir=""):
+def make_predictions_from_df(df, Z, A, model, model_type, scaler):
     """Return a set of ML predictions at all known levels within the passed DataFrame.
 
     Args:
@@ -114,13 +136,11 @@ def make_predictions_from_df(df, Z, A, model, model_type, scaler, log_sqrt=False
     to_infer = ensdf_utils.load_ensdf_samples(df, Z, A, scaler=scaler)
     to_infer["Energy"] = model_utils.make_predictions(
         to_infer.drop(columns=["Energy"]).values, model, model_type)
-    if plot:
-        ensdf_plot.level_density_ml(ensdf, to_infer, log_sqrt=log_sqrt, log=log, save=save, save_dir=save_dir)
     return ensdf, to_infer
 
 
 def predicting_nuclear_xs_v2(df, Z, A, model, scaler, num_levels=100, log_sqrt=False, model_type=None,
-                             save=False, plot=False, save_dir="", inv_trans=False):
+                             plot=False, save_dir=None, inv_trans=False):
     """Plot and return a set of ML predictions at all known levels and up to num_levels.
 
     Args:
@@ -144,6 +164,7 @@ def predicting_nuclear_xs_v2(df, Z, A, model, scaler, num_levels=100, log_sqrt=F
     Returns:
         DataFrame: New DataFrame with ML predictions.
     """
+    warnings.warn('This function is deprecated and will be removed in the future.', DeprecationWarning, stacklevel=2)
     expand_levels = True if num_levels != 0 else False
 
     to_plot = ensdf_utils.load_ensdf_samples(df, Z, A, scaler=scaler)
@@ -171,5 +192,5 @@ def predicting_nuclear_xs_v2(df, Z, A, model, scaler, num_levels=100, log_sqrt=F
     all_dict.update({"error_metrics": error_df})
     if plot:
         to_infer["Energy"] = pred_expanded
-        ensdf_plot.level_density_ml(to_plot, to_infer, log_sqrt=log_sqrt, save=save, save_dir=save_dir)
+        ensdf_plot.level_density_ml(to_plot, to_infer, log_sqrt=log_sqrt, save_dir=save_dir)
     return all_dict

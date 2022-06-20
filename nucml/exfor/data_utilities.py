@@ -1,7 +1,7 @@
 """Data manipulation utilities for the EXFOR dataset."""
 import os
 import logging
-
+import warnings
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -35,7 +35,7 @@ def _copy_over_data_and_scale(main_df, new_data, scaler=None):
         new_data = scaler.transform(new_data)
 
 
-def append_energy(e_array, df, Z, A, MT, nat_iso="I", one_hot=False, log=False, scaler=None, ignore_MT=False):
+def append_energy(e_array, df, ZZZAAA, MT, nat_iso="I", one_hot=False, scaler=None):
     """Append the given energy array to the passed DataFrame and feature values are coppied to these new rows.
 
     Args:
@@ -58,10 +58,9 @@ def append_energy(e_array, df, Z, A, MT, nat_iso="I", one_hot=False, log=False, 
     Returns:
         DataFrame
     """
+    Z, A = gen_utils.parse_zzzaaa(ZZZAAA)
     new_data = pd.DataFrame({"Energy": e_array})
-    if log:
-        new_data["Energy"] = np.log10(new_data["Energy"])
-    if ignore_MT:
+    if MT is None:
         isotope_exfor = query_utils.load_samples(df, Z, A, 1, nat_iso=nat_iso, one_hot=one_hot, mt_for="ACE")
         isotope_exfor.MT_1 = 0
         MT = gen_utils.parse_mt(MT, mt_for="ACE", one_hot=one_hot)
@@ -140,6 +139,7 @@ def plot_exfor_w_references(df, Z, A, MT, nat_iso="I", new_data=empty_df, endf=e
     Returns:
         dict: All information requested including original data and errors are contained in a python dictionary.
     """
+    warnings.warn('This function is deprecated and will be removed in the future.', DeprecationWarning, stacklevel=2)
     if reverse_log:
         df["Energy"] = 10**df["Energy"].values
         df["Data"] = 10**df["Data"].values

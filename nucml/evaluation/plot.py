@@ -25,8 +25,7 @@ def _load_all_evaluations(isotope, MT, mode, mev_to_ev, mb_to_b):
     return endf, tendl, jendl, jeff
 
 
-def plot(isotope, MT, exfor=None, exclude=[], new_data=None, new_data_label="", save=False,
-         z_order_dict=z_order_dict, mode="neutrons", mev_to_ev=True, mb_to_b=True):
+def plot(isotope, MT, exfor=None, exclude=[], save=False, z_order_dict=z_order_dict, **kwargs):
     """Plot all evaluations for a specific reaction and a given isotope.
 
     It is possible to exclude some evaluations if needed. New data can also be added. The avaliable evaluations
@@ -54,13 +53,14 @@ def plot(isotope, MT, exfor=None, exclude=[], new_data=None, new_data_label="", 
     Returns:
         None
     """
-    endf, tendl, jendl, jeff = _load_all_evaluations(isotope, MT, mode, mev_to_ev, mb_to_b)
+    #  mode="neutrons", mev_to_ev=True, mb_to_b=Tru
+    endf, tendl, jendl, jeff = _load_all_evaluations(isotope, MT, **kwargs)
 
     plt.figure(figsize=(14, 9))
     all_not_in_exclude = "all" not in exclude
-    all_dataframes = {'exfor': exfor, 'new_data': new_data, 'endf': endf, 'tendl': tendl, 'jendl': jendl, 'jeff': jeff}
+    all_dataframes = {'exfor': exfor, 'endf': endf, 'tendl': tendl, 'jendl': jendl, 'jeff': jeff}
     plot_labels = {
-        'exfor': 'EXFOR', 'new_data': new_data_label, 'endf': 'ENDF/B-VIII', 'tendl': 'TENDL 2019',
+        'exfor': 'EXFOR', 'endf': 'ENDF/B-VIII', 'tendl': 'TENDL 2019',
         'jendl': 'JENDL 4.0', 'jeff': 'JEFF 3.3'
     }
 
@@ -68,8 +68,6 @@ def plot(isotope, MT, exfor=None, exclude=[], new_data=None, new_data_label="", 
         if dataframe is None or (all_not_in_exclude and key not in ['exfor', 'new_data']):
             continue
         plot_kwargs = {"label": plot_labels[key], "zorder": z_order_dict[key]}
-        if key == "new_data":
-            plt.scatter(dataframe.Energy, dataframe.Data, **plot_kwargs)
         plt.loglog(dataframe.Energy, dataframe.Data, **plot_kwargs)
 
     plt.xlabel('Energy (eV)')

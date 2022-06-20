@@ -210,3 +210,9 @@ def convert_dos_to_unix(file_path):
 
     with open(file_path, 'wb') as open_file:
         open_file.write(content)
+
+
+def parse_zzzaaa(ZZZAAA):
+    z = int(ZZZAAA[:3])
+    a = int(ZZZAAA[3:])
+    return z, a

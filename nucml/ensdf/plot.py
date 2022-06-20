@@ -54,7 +54,7 @@ def level_density(df, Z, A, df2=empty_df, label1="Adopted", label2="Cut-Off"):
     return fig
 
 
-def level_density_ml(ensdf_df, predictions_df, log_sqrt=False, log=False, save=False):
+def level_density_ml(ensdf_df, predictions_df, log_sqrt=False, log=False, save_dir=False):
     """Plot the level density based on all known levels and the predicted LD based on model predictions.
 
     Args:
@@ -93,8 +93,8 @@ def level_density_ml(ensdf_df, predictions_df, log_sqrt=False, log=False, save=F
     plt.ylabel("N (Number of Levels)")
     plt.legend()
     plt.xlabel("Energy (MeV)")
-    if save:
-        saving_path = os.path.join(save, 'ENSDF_{}Z_{}A_Level_Density.png'.format(
+    if save_dir:
+        saving_path = os.path.join(save_dir, 'ENSDF_{}Z_{}A_Level_Density.png'.format(
             ensdf_df.Z.values[0], ensdf_df.A.values[0]))
         level_density_plotter_fn(saving_path)
 

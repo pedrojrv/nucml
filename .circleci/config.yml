@@ -39,7 +39,9 @@ jobs:
       - checkout
       - run:
           name: Installing dependencies and source code.
-          command: pip install -e .[tests]
+          command: |
+            pip install --upgrade pip
+            pip install -e .[tests]
       - run:
           name: Running Flake8
           command: flake8

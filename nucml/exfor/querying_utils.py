@@ -20,7 +20,7 @@ def _filter_and_scale_by_ZA_MT(df, one_hot, Z, A, nat_iso, MT=None, scaler=None)
     return sample.sort_values(by='Energy', ascending=True)
 
 
-def load_samples(df, Z, A, MT, nat_iso="I", one_hot=False, scaler=None, mt_for="EXFOR"):
+def load_samples(df, ZZZAAA, MT, nat_iso="I", one_hot=False, scaler=None, mt_for="EXFOR"):
     """Extract datapoints belonging to a particular isotope-reaction channel pair.
 
     Args:
@@ -39,6 +39,7 @@ def load_samples(df, Z, A, MT, nat_iso="I", one_hot=False, scaler=None, mt_for="
     Returns:
         DataFrame
     """
+    Z, A = gen_utils.parse_zzzaaa(ZZZAAA)
     MT = gen_utils.parse_mt(MT, mt_for=mt_for, one_hot=one_hot)
     return _filter_and_scale_by_ZA_MT(df, one_hot, Z, A, nat_iso, MT=MT, scaler=scaler)
 
@@ -90,7 +91,7 @@ def load_element(df, Z, nat_iso="I", one_hot=False, scaler=None):
     return sample
 
 
-def load_newdata(datapath, df, Z, A, MT, nat_iso="I", one_hot=False, log=False, scaler=None):
+def load_newdata(datapath, df, ZZZAAA, MT, nat_iso="I", one_hot=False, log=False, scaler=None):
     """Load new measurments and appends the appropiate EXFOR isotopic data.
 
     Assumes new data only have two columns: Energy and Data.
@@ -113,6 +114,7 @@ def load_newdata(datapath, df, Z, A, MT, nat_iso="I", one_hot=False, log=False, 
     Returns:
         DataFrame
     """
+    Z, A = gen_utils.parse_zzzaaa(ZZZAAA)
     new_data = pd.read_csv(datapath)
     if log:
         new_data["Energy"] = np.log10(new_data["Energy"])

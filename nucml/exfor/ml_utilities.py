@@ -1,4 +1,5 @@
 """EXFOR-related ML utilities."""
+import warnings
 import pandas as pd
 from functools import partial
 import matplotlib.pyplot as plt
@@ -9,6 +10,7 @@ import nucml.evaluation.data_utilities as endf_utils
 import nucml.model.utilities as model_utils
 import nucml.exfor.querying_utils as query_utils
 import nucml.exfor.data_utilities as data_utils
+from nucml import general_utilities
 
 empty_df = pd.DataFrame()
 
@@ -72,6 +74,7 @@ def predicting_nuclear_xs_v2(df, Z, A, MT, model, scaler=None, e_array="ace", lo
     Returns:
         dict: contains a variety of information including predictions, errors, and more.
     """
+    warnings.warn('This function is deprecated and will be removed in the future.', DeprecationWarning, stacklevel=2)
     endf = empty_df
     if get_endf:
         endf = endf_utils.get_for_exfor(Z, A, MT, log=log)
@@ -140,8 +143,7 @@ def _plot_with_prediction(df, infer_df, y_hat):
     plt.plot(infer_df.Energy, y_hat)
 
 
-def make_predictions_w_energy(e_array, df, Z, A, MT, model, model_type, scaler, one_hot=True, log=False,
-                              show=False):
+def make_predictions_w_energy(e_array, df, ZZZAAA, MT, model, scaler):
     """Return predictions using a model at the given energy grid for a given isotope.
 
     Args:
@@ -163,14 +165,11 @@ def make_predictions_w_energy(e_array, df, Z, A, MT, model, model_type, scaler, 
     Returns:
         np.array
     """
-    data_kwargs = {
-        "Z": Z, "A": A, "MT": MT, "log": log, "scaler": scaler, "one_hot": True,
-        "ignore_MT": True}
+    Z, A = general_utilities.parse_zzzaaa(ZZZAAA)
+    data_kwargs = {"Z": Z, "A": A, "MT": None, "scaler": scaler, "one_hot": True}
     to_infer = data_utils.append_energy(e_array, df, **data_kwargs)
-    exfor = query_utils.load_samples(df, Z, A, MT, one_hot=one_hot, mt_for="ACE")
     # Make Predictions
-    y_hat = model_utils.make_predictions(to_infer.values, model, model_type)
-    _plot_with_prediction(exfor, to_infer, y_hat) if show else None
+    y_hat = model_utils.make_predictions(to_infer.values, model)
     return y_hat
 
 

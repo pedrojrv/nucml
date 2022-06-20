@@ -1,5 +1,3 @@
 recursive-include nucml/objects *.pkl
 recursive-include nucml/exfor/objects *.pkl
 recursive-include nucml/evaluation/objects *.pkl
-
-include requirements.txt
