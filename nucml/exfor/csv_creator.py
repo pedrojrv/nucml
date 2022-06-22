@@ -12,7 +12,7 @@ import nucml.config as config
 ame_dir_path = config.ame_dir_path
 
 
-def _get_additional_features(tmp_path):
+def _read_additional_features(tmp_path):
     ws_csv_reader = partial(pd.read_csv, delim_whitespace=True, header=None)
     py_reader = partial(pd.read_csv, header=None, engine="python")
 
@@ -50,7 +50,31 @@ def _get_additional_features(tmp_path):
         "Reaction_Notation", "Title", "Year", "Author", "Institute", "Date", "Reference",
         "Dataset_Number", "EXFOR_Entry", "Reference_Code"]]
     final = final.reset_index(drop=True)
+
     return final
+
+
+def _merge_additional_features(df, tmp_path):
+    final = _read_additional_features(tmp_path)
+
+    # Assign newly extracted data to main dataframe
+    fillna_defaults = {
+        'Title': "No Title Found. Check EXFOR.",
+        'Reference': "No Reference Found. Check EXFOR.",
+        'Short_Reference': "No Reference Found. Check EXFOR.",
+        'Author': "No Author Found. Check EXFOR.",
+        'EXFOR_Pointer': "No Pointer"
+    }
+    for name in [
+            'Reaction_Notation', 'Title', 'Year', 'Author', 'Institute', 'Date', 'Reference', 'Dataset_Number',
+            'EXFOR_Entry', 'Reference_Code']:
+        df[name] = final[name].fillna(fillna_defaults[name])
+
+    df.EXFOR_Pointer = df.EXFOR_Pointer.apply(lambda x: str(int(x)) if isinstance(x, numbers.Number) else x)
+    df.Date = df.Date.apply(lambda x: str(x)[:4] + "/" + str(x)[4:6] + "/" + str(x)[6:])
+    df.Institute = df.Institute.apply(lambda x: x.replace("(", "").replace(")", ""))
+
+    return df
 
 
 def _format_projectiles(df):
@@ -119,14 +143,9 @@ def impute_original_exfor(heavy_path, tmp_path, mode, append_ame=True, MF_number
     if append_ame:
         df = _append_ame(df)
 
-    logging.info("EXFOR CSV: Creating new CSV file with only MF=3 data...")
-    df.MF = df.MF.astype(str)
-    df.MT = df.MT.astype(str)
-    df = df[df["MF"] == MF_number]
+    df[['MF', 'MT']] = df[['MF', 'MT']].astype(str)
+    df = df[df["MF"] == MF_number].drop(columns=["MF", "Cos/LO", "dCos/LO"])
 
-    df = df.drop(columns=["MF", "Cos/LO", "dCos/LO"])
-
-    logging.info("EXFOR CSV: Filling dEnergy, dData, and dELV by reaction channel...")
     df["Uncertainty_E"] = df["dEnergy"]/df["Energy"]
     df["Uncertainty_D"] = df["dData"]/df["Data"]
     df["Uncertainty_ELV"] = df["dELV/HL"]/df["ELV/HL"]
@@ -165,6 +184,81 @@ def impute_original_exfor(heavy_path, tmp_path, mode, append_ame=True, MF_number
     df.to_csv(os.path.join(heavy_path, "EXFOR_" + mode + "_MF3_AME_no_RawNaN.csv"), index=False)
 
 
+def _parse_neutrons_protons_mass_number(df):
+    # make string version of original column
+    df['Target_ZA'] = df['Target_ZA'].astype(str)
+
+    # Making Sure all rows have the same number of values
+    max_length = 5
+    df.Target_ZA = df.Target_ZA.apply(lambda x: '0'*(max_length - len(x)) + x)
+
+    # Target feature is formated as ZZAAA
+    df['Z'] = df['Target_ZA'].str[0:2].astype(int).fillna(0)
+    df['A'] = df['Target_ZA'].str[2:5].astype(int).fillna(0)
+
+    # Calculating number of neutrons = mass number - protons
+    df['N'] = df['A'] - df["Z"]
+    return df
+
+
+def _parse_and_format_numerical_columns(df):
+    # Defining Numerical Columns to Fix and casting them as strings
+    cols = ["Energy", "dEnergy", "Data", "dData", "Cos/LO", "dCos/LO", "ELV/HL", "dELV/HL"]
+    df[cols] = df[cols].astype(str)
+    df[cols] = df[cols].replace(to_replace="         ", value=np.nan)
+
+    # We now strip values that may contain quatation marks and starting and trailing spaces
+    for col in cols:
+        df[col] = df[col].str.strip("\"").strip()
+
+    df[cols] = df[cols].replace(to_replace="", value=np.nan)
+
+    # For the numerical values we know per formatting that each of them should be 9 characters in length
+    max_length = 9
+
+    for col in cols:
+        df[col] = df[col].apply(lambda x: x if pd.isnull(x) else ' '*(max_length - len(x)) + x)
+
+    # Add appropiate formating for python to recognize it as numerical
+    for col in cols:
+        new_col = []
+        values = df[col].values
+        for x in values:
+            if pd.isnull(x):
+                new_col.append(x)
+            elif "+" == x[7] or "-" == x[7]:
+                y = x[0:7]
+                z = x[7:]
+                new_col.append(y + "E" + z)
+            elif "+" == x[6] or "-" == x[6]:
+                y = x[0:6]
+                z = x[6:]
+                new_col.append(y + "E" + z)
+            else:
+                new_col.append(x)
+        df[col] = new_col
+
+    # We now convert the columns to numerical
+    for col in cols:
+        df[col] = df[col].astype(float)
+
+    df.EXFOR_SubAccession_Number = df.EXFOR_SubAccession_Number.astype(int)
+    return df
+
+
+def _make_metadata_exfor_status_readable(df):
+    metastate_dict = {
+        " ": "All_or_Total", "G": "Ground", "1": "M1", "2": "M2", "3": "M3", "4": "M4", "5": "M5", "?": "Unknown",
+        "+": "More_than_1", "T": "All_or_Total"}
+    exfor_status_dict = {
+        "U": "Un_normalized", "A": "Approved_by_Author", "C": "Correlated", "D": "Dependent", "O": "Outdated",
+        "P": "Preliminary", "R": "Re_normalized", "S": "Superseded", " ": "Other"}
+    df = df.replace({
+        "Target_Metastable_State": metastate_dict, "Product_Metastable_State": metastate_dict,
+        "EXFOR_Status": exfor_status_dict, "Center_of_Mass_Flag": {"C": "Center_of_Mass", " ": "Lab"}})
+    return df
+
+
 def csv_creator(heavy_path, tmp_path, mode, append_ame=True):
     """Create various CSV files from the information extracted using the get_all() function.
 
@@ -199,80 +293,9 @@ def csv_creator(heavy_path, tmp_path, mode, append_ame=True):
     df = pd.read_csv(
         os.path.join(heavy_path, "all_cross_sections_v1.txt"), names=colnames, header=None, index_col=False, sep=";")
 
-    # #######################################################################################################
-    # ########################## FORMATTING CATEGORICAL AND STRING DATA #####################################
-    # #######################################################################################################
-
-    logging.info("EXFOR CSV: Formatting data (this may take a couple minutes)...")
-    # make string version of original column
-    df['Target_ZA'] = df['Target_ZA'].astype(str)
-
-    # Making Sure all rows have the same number of values
-    max_length = 5
-    df.Target_ZA = df.Target_ZA.apply(lambda x: '0'*(max_length - len(x)) + x)
-
-    # Target feature is formated as ZZAAA
-    df['Z'] = df['Target_ZA'].str[0:2].astype(int).fillna(0)
-    df['A'] = df['Target_ZA'].str[2:5].astype(int).fillna(0)
-
-    # Calculating number of neutrons = mass number - protons
-    df['N'] = df['A'] - df["Z"]
-
-    metastate_dict = {
-        " ": "All_or_Total", "G": "Ground", "1": "M1", "2": "M2", "3": "M3", "4": "M4", "5": "M5", "?": "Unknown",
-        "+": "More_than_1", "T": "All_or_Total"}
-    exfor_status_dict = {
-        "U": "Un_normalized", "A": "Approved_by_Author", "C": "Correlated", "D": "Dependent", "O": "Outdated",
-        "P": "Preliminary", "R": "Re_normalized", "S": "Superseded", " ": "Other"}
-    df = df.replace({
-        "Target_Metastable_State": metastate_dict, "Product_Metastable_State": metastate_dict,
-        "EXFOR_Status": exfor_status_dict, "Center_of_Mass_Flag": {"C": "Center_of_Mass", " ": "Lab"}})
-
-    # #######################################################################################################
-    # ################################## FORMATTING NUMERICAL DATA ##########################################
-    # #######################################################################################################
-    # Defining Numerical Columns to Fix and casting them as strings
-    cols = ["Energy", "dEnergy", "Data", "dData", "Cos/LO", "dCos/LO", "ELV/HL", "dELV/HL"]
-    df[cols] = df[cols].astype(str)
-    # df[cols] = df[cols].replace(to_replace="         ", value="0.0000000")
-    df[cols] = df[cols].replace(to_replace="         ", value=np.nan)
-
-    # We now strip values that may contain quatation marks and starting and trailing spaces
-    for col in cols:
-        df[col] = df[col].str.strip("\"").strip()
-
-    # df[cols] = df[cols].replace(to_replace="", value="0.0000000")
-    df[cols] = df[cols].replace(to_replace="", value=np.nan)
-
-    # For the numerical values we know per formatting that each of them should be 9 characters in length
-    max_length = 9
-
-    for col in cols:
-        df[col] = df[col].apply(lambda x: x if pd.isnull(x) else ' '*(max_length - len(x)) + x)
-
-    # Add appropiate formating for python to recognize it as numerical
-    for col in cols:
-        new_col = []
-        values = df[col].values
-        for x in values:
-            if pd.isnull(x):
-                new_col.append(x)
-            elif "+" == x[7] or "-" == x[7]:
-                y = x[0:7]
-                z = x[7:]
-                new_col.append(y + "E" + z)
-            elif "+" == x[6] or "-" == x[6]:
-                y = x[0:6]
-                z = x[6:]
-                new_col.append(y + "E" + z)
-            else:
-                new_col.append(x)
-        df[col] = new_col
-
-    # We now convert the columns to numerical
-    for col in cols:
-        df[col] = df[col].astype(float)
-        logging.info("EXFOR CSV: Finished converting {} to float.".format(col))
+    df = _parse_neutrons_protons_mass_number(df)
+    df = _parse_and_format_numerical_columns(df)
+    df = _make_metadata_exfor_status_readable(df)
 
     cat_cols = ["Target_Metastable_State", "MF", "MT", "I78", "Product_Metastable_State", "Center_of_Mass_Flag"]
 
@@ -289,33 +312,7 @@ def csv_creator(heavy_path, tmp_path, mode, append_ame=True):
 
     df.drop(columns=['Target_ZA'], inplace=True)
 
-    # #######################################################################################################
-    # ################################ APPENDING OTHER INFORMATION ##########################################
-    # #######################################################################################################
-    final = _get_additional_features(tmp_path)
-
-    # Reset Indexes to make copying faster
-    df = df.reset_index(drop=True)
-
-    logging.info("EXFOR CSV: Appending information to main DataFrame...")
-    # Assign newly extracted data to main dataframe
-    fillna_defaults = {
-        'Title': "No Title Found. Check EXFOR.",
-        'Reference': "No Reference Found. Check EXFOR.",
-        'Short_Reference': "No Reference Found. Check EXFOR.",
-        'Author': "No Author Found. Check EXFOR.",
-        'EXFOR_Pointer': "No Pointer"
-    }
-    for name in [
-            'Reaction_Notation', 'Title', 'Year', 'Author', 'Institute', 'Date', 'Reference', 'Dataset_Number',
-            'EXFOR_Entry', 'Reference_Code']:
-        df[name] = final[name].fillna(fillna_defaults[name])
-
-    df.EXFOR_Pointer = df.EXFOR_Pointer.apply(lambda x: str(int(x)) if isinstance(x, numbers.Number) else x)
-    df.Date = df.Date.apply(lambda x: str(x)[:4] + "/" + str(x)[4:6] + "/" + str(x)[6:])
-    df.EXFOR_SubAccession_Number = df.EXFOR_SubAccession_Number.astype(int)
-    df.Institute = df.Institute.apply(lambda x: x.replace("(", "").replace(")", ""))
-
+    df = _merge_additional_features(df, tmp_path)
     df = _format_projectiles(df)
 
     element_w_a = objects.load_zan()
@@ -328,7 +325,6 @@ def csv_creator(heavy_path, tmp_path, mode, append_ame=True):
     df[["EXFOR_Accession_Number", "Dataset_Number", "EXFOR_Entry"]] = df[[
         "EXFOR_Accession_Number", "Dataset_Number", "EXFOR_Entry"]].astype(str)
     csv_name = os.path.join(heavy_path, "EXFOR_" + mode + "_ORIGINAL.csv")
-    logging.info("EXFOR CSV: Saving EXFOR CSV file to {}...".format(csv_name))
     df.to_csv(csv_name, index=False)
 
     if append_ame:

@@ -161,7 +161,7 @@ def _extrapolate_to_upper_level(model, append_data_fn, pred, tot_num_levels, upp
     return pred
 
 
-def generate_level_density_csv(df, Z, A, nodata=False, upper_energy_mev=None, tot_num_levels=0, it_limit=500,
+def generate_level_density_csv(df, ZZZAAA, nodata=False, upper_energy_mev=None, tot_num_levels=0, it_limit=500,
                                saving_dir=None):
     """Fit a linear model to the isotopic sample provided.
 
@@ -191,6 +191,7 @@ def generate_level_density_csv(df, Z, A, nodata=False, upper_energy_mev=None, to
     Returns:
         DataFrame: New DataFrame with Level Number and Level Energy as predicted by the linear model.
     """
+    Z, A = gen_utils.parse_zzzaaa(ZZZAAA)
     original = df.copy() if nodata else load_ensdf_samples(df, Z, A)
     if nodata:
         append_data_fn = partial(append_ensdf_levels_nodata, df.copy(), log=True)

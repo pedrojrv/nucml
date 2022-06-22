@@ -207,8 +207,8 @@ def load_exfor_ml_ready(exfor_df, frac=0.1, scaling_type="standard", scaler_dir=
         msg = ' '.join([str(v) for v in SUPPORTED_MT_CODINGS])
         raise ValueError("Specified mt_coding not supported. Supported codings include: {}".format(msg))
 
+    cat_cols = CAT_COLS
     if mt_coding == "particle_coded":
-        cat_cols = CAT_COLS
         cat_cols.remove("MT")
         mt_codes_df = pd.read_csv(
             os.path.join(exfor_path, 'CSV_Files/mt_codes.csv')).drop(columns=["MT_Tag", "MT_Reaction_Notation"])

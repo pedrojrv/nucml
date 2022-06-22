@@ -46,17 +46,9 @@ def load_ame(natural=False, imputed_nan=False, file="merged"):
         DataFrame: a pandas dataframe cantaining the queried AME data.
     """
     if file.lower() == "merged":
-        if natural:
-            if imputed_nan:
-                ame_file_path = os.path.join(ame_dir_path, "AME_Natural_Properties_no_NaN.csv")
-            else:
-                ame_file_path = os.path.join(ame_dir_path, "AME_Natural_Properties_w_NaN.csv")
-        else:
-            if imputed_nan:
-                ame_file_path = os.path.join(ame_dir_path, "AME_all_merged_no_NaN.csv")
-            else:
-                ame_file_path = os.path.join(ame_dir_path, "AME_all_merged.csv")
-
+        suffix = "_Natural_Properties" if natural else "_all_merged"
+        suffix += "_no_NaN" if imputed_nan else "_w_NaN"
+        ame_file_path = os.path.join(ame_dir_path, f"AME_{suffix}.csv")
         logging.info("AME: Reading and loading Atomic Mass Evaluation files from: \n {}".format(ame_file_path))
         ame = pd.read_csv(ame_file_path)
         ame[["N", "Z", "A"]] = ame[["N", "Z", "A"]].astype(int)

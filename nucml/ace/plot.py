@@ -114,36 +114,30 @@ def knn_dual_plot(knn_df, hyperparameter, train_mae, val_mae, keff_metric, save=
         None
     """
     fig, (ax1, ax3) = plt.subplots(2, figsize=(14, 18))
-    # fig, (ax1, ax3) = plt.subplots(1,2, figsize=(30,13))
+    label = "Multiplication Factor (K-eff)"
     if keff_metric == "Deviation_Ana":
-        label = "Multiplication Factor (K-eff) Error"
-    else:
-        label = "Multiplication Factor (K-eff)"
+        label += " Error"
 
-    color = 'tab:orange'
     ax1.set_xlabel('Number of Neighbors (k)')
-    ax1.set_ylabel('Train MAE (b)', color=color)
-    ax1.plot(knn_df[hyperparameter], knn_df[train_mae], color=color, marker="o")
-    ax1.tick_params(axis='y', labelcolor=color)
+    ax1.set_ylabel('Train MAE (b)', color='tab:orange')
+    ax1.plot(knn_df[hyperparameter], knn_df[train_mae], color='tab:orange', marker="o")
+    ax1.tick_params(axis='y', labelcolor='tab:orange')
 
     ax2 = ax1.twinx()  # instantiate a second axes that shares the same x-axis
-    color = 'tab:blue'
-    ax2.set_ylabel('Validation MAE (b)', color=color)  # we already handled the x-label with ax1
-    ax2.plot(knn_df[hyperparameter], knn_df[val_mae], color=color, marker="o")
-    ax2.tick_params(axis='y', labelcolor=color)
+    ax2.set_ylabel('Validation MAE (b)', color='tab:blue')  # we already handled the x-label with ax1
+    ax2.plot(knn_df[hyperparameter], knn_df[val_mae], color='tab:blue', marker="o")
+    ax2.tick_params(axis='y', labelcolor='tab:blue')
     ax2.xaxis.set_major_locator(MaxNLocator(integer=True))
 
-    color = 'tab:orange'
     ax3.set_xlabel('Number of Neighbors (k)')
-    ax3.set_ylabel('Validation MAE (b)', color=color)
-    ax3.plot(knn_df[hyperparameter], knn_df[val_mae], color=color, marker="o")
-    ax3.tick_params(axis='y', labelcolor=color)
+    ax3.set_ylabel('Validation MAE (b)', color='tab:orange')
+    ax3.plot(knn_df[hyperparameter], knn_df[val_mae], color='tab:orange', marker="o")
+    ax3.tick_params(axis='y', labelcolor='tab:orange')
 
     ax4 = ax3.twinx()  # instantiate a second axes that shares the same x-axis
-    color = 'tab:blue'
-    ax4.set_ylabel(label, color=color)  # we already handled the x-label with ax1
-    ax4.plot(knn_df[hyperparameter], knn_df[keff_metric], color=color, marker="o")
-    ax4.tick_params(axis='y', labelcolor=color)
+    ax4.set_ylabel(label, color='tab:blue')  # we already handled the x-label with ax1
+    ax4.plot(knn_df[hyperparameter], knn_df[keff_metric], color='tab:blue', marker="o")
+    ax4.tick_params(axis='y', labelcolor='tab:blue')
     ax4.xaxis.set_major_locator(MaxNLocator(integer=True))
 
     fig.tight_layout()  # otherwise the right y-label is slightly clipped

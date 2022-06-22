@@ -96,25 +96,20 @@ def create_natural_element_data(originals_directory, saving_directory, fillna=Tr
     Returns:
         None
     """
-    directory = saving_directory
-    logger.info("FEAT ENG: Initializing. Checking documents...")
-    filename = os.path.join(directory, "AME_all_merged.csv")
+    filename = os.path.join(saving_directory, "AME_all_merged.csv")
     periodic_filename = os.path.join(originals_directory, "periodic_table.csv")
     if not check_if_files_exist([filename, periodic_filename]):
         raise FileNotFoundError("One file does not exist.")
 
-    logger.info("FEAT ENG: Reading data from {}".format(filename))
-    ame = pd.read_csv(filename)
-    ame = ame.replace(to_replace=-0, value=0)  # FORMATTING
+    ame = pd.read_csv(filename).replace(to_replace=-0, value=0)  # FORMATTING
 
-    logger.info("FEAT ENG: Reading data from {}".format(periodic_filename))
     masses_natural = pd.read_csv(periodic_filename).rename(
         # Renaming columns for consistency with EXFOR:
         columns={
             'NumberofNeutrons': 'Neutrons', 'NumberofProtons': 'Protons',
-            'AtomicMass': 'Atomic_Mass_Micro', 'Symbol': 'EL'})
+            'AtomicMass': 'Atomic_Mass_Micro', 'Symbol': 'EL'
+        })
 
-    logger.info("FEAT ENG: Beginning data creation...")
     masses_natural["Mass_Number"] = masses_natural["Neutrons"] + masses_natural["Protons"]
     # We don't need other columns in the periodic table csv file
     masses_natural = masses_natural[["Neutrons", "Protons", "Mass_Number", "EL", "Atomic_Mass_Micro"]]
@@ -131,7 +126,6 @@ def create_natural_element_data(originals_directory, saving_directory, fillna=Tr
     # We need to distinguish natural form isotopic. To accomplish this we introduce a flag:
     masses_natural["Flag"] = "N"
 
-    logger.info("FEAT ENG: Finished creating natural data. Merging with AME...")
     result = ame.append(masses_natural, sort=False)
 
     # Due to the merging process many NaN values are introduced. Here we fix this:
@@ -140,17 +134,11 @@ def create_natural_element_data(originals_directory, saving_directory, fillna=Tr
     result.Flag.fillna("I", inplace=True)  # We already have our natural tags we now that all NaNs are isotopic now.
     result["O"].fillna(value="Other", inplace=True)  # ASSUMPTION: We assume natural data was derive with Other
 
-    logger.info("FEAT ENG: Finishing up...")
     result = result.drop(columns=["Element_w_A"])  # We don't need this
     result = result.sort_values(by="Z")
-
-    csv_name = os.path.join(saving_directory, "AME_Natural_Properties_w_NaN.csv")
-    logger.info("FEAT ENG: Saving file to {}".format(csv_name))
-    result.to_csv(csv_name, index=False)
+    result.to_csv(os.path.join(saving_directory, "AME_Natural_Properties_w_NaN.csv"), index=False)
 
     if fillna:
-        logger.info("FEAT ENG: Filling missing values using {} mode".format(mode.upper()))
-
         # The imputation methods change the column data data types, we save them
         # and transfer them after the imputation is perform.
         types = result.iloc[0:2]
@@ -158,13 +146,9 @@ def create_natural_element_data(originals_directory, saving_directory, fillna=Tr
             # we fill the nans by taking the average of all isotopes, same for all other parameters.
             result = impute_values(result)
 
-        logger.info("FEAT ENG: Filling remaining NaN values with 0...")
         result = result.fillna(fill_value)
 
-        logger.info("FEAT ENG: Returning features to original data types...")
         for x in result.columns:
             result[x] = result[x].astype(types[x].dtypes.name)
 
-        csv_name = os.path.join(saving_directory, "AME_Natural_Properties_no_NaN.csv")
-        logger.info("FEAT ENG: Saving imputed file to {}".format(csv_name))
-        result.to_csv(csv_name, index=False)
+        result.to_csv(os.path.join(saving_directory, "AME_Natural_Properties_no_NaN.csv"), index=False)

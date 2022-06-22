@@ -11,6 +11,34 @@ from nucml.general_utilities import func
 pd.options.mode.chained_assignment = None  # default='warn'
 
 
+def _fit_curve_function_to_numerical_cols(fit_df):
+    # Curve fit each column
+    col_params = {}
+    guess = (0.5, 0.5)
+    for col in fit_df.select_dtypes(np.number).columns:
+        if len(fit_df[col].dropna()) <= 1:  # SHOULD IT BE 0?
+            continue
+
+        # Get x & y
+        x = fit_df[col].dropna().index.astype(float).values
+        y = fit_df[col].dropna().values
+        # Curve fit column and get curve parameters
+        params = curve_fit(func, x, y, guess)
+        # Store optimized parameters
+        col_params[col] = params[0]
+    return col_params
+
+
+def _interpolate_numerical_using_params(fit_df_original, col_params):
+    # Extrapolate each column
+    for col in col_params.keys():
+        # Get the index values for NaNs in the column
+        x = fit_df_original[pd.isnull(fit_df_original[col])].index.astype(float).values
+        # Extrapolate those points with the fitted function
+        fit_df_original[col][x] = func(x, *col_params[col])
+    return fit_df_original
+
+
 def impute_values(df):
     """Imputes feature values using linear interpolation element-wise.
 
@@ -25,32 +53,16 @@ def impute_values(df):
     for i in range(0, 119):
         df[df["Z"] == i] = df[df["Z"] == i].sort_values(by="A").interpolate()
 
-        if len(df[df["Z"] == i]) > 1:
-            fit_df_original = df[df["Z"] == i].sort_values(by="A").reset_index(drop=True).copy()
-            fit_df = fit_df_original.copy()
+        if len(df[df["Z"] == i]) <= 1:
+            continue
 
-            col_params = {}
-            guess = (0.5, 0.5)
+        fit_df_original = df[df["Z"] == i].sort_values(by="A").reset_index(drop=True).copy()
+        fit_df = fit_df_original.copy()
 
-            # Curve fit each column
-            for col in fit_df.select_dtypes(np.number).columns:
-                if len(fit_df[col].dropna()) > 1:  # SHOULD IT BE 0?
-                    # Get x & y
-                    x = fit_df[col].dropna().index.astype(float).values
-                    y = fit_df[col].dropna().values
-                    # Curve fit column and get curve parameters
-                    params = curve_fit(func, x, y, guess)
-                    # Store optimized parameters
-                    col_params[col] = params[0]
+        col_params = _fit_curve_function_to_numerical_cols(fit_df)
+        fit_df_original = _interpolate_numerical_using_params(fit_df_original, col_params)
+        df[df["Z"] == i] = fit_df_original.values
 
-            # Extrapolate each column
-            for col in col_params.keys():
-                # Get the index values for NaNs in the column
-                x = fit_df_original[pd.isnull(fit_df_original[col])].index.astype(float).values
-                # Extrapolate those points with the fitted function
-                fit_df_original[col][x] = func(x, *col_params[col])
-
-            df[df["Z"] == i] = fit_df_original.values
     return df
 
 
