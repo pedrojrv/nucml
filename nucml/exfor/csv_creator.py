@@ -112,6 +112,25 @@ def _append_ame(df_workxs):
     return df
 
 
+def _calculate_energy_data_elv_uncertainty(df):
+    df["Uncertainty_E"] = df["dEnergy"]/df["Energy"]
+    df["Uncertainty_D"] = df["dData"]/df["Data"]
+    df["Uncertainty_ELV"] = df["dELV/HL"]/df["ELV/HL"]
+    return df
+
+
+def _reorder_imputed_dataframe(df):
+    # Use this for ordering
+    new_order = list(df.columns)[:35]
+    new_order_2 = list(df.columns)[-6:]
+    new_order.extend(new_order_2)
+    nuclear_data_target = list(df.columns)[35:-6]
+    new_order.extend(nuclear_data_target)
+
+    df = df[new_order]
+    return df
+
+
 def impute_original_exfor(heavy_path, tmp_path, mode, append_ame=True, MF_number="3"):
     """Impute missing values in the CSV files created using the csv_creator() function.
 
@@ -146,9 +165,7 @@ def impute_original_exfor(heavy_path, tmp_path, mode, append_ame=True, MF_number
     df[['MF', 'MT']] = df[['MF', 'MT']].astype(str)
     df = df[df["MF"] == MF_number].drop(columns=["MF", "Cos/LO", "dCos/LO"])
 
-    df["Uncertainty_E"] = df["dEnergy"]/df["Energy"]
-    df["Uncertainty_D"] = df["dData"]/df["Data"]
-    df["Uncertainty_ELV"] = df["dELV/HL"]/df["ELV/HL"]
+    df = _calculate_energy_data_elv_uncertainty(df)
 
     for uncertainty_col in ['Uncertainty_E', 'Uncertainty_D', 'Uncertainty_ELV']:
         for interpolation_col in ['MT', 'Institute', 'Isotope']:
@@ -170,14 +187,7 @@ def impute_original_exfor(heavy_path, tmp_path, mode, append_ame=True, MF_number
     df["Nucleus_Radius"] = 1.25 * np.power(df["A"], 1/3)
     df["Neutron_Nucleus_Radius_Ratio"] = 0.8 / df["Nucleus_Radius"]
 
-    # Use this for ordering
-    new_order = list(df.columns)[:35]
-    new_order_2 = list(df.columns)[-6:]
-    new_order.extend(new_order_2)
-    nuclear_data_target = list(df.columns)[35:-6]
-    new_order.extend(nuclear_data_target)
-
-    df = df[new_order]
+    df = _reorder_imputed_dataframe(df)
     df = df.drop(columns=["Uncertainty_D", "Uncertainty_E", "Uncertainty_ELV"])
     df = df[~df.Reaction_Notation.str.contains("RAW")]
     df = df[~(df.Data < 0)]
