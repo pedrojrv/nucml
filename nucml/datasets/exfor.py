@@ -12,6 +12,7 @@ from sklearn.model_selection import train_test_split
 import nucml.config as config
 import nucml.general_utilities as gen_utils
 import nucml.processing as nuc_proc
+from nucml._constants import MAGIC_NUMBERS
 
 logging.basicConfig(level=logging.INFO)
 
@@ -62,6 +63,10 @@ def load_exfor_raw(mode="neutrons"):
         data = pd.read_csv(data_path)
     data.MT = data.MT.astype(int)
     return data
+
+
+def _get_valence_number(particle_num):
+    return abs(particle_num - min(MAGIC_NUMBERS, key=lambda x: abs(x - particle_num)))
 
 
 def load_exfor(log=False, basic=-1, mode="neutrons", filters=False, max_en=2.0E7):
@@ -132,10 +137,8 @@ def load_exfor(log=False, basic=-1, mode="neutrons", filters=False, max_en=2.0E7
             df["Energy"] = np.log10(df["Energy"])
             df["Data"] = np.log10(df["Data"])
 
-    magic_numbers = [2, 8, 20, 28, 40, 50, 82, 126, 184]
-    df["N_valence"] = df.N.apply(
-        lambda neutrons: abs(neutrons - min(magic_numbers, key=lambda x: abs(x - neutrons))))  # noqa
-    df["Z_valence"] = df.Z.apply(lambda protons: abs(protons - min(magic_numbers, key=lambda x: abs(x-protons))))
+    df["N_valence"] = df.N.apply(lambda neutrons: _get_valence_number(neutrons))
+    df["Z_valence"] = df.Z.apply(lambda protons: _get_valence_number(protons))
     df["P_factor"] = (df["N_valence"] * df["Z_valence"]) / (df["N_valence"] + df["Z_valence"])
     df.P_factor = df.P_factor.fillna(0)
     df["N_tag"] = df.N_valence.apply(lambda neutrons: "even" if neutrons % 2 == 0 else "odd")
