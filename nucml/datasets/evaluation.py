@@ -25,7 +25,7 @@ exfor_elements = gen_utils.load_obj(os.path.join(os.path.dirname(__file__), 'obj
 elements_dict = gen_utils.load_obj(os.path.join(os.path.dirname(__file__), 'objects/Element_AAA.pkl'))
 
 
-def load_evaluation(isotope, MT, mode="neutrons", library="endfb8.0", log=True, drop_u=True):
+def load_evaluation(isotope: str, MT, mode="neutrons", library="endfb8.0", log=True, drop_u=True):
     """Read an evaluation file for a specific isotope, reaction channel, and evaluated library.
 
     It is important to inspect the returned data since it queries a local database of an external source which
@@ -47,7 +47,7 @@ def load_evaluation(isotope, MT, mode="neutrons", library="endfb8.0", log=True, 
     """
     MT = gen_utils.parse_mt(MT)
     isotope = gen_utils.parse_isotope(isotope, parse_for='endf')
-    projectile_dict = {'protons': 'p', 'neutrons': 'p'}
+    projectile_dict = {'protons': 'p', 'neutrons': 'n'}
     projectile = projectile_dict[mode]
 
     path = os.path.join(evaluations_path, f'{mode}/{isotope}/{library}/tables/xs/{projectile}-{isotope}-{MT}.{library}')
@@ -60,6 +60,7 @@ def load_evaluation(isotope, MT, mode="neutrons", library="endfb8.0", log=True, 
         path, skiprows=5, header=None, names=["Energy", "Data", "dDataLow", "dDataUpp"],
         delim_whitespace=True)
 
+    # Convert energy into eV rather than Mev
     evaluation["Energy"] = evaluation["Energy"]*1E6
     evaluation["Data"] = evaluation["Data"]*0.001
     if log:
