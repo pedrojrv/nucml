@@ -14,12 +14,13 @@ import nucml.exfor.plot as exfor_plot_utils
 import nucml.exfor.querying_utils as query_utils
 import nucml.exfor.ml_utilities as ml_utils
 from nucml.exfor import error_metrics
-import nucml.config as config
 
 from nucml.data_utils import copy_data_from_df_to_df
+from nucml import configure
 
+config = configure._get_config()
+ame_dir_path = config['DATA_PATHS']['AME']
 
-ame_dir_path = config.ame_dir_path
 elements_dict = nuc_data.elements_dict
 
 empty_df = pd.DataFrame()

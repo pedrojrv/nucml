@@ -6,11 +6,15 @@ import glob
 import shutil
 import pickle
 import re
+import urllib.request
+import zipfile
+from pathlib import Path
+from typing import Optional, List, Union
 from sqlite3 import NotSupportedError
 from natsort import natsorted
 
 
-def get_files_w_extension(directory, extension):
+def get_files_w_extension(directory: Path, extension: str) -> List[Path]:
     """Get a list of relative paths to files that match the given extension in the given directory.
 
     Args:
@@ -24,10 +28,11 @@ def get_files_w_extension(directory, extension):
     logging.info("GEN_UTILS: Searching for {} files...".format(extension))
     files = glob.glob(os.path.join(directory, extension))
     files = natsorted(files)
+    files = [Path(f) for f in files]
     return files
 
 
-def initialize_directories(directory, reset=False):
+def initialize_directories(directory: Path, reset: bool = False) -> None:
     """Create and/or reset the given directory path.
 
     Args:
@@ -46,19 +51,19 @@ def initialize_directories(directory, reset=False):
         os.makedirs(dir, exist_ok=True)
 
 
-def remove_file(file):
+def remove_file(file: Path) -> None:
     """Remove file if it exists."""
     if os.path.exists(file):
         os.remove(file)
 
 
-def remove_files(files):
-    """Remove all files."""
+def remove_files(files: List[Path]) -> None:
+    """Remove all files in list if they exist."""
     for file in files:
         remove_file(file)
 
 
-def check_if_files_exist(files_list):
+def check_if_files_exist(files_list: List[Path]) -> bool:
     """Check if all files in a list of filepaths exists.
 
     Args:
@@ -73,7 +78,7 @@ def check_if_files_exist(files_list):
         return False
 
 
-def func(x, c, d):
+def func(x: Optional[Union[int, float]], c: Optional[Union[int, float]], d: Optional[Union[int, float]]) -> float:
     """Line equation function. Used to interpolate AME features.
 
     Args:
@@ -87,7 +92,7 @@ def func(x, c, d):
     return c * x + d
 
 
-def save_obj(obj, saving_dir, name):
+def save_obj(obj: object, saving_dir: Path, name: str) -> None:
     """Save a python object with pickle in the `saving_dir` directory using `name`.
 
     Useful to quickly store objects such as lists or numpy arrays. Do not include the extension in the name. The
@@ -103,10 +108,9 @@ def save_obj(obj, saving_dir, name):
     """
     with open(os.path.join(saving_dir, name + '.pkl'), 'wb') as f:
         pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
-    return None
 
 
-def load_obj(file_path):
+def load_obj(file_path: Path) -> object:
     """Load a saved pickle python object.
 
     Args:
@@ -174,19 +178,23 @@ def close_open_files(files):
         file.close()
 
 
-def _insert_separator(infile, separation_points, separator="|"):
-    for line in infile:
-        if line.strip():
-            string = list(line)
-            for i, j in enumerate(separation_points):
-                string.insert(i + j, separator)
-    return string
+def _get_str_with_separators(text, separator_index, separator="|"):
+    string = list(text)
+    for i, j in enumerate(separator_index):
+        string.insert(i + j, separator)
+    return "".join(string)
 
 
 def _write_file_with_separators(open_path, output_path, separator_index, separator="|"):
     with open(open_path) as infile, open(output_path, 'w') as outfile:
-        string = _insert_separator(infile, separator_index, separator=separator)
-        outfile.write("".join(string))
+        for line in infile:
+            if not line.strip():
+                continue
+            string = list(line)
+            for i, j in enumerate(separator_index):
+                string.insert(i + j, separator)
+
+            outfile.write("".join(string))
 
 
 def convert_dos_to_unix(file_path):
@@ -216,3 +224,18 @@ def parse_zzzaaa(ZZZAAA):
     z = int(ZZZAAA[:3])
     a = int(ZZZAAA[3:])
     return z, a
+
+
+def _download_url_file(url, saving_path):
+    opener = urllib.request.URLopener()
+    opener.addheader('User-Agent', 'NucML')
+    opener.retrieve(url, saving_path)
+    return
+
+
+def _download_and_extract_zip_file(url: str, saving_path: Path):
+    _download_url_file(url, saving_path)
+    with zipfile.ZipFile(saving_path, 'r') as zip_ref:
+        zip_ref.extractall(saving_path.parent)
+    saving_path.unlink()
+    return

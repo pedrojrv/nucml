@@ -67,3 +67,9 @@ def get_isotope(zan_dict, Z, A, N):
         str: Element tag.
     """
     return _get_zan_dict_item(zan_dict, Z, A, N, query_type="Isotope")
+
+
+def load_exfor_elements_list():
+    exfor_elements_path = os.path.join(dirname, 'exfor_elements_list.pkl')
+    exfor_elements = general_utilities.load_obj(exfor_elements_path)
+    return exfor_elements

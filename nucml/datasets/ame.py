@@ -7,19 +7,11 @@ import os
 import logging
 import pandas as pd
 
-import nucml.config as config
-import nucml.general_utilities as gen_utils
+from nucml import configure
 
-logging.basicConfig(level=logging.INFO)
 
-ame_dir_path = config.ame_dir_path
-evaluations_path = config.evaluations_path
-ensdf_path = config.ensdf_path
-exfor_path = config.exfor_path
-
-dtype_exfor = gen_utils.load_obj(os.path.join(os.path.dirname(__file__), 'objects/EXFOR_AME_dtypes.pkl'))
-exfor_elements = gen_utils.load_obj(os.path.join(os.path.dirname(__file__), 'objects/exfor_elements_list.pkl'))
-elements_dict = gen_utils.load_obj(os.path.join(os.path.dirname(__file__), 'objects/Element_AAA.pkl'))
+config = configure._get_config()
+ame_dir_path = config['DATA_PATHS']['AME']
 
 
 def load_ame(natural=False, imputed_nan=False, file="merged"):

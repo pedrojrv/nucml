@@ -6,12 +6,22 @@ from joblib import load
 from scipy.optimize import curve_fit
 from sklearn import preprocessing
 
+from pathlib import Path
+from typing import Optional, List
 from nucml.general_utilities import func
 
 pd.options.mode.chained_assignment = None  # default='warn'
 
 
-def _fit_curve_function_to_numerical_cols(fit_df):
+def _fit_curve_function_to_numerical_cols(fit_df: pd.DataFrame) -> dict:
+    """Fits a linear function to each column of the passed DataFrame.
+
+    Args:
+        fit_df (pd.DataFrame): DataFrame to fit the function to.
+
+    Returns:
+        dict: Dictionary of column names and their fitted parameters.
+    """
     # Curve fit each column
     col_params = {}
     guess = (0.5, 0.5)
@@ -29,7 +39,18 @@ def _fit_curve_function_to_numerical_cols(fit_df):
     return col_params
 
 
-def _interpolate_numerical_using_params(fit_df_original, col_params):
+def _interpolate_numerical_using_params(fit_df_original: pd.DataFrame, col_params: dict) -> pd.DataFrame:
+    """Interpolates the passed DataFrame using the fitted parameters.
+
+    Columns to be interpolated are specified in the col_params dictionary.
+
+    Args:
+        fit_df_original (pd.DataFrame): DataFrame to interpolate.
+        col_params (dict): Dictionary of column names and their fitted parameters.
+
+    Returns:
+        pd.DataFrame: Interpolated DataFrame.
+    """
     # Extrapolate each column
     for col in col_params.keys():
         # Get the index values for NaNs in the column
@@ -39,7 +60,7 @@ def _interpolate_numerical_using_params(fit_df_original, col_params):
     return fit_df_original
 
 
-def impute_values(df):
+def impute_values(df: pd.DataFrame) -> pd.DataFrame:
     """Imputes feature values using linear interpolation element-wise.
 
     The passed dataframe must contain both the number of protons and mass number as "Z" and "A" respetively.
@@ -50,7 +71,7 @@ def impute_values(df):
     Returns:
         pd.DataFrame: New imputed DataFrame.
     """
-    for i in range(0, 119):
+    for i in range(0, df.Z.max()):
         df[df["Z"] == i] = df[df["Z"] == i].sort_values(by="A").interpolate()
 
         if len(df[df["Z"] == i]) <= 1:
@@ -76,7 +97,9 @@ scalers = {
 }
 
 
-def normalize_features(df, to_scale, scaling_type="standard", scaler_dir=None):
+def normalize_features(
+        df: pd.DataFrame, to_scale: List[str], scaling_type: Optional[str] = "standard",
+        scaler_dir: Optional[Path] = None):
     """Apply a transformer or normalizer to a set of specific features in the provided dataframe.
 
     Args:

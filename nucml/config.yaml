@@ -1,0 +1,10 @@
+BENCHMARKING_TEMPLATE_PATH: C:\Users\Pedro\Desktop\ML_Nuclear_Data\Benchmarks\inputs\templates''
+DATA_PATHS:
+  ACE: C:\Users\Pedro\Desktop\ML_Nuclear_Data
+  AME: C:\Users\Pedro\Desktop\nucml\data\ame
+  ENSDF: C:\Users\Pedro\Desktop\nucml\data\ensdf
+  EVALUATION: C:\Users\Pedro\Desktop\nucml\data\evaluations
+  EXFOR: C:\Users\Pedro\Desktop\nucml\data\exfor
+MATLAB_PATH: C:\Users\Pedro\Desktop\ML_Nuclear_Data
+OBJECTS: C:\Users\Pedro\Desktop\nucml\nucml\objects
+SERPENT_PATH: ''

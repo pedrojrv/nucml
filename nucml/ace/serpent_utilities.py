@@ -5,11 +5,13 @@ import pandas as pd
 import shutil
 from pathlib import Path
 
-import nucml.config as config
+from nucml import configure
 import nucml.general_utilities as gen_utils
 
-matlab_path = config.matlab_path
-template_path = config.bench_template_path
+
+config = configure._get_config()
+template_path = config['BENCHMARKING_TEMPLATE_PATH']
+matlab_path = config['MATLAB_PATH']
 
 
 def copy_benchmark_files(benchmark_name, saving_dir):

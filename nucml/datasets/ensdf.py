@@ -7,24 +7,17 @@ import os
 import logging
 import numpy as np
 import pandas as pd
+from pathlib import Path
 from sklearn.model_selection import train_test_split
 
-
-import nucml.config as config
 import nucml.general_utilities as gen_utils
 import nucml.processing as nuc_proc
+from nucml import configure
 from nucml.datasets.ame import load_ame
 
-logging.basicConfig(level=logging.INFO)
 
-ame_dir_path = config.ame_dir_path
-evaluations_path = config.evaluations_path
-ensdf_path = config.ensdf_path
-exfor_path = config.exfor_path
-
-dtype_exfor = gen_utils.load_obj(os.path.join(os.path.dirname(__file__), 'objects/EXFOR_AME_dtypes.pkl'))
-exfor_elements = gen_utils.load_obj(os.path.join(os.path.dirname(__file__), 'objects/exfor_elements_list.pkl'))
-elements_dict = gen_utils.load_obj(os.path.join(os.path.dirname(__file__), 'objects/Element_AAA.pkl'))
+config = configure._get_config()
+ensdf_path = config['DATA_PATHS']['ENSDF']
 
 
 def load_ensdf_headers():
@@ -51,7 +44,7 @@ def load_ensdf_isotopic(isotope, filetype="levels"):
         DataFrame
     """
     isotope = gen_utils.parse_isotope(isotope, parse_for="ENSDF")
-    file = os.path.join(ensdf_path, "Elemental_ENSDF/Elemental_ENSDF_no_Header_F/{}.txt".format(isotope))
+    file = Path(ensdf_path) / f"Elemental_ENSDF/{isotope}.txt"
     elemental = pd.read_csv(file, header=None, sep="|")
     elemental[0] = pd.to_numeric(elemental[0].astype(str).str.strip())
 

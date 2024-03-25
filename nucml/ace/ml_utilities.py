@@ -4,7 +4,8 @@ import numpy as np
 import pandas as pd
 from scipy.signal import find_peaks
 
-import nucml.config as config
+from nucml import configure
+
 import nucml.model.utilities as model_utils
 import nucml.exfor.data_utilities as exfor_utils
 import nucml.ace.serpent_utilities as serpent_utils
@@ -12,7 +13,9 @@ import nucml.ace.data_utilities as ace_utils
 import nucml.ace.querying_utils as query_utils
 import nucml.general_utilities as gen_utils
 
-template_path = config.bench_template_path
+
+config = configure._get_config()
+template_path = config['BENCHMARKING_TEMPLATE_PATH']
 
 
 def fill_ml_xs(MT, ml_xs, ace_xs, use_peaks=True):

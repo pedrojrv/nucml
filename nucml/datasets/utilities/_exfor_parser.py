@@ -1,15 +1,36 @@
 """Parsing utilities for the EXFOR database."""
-import os
+from io import TextIOWrapper
+from pathlib import Path
+from typing import List
 from natsort import natsorted
 
 from nucml import general_utilities
-import nucml.config as config
+from nucml._constants import EXFOR_DATASET_URL
+from nucml import configure
+
+config = configure._get_config()
+ame_dir_path = config['DATA_PATHS']['AME']
 
 
-ame_dir_path = config.ame_dir_path
+def _download_exfor_c4(saving_dir: Path) -> None:
+    """Download and unzip the EXFOR files from the IAEA.
+
+    Args:
+        saving_dir (Path): Path on which to download and unzip the EXFOR file.
+
+    Raises:
+        FileExistsError: If the directory already has an EXFOR dataset.
+    """
+    zip_dir = saving_dir / 'exfor.zip'
+    unzip_dir = saving_dir / 'exfor/'
+    if unzip_dir.exists():
+        raise FileExistsError(f"Unable to download and generate EXFOR dataset. Directory {unzip_dir} already exists.")
+
+    # Download latest EXFOR data from the IAEA
+    general_utilities._download_and_extract_zip_file(EXFOR_DATASET_URL, zip_dir)
 
 
-def get_c4_names(c4_directory):
+def get_c4_names(c4_directory: Path) -> List[str]:
     """Search given directory for EXFOR-generated C4 files.  It returns a list of relative paths for each found file.
 
     Args:
@@ -27,17 +48,17 @@ def get_c4_names(c4_directory):
     return names
 
 
-def _extract_basic_data_from_c4(c4_file, tmp_path, heavy_path):
+def _extract_basic_data_from_c4(c4_file: str, tmp_path: Path) -> None:
     # Extract experimental data, authors, years, institutes, and dates
     with open(c4_file) as infile, \
-            open(os.path.join(heavy_path, "all_cross_sections.txt"), 'a') as num_data, \
-            open(os.path.join(tmp_path, 'authors.txt'), 'a') as authors, \
-            open(os.path.join(tmp_path, 'years.txt'), 'a') as years, \
-            open(os.path.join(tmp_path, 'institutes.txt'), 'a') as institute, \
-            open(os.path.join(tmp_path, 'entry.txt'), 'a') as entry, \
-            open(os.path.join(tmp_path, 'refcode.txt'), 'a') as refcode, \
-            open(os.path.join(tmp_path, 'dataset_num.txt'), 'a') as dataset_num, \
-            open(os.path.join(tmp_path, 'dates.txt'), 'a') as date:
+            open(tmp_path / "all_cross_sections.txt", 'a') as num_data, \
+            open(tmp_path / 'authors.txt', 'a') as authors, \
+            open(tmp_path / 'years.txt', 'a') as years, \
+            open(tmp_path / 'institutes.txt', 'a') as institute, \
+            open(tmp_path / 'entry.txt', 'a') as entry, \
+            open(tmp_path / 'refcode.txt', 'a') as refcode, \
+            open(tmp_path / 'dataset_num.txt', 'a') as dataset_num, \
+            open(tmp_path / 'dates.txt', 'a') as date:
         tag_writers = {'#AUTHOR1': authors, '#YEAR': years, '#ENTRY': entry, '#REF-CODE': refcode}
         copy = False
         for line in infile:
@@ -62,7 +83,8 @@ def _extract_basic_data_from_c4(c4_file, tmp_path, heavy_path):
                 num_data.write(line)
 
 
-def _write_complex_data(outfile, lines, idx, line):
+def _write_complex_data(outfile: TextIOWrapper, lines: List[str], idx: int) -> None:
+    line = lines[idx]
     detection_point = r"#+"
     if not lines[idx + 2].startswith(detection_point):
         outfile.write(line)
@@ -78,22 +100,23 @@ def _write_complex_data(outfile, lines, idx, line):
     outfile.write(to_write)
 
 
-def _extract_complex_data_from_c4(c4_file, tmp_path):
+def _extract_complex_data_from_c4(c4_file: str, tmp_path: Path) -> None:
     with open(c4_file, "r") as infile, \
-            open(os.path.join(tmp_path, 'titles.txt'), 'a') as titles, \
-            open(os.path.join(tmp_path, 'references.txt'), 'a') as references, \
-            open(os.path.join(tmp_path, 'data_points_per_experiment_refined.txt'), 'a') as data_points, \
-            open(os.path.join(tmp_path, 'reaction_notations.txt'), 'a') as reactions:
+            open(tmp_path / 'titles.txt', 'a') as titles, \
+            open(tmp_path / 'references.txt', 'a') as references, \
+            open(tmp_path / 'data_points_per_experiment_refined.txt', 'a') as data_points, \
+            open(tmp_path / 'reaction_notations.txt', 'a') as reactions:
         lines = infile.readlines()
-        writers = {'#TITLE': titles, '#REFERENCE': references, '#DATA': data_points, '#REACTION': reactions}
+        # The space after #DATA is important to distinguish it from other similar words
+        writers = {'#TITLE': titles, '#REFERENCE': references, '#DATA ': data_points, '#REACTION': reactions}
         for idx, line in enumerate(lines):
             matched = [match for match in writers.keys() if line.startswith(match)]
             if matched:
-                _write_complex_data(matched[0], lines, idx, line)
+                _write_complex_data(writers[matched[0]], lines, idx)
         reactions.write(line)
 
 
-def get_all(c4_list, heavy_path, tmp_path, mode="neutrons"):
+def get_all(c4_files: List[str], saving_dir: Path, tmp_path: Path, mode: str) -> None:
     """Retrieve all avaliable information from all .c4 files.
 
     This function combines the proccesses defined on:
@@ -112,37 +135,25 @@ def get_all(c4_list, heavy_path, tmp_path, mode="neutrons"):
     It is optimized to run faster than running the individual functions.
 
     Args:
-        c4_list (list): List containing paths to all .c4 files.
-        heavy_path (str): Path to directory where heavy files are to be saved.
+        c4_files (list): List containing paths to all .c4 files.
+        saving_dir (str): Path to directory where heavy files are to be saved.
         tmp_path (str): Path to directory where temporary files are to be saved.
         mode (str): The reaction projectile of the provided C4 files.
-
-    Returns:
-        None
-
-    Raises:
-        FileNotFoundError: If no .c4 files are in the provided list, then an error is raised.
     """
-    if len(c4_list) == 0:
-        raise FileNotFoundError("No .c4 files found.")
+    tmp_path = tmp_path / f"Extracted_Text_{mode}"
+    saving_dir = saving_dir / mode
+    # general_utilities.initialize_directories([tmp_path, saving_dir], reset=True)
 
-    # This will be appended to the previous directories
-    tmp_path = os.path.join(tmp_path, "Extracted_Text_" + mode + "/")
-    heavy_path = os.path.join(heavy_path, "EXFOR_" + mode + "/")
-    general_utilities.initialize_directories([tmp_path, heavy_path], reset=True)
-
-    cross_section_file = os.path.join(heavy_path, "all_cross_sections.txt")
-    general_utilities.remove_file(cross_section_file)
-
-    for c4_file in c4_list:
-        _extract_basic_data_from_c4(c4_file, tmp_path, heavy_path)
+    # for c4_file in c4_files:
+    #     _extract_basic_data_from_c4(c4_file, tmp_path)
 
     # Extract titles, references, and number of data points per experiment...")
-    for c4_file in c4_list:
-        _extract_complex_data_from_c4(c4_file, tmp_path)
+    # for c4_file in c4_files:
+    #     _extract_complex_data_from_c4(c4_file, tmp_path)
 
     # Format experimental data
-    output_path = os.path.join(heavy_path, "all_cross_sections_v1.txt")
+    tmp_xs_file = tmp_path / "all_cross_sections.txt"
+    output_path = saving_dir / "all_cross_sections.txt"
     indexex = [5, 11, 12, 15, 19, 20, 21, 22, 31, 40, 49, 58, 67, 76, 85, 94, 97, 122, 127, 130]
-    general_utilities._write_file_with_separators(cross_section_file, output_path, indexex, ";")
-    os.remove(cross_section_file)
+    general_utilities._write_file_with_separators(tmp_xs_file, output_path, indexex, ";")
+    tmp_xs_file.unlink()

@@ -6,14 +6,16 @@ import numpy as np
 import pandas as pd
 
 import nucml.general_utilities as gen_utils
-import nucml.config as config
 import nucml.ace.ml_utilities as ml_utils
 import nucml.ace.querying_utils as query_utils
 
+from nucml import configure
+
 
 empty_df = pd.DataFrame()
-ace_dir = config.ace_path
-template_path = config.bench_template_path
+config = configure._get_config()
+ace_dir = config['DATA_PATHS']['ACE']
+template_path = config['BENCHMARKING_TEMPLATE_PATH']
 
 
 def create_mt2_mt3_mt101(rx_grid, mt_array):

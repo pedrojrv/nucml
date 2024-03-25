@@ -4,9 +4,10 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 
-import nucml.config as config
+from nucml import configure
 
-ace_dir = config.ace_path
+config = configure._get_config()
+ace_dir = config['DATA_PATHS']['ACE']
 
 
 def get_to_skip_lines(isotope, temp="03c"):
