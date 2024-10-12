@@ -2,7 +2,7 @@
 
 [![<pedrojrv>](https://circleci.com/gh/pedrojrv/nucml.svg?style=svg)](https://app.circleci.com/pipelines/github/pedrojrv/nucml) [![Maintainability](https://api.codeclimate.com/v1/badges/d7fcd53a7402cf9351cb/maintainability)](https://codeclimate.com/github/pedrojrv/nucml/maintainability)
 
-<!-- [![Test Coverage](https://api.codeclimate.com/v1/badges/d7fcd53a7402cf9351cb/test_coverage)](https://codeclimate.com/github/pedrojrv/nucml/test_coverage) -->
+[![Test Coverage](https://api.codeclimate.com/v1/badges/d7fcd53a7402cf9351cb/test_coverage)](https://codeclimate.com/github/pedrojrv/nucml/test_coverage)
 
 NucML is an end-to-end python-based supervised machine learning pipeline for enhanced bias-free nuclear data generation and evaluation to support the advancement of next-generation nuclear systems.
 
@@ -25,7 +25,7 @@ All educational and tutorial material can be found in the `ML_Nuclear_Data` repo
 
 ## How to Cite
 
-If you used `NucML` for your work, feel free to cite us:
+If you used `NucML` for your work, pleease cite us:
 
 ```md
 @article{VICENTEVALDEZ2021108596,
